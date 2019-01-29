@@ -2,9 +2,7 @@
 Group 7 Green
 
 
-Test change
 
-=======
 # INF112 Maven template 
 Simple skeleton with libgdx. 
 
