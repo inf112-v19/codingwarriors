@@ -4,11 +4,13 @@ public class Laser implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
+    private int rotation;
 
     public Laser (GridDirection direction, int damage) {
         this.speed=0;
         this.direction=direction;
         this.damage=damage;
+        this.rotation=0;
     }
 
 
@@ -25,5 +27,10 @@ public class Laser implements IObjects {
     @Override
     public int getDamage() {
         return damage;
+    }
+
+    @Override
+    public int getRotation() {
+        return rotation;
     }
 }

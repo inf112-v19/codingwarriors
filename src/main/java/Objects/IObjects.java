@@ -19,4 +19,10 @@ public interface IObjects {
      * @return damage
      */
     int getDamage();
+
+    /**
+     * For use on objects rotating the character upon it
+     * @return rotation
+     */
+    int getRotation();
 }
