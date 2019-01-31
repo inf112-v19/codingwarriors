@@ -1,4 +1,4 @@
-package inf112.project.RoboRally.Board;
+package inf112.project.RoboRally.board;
 
 public class pl2 {
 
