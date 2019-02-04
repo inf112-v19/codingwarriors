@@ -7,8 +7,12 @@ import static org.junit.Assert.*;
 public class DeckTest {
 
     @Test
-    public void testIsNewDeckEmpty() {
-        assertEquals(0, new Deck().size());
+    public void testGetSize() {
+        assertEquals(0, new Deck().getSize());
+        IDeck deck = new Deck().createProgramCardsDeck();
+
+
+
     }
 
     @Test

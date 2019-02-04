@@ -11,12 +11,12 @@ public interface IDeck {
      *              The number of requested cards.
      * @return The cards dealt to the requesting player.
      */
-    ArrayList<IDeck> handOutCards(int num);
+    ArrayList<ICard> handOutNCards(Integer num);
 
     /**
      * Make a new deck of cards.
      */
-    void createDeck();
+    void createProgramCardsDeck();
 
     /**
      * Shuffle the deck to make things a bit more random.
@@ -28,6 +28,6 @@ public interface IDeck {
      *
      * @return The number of cards currently in the deck.
      */
-    int size();
+    int getSize();
 
 }
