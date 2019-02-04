@@ -22,4 +22,12 @@ public interface IDeck {
      * Shuffle the deck to make things a bit more random.
      */
     void shuffle();
+
+    /**
+     * Get the number of cards currently left in the deck.
+     *
+     * @return The number of cards currently in the deck.
+     */
+    int size();
+
 }
