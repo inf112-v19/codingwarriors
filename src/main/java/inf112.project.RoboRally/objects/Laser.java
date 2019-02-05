@@ -1,4 +1,4 @@
-package Objects;
+package inf112.project.RoboRally.objects;
 
 public class Laser implements IObjects {
     private int speed;

@@ -1,17 +1,16 @@
 package inf112.project.RoboRally.board;
 
-import inf112.project.RoboRally.objects.ConveyorBelt;
-import inf112.project.RoboRally.objects.Floor;
-import inf112.project.RoboRally.objects.iObject;
+import inf112.project.RoboRally.objects.*;
+import inf112.project.RoboRally.objects.IObjects;
 
 public class GameBoard {
     private int rows;
     private int colums;
-    private iObject [][] board;
+    private IObjects [][] board;
 
     public GameBoard(String level) {
         int counter = extractDimensions(level);
-        board = new iObject[colums][rows];
+        board = new IObjects[colums][rows];
         for (int y = 0; y < colums; y++) {
             for (int x = 0; x < rows; x++) {
                 board[y][x] = factory(level.charAt(counter));
@@ -26,10 +25,10 @@ public class GameBoard {
         return level.indexOf("R")+1; // returns an integer containing the index of the start of board
     }
 
-    private iObject factory(char c) {
+    private IObjects factory(char c) {
         switch (c) {
             case 'r':
-                return new ConveyorBelt();
+                return new ConveyorBelt(1,GridDirection.WEST);
             default:
                 return new Floor();
         }
@@ -57,7 +56,7 @@ public class GameBoard {
      * @param y coordinate
      * @return the iObject at location x,y of the board
      */
-    public iObject getObject(int x, int y) {
+    public IObjects getObject(int x, int y) {
         return board[y][x];
     }
 

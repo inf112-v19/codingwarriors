@@ -1,16 +1,16 @@
-package Objects;
+package inf112.project.RoboRally.objects;
 
-public class RotationCog implements IObjects {
+public class Pit implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
     private int rotation;
 
-    public RotationCog (int rotation) {
+    public Pit (int damage) {
         this.speed=0;
         this.direction=GridDirection.NORTH;
-        this.damage=0;
-        this.rotation=rotation;
+        this.damage=damage;
+        this.rotation=0;
     }
 
     @Override
