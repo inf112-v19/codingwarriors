@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
+import inf112.project.RoboRally.objects.IObjects;
 
 public class GraphicalUserInterface extends ApplicationAdapter {
     private GameBoard board;
@@ -94,7 +95,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
         for (int y = 0, i = board.getColums()-1; i >= 0; y += gridSize, i--) {
             for (int x = startX, j = 0; j < board.getRows(); x += gridSize, j++) {
-                iObject object = board.getObject(j,i);
+                IObjects object = board.getObject(j,i);
                 if (object instanceof Floor) {
                     batch.draw(floor,x+offset, y+offset, gridSize-offset*2, gridSize-offset*2);
                 } else if (object instanceof ConveyorBelt) {

@@ -1,8 +1,5 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.objects.GridDirection;
-import inf112.project.RoboRally.objects.IObjects;
-
 public class ConveyorBelt implements IObjects {
     private int speed;
     private GridDirection direction;
