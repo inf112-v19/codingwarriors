@@ -4,13 +4,13 @@ public class Pit implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
-    private int rotation;
+    private Rotation rotation;
 
     public Pit (int damage) {
         this.speed=0;
         this.direction=GridDirection.NORTH;
         this.damage=damage;
-        this.rotation=0;
+        this.rotation=null;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Pit implements IObjects {
     }
 
     @Override
-    public int getRotation() {
+    public Rotation getRotation() {
         return rotation;
     }
 }

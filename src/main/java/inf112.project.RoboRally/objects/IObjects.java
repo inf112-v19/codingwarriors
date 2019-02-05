@@ -24,5 +24,5 @@ public interface IObjects {
      * For use on objects rotating the character upon it
      * @return rotation
      */
-    int getRotation();
+    Rotation getRotation();
 }
