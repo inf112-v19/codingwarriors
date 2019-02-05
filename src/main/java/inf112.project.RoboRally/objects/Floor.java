@@ -18,7 +18,7 @@ public class Floor implements IObjects {
     }
 
     @Override
-    public int getRotation() {
-        return 0;
+    public Rotation getRotation() {
+        return null;
     }
 }
