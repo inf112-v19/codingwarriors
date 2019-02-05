@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
-import inf112.project.RoboRally.objects.iObject;
 
 public class GraphicalUserInterface extends ApplicationAdapter {
     private GameBoard board;

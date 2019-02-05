@@ -2,7 +2,6 @@ package inf112.project.RoboRally.board;
 
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
-import inf112.project.RoboRally.objects.iObject;
 
 public class GameBoard {
     private int rows;
