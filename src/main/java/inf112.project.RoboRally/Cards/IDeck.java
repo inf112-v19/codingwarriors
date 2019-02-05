@@ -14,7 +14,7 @@ public interface IDeck {
     ArrayList<ICard> handOutNCards(Integer num);
 
     /**
-     * Make a new deck of cards.
+     * Make a new deck of program cards.
      */
     void createProgramCardsDeck();
 

@@ -29,61 +29,39 @@ public class Deck implements IDeck{
 
     @Override
     public void createProgramCardsDeck() {
-        int priority = 10;
+        int priority = 0; // The priority to give the card.
         for (int i = 0; i < 6; i++) {
+            priority += 10;
             cardDeck.add(new Card(priority, U_TURN));
-            priority += 10;
         }
-        System.out.println(this.getSize());
-        System.out.println(priority);
-
         for (int i = 0; i < 18; i++) {
-            cardDeck.add(new Card(priority, ROTATE_LEFT));
             priority += 20;
-        }
-        System.out.println(this.getSize());
-        System.out.println(priority);
-
-        priority = 80;
-        for (int i = 0; i < 18; i++) {
             cardDeck.add(new Card(priority, ROTATE_RIGHT));
-            priority += 20;
         }
-        System.out.println(this.getSize());
-        System.out.println(priority);
 
-
-        for (int i = 0; i < 6; i++) {
-            cardDeck.add(new Card(priority, BACKWARDS));
-            priority += 10;
-        }
-        System.out.println(this.getSize());
-        System.out.println(priority);
-
-        //priority = 490;
+        priority = 50;
         for (int i = 0; i < 18; i++) {
-            cardDeck.add(new Card(priority, FORWARD_1));
-            priority += 10;
+            priority += 20;
+            cardDeck.add(new Card(priority, ROTATE_LEFT));
         }
-        System.out.println(this.getSize());
-        System.out.println(priority);
 
-
-//        priority = 670;
-        for (int i = 0; i < 12; i++) {
-            cardDeck.add(new Card(priority, FORWARD_2));
-            priority += 10;
-        }
-        System.out.println(this.getSize());
-        System.out.println(priority);
-
-  //      priority = 790;
+        priority = 420;
         for (int i = 0; i < 6; i++) {
-            cardDeck.add(new Card(priority, FORWARD_3));
             priority += 10;
+            cardDeck.add(new Card(priority, BACKWARDS));
         }
-        System.out.println(this.getSize());
-        System.out.println(priority);
+        for (int i = 0; i < 18; i++) {
+            priority += 10;
+            cardDeck.add(new Card(priority, FORWARD_1));
+        }
+        for (int i = 0; i < 12; i++) {
+            priority += 10;
+            cardDeck.add(new Card(priority, FORWARD_2));
+        }
+        for (int i = 0; i < 6; i++) {
+            priority += 10;
+            cardDeck.add(new Card(priority, FORWARD_3));
+        }
     }
 
     @Override
