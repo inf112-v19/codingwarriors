@@ -1,15 +1,15 @@
 package Objects;
 
-public class ConveyorBelt implements IObjects {
+public class Pit implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
     private int rotation;
 
-    public ConveyorBelt(int speed, GridDirection direction) {
-        this.speed=speed;
-        this.direction=direction;
-        this.damage=0;
+    public Pit (int damage) {
+        this.speed=0;
+        this.direction=GridDirection.NORTH;
+        this.damage=damage;
         this.rotation=0;
     }
 

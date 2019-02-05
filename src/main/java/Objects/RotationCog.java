@@ -1,16 +1,16 @@
 package Objects;
 
-public class ConveyorBelt implements IObjects {
+public class RotationCog implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
     private int rotation;
 
-    public ConveyorBelt(int speed, GridDirection direction) {
-        this.speed=speed;
-        this.direction=direction;
+    public RotationCog (int rotation) {
+        this.speed=0;
+        this.direction=GridDirection.NORTH;
         this.damage=0;
-        this.rotation=0;
+        this.rotation=rotation;
     }
 
     @Override

@@ -1,17 +1,18 @@
 package Objects;
 
-public class ConveyorBelt implements IObjects {
+public class Laser implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
     private int rotation;
 
-    public ConveyorBelt(int speed, GridDirection direction) {
-        this.speed=speed;
+    public Laser (GridDirection direction, int damage) {
+        this.speed=0;
         this.direction=direction;
-        this.damage=0;
+        this.damage=damage;
         this.rotation=0;
     }
+
 
     @Override
     public int getSpeed() {
