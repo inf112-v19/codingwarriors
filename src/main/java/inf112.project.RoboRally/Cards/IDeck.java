@@ -18,6 +18,18 @@ public interface IDeck {
      */
     void createProgramCardsDeck();
 
+
+    /**
+     * Swaps the position of the two cards at the given indices.
+     *
+     * @param posA
+     *              Position of card A.
+     * @param posB
+     *              Position of card B.
+     */
+    void swapCardsInPosition(int posA, int posB);
+
+
     /**
      * Shuffle the deck to make things a bit more random.
      */
