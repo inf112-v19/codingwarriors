@@ -50,12 +50,6 @@ public class Game implements IGame {
 
     @Override
     public void initializeGame() {
-        /*
-        add players
-        create board
-        create deck
-         */
-
         addPlayers();
         String gameBoardLayout = "" +
                 "" +
@@ -63,22 +57,18 @@ public class Game implements IGame {
                 "" +
                 "";
         this.board = new GameBoard(gameBoardLayout);
-
         this.programCards = new Deck();
         this.programCards.createProgramCardsDeck();
     }
 
-    private void addPlayers() {
-        /*
-        Ask for number of players
-        input player name, (select game piece, if pieces have different design?)
-        add player to list of players, continue until all players have been added.
-         */
+    @Override
+    public void addPlayers() {
+       // TODO: select game piece, if pieces have different design?
+
 //        int numberOfPlayers = playerCommunication.askForNumberOfPlayers();
         String userName = "";
         int numberOfPlayers = 1;
         for (int i = 0; i < numberOfPlayers; i++) {
-            // Ask for players name,
             userName = playerCommunication.askForUserName();
             IPlayer player = new Player(userName);
             players.add(player);
