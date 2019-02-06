@@ -1,5 +1,9 @@
 package inf112.project.RoboRally.Game;
 
+import inf112.project.RoboRally.Actors.IPlayer;
+
+import java.util.ArrayList;
+
 public interface IGame {
 
 
@@ -39,6 +43,23 @@ public interface IGame {
     void addPlayers();
 
 
+    /**
+     * Determine the number of cards the player is eligible to receive.
+     *
+     * @param player
+     *              The chosen player.
+     * @return The number of cards this player should be dealt.
+     */
+    int calculateTheNumberOfCardsThePlayerCanDraw(IPlayer player);
 
+
+
+
+
+    ArrayList<IPlayer> getActivePlayers();
+
+
+
+    ArrayList<IPlayer> getPlayers();
 
 }
