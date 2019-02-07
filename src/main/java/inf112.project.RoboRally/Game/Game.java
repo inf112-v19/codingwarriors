@@ -4,9 +4,11 @@ import inf112.project.RoboRally.Actors.IPlayer;
 import inf112.project.RoboRally.Actors.Player;
 import inf112.project.RoboRally.Board.GameBoard;
 import inf112.project.RoboRally.Cards.Deck;
+import inf112.project.RoboRally.Cards.ICard;
 import inf112.project.RoboRally.Cards.IDeck;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Game implements IGame {
@@ -42,12 +44,13 @@ public class Game implements IGame {
 
             int registerNumber = 1;
             final int MAX_NUMBER_OF_REGISTER_SLOTS = 5;
+            HashMap<IPlayer, ICard> playerAndCard = new HashMap<>();
             for (; registerNumber <= MAX_NUMBER_OF_REGISTER_SLOTS; registerNumber++) {
                 for (IPlayer player : activePlayers) {
                     player.revealProgramCardForRegisterNumber(registerNumber);
                 }
                 System.out.println(registerNumber);
-
+               // playerAndCard.values();
 
 
 
@@ -139,6 +142,8 @@ public class Game implements IGame {
 
     @Override
     public void initializeGame() {
+        //TODO: Make initializeGame take a gameboard as parameter,
+        // which can be chosen at the start menu?
         addPlayers();
         String gameBoardLayout = "12C16R" +
                 ".rr..r.rrr......" +
