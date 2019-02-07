@@ -14,6 +14,7 @@ public interface IGame {
      */
     void revealProgramCardsAndExecuteTheirCommands();
 
+
     /**
      * If there are no more players left alive,
      * or someone has visited all the flags,
@@ -50,6 +51,7 @@ public interface IGame {
      * Initialize and run the game.
      */
     void startGame();
+
 
     /**
      * Add users to the list of participating players.<br><br>

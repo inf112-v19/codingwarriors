@@ -15,10 +15,12 @@ public interface IDeck extends Iterable<ICard>{
      */
     ArrayList<ICard> handOutNCards(Integer num);
 
+    
     /**
      * Make a new deck of program cards.
      */
     void createProgramCardsDeck();
+
 
     /**
      * Swaps the position of the two cards at the given indices.
@@ -30,10 +32,12 @@ public interface IDeck extends Iterable<ICard>{
      */
     void swapCardsInPosition(int posA, int posB);
 
+
     /**
      * Shuffle the deck to make things a bit more random.
      */
     void shuffle();
+
 
     /**
      * Get the number of cards currently left in the deck.
@@ -42,6 +46,7 @@ public interface IDeck extends Iterable<ICard>{
      */
     int getSize();
 
+
     /**
      *
      *
@@ -49,6 +54,7 @@ public interface IDeck extends Iterable<ICard>{
      * @param collection
      */
     void addCollectionOfCardsToDeck(Collection<ICard> collection);
+
 
     /**
      *
@@ -89,10 +95,12 @@ public interface IDeck extends Iterable<ICard>{
      */
     Iterator<ICard> iterator();
 
+
     /**
      * Empties the deck, so that no cards remain.
      */
     void removeAllCardsFromDeck();
+
 
     /**
      * Gives A deck of cards containing the specified amount of cards, from those available in the deck,
@@ -103,6 +111,7 @@ public interface IDeck extends Iterable<ICard>{
      * @return A deck of cards containing the cards dealt to the requesting player.
      */
     Deck handOutCards(int cards);
+
 
     /**
      * Adds the card to the deck
