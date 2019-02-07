@@ -1,7 +1,9 @@
 package inf112.project.RoboRally.Cards;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
-public interface IDeck {
+public interface IDeck extends Iterable<ICard>{
 
     /**
      * Give the specified amount of cards, from those available in the deck,
@@ -42,4 +44,56 @@ public interface IDeck {
      */
     int getSize();
 
+
+    /**
+     *
+     *
+     *
+     * @param collection
+     */
+    void addCollectionOfCardsToDeck(Collection<ICard> collection);
+
+    /**
+     *
+     *
+     *
+     * @param position
+     * @return
+     */
+    ICard getCardAtPosition(int position);
+
+
+    /**
+     *
+     *
+     *
+     *
+     * @param card
+     */
+    void addCardToDeck(ICard card);
+
+
+    /**
+     * Sort the deck after card priority,
+     * so that the highest priority cards come first.<br><br>
+     *
+     * For example, a deck with priorities:<br>
+     * deck = {200, 300, 522, 120}
+     * sorted becomes<br>
+     * deck = {522, 300, 200, 120}
+     */
+    void sortDeckAfterCardPriority();
+
+
+    /**
+     * Fetches a listIterator for this deck.
+     *
+     * @return An iterator over this deck of cards.
+     */
+    Iterator<ICard> iterator();
+
+    /**
+     * Empties the deck, so that no cards remain.
+     */
+    void removeAllCardsFromDeck();
 }
