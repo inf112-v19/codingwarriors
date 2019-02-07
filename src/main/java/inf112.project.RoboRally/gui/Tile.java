@@ -34,7 +34,7 @@ public class Tile {
     }
 
     public int numberOfPixelsX() {
-        return endX-startY;
+        return endX-startX;
     }
 
     public boolean positionInsideTile(int x, int y) {
