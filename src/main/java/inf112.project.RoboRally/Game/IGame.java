@@ -53,13 +53,49 @@ public interface IGame {
     int calculateTheNumberOfCardsThePlayerCanDraw(IPlayer player);
 
 
-
-
-
+    /**
+     * Get the list of players that are able to act this round.
+     *
+     * @return The list of active players.
+     */
     ArrayList<IPlayer> getActivePlayers();
 
 
-
+    /**
+     * Get the list of participating players.
+     *
+     * @return The list of players.
+     */
     ArrayList<IPlayer> getPlayers();
+
+
+    /**
+     * If a player is powered down,<br>
+     * remove their damage tokens,<br>
+     * and remove them from the list of active players.
+     */
+    void processPoweredDownPlayers();
+
+
+    /**
+     * Each player draw cards,
+     * depending on how many damage tokens they have.
+     */
+    void dealOutProgramCards();
+
+
+    /**
+     * Each player inputs a program,
+     * and discard their remaining cards.
+     */
+    void playersProgramRobots();
+
+
+    /**
+     * Ask each damaged player,
+     * whether they would like to power down the next round.
+     */
+    void askPlayersIfTheyWantToPowerDown();
+
 
 }

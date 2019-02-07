@@ -13,12 +13,16 @@ public class Game implements IGame {
 
 
     private IDeck programCards;
-    private ArrayList<IPlayer> players;
-    private ArrayList<IPlayer> activePlayers;
+    private ArrayList<IPlayer> players; // All the participating players, ordered after player creation.
+    // Certain events that prioritises starting order, may use this list for reference.
+    // For example: players[0] has higher priority than players[1].
+    private ArrayList<IPlayer> activePlayers; // Players that are not incapacitated.
     private GameBoard board;
     private int numberOfPlayersLeftInTheGame;
+    private GameStatus currentGameStatus;
 
 
+    @Override
     public void startGame() {
         initializeGame();
         playRoboRally();
@@ -29,30 +33,36 @@ public class Game implements IGame {
     public void playRoboRally() {
         boolean done = false; // Tracks if the game is finished.
         while (!done) {
-            for (IPlayer player : players) {
-                if (player.isPoweredDown()) {
-                    player.removeAllDamageTokensFromPlayer();
-                }
-            }
-
-
+        //  processPoweredDownPlayers();
             programCards.shuffle();
-            for (IPlayer player : players) { // Each player draw cards.
-                int numberOfCardsPlayerCanDraw = calculateTheNumberOfCardsThePlayerCanDraw(player);
-                player.receiveCards(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
+            dealOutProgramCards();
+            playersProgramRobots();
+        //  askPlayersIfTheyWantToPowerDown();
+
+
+            int registerNumber = 1;
+            final int MAX_NUMBER_OF_REGISTER_SLOTS = 5;
+            for (; registerNumber <= MAX_NUMBER_OF_REGISTER_SLOTS; registerNumber++) {
+                for (IPlayer player : activePlayers) {
+                    player.revealProgramCardForRegisterNumber(registerNumber);
+                }
+                System.out.println(registerNumber);
+
+
+
+
+
+
+
+//            moveBoardElements();
+//            fireLasers();
+//            touchFlagsAndRepairSites();
             }
 
-            for (IPlayer player : players) { // Each player programs their robot,
-                // TODO: Check if this can be made to run in parallel using streams.
-                // TODO: Implement timer for slow players?
-                player.addCardsToProgramRegister();
-                player.removeRemainingCardsInHand(); // and discard their hand.
-            }
 
 
 
-
-
+//            cleanUp();
 
 
 
@@ -62,6 +72,51 @@ public class Game implements IGame {
 
         }
 
+    }
+
+    @Override
+    public void askPlayersIfTheyWantToPowerDown() {
+        // TODO: powered down players that have been damaged
+        //  should be asked if they want to stay powered down for another round.
+        for (IPlayer player : players) { // Ask each player
+            // prioritised in order of starting dock.
+            if (activePlayers.contains(player) && player.isDamaged()) {
+               boolean playerWantsToPowerDown =
+                       playerCommunication.askIfPlayerWantsToPowerDownNextRound();
+               if (playerWantsToPowerDown) {
+                   player.powerDownNextRound();
+               }
+            }
+        }
+    }
+
+    @Override
+    public void playersProgramRobots() {
+        for (IPlayer player : activePlayers) {
+            // TODO: Check if this can be made to run in parallel using streams.
+            // TODO: Implement timer for slow players?
+            player.addCardsToProgramRegister();
+            player.removeRemainingCardsInHand();
+        }
+    }
+
+    @Override
+    public void dealOutProgramCards() {
+        for (IPlayer player : activePlayers) {
+            int numberOfCardsPlayerCanDraw =
+                    calculateTheNumberOfCardsThePlayerCanDraw(player);
+            player.receiveCards(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
+        }
+    }
+
+    @Override
+    public void processPoweredDownPlayers() {
+        for (IPlayer player : players) {
+            if (player.isPoweredDown()) {
+                player.removeAllDamageTokensFromPlayer();
+                activePlayers.remove(player);
+            }
+        }
     }
 
     @Override
@@ -85,11 +140,19 @@ public class Game implements IGame {
     @Override
     public void initializeGame() {
         addPlayers();
-        String gameBoardLayout = "" +
-                "" +
-                "" +
-                "" +
-                "";
+        String gameBoardLayout = "12C16R" +
+                ".rr..r.rrr......" +
+                ".rrrrrrr........" +
+                ".r.............." +
+                ".r.............." +
+                ".r.............." +
+                "rr.............." +
+                "rr.............." +
+                ".r.............." +
+                ".r.............." +
+                ".r.............." +
+                ".r.............." +
+                ".r..............";
         this.board = new GameBoard(gameBoardLayout);
         this.programCards = new Deck();
         this.programCards.createProgramCardsDeck();
@@ -98,9 +161,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
        // TODO: select game piece, if pieces have different design?
-        this.players = new ArrayList<IPlayer>();
+     /*   this.players = new ArrayList<>();
 //        int numberOfPlayers = playerCommunication.askForNumberOfPlayers();
-    /*    String userName = "";
+        String userName = "";
         int numberOfPlayers = 1;
         for (int i = 0; i < numberOfPlayers; i++) {
             userName = playerCommunication.askForUserName();
@@ -109,9 +172,9 @@ public class Game implements IGame {
         }
         this.numberOfPlayersLeftInTheGame = numberOfPlayers;
       */
-
-    this.players.add(new Player());
-    this.activePlayers = new ArrayList<IPlayer>();
+        this.players = new ArrayList<>();
+        this.players.add(new Player());
+        this.activePlayers = new ArrayList<>();
         this.activePlayers.addAll(players);
     }
 

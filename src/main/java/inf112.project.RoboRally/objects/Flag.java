@@ -1,4 +1,4 @@
-package Objects;
+package inf112.project.RoboRally.objects;
 
 public class Flag implements IObjects {
 
@@ -24,5 +24,10 @@ public class Flag implements IObjects {
     @Override
     public int getDamage() {
         return damage;
+    }
+
+    @Override
+    public Rotation getRotation() {
+        return null;
     }
 }
