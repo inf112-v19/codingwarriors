@@ -20,7 +20,6 @@ public interface IDeck extends Iterable<ICard>{
      */
     void createProgramCardsDeck();
 
-
     /**
      * Swaps the position of the two cards at the given indices.
      *
@@ -30,7 +29,6 @@ public interface IDeck extends Iterable<ICard>{
      *              Position of card B.
      */
     void swapCardsInPosition(int posA, int posB);
-
 
     /**
      * Shuffle the deck to make things a bit more random.
@@ -43,7 +41,6 @@ public interface IDeck extends Iterable<ICard>{
      * @return The number of cards currently in the deck.
      */
     int getSize();
-
 
     /**
      *
@@ -96,4 +93,21 @@ public interface IDeck extends Iterable<ICard>{
      * Empties the deck, so that no cards remain.
      */
     void removeAllCardsFromDeck();
+
+    /**
+     * Gives A deck of cards containing the specified amount of cards, from those available in the deck,
+     * to the requesting player.
+     *
+     * @param cards
+     *              The number of requested cards.
+     * @return A deck of cards containing the cards dealt to the requesting player.
+     */
+    Deck handOutCards(int cards);
+
+    /**
+     * Adds the card to the deck
+     * @param card
+     *              The card that will be inserted into the deck
+     */
+    void addCard(ICard card);
 }

@@ -29,6 +29,23 @@ public class Deck implements IDeck{
         return selectedCards;
     }
 
+    public Deck handOutCards(int numberOfCards) {
+        ArrayList<ICard> DrawnCards = handOutNCards(numberOfCards);
+        Deck deck = new Deck();
+        for (ICard card : DrawnCards) {
+            deck.addCard(card);
+        }
+        return deck;
+    }
+
+    public void addCard(ICard card) {
+        cardDeck.add(card);
+    }
+
+    public String showCard(int position) {
+        return cardDeck.get(position).toString();
+    }
+
     @Override
     public void createProgramCardsDeck() {
         int priority = 0; // The priority to give the card.
@@ -90,6 +107,14 @@ public class Deck implements IDeck{
     @Override
     public int getSize() {
         return cardDeck.size();
+    }
+
+    public String toString() {
+        StringBuilder deck = new StringBuilder();
+        for (ICard card: cardDeck) {
+            deck.append(card.toString());
+        }
+        return deck.toString();
     }
 
 
