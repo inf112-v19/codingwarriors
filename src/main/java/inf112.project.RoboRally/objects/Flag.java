@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.objects;
 
 public class Flag implements IObjects {
+
     private int speed;
     private GridDirection direction;
     private int damage;
@@ -26,5 +27,7 @@ public class Flag implements IObjects {
     }
 
     @Override
-    public Rotation getRotation() { return null; }
+    public Rotation getRotation() {
+        return null;
+    }
 }
