@@ -42,4 +42,21 @@ public interface IDeck {
      */
     int getSize();
 
+    /**
+     * Gives A deck of cards containing the specified amount of cards, from those available in the deck,
+     * to the requesting player.
+     *
+     * @param cards
+     *              The number of requested cards.
+     * @return A deck of cards containing the cards dealt to the requesting player.
+     */
+    Deck handOutCards(int cards);
+
+    /**
+     * Adds the card to the deck
+     * @param card
+     *              The card that will be inserted into the deck
+     */
+    void addCard(ICard card);
+
 }

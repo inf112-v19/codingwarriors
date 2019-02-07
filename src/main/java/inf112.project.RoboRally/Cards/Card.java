@@ -31,4 +31,8 @@ public class Card implements ICard, Comparable<Card> {
             return 0;
         }
     }
+
+    public String toString() {
+        return "Priority:" + priority + "\n Action:" + command + "\n";
+    }
 }
