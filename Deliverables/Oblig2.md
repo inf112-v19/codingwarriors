@@ -78,5 +78,9 @@ Etter hver iterasjon gjennomgås og vurderes hvordan gruppen har jobbet og erfar
 
 
 ## Oppsummering
-
-
+#### Hva gikk bra? 
+Alle har bidratt og vi kom tidlig i gang med å kode. I tillegg har det vært god kommunikasjon i gruppen. 
+#### Hva fungerte ikke helt som forventet?
+Det ble laget mye kode, men foreløpig er det mye som ikke fungerer sammen. Vi tenker vi muligens burde laget mindre kode som fungerte, og gradvis lagt til den fungerende koden (litt som TDD).
+#### Noe vi har lyst å prøve til neste øvelse
+Vi ønsker å prøve mer par-programmering. 
