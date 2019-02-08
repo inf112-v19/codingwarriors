@@ -35,6 +35,8 @@ public class Grid {
     }
 
     public void setNumberOtTiles(int width, int height) {
+        if (this.width == width && this.height == height) { return; }
+        if (width == 0 || height == 0) { return; }
         this.width = width;
         this.height = height;
         this.grid = new Tile[width][height];
