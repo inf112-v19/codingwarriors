@@ -111,6 +111,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     private void drawCards() {
         int fontSize = 30;
+        cardScreen.setNumberOtTiles(1,playerDeck.getSize());
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
         for (int i = 0; i < playerDeck.getSize(); i++) {
             font.draw(batch,playerDeck.showCard(i),
