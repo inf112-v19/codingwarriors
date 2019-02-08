@@ -4,6 +4,7 @@ import inf112.project.RoboRally.cards.Action;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.gui.Grid;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ public class Player implements IPlayer {
         this.cardsInHand = new Deck();
     }
 
-    public Player() {
+    public Player(int x, int y) {
         this.playerDirection = GridDirection.NORTH;
+        this.x=x;
+        this.y=y;
     }
 
     @Override
@@ -54,6 +57,17 @@ public class Player implements IPlayer {
             case FORWARD_2: moveInDirection(playersCurrentDirection, 2);
             case FORWARD_3: moveInDirection(playersCurrentDirection, 3);
             case BACKWARDS: moveInDirection(opposite(), 1);
+
+    
+    public void movePlayer(GridDirection direction) {
+        if (direction == GridDirection.NORTH) {
+            y++;
+        } else if (direction == GridDirection.WEST) {
+            x--;
+        } else if (direction == GridDirection.SOUTH) {
+            y--;
+        } else if (direction == GridDirection.EAST) {
+            x++;
         }
     }
 

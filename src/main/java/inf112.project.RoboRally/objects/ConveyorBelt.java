@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Player;
+
 public class ConveyorBelt implements IObjects {
     private int speed;
     private GridDirection direction;
@@ -31,5 +33,11 @@ public class ConveyorBelt implements IObjects {
     @Override
     public Rotation getRotation() {
         return rotation;
+    }
+    
+    public void movePlayer(Player player) {
+        for (int i=0; i<speed; i++) {
+            player.movePlayer(direction);
+        }
     }
 }
