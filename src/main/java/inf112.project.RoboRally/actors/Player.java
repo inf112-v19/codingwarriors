@@ -13,14 +13,14 @@ public class Player implements IPlayer {
     private GridDirection playerDirection;
     private int x,y;
     private String name;
-    private IDeck hand;
+    private IDeck cardsInHand;
 
     public Player(String name, int x, int y) {
         this.playerDirection = GridDirection.NORTH;
         this.x = x;
         this.y = y;
         this.name = name;
-        this.hand = new Deck();
+        this.cardsInHand = new Deck();
     }
 
     public Player() {
@@ -69,7 +69,7 @@ public class Player implements IPlayer {
 
     @Override
     public void receiveCards(ArrayList<ICard> cards) {
-        this.hand.addCollectionOfCardsToDeck(cards);
+        this.cardsInHand.addCollectionOfCardsToDeck(cards);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Player implements IPlayer {
 
     @Override
     public void removeRemainingCardsInHand() {
-        this.hand.removeAllCardsFromDeck();
+        this.cardsInHand.removeAllCardsFromDeck();
     }
 
     @Override
