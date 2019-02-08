@@ -2,6 +2,7 @@ package inf112.project.RoboRally;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.gui.GraphicalUserInterface;
 
 public class RoboRallyMain {
@@ -14,6 +15,6 @@ public class RoboRallyMain {
         new LwjglApplication(new GraphicalUserInterface(), cfg);
 
 
-       // new Game().startGame();
+     //   new Game().startGame();
     }
 }
