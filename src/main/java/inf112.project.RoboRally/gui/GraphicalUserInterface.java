@@ -9,16 +9,22 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.board.GameBoard;
+import inf112.project.RoboRally.game.Game;
+import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
 import inf112.project.RoboRally.objects.IObjects;
 
+import java.util.ArrayList;
+
 public class GraphicalUserInterface extends ApplicationAdapter {
-    private GameBoard board; // to to moved to Game
-    private IDeck deck; // to to moved to Game
+    private IGame game;
+    private GameBoard board; // to to moved to game
+    private IDeck deck; // to to moved to game
     private Deck playerDeck; // to to moved to Player
     private Grid cardScreen;
     private static final int WIDTH = 1000;
@@ -49,20 +55,22 @@ public class GraphicalUserInterface extends ApplicationAdapter {
             ".r.............." +
             ".r.............." +
             ".r.............." +
-            ".r.............."; // to to moved to Game
+            ".r.............."; // to to moved to game
 
     private final String level2 =
             "2C3R" +
             "r.." +
-            "r.."; // to to moved to Game
+            "r.."; // to to moved to game
 
     @Override
     public void create () {
-        board = new GameBoard(level1); // to to moved to Game
-        deck = new Deck(); // to to moved to Game
-        deck.createProgramCardsDeck(); // to to moved to Game
-        deck.shuffle(); // to to moved to Game
-        playerDeck = deck.handOutCards(9); // to to moved to Game
+        game = new Game();
+        game.addPlayers();
+        board = new GameBoard(level1); // to to moved to game
+        deck = new Deck(); // to to moved to game
+        deck.createProgramCardsDeck(); // to to moved to game
+        deck.shuffle(); // to to moved to game
+        playerDeck = deck.handOutCards(9); // to to moved to game
         cardScreen = new Grid(
                 new Tile(0,CARD_SCREEN_WIDTH,0,CARD_SCREEN_HEIGHT)
                 ,1,playerDeck.getSize());
@@ -121,7 +129,11 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     }
 
     private void drawPlayers(int gridSize, int startX) {
-        batch.draw(player,startX,0,gridSize,gridSize);
+        ArrayList<IPlayer> players= game.getPlayers();
+        for (IPlayer player: players) {
+            batch.draw(this.player,player.getX()*gridSize+startX,player.getY()*gridSize,gridSize,gridSize);
+        }
+
     }
 
     private void drawBoard(int gridSize, int startX) {

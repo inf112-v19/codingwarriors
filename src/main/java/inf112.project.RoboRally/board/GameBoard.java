@@ -28,7 +28,21 @@ public class GameBoard {
     private IObjects factory(char c) {
         switch (c) {
             case 'r':
+                return new ConveyorBelt(1,GridDirection.EAST);
+            case 'u':
+                return new ConveyorBelt(1,GridDirection.NORTH);
+            case 'd':
+                return new ConveyorBelt(1,GridDirection.SOUTH);
+            case 'l':
                 return new ConveyorBelt(1,GridDirection.WEST);
+            case 'f':
+                return new Flag();
+            case '.':
+                return new Floor();
+            case 'c':
+                return new RotationCog(Rotation.LEFT);
+            case 'C':
+                return new RotationCog(Rotation.RIGHT);
             default:
                 return new Floor();
         }
