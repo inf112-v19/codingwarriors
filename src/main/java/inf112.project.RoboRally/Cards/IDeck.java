@@ -15,7 +15,7 @@ public interface IDeck extends Iterable<ICard>{
      */
     ArrayList<ICard> handOutNCards(Integer num);
 
-    
+
     /**
      * Make a new deck of program cards.
      */

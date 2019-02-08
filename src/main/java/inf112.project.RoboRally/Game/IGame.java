@@ -142,4 +142,13 @@ public interface IGame {
      * whether they would like to power down the next round.
      */
     void askPlayersIfTheyWantToPowerDown();
+
+
+    /**
+     * Get the games current status,
+     * to determine GUI drawing mode.
+     *
+     * @return The current phase of the game.
+     */
+    GameStatus getTheCurrentGameStatus();
 }

@@ -255,4 +255,9 @@ public class Game implements IGame {
     public ArrayList<IPlayer> getPlayers() {
         return players;
     }
+
+    @Override
+    public GameStatus getTheCurrentGameStatus() {
+        return this.currentGameStatus;
+    }
 }
