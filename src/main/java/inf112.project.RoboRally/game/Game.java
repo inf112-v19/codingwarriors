@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
@@ -46,8 +47,11 @@ public class Game implements IGame {
             dealOutProgramCards();
             playersProgramRobots();
         //  askPlayersIfTheyWantToPowerDown();
-            revealProgramCardsAndExecuteTheirCommands();
-            cleanUp();
+        //    revealProgramCardsAndExecuteTheirCommands();
+        //    cleanUp();
+
+            programCards.removeAllCardsFromDeck(); // Moved here from cleanUp
+            programCards.createProgramCardsDeck(); // for demonstration purposes.
             if (checkIfTheGameIsOver()) {
                 done = true;
             }
@@ -87,6 +91,7 @@ public class Game implements IGame {
             return true;
         }
         if (everyFlagHasBeenVisited) {
+            return true;
             // return playerCommunication.askIfPlayersWantToContinuePlaying();
         }
         return false;
@@ -172,13 +177,7 @@ public class Game implements IGame {
             // TODO: Check if this can be made to run in parallel using streams.
             // TODO: Implement timer for slow players?
 
-//            boolean isPressed = Gdx.input.isButtonPressed()
-  //          while (true) {
 
-
-
-
-    //        }
             //player.movePlayer();
             //   player.addCardsToProgramRegister();
             player.removeRemainingCardsInHand();
