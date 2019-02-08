@@ -1,4 +1,4 @@
-package inf112.project.RoboRally.board;
+package inf112.project.RoboRally.Board;
 
 import inf112.project.RoboRally.objects.*;
 import inf112.project.RoboRally.objects.IObjects;

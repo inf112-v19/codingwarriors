@@ -1,9 +1,9 @@
-package inf112.project.RoboRally;
+package inf112.project.RoboRally.board;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import inf112.project.RoboRally.board.GameBoard;
+import inf112.project.RoboRally.Board.GameBoard;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
 import org.junit.Before;

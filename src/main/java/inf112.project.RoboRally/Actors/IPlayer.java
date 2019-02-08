@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.Actors;
 
-import inf112.project.RoboRally.Cards.Card;
+import inf112.project.RoboRally.Cards.ICard;
 import inf112.project.RoboRally.objects.GridDirection;
 
 public interface IPlayer {
@@ -24,5 +24,5 @@ public interface IPlayer {
      * @param card player moves according to
      * @param direction of the player
      */
-    void movePlayer(Card card, GridDirection direction);
+    void movePlayer(ICard card, GridDirection direction);
 }

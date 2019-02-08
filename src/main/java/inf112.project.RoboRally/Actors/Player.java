@@ -1,7 +1,7 @@
 package inf112.project.RoboRally.Actors;
 
 import inf112.project.RoboRally.Cards.Action;
-import inf112.project.RoboRally.Cards.Card;
+import inf112.project.RoboRally.Cards.ICard;
 import inf112.project.RoboRally.objects.GridDirection;
 
 public class Player implements IPlayer {
@@ -28,9 +28,11 @@ public class Player implements IPlayer {
         return playerDirection;
     }
 
+    // Kan ikke GridDirection bli hentet inne i metoden,
+    // istedet for å sende den som et parameter?
     @Override
-    public void movePlayer(Card card, GridDirection direction) {
-        if (card.getCommand() == Action.FORWARD_1)
+    public void movePlayer(ICard card, GridDirection direction) { // Changed Card to ICard, and updated IPlayer
+        if (card.getCommand() == Action.FORWARD_1)                // and the import statements in both classes.
             moveInDirection(direction, 1);
         if (card.getCommand() == Action.FORWARD_2)
             moveInDirection(direction, 2);

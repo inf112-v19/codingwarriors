@@ -1,7 +1,9 @@
 package inf112.project.RoboRally.Cards;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 import static inf112.project.RoboRally.Cards.Action.*;
 
@@ -10,7 +12,7 @@ public class Deck implements IDeck{
     private ArrayList<ICard> cardDeck;
 
     public Deck() {
-        this.cardDeck = new ArrayList<ICard>();
+        this.cardDeck = new ArrayList<>();
     }
 
 
@@ -20,11 +22,28 @@ public class Deck implements IDeck{
             throw new IllegalArgumentException("num is not a valid amount of cards");
         }
 
-        ArrayList<ICard> selectedCards = new ArrayList<ICard>();
+        ArrayList<ICard> selectedCards = new ArrayList<>();
         for (int i = 0; i < num; i++) {
             selectedCards.add(cardDeck.remove(0));
         }
         return selectedCards;
+    }
+
+    public Deck handOutCards(int numberOfCards) {
+        ArrayList<ICard> DrawnCards = handOutNCards(numberOfCards);
+        Deck deck = new Deck();
+        for (ICard card : DrawnCards) {
+            deck.addCard(card);
+        }
+        return deck;
+    }
+
+    public void addCard(ICard card) {
+        cardDeck.add(card);
+    }
+
+    public String showCard(int position) {
+        return cardDeck.get(position).toString();
     }
 
     @Override
@@ -89,4 +108,47 @@ public class Deck implements IDeck{
     public int getSize() {
         return cardDeck.size();
     }
+
+    public String toString() {
+        StringBuilder deck = new StringBuilder();
+        for (ICard card: cardDeck) {
+            deck.append(card.toString());
+        }
+        return deck.toString();
+    }
+
+
+    @Override
+    public void addCollectionOfCardsToDeck(Collection<ICard> collection) {
+        this.cardDeck.addAll(collection);
+    }
+
+    @Override
+    public ICard getCardAtPosition(int position) {
+        if (position >= this.cardDeck.size() || position < 0) {
+            throw new IllegalArgumentException("Position is out of bounds");
+        }
+        return this.cardDeck.get(position);
+    }
+
+    @Override
+    public void addCardToDeck(ICard card) {
+        this.cardDeck.add(card);
+    }
+
+    @Override
+    public void sortDeckAfterCardPriority() {
+            Collections.sort(this.cardDeck, Collections.<ICard>reverseOrder());
+    }
+
+    @Override
+    public Iterator<ICard> iterator() {
+        return this.cardDeck.listIterator();
+    }
+
+    @Override
+    public void removeAllCardsFromDeck() {
+        this.cardDeck.clear();
+    }
+
 }
