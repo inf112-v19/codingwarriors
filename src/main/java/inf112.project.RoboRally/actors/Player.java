@@ -120,6 +120,11 @@ public class Player implements IPlayer {
 
     }
 
+    @Override
+    public IDeck getCardsInHand() {
+        return cardsInHand;
+    }
+
     private GridDirection opposite() {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {

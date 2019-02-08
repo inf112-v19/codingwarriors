@@ -119,4 +119,6 @@ public interface IDeck extends Iterable<ICard>{
      *              The card that will be inserted into the deck
      */
     void addCard(ICard card);
+
+    String showCard(int i);
 }
