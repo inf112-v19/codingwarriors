@@ -1,6 +1,6 @@
-package inf112.project.RoboRally.Game;
+package inf112.project.RoboRally.game;
 
-import inf112.project.RoboRally.Actors.IPlayer;
+import inf112.project.RoboRally.actors.IPlayer;
 
 import java.util.ArrayList;
 
@@ -151,4 +151,6 @@ public interface IGame {
      * @return The current phase of the game.
      */
     GameStatus getTheCurrentGameStatus();
+
+    IPlayer getCurrentPlayer();
 }

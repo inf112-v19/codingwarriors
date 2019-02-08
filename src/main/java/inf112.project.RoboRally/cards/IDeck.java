@@ -1,4 +1,4 @@
-package inf112.project.RoboRally.Cards;
+package inf112.project.RoboRally.cards;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

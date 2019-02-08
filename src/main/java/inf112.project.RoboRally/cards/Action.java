@@ -1,4 +1,4 @@
-package inf112.project.RoboRally.cards;
+package inf112.project.RoboRally.Cards;
 
 public enum Action {
     ROTATE_RIGHT, ROTATE_LEFT, U_TURN,

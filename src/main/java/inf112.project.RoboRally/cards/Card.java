@@ -1,4 +1,4 @@
-package inf112.project.RoboRally.cards;
+package inf112.project.RoboRally.Cards;
 
 public class Card implements ICard, Comparable<Card> {
 

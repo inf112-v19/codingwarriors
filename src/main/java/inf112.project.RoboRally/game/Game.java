@@ -1,17 +1,17 @@
-package inf112.project.RoboRally.Game;
+package inf112.project.RoboRally.game;
 
-import inf112.project.RoboRally.Actors.IPlayer;
-import inf112.project.RoboRally.Actors.Player;
-import inf112.project.RoboRally.Board.GameBoard;
-import inf112.project.RoboRally.Cards.Deck;
-import inf112.project.RoboRally.Cards.ICard;
-import inf112.project.RoboRally.Cards.IDeck;
+import inf112.project.RoboRally.actors.IPlayer;
+import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.board.GameBoard;
+import inf112.project.RoboRally.cards.Deck;
+import inf112.project.RoboRally.cards.ICard;
+import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static inf112.project.RoboRally.Game.GameStatus.*;
+import static inf112.project.RoboRally.game.GameStatus.*;
 
 
 public class Game implements IGame {
@@ -26,6 +26,7 @@ public class Game implements IGame {
     private int numberOfPlayersLeftInTheGame;
     private boolean everyFlagHasBeenVisited;
     private GameStatus currentGameStatus;
+    private IPlayer currentlyActingPlayer; // The player whose cards are to be displayed.
 
 
     @Override
@@ -259,5 +260,10 @@ public class Game implements IGame {
     @Override
     public GameStatus getTheCurrentGameStatus() {
         return this.currentGameStatus;
+    }
+
+    @Override
+    public IPlayer getCurrentPlayer() {
+        return this.currentlyActingPlayer;
     }
 }

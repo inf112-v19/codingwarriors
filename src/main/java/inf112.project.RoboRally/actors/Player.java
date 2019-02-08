@@ -1,7 +1,7 @@
-package inf112.project.RoboRally.Actors;
+package inf112.project.RoboRally.actors;
 
-import inf112.project.RoboRally.Cards.Action;
-import inf112.project.RoboRally.Cards.ICard;
+import inf112.project.RoboRally.cards.Action;
+import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
