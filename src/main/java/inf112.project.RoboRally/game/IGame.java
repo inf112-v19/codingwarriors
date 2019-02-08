@@ -98,6 +98,7 @@ public interface IGame {
 
 
     /**
+     * Shuffle the program cards deck.
      * Each player draw cards,
      * depending on how many damage tokens they have.
      */

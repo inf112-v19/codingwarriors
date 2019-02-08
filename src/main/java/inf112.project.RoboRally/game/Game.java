@@ -43,7 +43,7 @@ public class Game implements IGame {
         boolean done = false; // Tracks if the game is finished.
         while (!done) {
         //  processPoweredDownPlayers();
-            programCards.shuffle();
+
             dealOutProgramCards();
             playersProgramRobots();
         //  askPlayersIfTheyWantToPowerDown();
@@ -186,6 +186,7 @@ public class Game implements IGame {
 
     @Override
     public void dealOutProgramCards() {
+        programCards.shuffle();
         for (IPlayer player : activePlayers) {
             int numberOfCardsPlayerCanDraw =
                     calculateTheNumberOfCardsThePlayerCanDraw(player);

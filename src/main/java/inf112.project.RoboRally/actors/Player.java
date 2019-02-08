@@ -45,25 +45,19 @@ public class Player implements IPlayer {
         return playerDirection;
     }
 
-    // Kan ikke GridDirection bli hentet inne i metoden,
-    // istedet for å sende den som et parameter?
     @Override
-    public void movePlayer(ICard card) { // Changed Card to ICard, and updated IPlayer
-        if (card.getCommand() == Action.FORWARD_1)                // and the import statements in both classes.
-            moveInDirection(playerDirection, 1);
-        if (card.getCommand() == Action.FORWARD_2)
-            moveInDirection(playerDirection, 2);
-        if (card.getCommand() == Action.FORWARD_3)
-            moveInDirection(playerDirection, 3);
-        if (card.getCommand() == Action.BACKWARDS)
-            moveInDirection(opposite(playerDirection), 1);
-        if (card.getCommand() == Action.ROTATE_LEFT)
-            rotateLeft(playerDirection);
-        if (card.getCommand() == Action.ROTATE_RIGHT)
-            rotateRight(playerDirection);
-        if (card.getCommand() == Action.U_TURN)
-            uTurn(playerDirection);
-    }
+    public void movePlayer(ICard card) {
+        GridDirection playersCurrentDirection = this.playerDirection;
+        Action cardCommand = card.getCommand();
+        switch (cardCommand) {
+            case ROTATE_RIGHT: rotateRight();
+            case ROTATE_LEFT: rotateLeft();
+            case U_TURN: uTurn();
+            case FORWARD_1: moveInDirection(playersCurrentDirection, 1);
+            case FORWARD_2: moveInDirection(playersCurrentDirection, 2);
+            case FORWARD_3: moveInDirection(playersCurrentDirection, 3);
+            case BACKWARDS: moveInDirection(opposite(), 1);
+
     
     public void movePlayer(GridDirection direction) {
         if (direction == GridDirection.NORTH) {
@@ -117,8 +111,9 @@ public class Player implements IPlayer {
 
     }
 
-    private GridDirection opposite(GridDirection direction) {
-        switch (direction) {
+    private GridDirection opposite() {
+        GridDirection playersCurrentDirection = this.playerDirection;
+        switch (playersCurrentDirection) {
             case NORTH: return GridDirection.SOUTH;
             case WEST: return GridDirection.EAST;
             case EAST: return GridDirection.WEST;
@@ -153,8 +148,9 @@ public class Player implements IPlayer {
     }
 
 
-    private void uTurn(GridDirection direction) {
-        switch (direction) {
+    private void uTurn() {
+        GridDirection playersCurrentDirection = this.playerDirection;
+        switch (playersCurrentDirection) {
             case NORTH: this.playerDirection = GridDirection.SOUTH;
             case WEST: this.playerDirection = GridDirection.EAST;
             case SOUTH: this.playerDirection = GridDirection.NORTH;
@@ -162,8 +158,9 @@ public class Player implements IPlayer {
         }
     }
 
-    private void rotateLeft(GridDirection direction) {
-        switch (direction) {
+    private void rotateLeft() {
+        GridDirection playersCurrentDirection = this.playerDirection;
+        switch (playersCurrentDirection) {
             case NORTH: this.playerDirection = GridDirection.WEST;
             case WEST: this.playerDirection = GridDirection.SOUTH;
             case SOUTH: this.playerDirection = GridDirection.EAST;
@@ -171,8 +168,9 @@ public class Player implements IPlayer {
         }
     }
 
-    private void rotateRight(GridDirection direction) {
-        switch (direction) {
+    private void rotateRight() {
+        GridDirection playersCurrentDirection = this.playerDirection;
+        switch (playersCurrentDirection) {
             case NORTH: this.playerDirection = GridDirection.EAST;
             case EAST: this.playerDirection = GridDirection.SOUTH;
             case SOUTH: this.playerDirection = GridDirection.WEST;
