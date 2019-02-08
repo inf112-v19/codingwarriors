@@ -21,4 +21,9 @@ public class GameTest {
     }
 
 
+    @Test
+    public void checkIfPlayerWasDealtCards() {
+        game.startGame();
+
+    }
 }
