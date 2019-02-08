@@ -170,7 +170,9 @@ public class Game implements IGame {
         for (IPlayer player : activePlayers) {
             // TODO: Check if this can be made to run in parallel using streams.
             // TODO: Implement timer for slow players?
-            player.addCardsToProgramRegister();
+
+            //player.movePlayer();
+            //   player.addCardsToProgramRegister();
             player.removeRemainingCardsInHand();
         }
     }
@@ -241,8 +243,15 @@ public class Game implements IGame {
             players.add(player);
         }
       */
+
+     // Hardcoded players for demonstration.
+        IPlayer player1 = new Player("Buzz", 0, 10);
+        IPlayer player2 = new Player("Emma", 5, 10);
+        IPlayer player3 = new Player("G-bot", 2, 5);
         this.players = new ArrayList<>();
-        this.players.add(new Player());
+        this.players.add(player1);
+        this.players.add(player2);
+        this.players.add(player3);
         this.activePlayers = new ArrayList<>();
         this.activePlayers.addAll(players);
     }

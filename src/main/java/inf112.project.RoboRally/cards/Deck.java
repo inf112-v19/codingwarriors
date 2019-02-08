@@ -1,11 +1,11 @@
-package inf112.project.RoboRally.Cards;
+package inf112.project.RoboRally.cards;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import static inf112.project.RoboRally.Cards.Action.*;
+import static inf112.project.RoboRally.cards.Action.*;
 
 public class Deck implements IDeck{
 

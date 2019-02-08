@@ -152,5 +152,11 @@ public interface IGame {
      */
     GameStatus getTheCurrentGameStatus();
 
+
+    /**
+     * Get the player whos cards should be displayed.
+     *
+     * @return The currently acting player.
+     */
     IPlayer getCurrentPlayer();
 }

@@ -10,8 +10,16 @@ public class Player implements IPlayer {
     private int lives = 3;
     private GridDirection playerDirection;
     private int x,y;
+    private String name;
 
-    public Player () {
+    public Player(String name, int x, int y) {
+        this.playerDirection = GridDirection.NORTH;
+        this.x = x;
+        this.y = y;
+        this.name = name;
+    }
+
+    public Player() {
         this.playerDirection = GridDirection.NORTH;
     }
 
@@ -151,5 +159,12 @@ public class Player implements IPlayer {
             case SOUTH: this.playerDirection = GridDirection.WEST;
             case WEST: this.playerDirection = GridDirection.NORTH;
         }
+    }
+
+
+
+
+    public String getName() {
+        return this.name;
     }
 }
