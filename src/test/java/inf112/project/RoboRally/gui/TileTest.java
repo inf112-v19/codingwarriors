@@ -55,5 +55,5 @@ public class TileTest {
         assertFalse(testTile.positionInsideTile(40,0));
         assertFalse(testTile.positionInsideTile(40,100));
     }
-    
+
 }

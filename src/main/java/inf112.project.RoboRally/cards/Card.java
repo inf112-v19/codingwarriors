@@ -27,7 +27,7 @@ public class Card implements ICard, Comparable<Card> {
             return 1;
         } else if (this.getPriority() < that.getPriority()) {
             return -1;
-        } else { // Cards have equal priority.
+        } else { // cards have equal priority.
             return 0;
         }
     }
