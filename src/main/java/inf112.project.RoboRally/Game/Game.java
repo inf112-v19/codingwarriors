@@ -85,7 +85,7 @@ public class Game implements IGame {
             return true;
         }
         if (everyFlagHasBeenVisited) {
-            return playerCommunication.askIfPlayersWantToContinuePlaying();
+            // return playerCommunication.askIfPlayersWantToContinuePlaying();
         }
         return false;
     }

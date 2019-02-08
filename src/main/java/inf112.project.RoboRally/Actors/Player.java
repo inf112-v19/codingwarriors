@@ -4,6 +4,8 @@ import inf112.project.RoboRally.Cards.Action;
 import inf112.project.RoboRally.Cards.ICard;
 import inf112.project.RoboRally.objects.GridDirection;
 
+import java.util.ArrayList;
+
 public class Player implements IPlayer {
     private int lives = 3;
     private GridDirection playerDirection;
@@ -46,6 +48,46 @@ public class Player implements IPlayer {
             rotateRight(direction);
         if (card.getCommand() == Action.U_TURN)
             uTurn(direction);
+    }
+
+    @Override
+    public int getPlayerDamage() {
+        return 0;
+    }
+
+    @Override
+    public void receiveCards(ArrayList<ICard> iCards) {
+
+    }
+
+    @Override
+    public void addCardsToProgramRegister() {
+
+    }
+
+    @Override
+    public void removeRemainingCardsInHand() {
+
+    }
+
+    @Override
+    public ICard revealProgramCardForRegisterNumber(int registerNumber) {
+        return null;
+    }
+
+    @Override
+    public void clearRegister() {
+
+    }
+
+    @Override
+    public boolean wasDestroyedThisTurn() {
+        return false;
+    }
+
+    @Override
+    public void respawnAtLastArchiveMarker() {
+
     }
 
     private GridDirection opposite(GridDirection direction) {
