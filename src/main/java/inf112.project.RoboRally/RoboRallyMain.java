@@ -2,8 +2,6 @@ package inf112.project.RoboRally;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import inf112.project.RoboRally.Game.Game;
-import inf112.project.RoboRally.Game.IGame;
 import inf112.project.RoboRally.gui.GraphicalUserInterface;
 
 public class RoboRallyMain {

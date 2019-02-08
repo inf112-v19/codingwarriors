@@ -1,4 +1,4 @@
-package inf112.project.RoboRally.Game;
+package inf112.project.RoboRally.game;
 
 public enum GameStatus {
 

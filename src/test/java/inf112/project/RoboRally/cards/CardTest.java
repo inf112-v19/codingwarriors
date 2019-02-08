@@ -1,8 +1,8 @@
-package inf112.project.RoboRally.Cards;
+package inf112.project.RoboRally.cards;
 
 import org.junit.Test;
 
-import static inf112.project.RoboRally.Cards.Action.*;
+import static inf112.project.RoboRally.cards.Action.*;
 import static org.junit.Assert.*;
 
 public class CardTest {

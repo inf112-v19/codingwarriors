@@ -1,6 +1,6 @@
-package inf112.project.RoboRally.Game;
+package inf112.project.RoboRally.game;
 
-import inf112.project.RoboRally.Actors.IPlayer;
+import inf112.project.RoboRally.actors.IPlayer;
 
 import java.util.ArrayList;
 
@@ -142,4 +142,21 @@ public interface IGame {
      * whether they would like to power down the next round.
      */
     void askPlayersIfTheyWantToPowerDown();
+
+
+    /**
+     * Get the games current status,
+     * to determine GUI drawing mode.
+     *
+     * @return The current phase of the game.
+     */
+    GameStatus getTheCurrentGameStatus();
+
+
+    /**
+     * Get the player whos cards should be displayed.
+     *
+     * @return The currently acting player.
+     */
+    IPlayer getCurrentPlayer();
 }
