@@ -6,18 +6,9 @@
 * Kundekontakt: Tore Berven
 
 ### Kompetanse
-
-#### Jan-Erik
-#### Tore
-#### Kim-Erling
-#### Jakob
-#### Eirin
-* Generell java kompetanse fra INF100, INF101 og INF102
-* Vært med på programmeringskonkurranser, ellers ingen erfaring med parprogrammering eller prosjektarbeid.
-
 Oppsummering: 
-Alle på teamet har hatt INF100, INF101, INF102 og har dermed de grunnleggende programmeringskunnskapene i Java, og erfaring med objektorientert programmering. 
-I tillegg har teamet en blanding av forskjellige studier og fagkombinasjoner som gir bredde i teamet. 
+Alle på teamet har hatt INF100, INF101, INF102 og har dermed de grunnleggende programmeringskunnskapene i Java, og erfaring med objektorientert programmering.
+I tillegg har teamet en blanding av forskjellige studier (datateknologi, datasikkerhet) og fagkombinasjoner som gir bredde i teamet.  
 
 ### Tekniske verktøy
 * Github project board
