@@ -17,6 +17,7 @@ import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
+import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.IObjects;
 
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     private IGame game;
     private GameBoard board; // to to moved to game
     private IDeck deck; // to to moved to game
-    private Deck playerDeck; // to to moved to Player
+    private IDeck playerDeck; // to to moved to Player
+    private int currentPlayerIndex;
+    private IPlayer currentPlayer;
     private Grid cardScreen;
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 600;
@@ -65,7 +68,10 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     @Override
     public void create () {
         game = new Game();
-        game.addPlayers();
+        game.initializeGame();
+        game.dealOutProgramCards();
+        currentPlayerIndex = 0;
+        currentPlayer = game.getPlayers().get(currentPlayerIndex);
         board = new GameBoard(level1); // to to moved to game
         deck = new Deck(); // to to moved to game
         deck.createProgramCardsDeck(); // to to moved to game
@@ -95,12 +101,14 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        userInputs();
+
+        this.currentPlayer = game.getPlayers().get(currentPlayerIndex);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         drawBoard(gridSize, cardsSectionSize);
         drawPlayers(gridSize, cardsSectionSize);
         drawCards();
+        userInputs();
         batch.end();
 
     }
@@ -112,12 +120,19 @@ public class GraphicalUserInterface extends ApplicationAdapter {
             int y = HEIGHT-Gdx.input.getY();
             if (cardScreen.PositionIsInsideScreen(x,y)) {
                 int index = cardScreen.getTileIndex(x,y);
-                System.out.print(playerDeck.showCard(index));
+                System.out.println(currentPlayer.getCardsInHand().showCard(index));
+                currentPlayer.movePlayer(currentPlayer.getCardsInHand().getCardAtPosition(index));
+                currentPlayerIndex++;
+                if (currentPlayerIndex >= game.getPlayers().size()) {
+                    currentPlayerIndex = 0;
+                }
+
             }
         }
     }
 
     private void drawCards() {
+        playerDeck = currentPlayer.getCardsInHand();
         int fontSize = 30;
         cardScreen.setNumberOtTiles(1,playerDeck.getSize());
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
@@ -167,4 +182,9 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         viewport.update(width, height, true);
     }
 
+    /*
+    public IPlayer getNextPlayer() {
+        return nextPlayer;
+    }
+    */
 }
