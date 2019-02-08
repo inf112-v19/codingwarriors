@@ -1,4 +1,4 @@
-package inf112.project.RoboRally.Actors;
+package inf112.project.RoboRally.actors;
 
 public class pl {
 

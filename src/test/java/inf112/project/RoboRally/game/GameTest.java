@@ -1,7 +1,5 @@
-package inf112.project.RoboRally.Game;
+package inf112.project.RoboRally.game;
 
-import inf112.project.RoboRally.Actors.IPlayer;
-import inf112.project.RoboRally.Cards.*;
 import org.junit.Before;
 import org.junit.Test;
 
