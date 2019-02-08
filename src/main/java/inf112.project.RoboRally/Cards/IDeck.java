@@ -1,7 +1,9 @@
 package inf112.project.RoboRally.Cards;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
-public interface IDeck {
+public interface IDeck extends Iterable<ICard>{
 
     /**
      * Give the specified amount of cards, from those available in the deck,
@@ -13,6 +15,7 @@ public interface IDeck {
      */
     ArrayList<ICard> handOutNCards(Integer num);
 
+    
     /**
      * Make a new deck of program cards.
      */
@@ -35,12 +38,69 @@ public interface IDeck {
      */
     void shuffle();
 
+
     /**
      * Get the number of cards currently left in the deck.
      *
      * @return The number of cards currently in the deck.
      */
     int getSize();
+
+
+    /**
+     *
+     *
+     *
+     * @param collection
+     */
+    void addCollectionOfCardsToDeck(Collection<ICard> collection);
+
+
+    /**
+     *
+     *
+     *
+     * @param position
+     * @return
+     */
+    ICard getCardAtPosition(int position);
+
+
+    /**
+     *
+     *
+     *
+     *
+     * @param card
+     */
+    void addCardToDeck(ICard card);
+
+
+    /**
+     * Sort the deck after card priority,
+     * so that the highest priority cards come first.<br><br>
+     *
+     * For example, a deck with priorities:<br>
+     * deck = {200, 300, 522, 120}
+     * sorted becomes<br>
+     * deck = {522, 300, 200, 120}
+     */
+    void sortDeckAfterCardPriority();
+
+
+    /**
+     * Fetches a listIterator for this deck.
+     *
+     * @return An iterator over this deck of cards.
+     */
+    Iterator<ICard> iterator();
+
+
+    /**
+     * Empties the deck, so that no cards remain.
+     */
+    void removeAllCardsFromDeck();
+
 
     /**
      * Gives A deck of cards containing the specified amount of cards, from those available in the deck,
@@ -52,27 +112,11 @@ public interface IDeck {
      */
     Deck handOutCards(int cards);
 
+
     /**
      * Adds the card to the deck
      * @param card
      *              The card that will be inserted into the deck
      */
     void addCard(ICard card);
-
-    /**
-     * Removes card at index from deck and returns the removed card
-     * @param index
-     *              The index of the card that to be removed from deck
-     * @return The card at index
-     */
-    ICard removeCard(int index);
-
-    /**
-     * Returns toString for the card at index
-     * @param index
-     *              The index of the card you want to show
-     * @return String representation of the card at index
-     */
-    String showCard(int index);
-
 }

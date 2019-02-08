@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.Cards.Deck;
 import inf112.project.RoboRally.Cards.IDeck;
-import inf112.project.RoboRally.board.GameBoard;
+import inf112.project.RoboRally.Board.GameBoard;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
 import inf112.project.RoboRally.objects.IObjects;
