@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.actors;
 
 import inf112.project.RoboRally.cards.ICard;
+import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
@@ -54,4 +55,6 @@ public interface IPlayer {
     boolean wasDestroyedThisTurn();
 
     void respawnAtLastArchiveMarker();
+
+    public IDeck getCardsInHand();
 }

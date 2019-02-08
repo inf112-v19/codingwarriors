@@ -74,4 +74,15 @@ Alle har bidratt og vi kom tidlig i gang med å kode. I tillegg har det vært go
 #### Hva fungerte ikke helt som forventet?
 Det ble laget mye kode, men foreløpig er det mye som ikke fungerer sammen. Vi tenker vi muligens burde laget mindre kode som fungerte, og gradvis lagt til den fungerende koden (litt som TDD).
 #### Noe vi har lyst å prøve til neste øvelse
-Vi ønsker å prøve mer par-programmering. 
+Vi ønsker å prøve mer par-programmering. I tillegg ønsker vi å prøve mer test driven development, som nevnt over tror vi dette ville vært en tilnærming som kunne fungert bedre for oss. 
+
+## Møtereferat
+#### Rapport 29.01.19
+Fikk oversikt over prosjektet og plan over de neste ukene (til neste innlevering). Alle hadde som oppgave å bli mer kjent 
+med libgdx til neste møte slik at vi kunne fordele mer konkrete oppgaver. 
+
+#### Rapport 31.01.19
+Møtet gikk for det meste ut på å dele ut oppgaver, for å deretter jobbe med disse oppgavene. 
+
+#### Rapport 05.01.19
+Fikk oppklaring i enkelte problemer med git og kommunisert mer om hvordan vi skulle tvinne sammen arbeidet vi har gjort. 
