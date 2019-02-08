@@ -11,12 +11,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.Cards.Deck;
 import inf112.project.RoboRally.Cards.IDeck;
-import inf112.project.RoboRally.Board.GameBoard;
+import inf112.project.RoboRally.Game.Game;
+import inf112.project.RoboRally.Game.IGame;
+import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
 import inf112.project.RoboRally.objects.IObjects;
 
 public class GraphicalUserInterface extends ApplicationAdapter {
+    private IGame game;
     private GameBoard board; // to to moved to Game
     private IDeck deck; // to to moved to Game
     private Deck playerDeck; // to to moved to Player
@@ -58,6 +61,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     @Override
     public void create () {
+        game = new Game();
         board = new GameBoard(level1); // to to moved to Game
         deck = new Deck(); // to to moved to Game
         deck.createProgramCardsDeck(); // to to moved to Game

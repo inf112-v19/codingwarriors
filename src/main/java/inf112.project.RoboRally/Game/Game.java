@@ -2,7 +2,7 @@ package inf112.project.RoboRally.Game;
 
 import inf112.project.RoboRally.Actors.IPlayer;
 import inf112.project.RoboRally.Actors.Player;
-import inf112.project.RoboRally.Board.GameBoard;
+import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.Cards.Deck;
 import inf112.project.RoboRally.Cards.ICard;
 import inf112.project.RoboRally.Cards.IDeck;
