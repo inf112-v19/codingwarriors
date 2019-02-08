@@ -50,13 +50,22 @@ public class Player implements IPlayer {
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCommand();
         switch (cardCommand) {
-            case ROTATE_RIGHT: rotateRight();
-            case ROTATE_LEFT: rotateLeft();
-            case U_TURN: uTurn();
-            case FORWARD_1: moveInDirection(playersCurrentDirection, 1);
-            case FORWARD_2: moveInDirection(playersCurrentDirection, 2);
-            case FORWARD_3: moveInDirection(playersCurrentDirection, 3);
-            case BACKWARDS: moveInDirection(opposite(), 1);
+            case ROTATE_RIGHT:
+                rotateRight();
+            case ROTATE_LEFT:
+                rotateLeft();
+            case U_TURN:
+                uTurn();
+            case FORWARD_1:
+                moveInDirection(playersCurrentDirection, 1);
+            case FORWARD_2:
+                moveInDirection(playersCurrentDirection, 2);
+            case FORWARD_3:
+                moveInDirection(playersCurrentDirection, 3);
+            case BACKWARDS:
+                moveInDirection(opposite(), 1);
+        }
+    }
 
     
     public void movePlayer(GridDirection direction) {
