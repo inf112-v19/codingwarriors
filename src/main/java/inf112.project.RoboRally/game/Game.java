@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.game;
 
+import com.badlogic.gdx.Gdx;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
@@ -171,6 +172,13 @@ public class Game implements IGame {
             // TODO: Check if this can be made to run in parallel using streams.
             // TODO: Implement timer for slow players?
 
+//            boolean isPressed = Gdx.input.isButtonPressed()
+  //          while (true) {
+
+
+
+
+    //        }
             //player.movePlayer();
             //   player.addCardsToProgramRegister();
             player.removeRemainingCardsInHand();
