@@ -59,4 +59,20 @@ public interface IDeck {
      */
     void addCard(ICard card);
 
+    /**
+     * Removes card at index from deck and returns the removed card
+     * @param index
+     *              The index of the card that to be removed from deck
+     * @return The card at index
+     */
+    ICard removeCard(int index);
+
+    /**
+     * Returns toString for the card at index
+     * @param index
+     *              The index of the card you want to show
+     * @return String representation of the card at index
+     */
+    String showCard(int index);
+
 }

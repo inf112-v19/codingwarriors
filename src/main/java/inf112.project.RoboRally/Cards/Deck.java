@@ -40,8 +40,14 @@ public class Deck implements IDeck{
         cardDeck.add(card);
     }
 
-    public String showCard(int position) {
-        return cardDeck.get(position).toString();
+    public ICard removeCard(int index) {
+        if (index > this.getSize() || cardDeck.isEmpty()) { return null; }
+        return cardDeck.remove(index);
+    }
+
+    public String showCard(int index) {
+        if (index > this.getSize() || cardDeck.isEmpty()) { return ""; }
+        return cardDeck.get(index).toString();
     }
 
     @Override
