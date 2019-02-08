@@ -24,9 +24,8 @@ public interface IPlayer {
 
     /**
      * @param card player moves according to
-     * @param direction of the player
      */
-    void movePlayer(ICard card, GridDirection direction);
+    void movePlayer(ICard card);
 
     int getPlayerDamage();
 

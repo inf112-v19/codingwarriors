@@ -4,6 +4,7 @@ import inf112.project.RoboRally.cards.Action;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.gui.Grid;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ public class Player implements IPlayer {
         this.cardsInHand = new Deck();
     }
 
-    public Player() {
+    public Player(int x, int y) {
         this.playerDirection = GridDirection.NORTH;
+        this.x=x;
+        this.y=y;
     }
 
     @Override
@@ -45,21 +48,33 @@ public class Player implements IPlayer {
     // Kan ikke GridDirection bli hentet inne i metoden,
     // istedet for å sende den som et parameter?
     @Override
-    public void movePlayer(ICard card, GridDirection direction) { // Changed Card to ICard, and updated IPlayer
+    public void movePlayer(ICard card) { // Changed Card to ICard, and updated IPlayer
         if (card.getCommand() == Action.FORWARD_1)                // and the import statements in both classes.
-            moveInDirection(direction, 1);
+            moveInDirection(playerDirection, 1);
         if (card.getCommand() == Action.FORWARD_2)
-            moveInDirection(direction, 2);
+            moveInDirection(playerDirection, 2);
         if (card.getCommand() == Action.FORWARD_3)
-            moveInDirection(direction, 3);
+            moveInDirection(playerDirection, 3);
         if (card.getCommand() == Action.BACKWARDS)
-            moveInDirection(opposite(direction), 1);
+            moveInDirection(opposite(playerDirection), 1);
         if (card.getCommand() == Action.ROTATE_LEFT)
-            rotateLeft(direction);
+            rotateLeft(playerDirection);
         if (card.getCommand() == Action.ROTATE_RIGHT)
-            rotateRight(direction);
+            rotateRight(playerDirection);
         if (card.getCommand() == Action.U_TURN)
-            uTurn(direction);
+            uTurn(playerDirection);
+    }
+    
+    public void movePlayer(GridDirection direction) {
+        if (direction == GridDirection.NORTH) {
+            y++;
+        } else if (direction == GridDirection.WEST) {
+            x--;
+        } else if (direction == GridDirection.SOUTH) {
+            y--;
+        } else if (direction == GridDirection.EAST) {
+            x++;
+        }
     }
 
     @Override

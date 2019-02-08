@@ -77,7 +77,7 @@ public class Game implements IGame {
             revealedCardsForThisRegister.sortDeckAfterCardPriority();
             for (ICard card : revealedCardsForThisRegister) {
                 IPlayer player = cardAndPlayer.get(card);
-                player.movePlayer(card, GridDirection.NORTH);
+                player.movePlayer(card);
             }
         //    board.moveGameBoardElements();
             registerLaserDamage();
