@@ -15,6 +15,7 @@ public class Player implements IPlayer {
     private int x,y;
     private String name;
     private IDeck cardsInHand;
+    private int numberOfDamageTokensRecieved;
 
     public Player(String name, int x, int y) {
         this.playerDirection = GridDirection.NORTH;
@@ -22,6 +23,7 @@ public class Player implements IPlayer {
         this.y = y;
         this.name = name;
         this.cardsInHand = new Deck();
+        this.numberOfDamageTokensRecieved = 0;
     }
 
     public Player(int x, int y) {
@@ -50,20 +52,20 @@ public class Player implements IPlayer {
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCommand();
         switch (cardCommand) {
-            case ROTATE_RIGHT:
-                rotateRight();
-            case ROTATE_LEFT:
-                rotateLeft();
-            case U_TURN:
-                uTurn();
-            case FORWARD_1:
-                moveInDirection(playersCurrentDirection, 1);
-            case FORWARD_2:
-                moveInDirection(playersCurrentDirection, 2);
-            case FORWARD_3:
-                moveInDirection(playersCurrentDirection, 3);
-            case BACKWARDS:
-                moveInDirection(opposite(), 1);
+            case ROTATE_RIGHT: rotateRight();
+            break;
+            case ROTATE_LEFT: rotateLeft();
+            break;
+            case U_TURN: uTurn();
+            break;
+            case FORWARD_1: moveInDirection(playersCurrentDirection, 1);
+            break;
+            case FORWARD_2: moveInDirection(playersCurrentDirection, 2);
+            break;
+            case FORWARD_3: moveInDirection(playersCurrentDirection, 3);
+            break;
+            case BACKWARDS: moveInDirection(opposite(), 1);
+            break;
         }
     }
 
@@ -82,7 +84,40 @@ public class Player implements IPlayer {
 
     @Override
     public int getPlayerDamage() {
-        return 0;
+        return this.numberOfDamageTokensRecieved;
+    }
+
+    @Override
+    public void takeOneDamage() {
+        this.numberOfDamageTokensRecieved += 1;
+        this.assessCurrentDamage();
+    }
+
+    @Override
+    public void assessCurrentDamage() {
+        int currentDamageTaken = this.numberOfDamageTokensRecieved;
+        switch (currentDamageTaken) {
+            case 5: this.lockNRegisters(1);
+            case 6: this.lockNRegisters(2);
+            case 7: this.lockNRegisters(3);
+            case 8: this.lockNRegisters(4);
+            case 9: this.lockNRegisters(5);
+            case 10: this.destroyPlayer();
+            default: break;
+        }
+    }
+
+    @Override
+    public void destroyPlayer() {
+        this.lives -= 1;
+        if (this.lives <= 0) {
+
+        }
+    }
+
+    @Override
+    public void lockNRegisters(int numberOfRegisters) {
+        // Lock registers from 1 to numberOfRegisters.
     }
 
     @Override
@@ -143,64 +178,56 @@ public class Player implements IPlayer {
                     y = y + 1;
                     // should check validity of position
                 }
+                break;
             case WEST:
                 for (int i = 0; i < steps; i++) {
                     x = x - 1;
                     // should check validity of position
                 }
+                break;
             case EAST:
                 for (int i = 0; i < steps; i++) {
                     x = x + 1;
                     // should check validity of position
                 }
+                break;
             case SOUTH:
                 for (int i = 0; i < steps; i++) {
                     y = y - 1;
                     // should check validity of position
                 }
-        }
-    }
-
-
-    private void uTurn() {
-        GridDirection playersCurrentDirection = this.playerDirection;
-        switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.SOUTH;
-            break;
-            case WEST: this.playerDirection = GridDirection.EAST;
-            break;
-            case SOUTH: this.playerDirection = GridDirection.NORTH;
-            break;
-            case EAST: this.playerDirection = GridDirection.WEST;
-            break;
-        }
-    }
-
-    private void rotateLeft() {
-        GridDirection playersCurrentDirection = this.playerDirection;
-        switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.WEST;
-                break;
-            case WEST: this.playerDirection = GridDirection.SOUTH;
-                break;
-            case SOUTH: this.playerDirection = GridDirection.EAST;
-                break;
-            case EAST: this.playerDirection = GridDirection.NORTH;
                 break;
         }
     }
 
-    private void rotateRight() {
+
+    public void uTurn() {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.EAST;
-                break;
-            case EAST: this.playerDirection = GridDirection.SOUTH;
-                break;
-            case SOUTH: this.playerDirection = GridDirection.WEST;
-                break;
-            case WEST: this.playerDirection = GridDirection.NORTH;
-                break;
+            case NORTH: this.playerDirection = GridDirection.SOUTH; break;
+            case WEST: this.playerDirection = GridDirection.EAST; break;
+            case SOUTH: this.playerDirection = GridDirection.NORTH; break;
+            case EAST: this.playerDirection = GridDirection.WEST; break;
+        }
+    }
+
+    public void rotateLeft() {
+        GridDirection playersCurrentDirection = this.playerDirection;
+        switch (playersCurrentDirection) {
+            case NORTH: this.playerDirection = GridDirection.WEST; break;
+            case WEST: this.playerDirection = GridDirection.SOUTH; break;
+            case SOUTH: this.playerDirection = GridDirection.EAST; break;
+            case EAST: this.playerDirection = GridDirection.NORTH; break;
+        }
+    }
+
+    public void rotateRight() {
+        GridDirection playersCurrentDirection = this.playerDirection;
+        switch (playersCurrentDirection) {
+            case NORTH: this.playerDirection = GridDirection.EAST; break;
+            case EAST: this.playerDirection = GridDirection.SOUTH; break;
+            case SOUTH: this.playerDirection = GridDirection.WEST; break;
+            case WEST: this.playerDirection = GridDirection.NORTH; break;
         }
     }
 
