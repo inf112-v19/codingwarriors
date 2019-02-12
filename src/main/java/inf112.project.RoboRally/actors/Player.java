@@ -4,7 +4,6 @@ import inf112.project.RoboRally.cards.Action;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
-import inf112.project.RoboRally.gui.Grid;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class Player implements IPlayer {
     @Override
     public void movePlayer(ICard card) {
         GridDirection playersCurrentDirection = this.playerDirection;
-        Action cardCommand = card.getCommand();
+        Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
             case ROTATE_RIGHT: rotateRight();
             break;
@@ -97,12 +96,12 @@ public class Player implements IPlayer {
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
         switch (currentDamageTaken) {
-            case 5: this.lockNRegisters(1);
-            case 6: this.lockNRegisters(2);
-            case 7: this.lockNRegisters(3);
-            case 8: this.lockNRegisters(4);
-            case 9: this.lockNRegisters(5);
-            case 10: this.destroyPlayer();
+            case 5: this.lockNRegisters(1); break;
+            case 6: this.lockNRegisters(2); break;
+            case 7: this.lockNRegisters(3); break;
+            case 8: this.lockNRegisters(4); break;
+            case 9: this.lockNRegisters(5); break;
+            case 10: this.destroyPlayer(); break;
             default: break;
         }
     }

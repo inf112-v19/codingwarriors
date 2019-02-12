@@ -17,7 +17,7 @@ public class Card implements ICard, Comparable<Card> {
     }
 
     @Override
-    public Action getCommand() {
+    public Action getCardCommand() {
         return command;
     }
 
@@ -32,7 +32,8 @@ public class Card implements ICard, Comparable<Card> {
         }
     }
 
+    @Override
     public String toString() {
-        return "Priority:" + priority + "\n Action:" + command + "\n";
+        return "Priority: " + priority + "\n Action: " + command + "\n";
     }
 }
