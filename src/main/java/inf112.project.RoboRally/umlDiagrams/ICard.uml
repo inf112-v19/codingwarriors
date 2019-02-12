@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>inf112.project.RoboRally.cards.ICard</OriginalElement>
+  <nodes>
+    <node x="-306.0" y="-122.0">inf112.project.RoboRally.cards.ICard</node>
+    <node x="-306.0" y="1.0">inf112.project.RoboRally.cards.Card</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="inf112.project.RoboRally.cards.Card" target="inf112.project.RoboRally.cards.ICard">
+      <point x="0.0" y="-92.5" />
+      <point x="0.0" y="36.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="38.0" y="44.0" />
+  <SelectedNodes>
+    <node>inf112.project.RoboRally.cards.ICard</node>
+    <node>inf112.project.RoboRally.cards.Card</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
