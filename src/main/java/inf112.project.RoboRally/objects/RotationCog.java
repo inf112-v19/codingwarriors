@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Player;
+
 public class RotationCog implements IObjects {
     private int speed;
     private GridDirection direction;
@@ -13,6 +15,17 @@ public class RotationCog implements IObjects {
         this.rotation=rotation;
     }
 
+    public void rotatePlayer(Player player) {
+        System.out.println(rotation.toString());
+        if (rotation == Rotation.LEFT) {
+            player.rotateLeft();
+        } else if (rotation == Rotation.RIGHT) {
+            player.rotateRight();
+        } else if (rotation == Rotation.HALFWAY) {
+            player.uTurn();
+        }
+    }
+    
     public GridDirection rotateRight() {
         switch(direction) {
             case EAST: return GridDirection.SOUTH;

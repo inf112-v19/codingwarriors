@@ -162,33 +162,33 @@ public class Player implements IPlayer {
     }
 
 
-    private void uTurn() {
+    public void uTurn() {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.SOUTH;
-            case WEST: this.playerDirection = GridDirection.EAST;
-            case SOUTH: this.playerDirection = GridDirection.NORTH;
-            case EAST: this.playerDirection = GridDirection.WEST;
+            case NORTH: this.playerDirection = GridDirection.SOUTH; break;
+            case WEST: this.playerDirection = GridDirection.EAST; break;
+            case SOUTH: this.playerDirection = GridDirection.NORTH; break;
+            case EAST: this.playerDirection = GridDirection.WEST; break;
         }
     }
 
-    private void rotateLeft() {
+    public void rotateLeft() {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.WEST;
-            case WEST: this.playerDirection = GridDirection.SOUTH;
-            case SOUTH: this.playerDirection = GridDirection.EAST;
-            case EAST: this.playerDirection = GridDirection.NORTH;
+            case NORTH: this.playerDirection = GridDirection.WEST; break;
+            case WEST: this.playerDirection = GridDirection.SOUTH; break;
+            case SOUTH: this.playerDirection = GridDirection.EAST; break;
+            case EAST: this.playerDirection = GridDirection.NORTH; break;
         }
     }
 
-    private void rotateRight() {
+    public void rotateRight() {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.EAST;
-            case EAST: this.playerDirection = GridDirection.SOUTH;
-            case SOUTH: this.playerDirection = GridDirection.WEST;
-            case WEST: this.playerDirection = GridDirection.NORTH;
+            case NORTH: this.playerDirection = GridDirection.EAST; break;
+            case EAST: this.playerDirection = GridDirection.SOUTH; break;
+            case SOUTH: this.playerDirection = GridDirection.WEST; break;
+            case WEST: this.playerDirection = GridDirection.NORTH; break;
         }
     }
 
