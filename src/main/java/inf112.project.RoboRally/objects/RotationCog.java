@@ -16,7 +16,6 @@ public class RotationCog implements IObjects {
     }
 
     public void rotatePlayer(Player player) {
-        System.out.println(rotation.toString());
         if (rotation == Rotation.LEFT) {
             player.rotateLeft();
         } else if (rotation == Rotation.RIGHT) {

@@ -202,33 +202,15 @@ public class Player implements IPlayer {
 
 
     public void uTurn() {
-        GridDirection playersCurrentDirection = this.playerDirection;
-        switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.SOUTH; break;
-            case WEST: this.playerDirection = GridDirection.EAST; break;
-            case SOUTH: this.playerDirection = GridDirection.NORTH; break;
-            case EAST: this.playerDirection = GridDirection.WEST; break;
-        }
+        this.playerDirection = playerDirection.invert();
     }
 
     public void rotateLeft() {
-        GridDirection playersCurrentDirection = this.playerDirection;
-        switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.WEST; break;
-            case WEST: this.playerDirection = GridDirection.SOUTH; break;
-            case SOUTH: this.playerDirection = GridDirection.EAST; break;
-            case EAST: this.playerDirection = GridDirection.NORTH; break;
-        }
+        this.playerDirection = playerDirection.rotateLeft();
     }
 
     public void rotateRight() {
-        GridDirection playersCurrentDirection = this.playerDirection;
-        switch (playersCurrentDirection) {
-            case NORTH: this.playerDirection = GridDirection.EAST; break;
-            case EAST: this.playerDirection = GridDirection.SOUTH; break;
-            case SOUTH: this.playerDirection = GridDirection.WEST; break;
-            case WEST: this.playerDirection = GridDirection.NORTH; break;
-        }
+        this.playerDirection = playerDirection.rotateRight();
     }
 
 
