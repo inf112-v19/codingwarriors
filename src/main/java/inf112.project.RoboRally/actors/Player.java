@@ -200,7 +200,6 @@ public class Player implements IPlayer {
         }
     }
 
-
     public void uTurn() {
         this.playerDirection = playerDirection.invert();
     }
@@ -212,9 +211,6 @@ public class Player implements IPlayer {
     public void rotateRight() {
         this.playerDirection = playerDirection.rotateRight();
     }
-
-
-
 
     public String getName() {
         return this.name;
