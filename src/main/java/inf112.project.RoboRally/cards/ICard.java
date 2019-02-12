@@ -15,5 +15,4 @@ public interface ICard {
      * @return The command contained on the card.
      */
     Action getCardCommand();
-
 }

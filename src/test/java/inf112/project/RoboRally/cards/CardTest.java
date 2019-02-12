@@ -8,15 +8,25 @@ import static org.junit.Assert.*;
 public class CardTest {
 
     @Test
-    public void testGettingCardPriority() {
-        assertEquals(200, new Card(200, ROTATE_RIGHT).getPriority());
-        assertEquals(480, new Card(480, FORWARD_1).getPriority());
+    public void getCardPriorityShouldReturnCorrectPriority() {
+        int priority1 = 200;
+        int priority2 = 480;
+        Card card1 = new Card(priority1, ROTATE_RIGHT);
+        Card card2 = new Card(priority2, FORWARD_1);
+
+        assertEquals(priority1, card1.getPriority());
+        assertEquals(priority2, card2.getPriority());
     }
 
     @Test
     public void getCardCommandShouldReturnCorrectAction() {
-        assertEquals(ROTATE_LEFT, new Card(100, ROTATE_LEFT).getCardCommand());
-        assertEquals(U_TURN, new Card(200, U_TURN).getCardCommand());
+        Action action1 = ROTATE_LEFT;
+        Action action2 = U_TURN;
+        Card card1 = new Card(100, action1);
+        Card card2 = new Card(200, action2);
+
+        assertEquals(action1, card1.getCardCommand());
+        assertEquals(action2, card2.getCardCommand());
     }
 
     @Test
@@ -51,7 +61,12 @@ public class CardTest {
     }
 
 
+    @Test
+    public void cardToStringShouldBeCorrectlyFormatted() {
+        ICard card1 = new Card(250, ROTATE_RIGHT);
+        assertEquals("Priority: 250\n Action: ROTATE_RIGHT\n", card1.toString());
 
-
-
+        ICard card2 = new Card(600, FORWARD_2);
+        assertEquals("Priority: 600\n Action: FORWARD_2\n", card2.toString());
+    }
 }
