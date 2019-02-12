@@ -15,25 +15,35 @@ public class PlayerTest {
     private GameBoard gameBoard;
     private ICard card;
 
-        @Before
-        public void setUp() throws Exception {
-            String boardSetup = "4C4R" +
-                    ".uu." +
-                    "r..l" +
-                    "...l" +
-                    "..d.";
-            this.gameBoard = new GameBoard(boardSetup);
-            this.player = new Player(1, 1);
-            //this.card = new Card(100, FORWARD_1);
-        }
+    @Before
+    public void setUp() throws Exception {
+        String boardSetup = "4C4R" +
+                ".uu." +
+                "r..l" +
+                "...l" +
+                "..d.";
+        this.gameBoard = new GameBoard(boardSetup);
+        this.player = new Player(1, 1);
+        //this.card = new Card(100, FORWARD_1);
+    }
+
+    @Test
+    public void testSetUpPlayer() {
+        assertEquals(1, this.player.getX());
+        assertEquals(1, this.player.getY());
+        assertEquals(0, player.getPlayerDamage());
+        player.takeOneDamage();
+        assertEquals(1, player.getPlayerDamage());
+    }
 
     @Test
     public void testMovePlayerForward_1ByCard() {
         this.card = new Card(100, FORWARD_1);
-            player.movePlayer(this.card);
+        player.movePlayer(this.card);
         assertEquals(1, this.player.getX());
-        assertEquals(0, this.player.getY());
+        assertEquals(2, this.player.getY());
     }
+
     @Test
     public void testMovePlayerUturnByCard() {
         this.card = new Card(100, U_TURN);
@@ -43,18 +53,17 @@ public class PlayerTest {
         assertEquals(GridDirection.SOUTH, player.getPlayerDirection());
     }
 
-
-
-    @Test
-    public void testMovePlayerUturn() {
-
-        assertEquals(1, this.player.getX());
-        assertEquals(1, this.player.getY());
-        //assertEquals(GridDirection.SOUTH, player.());
-    }
     @Test
     public void testMovePlayerRotateLeftByCard() {
         this.card = new Card(100, ROTATE_LEFT);
+        player.movePlayer(this.card);
+        assertEquals(1, this.player.getX());
+        assertEquals(1, this.player.getY());
+        assertEquals(GridDirection.WEST, player.getPlayerDirection());
+    }
+    @Test
+    public void testMovePlayerRotateRightByCard() {
+        this.card = new Card(100, ROTATE_RIGHT);
         player.movePlayer(this.card);
         assertEquals(1, this.player.getX());
         assertEquals(1, this.player.getY());
@@ -62,12 +71,12 @@ public class PlayerTest {
     }
 
 
-        @Test
-        public void testMovePlayerDirectionNorth() {
-            this.player.movePlayer(GridDirection.NORTH);
-            assertEquals(1, this.player.getX());
-            assertEquals(2, this.player.getY());
-        }
+    @Test
+    public void testMovePlayerDirectionNorth() {
+        this.player.movePlayer(GridDirection.NORTH);
+        assertEquals(1, this.player.getX());
+        assertEquals(2, this.player.getY());
+    }
 
     @Test
     public void testMovePlayerDirectionWest() {
@@ -82,10 +91,11 @@ public class PlayerTest {
         assertEquals(1, this.player.getX());
         assertEquals(0, this.player.getY());
     }
+
     @Test
     public void testMovePlayerDirectionEast() {
         this.player.movePlayer(GridDirection.EAST);
         assertEquals(2, this.player.getX());
         assertEquals(1, this.player.getY());
     }
-    }
+}
