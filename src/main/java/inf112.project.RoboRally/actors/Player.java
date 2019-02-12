@@ -103,6 +103,7 @@ public class Player implements IPlayer {
             case 8: this.lockNRegisters(4);
             case 9: this.lockNRegisters(5);
             case 10: this.destroyPlayer();
+            default: break;
         }
     }
 
@@ -203,6 +204,7 @@ public class Player implements IPlayer {
             case WEST: this.playerDirection = GridDirection.EAST;
             case SOUTH: this.playerDirection = GridDirection.NORTH;
             case EAST: this.playerDirection = GridDirection.WEST;
+            default: break;
         }
     }
 
@@ -213,6 +215,7 @@ public class Player implements IPlayer {
             case WEST: this.playerDirection = GridDirection.SOUTH;
             case SOUTH: this.playerDirection = GridDirection.EAST;
             case EAST: this.playerDirection = GridDirection.NORTH;
+            default: break;
         }
     }
 
@@ -223,6 +226,7 @@ public class Player implements IPlayer {
             case EAST: this.playerDirection = GridDirection.SOUTH;
             case SOUTH: this.playerDirection = GridDirection.WEST;
             case WEST: this.playerDirection = GridDirection.NORTH;
+            default: break;
         }
     }
 

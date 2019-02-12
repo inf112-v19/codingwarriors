@@ -71,6 +71,16 @@ public class GameTest {
 
 
 
+
+
+
+
+
+
+
+
+
+
     @Test
     public void checkIfEveryPlayerWasDealtCards() {
         game.startGame();
