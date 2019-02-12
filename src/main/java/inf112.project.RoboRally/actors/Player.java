@@ -166,9 +166,13 @@ public class Player implements IPlayer {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {
             case NORTH: this.playerDirection = GridDirection.SOUTH;
+            break;
             case WEST: this.playerDirection = GridDirection.EAST;
+            break;
             case SOUTH: this.playerDirection = GridDirection.NORTH;
+            break;
             case EAST: this.playerDirection = GridDirection.WEST;
+            break;
         }
     }
 
@@ -176,9 +180,13 @@ public class Player implements IPlayer {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {
             case NORTH: this.playerDirection = GridDirection.WEST;
+                break;
             case WEST: this.playerDirection = GridDirection.SOUTH;
+                break;
             case SOUTH: this.playerDirection = GridDirection.EAST;
+                break;
             case EAST: this.playerDirection = GridDirection.NORTH;
+                break;
         }
     }
 
@@ -186,9 +194,13 @@ public class Player implements IPlayer {
         GridDirection playersCurrentDirection = this.playerDirection;
         switch (playersCurrentDirection) {
             case NORTH: this.playerDirection = GridDirection.EAST;
+                break;
             case EAST: this.playerDirection = GridDirection.SOUTH;
+                break;
             case SOUTH: this.playerDirection = GridDirection.WEST;
+                break;
             case WEST: this.playerDirection = GridDirection.NORTH;
+                break;
         }
     }
 
