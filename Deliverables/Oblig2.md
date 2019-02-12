@@ -84,5 +84,5 @@ med libgdx til neste møte slik at vi kunne fordele mer konkrete oppgaver.
 #### Rapport 31.01.19
 Møtet gikk for det meste ut på å dele ut oppgaver, for å deretter jobbe med disse oppgavene. 
 
-#### Rapport 05.01.19
+#### Rapport 05.02.19
 Fikk oppklaring i enkelte problemer med git og kommunisert mer om hvordan vi skulle tvinne sammen arbeidet vi har gjort. 

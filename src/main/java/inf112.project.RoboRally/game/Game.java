@@ -190,6 +190,7 @@ public class Game implements IGame {
         for (IPlayer player : activePlayers) {
             int numberOfCardsPlayerCanDraw =
                     calculateTheNumberOfCardsThePlayerCanDraw(player);
+            System.out.println("player receives " + numberOfCardsPlayerCanDraw + " cards");
             player.receiveCards(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
         }
     }
@@ -210,6 +211,9 @@ public class Game implements IGame {
         // that can be dealt to a player.
         int playerDamage = player.getPlayerDamage(); // The number of damage tokens
         // the player has received.
+        if (playerDamage >= 10) {
+            return 0;
+        }
         return (numberOfCards - playerDamage);
     }
 
@@ -282,5 +286,12 @@ public class Game implements IGame {
     @Override
     public IPlayer getCurrentPlayer() {
         return this.currentlyActingPlayer;
+    }
+
+
+    public void removeTargetPlayerFromTheGame(IPlayer player) {
+        this.activePlayers.remove(player);
+
+        this.numberOfPlayersLeftInTheGame -= 1;
     }
 }

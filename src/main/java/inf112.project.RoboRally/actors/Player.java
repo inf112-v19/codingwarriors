@@ -15,6 +15,7 @@ public class Player implements IPlayer {
     private int x,y;
     private String name;
     private IDeck cardsInHand;
+    private int numberOfDamageTokensRecieved;
 
     public Player(String name, int x, int y) {
         this.playerDirection = GridDirection.NORTH;
@@ -22,6 +23,7 @@ public class Player implements IPlayer {
         this.y = y;
         this.name = name;
         this.cardsInHand = new Deck();
+        this.numberOfDamageTokensRecieved = 0;
     }
 
     public Player(int x, int y) {
@@ -82,7 +84,40 @@ public class Player implements IPlayer {
 
     @Override
     public int getPlayerDamage() {
-        return 0;
+        return this.numberOfDamageTokensRecieved;
+    }
+
+    @Override
+    public void takeOneDamage() {
+        this.numberOfDamageTokensRecieved += 1;
+        this.assessCurrentDamage();
+    }
+
+    @Override
+    public void assessCurrentDamage() {
+        int currentDamageTaken = this.numberOfDamageTokensRecieved;
+        switch (currentDamageTaken) {
+            case 5: this.lockNRegisters(1);
+            case 6: this.lockNRegisters(2);
+            case 7: this.lockNRegisters(3);
+            case 8: this.lockNRegisters(4);
+            case 9: this.lockNRegisters(5);
+            case 10: this.destroyPlayer();
+            default: break;
+        }
+    }
+
+    @Override
+    public void destroyPlayer() {
+        this.lives -= 1;
+        if (this.lives <= 0) {
+
+        }
+    }
+
+    @Override
+    public void lockNRegisters(int numberOfRegisters) {
+        // Lock registers from 1 to numberOfRegisters.
     }
 
     @Override
@@ -169,6 +204,7 @@ public class Player implements IPlayer {
             case WEST: this.playerDirection = GridDirection.EAST;
             case SOUTH: this.playerDirection = GridDirection.NORTH;
             case EAST: this.playerDirection = GridDirection.WEST;
+            default: break;
         }
     }
 
@@ -179,6 +215,7 @@ public class Player implements IPlayer {
             case WEST: this.playerDirection = GridDirection.SOUTH;
             case SOUTH: this.playerDirection = GridDirection.EAST;
             case EAST: this.playerDirection = GridDirection.NORTH;
+            default: break;
         }
     }
 
@@ -189,12 +226,11 @@ public class Player implements IPlayer {
             case EAST: this.playerDirection = GridDirection.SOUTH;
             case SOUTH: this.playerDirection = GridDirection.WEST;
             case WEST: this.playerDirection = GridDirection.NORTH;
+            default: break;
         }
     }
 
-
-
-
+    @Override
     public String getName() {
         return this.name;
     }
