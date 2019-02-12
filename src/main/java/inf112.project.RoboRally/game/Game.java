@@ -262,8 +262,8 @@ public class Game implements IGame {
         IPlayer player3 = new Player("G-bot", 2, 5);
         this.players = new ArrayList<>();
         this.players.add(player1);
-        this.players.add(player2);
-        this.players.add(player3);
+        //this.players.add(player2);
+        //this.players.add(player3);
         this.activePlayers = new ArrayList<>();
         this.activePlayers.addAll(players);
     }

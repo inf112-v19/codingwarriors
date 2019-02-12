@@ -52,20 +52,20 @@ public class Player implements IPlayer {
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCommand();
         switch (cardCommand) {
-            case ROTATE_RIGHT:
-                rotateRight();
-            case ROTATE_LEFT:
-                rotateLeft();
-            case U_TURN:
-                uTurn();
-            case FORWARD_1:
-                moveInDirection(playersCurrentDirection, 1);
-            case FORWARD_2:
-                moveInDirection(playersCurrentDirection, 2);
-            case FORWARD_3:
-                moveInDirection(playersCurrentDirection, 3);
-            case BACKWARDS:
-                moveInDirection(opposite(), 1);
+            case ROTATE_RIGHT: rotateRight();
+            break;
+            case ROTATE_LEFT: rotateLeft();
+            break;
+            case U_TURN: uTurn();
+            break;
+            case FORWARD_1: moveInDirection(playersCurrentDirection, 1);
+            break;
+            case FORWARD_2: moveInDirection(playersCurrentDirection, 2);
+            break;
+            case FORWARD_3: moveInDirection(playersCurrentDirection, 3);
+            break;
+            case BACKWARDS: moveInDirection(opposite(), 1);
+            break;
         }
     }
 
@@ -178,21 +178,25 @@ public class Player implements IPlayer {
                     y = y + 1;
                     // should check validity of position
                 }
+                break;
             case WEST:
                 for (int i = 0; i < steps; i++) {
                     x = x - 1;
                     // should check validity of position
                 }
+                break;
             case EAST:
                 for (int i = 0; i < steps; i++) {
                     x = x + 1;
                     // should check validity of position
                 }
+                break;
             case SOUTH:
                 for (int i = 0; i < steps; i++) {
                     y = y - 1;
                     // should check validity of position
                 }
+                break;
         }
     }
 
