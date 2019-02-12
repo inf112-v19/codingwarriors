@@ -17,7 +17,7 @@ public class Card implements ICard, Comparable<Card> {
     }
 
     @Override
-    public Action getCommand() {
+    public Action getCardCommand() {
         return command;
     }
 
