@@ -14,23 +14,35 @@ public class RotationCogTest {
 	GameBoard gameboard = new GameBoard(level);
 	
 	@Test
+	public void noRotationShouldRetainPlayerDirection() {
+		Player player = new Player(0,0);
+		assertEquals(player.getPlayerDirection(), GridDirection.NORTH);
+	}
+	
+	@Test
 	public void cogRotatingLeftShouldRotateThePlayerToTheLeft() {
 		Player player = new Player(1,0);
 		GridDirection playerDirection = player.getPlayerDirection();
-		assert(playerDirection == GridDirection.NORTH);
+		assertEquals(player.getPlayerDirection(), GridDirection.NORTH); //Default player direction is NORTH
 		Object tile = gameboard.getObject(player.getX(), player.getY());
 		assert(tile instanceof RotationCog);
 		assert(((RotationCog) tile).getRotation() == Rotation.LEFT);
-		assertEquals(player.getPlayerDirection(), GridDirection.NORTH); //Default player direction is NORTH
 		((RotationCog) tile).rotatePlayer(player);
 		assertEquals(player.getPlayerDirection(), playerDirection.rotateLeft());
 	}
-	/*
+
 	@Test
-	public void rotateLeft() {
-		fail("Not implemented yet");
+	public void cogRotatingRightShouldRotateThePlayerToTheRight() {
+		Player player = new Player(0,1);
+		GridDirection playerDirection = player.getPlayerDirection();
+		assertEquals(player.getPlayerDirection(), GridDirection.NORTH); //Default player direction is NORTH
+		Object tile = gameboard.getObject(player.getX(), player.getY());
+		assert(tile instanceof RotationCog);
+		assert(((RotationCog) tile).getRotation() == Rotation.RIGHT);
+		((RotationCog) tile).rotatePlayer(player);
+		assertEquals(player.getPlayerDirection(), playerDirection.rotateRight());
 	}
-	
+	/*
 	@Test
 	public void getDirection() {
 		fail("Not implemented yet");

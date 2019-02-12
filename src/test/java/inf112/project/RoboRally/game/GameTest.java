@@ -2,6 +2,9 @@ package inf112.project.RoboRally.game;
 
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.cards.Action;
+import inf112.project.RoboRally.cards.Card;
+import inf112.project.RoboRally.cards.ICard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,12 +73,22 @@ public class GameTest {
     }
 
 
+    @Test
+    public void randTest() {
+        game.initializeGame();
+        IPlayer player = game.getPlayers().get(1);
+        ICard card = new Card(200, Action.ROTATE_LEFT);
+        System.out.println(player.getPlayerDirection());
+        System.out.println(player.getX());
+        System.out.println(player.getY());
 
+        player.movePlayer(card);
+        System.out.println();
 
-
-
-
-
+        System.out.println(player.getPlayerDirection());
+        System.out.println(player.getX());
+        System.out.println(player.getY());
+    }
 
 
 
