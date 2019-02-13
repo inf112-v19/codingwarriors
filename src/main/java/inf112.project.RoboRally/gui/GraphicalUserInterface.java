@@ -17,7 +17,6 @@ import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
-import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.IObjects;
 
 import java.util.ArrayList;
@@ -76,7 +75,9 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         deck = new Deck(); // to to moved to game
         deck.createProgramCardsDeck(); // to to moved to game
         deck.shuffle(); // to to moved to game
-        playerDeck = deck.handOutCards(9); // to to moved to game
+        playerDeck = new Deck();
+        deck.transferNCardsFromThisDeckToTargetDeck(9, playerDeck);
+        //playerDeck = deck.handOutCards(9); // to to moved to game
         cardScreen = new Grid(
                 new Tile(0,CARD_SCREEN_WIDTH,0,CARD_SCREEN_HEIGHT)
                 ,1,playerDeck.getSize());

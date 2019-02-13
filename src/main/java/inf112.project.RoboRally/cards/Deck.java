@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.cards;
 
+import com.sun.xml.internal.bind.annotation.XmlLocation;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,29 +19,21 @@ public class Deck implements IDeck{
 
 
     @Override
-    public ArrayList<ICard> handOutNCards(Integer num) {
-        if (num == null|| num < 0 || num > this.getSize()) {
-            throw new IllegalArgumentException("num is not a valid amount of cards");
+    public ArrayList<ICard> handOutNCards(Integer numberOfCards) {
+        if (numberOfCards == null|| numberOfCards < 0 || numberOfCards > this.getSize()) {
+            throw new IllegalArgumentException("numberOfCards is not a valid amount of cards");
         }
 
         ArrayList<ICard> selectedCards = new ArrayList<>();
-        for (int i = 0; i < num; i++) {
+        for (int i = 0; i < numberOfCards; i++) {
             selectedCards.add(cardDeck.remove(0));
         }
         return selectedCards;
     }
 
-    public Deck handOutCards(int numberOfCards) {
-        ArrayList<ICard> DrawnCards = handOutNCards(numberOfCards);
-        Deck deck = new Deck();
-        for (ICard card : DrawnCards) {
-            deck.addCard(card);
-        }
-        return deck;
-    }
-
-    public void addCard(ICard card) {
-        cardDeck.add(card);
+    @Override
+    public void addCardToDeck(ICard card) {
+        this.cardDeck.add(card);
     }
 
     public ICard removeCard(int index) {
@@ -50,6 +44,17 @@ public class Deck implements IDeck{
     public String showCard(int index) {
         if (index > this.getSize() || cardDeck.isEmpty()) { return ""; }
         return cardDeck.get(index).toString();
+    }
+
+    @Override
+    public void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck) {
+        if (numberOfCardsToTransfer < 0
+                || numberOfCardsToTransfer == null
+                || numberOfCardsToTransfer >= this.getSize()) {
+            throw new IllegalArgumentException("Number of cards is invalid");
+        }
+        ArrayList<ICard> selectedCards = handOutNCards(numberOfCardsToTransfer);
+        targetDeck.addCollectionOfCardsToDeck(selectedCards);
     }
 
     @Override
@@ -123,7 +128,6 @@ public class Deck implements IDeck{
         return deck.toString();
     }
 
-
     @Override
     public void addCollectionOfCardsToDeck(Collection<ICard> collection) {
         this.cardDeck.addAll(collection);
@@ -135,11 +139,6 @@ public class Deck implements IDeck{
             throw new IllegalArgumentException("Position is out of bounds");
         }
         return this.cardDeck.get(position);
-    }
-
-    @Override
-    public void addCardToDeck(ICard card) {
-        this.cardDeck.add(card);
     }
 
     @Override
@@ -156,5 +155,4 @@ public class Deck implements IDeck{
     public void removeAllCardsFromDeck() {
         this.cardDeck.clear();
     }
-
 }

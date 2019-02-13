@@ -67,16 +67,6 @@ public interface IDeck extends Iterable<ICard>{
 
 
     /**
-     *
-     *
-     *
-     *
-     * @param card
-     */
-    void addCardToDeck(ICard card);
-
-
-    /**
      * Sort the deck after card priority,
      * so that the highest priority cards come first.<br><br>
      *
@@ -103,22 +93,30 @@ public interface IDeck extends Iterable<ICard>{
 
 
     /**
-     * Gives A deck of cards containing the specified amount of cards, from those available in the deck,
-     * to the requesting player.
+     * Adds the card to the deck.
      *
-     * @param cards
-     *              The number of requested cards.
-     * @return A deck of cards containing the cards dealt to the requesting player.
-     */
-    Deck handOutCards(int cards);
-
-
-    /**
-     * Adds the card to the deck
      * @param card
      *              The card that will be inserted into the deck
      */
-    void addCard(ICard card);
+    void addCardToDeck(ICard card);
+
+
+
 
     String showCard(int i);
+
+
+    /**
+     * Transfer the given number of cards from this deck,
+     * to the target.<br><br>
+     *
+     * Removes the cards from the origin,
+     * and inserts them in the target deck.
+     *
+     * @param numberOfCardsToTransfer
+     *                  The number of cards to relocate.
+     * @param targetDeck
+     *                  The deck to transfer the cards to.
+     */
+    void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck);
 }
