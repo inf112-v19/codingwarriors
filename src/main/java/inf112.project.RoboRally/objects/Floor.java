@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Player;
+
 public class Floor implements IObjects {
 
     @Override
@@ -20,5 +22,10 @@ public class Floor implements IObjects {
     @Override
     public Rotation getRotation() {
         return null;
+    }
+    
+    @Override
+    public void doAction(Player player) {
+        // No action needed here for this specific object ;)
     }
 }

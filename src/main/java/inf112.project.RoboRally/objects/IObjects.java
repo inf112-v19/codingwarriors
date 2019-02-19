@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Player;
+
 public interface IObjects {
 
     /**
@@ -25,4 +27,10 @@ public interface IObjects {
      * @return rotation
      */
     Rotation getRotation();
+    
+    /**
+     * The object's specific action
+     */
+    void doAction(Player player);
+    
 }
