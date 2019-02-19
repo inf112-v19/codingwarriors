@@ -118,7 +118,7 @@ public class DeckTest {
 
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void transferNCardsFromOneDeckToAnotherShouldWork() {
         IDeck newDeck = new Deck();
         ICard card1 = new Card(220, Action.ROTATE_LEFT);
@@ -138,6 +138,9 @@ public class DeckTest {
         assertEquals(numberOfCardsToTransfer, newDeck.getSize());
         assertEquals(card1, newDeck.getCardAtPosition(0));
         assertEquals(card2, newDeck.getCardAtPosition(1));
+
+
+        newDeck.getCardAtPosition(10000); // Should throw IllegalArgumentException
     }
 
     @Test
@@ -154,13 +157,44 @@ public class DeckTest {
         String card3Rep = card3.toString();
 
         assertEquals(card1Rep + card2Rep + card3Rep, deck.toString());
-
-        System.out.println(deck.toString());
-
-
-
     }
 
+    @Test
+    public void showCardAtPosShouldReturnCorrectStringRepresentation() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        ICard card2 = new Card(100, Action.FORWARD_2);
+        ICard card3 = new Card(150, Action.U_TURN);
+        deck.addCardToDeck(card1);
+        deck.addCardToDeck(card2);
+        deck.addCardToDeck(card3);
+
+        assertEquals(card1.toString(), deck.showCard(0));
+        assertEquals(card2.toString(), deck.showCard(1));
+        assertEquals(card3.toString(), deck.showCard(2));
+
+        assertEquals("", deck.showCard(1000000));
+        assertEquals("", deck.showCard(-1));
+
+        deck.removeAllCardsFromDeck();
+        assertEquals("", deck.showCard(1));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void handOutNCardsShouldRemoveCardsFromDeck() {
+        deck.createProgramCardsDeck();
+        assertEquals(NUMBER_OF_CARDS_IN_A_PROGRAM_CARDS_DECK, deck.getSize());
+
+        int currentNumberOfCardsInTheDeck = NUMBER_OF_CARDS_IN_A_PROGRAM_CARDS_DECK;
+        for (int i = 0; i < 13; i++) {
+            deck.handOutNCards(i);
+            currentNumberOfCardsInTheDeck -= i;
+            assertEquals(currentNumberOfCardsInTheDeck, deck.getSize());
+        }
+
+        deck.handOutNCards(null);
+        deck.handOutNCards(-1);
+        deck.handOutNCards(100000);
+    }
 
     /*
 

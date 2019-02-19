@@ -42,7 +42,11 @@ public class Deck implements IDeck{
     }
 
     public String showCard(int index) {
-        if (index > this.getSize() || cardDeck.isEmpty()) { return ""; }
+        if (index > this.getSize()
+                || cardDeck.isEmpty()
+                || index < 0) {
+            return "";
+        }
         return cardDeck.get(index).toString();
     }
 
