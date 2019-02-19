@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.game;
 
 import inf112.project.RoboRally.actors.IPlayer;
+import inf112.project.RoboRally.board.GameBoard;
 
 import java.util.ArrayList;
 
@@ -160,4 +161,10 @@ public interface IGame {
      * @return The currently acting player.
      */
     IPlayer getCurrentPlayer();
+
+    /**
+     * Returns the game board
+     * @return Returns the game board
+     */
+    GameBoard getBoard();
 }

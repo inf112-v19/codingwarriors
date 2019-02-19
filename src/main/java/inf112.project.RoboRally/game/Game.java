@@ -294,4 +294,8 @@ public class Game implements IGame {
 
         this.numberOfPlayersLeftInTheGame -= 1;
     }
+
+    public GameBoard getBoard() {
+        return board;
+    }
 }
