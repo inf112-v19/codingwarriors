@@ -140,6 +140,28 @@ public class DeckTest {
         assertEquals(card2, newDeck.getCardAtPosition(1));
     }
 
+    @Test
+    public void deckIsCorrectlyRepresentedAsAString() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        ICard card2 = new Card(100, Action.FORWARD_2);
+        ICard card3 = new Card(150, Action.U_TURN);
+        deck.addCardToDeck(card1);
+        deck.addCardToDeck(card2);
+        deck.addCardToDeck(card3);
+
+        String card1Rep = card1.toString();
+        String card2Rep = card2.toString();
+        String card3Rep = card3.toString();
+
+        assertEquals(card1Rep + card2Rep + card3Rep, deck.toString());
+
+        System.out.println(deck.toString());
+
+
+
+    }
+
+
     /*
 
     @Test
