@@ -10,7 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.actors.IPlayer;
+import inf112.project.RoboRally.cards.Deck;
+import inf112.project.RoboRally.cards.ICard;
+import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.game.Game;
+import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
@@ -23,6 +27,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     private int currentPlayerIndex;
     private IPlayer currentPlayer;
     private Grid cardScreen;
+    private Grid boardScreen;
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 600;
     private static final int CARD_SCREEN_WIDTH = 200;
@@ -36,6 +41,13 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     private Texture floor;
     private Texture arrow;
     private Texture card;
+
+    private int[] xPositionDrawer;
+    private int[] yPositionDrawer;
+
+    // to be moved
+    private IDeck[] selectedCards;
+
 
 
     @Override
@@ -63,23 +75,28 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         cardScreen = new Grid(
                 new Tile(0,CARD_SCREEN_WIDTH,0,CARD_SCREEN_HEIGHT)
                 ,1,currentPlayer.getCardsInHand().getSize());
+        boardScreen = new Grid(
+                new Tile(CARD_SCREEN_WIDTH,WIDTH,0,HEIGHT)
+                ,game.getBoard().getRows(),game.getBoard().getColums());
     }
 
     private void createNewGame() {
         game = new Game();
         game.initializeGame();
         game.dealOutProgramCards();
+        game.setGameStatus(GameStatus.SELECT_CARDS);
+        selectedCards = new Deck[game.getPlayers().size()];
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            selectedCards[i] = new Deck();
+        }
         currentPlayerIndex = 0;
         currentPlayer = game.getPlayers().get(currentPlayerIndex);
+        xPositionDrawer = new int[game.getPlayers().size()];
+        yPositionDrawer = new int[game.getPlayers().size()];
     }
 
     @Override
     public void render () {
-        double width = viewport.getWorldWidth();
-        double height = viewport.getWorldHeight();
-        int cardsSectionSize = 200;
-        int gridSize = (int)Math.min(height/game.getBoard().getColums(),(width-cardsSectionSize)/game.getBoard().getRows());
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -87,58 +104,135 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         userInputs();
-        drawBoard(gridSize, cardsSectionSize);
+        drawBoard();
         drawCards();
-        drawPlayers(gridSize, cardsSectionSize);
+        drawPlayers();
         batch.end();
     }
 
 
     private void userInputs() {
-        if (Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched() && game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
             int x = Gdx.input.getX();
             int y = HEIGHT-Gdx.input.getY();
             if (cardScreen.PositionIsInsideScreen(x,y)) {
-                int index = cardScreen.getTileIndex(x,y);
-                currentPlayer.movePlayer(currentPlayer.getCardsInHand().getCardAtPosition(index));
-                currentPlayerIndex++;
-                if (currentPlayerIndex >= game.getPlayers().size()) {
-                    currentPlayerIndex = 0;
-                }
+                int index = cardScreen.getTileIndex(y);
+                selectCards(index);
             }
+        } else if (Gdx.input.justTouched() && game.getTheCurrentGameStatus() == GameStatus.EXECUTING_INSTRUCTIONS) {
+            game.doTurn();
+        }
+    }
+
+    private void selectCards(int index) {
+        int playerDeckSize = currentPlayer.getCardsInHand().getSize();
+
+        // if selected card is in selectedCards, then move the card to playerDeck and return
+        if (index >= playerDeckSize) {
+            ICard deSelectCard = selectedCards[currentPlayerIndex].removeCard(index-playerDeckSize);
+            currentPlayer.getCardsInHand().addCard(deSelectCard);
+            System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectCard);
+            return;
+        }
+
+        // remove selected card from playerDeck to selected cards
+        ICard selectedCard = currentPlayer.getCardsInHand().getCardAtPosition(index);
+        System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
+        selectedCards[currentPlayerIndex].addCard(0,currentPlayer.getCardsInHand().removeCard(index));
+
+        // if five cards selected and there are more players left, switch current player to be next player
+        if (game.getPlayers().size()-1 > currentPlayerIndex && selectedCards[currentPlayerIndex].getSize() >= 5) {
+            currentPlayerIndex++;
+        } else if (selectedCards[currentPlayerIndex].getSize() >= 5) { // done, all cards for all players is selected
+            game.setUpTurn(selectedCards);
+            currentPlayerIndex = 0;
+            game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
         }
     }
 
     private void drawCards() {
+        switch (game.getTheCurrentGameStatus()) {
+            case SELECT_CARDS:
+                drawSelectCards();
+                break;
+            case EXECUTING_INSTRUCTIONS:
+                break;
+        }
+    }
+
+    private void drawSelectCards() {
         int fontSize = 30;
-        cardScreen.setNumberOtTiles(1,currentPlayer.getCardsInHand().getSize());
+        int playerCards = currentPlayer.getCardsInHand().getSize();
+        int selectedCards = this.selectedCards[currentPlayerIndex].getSize();
+        int totalCards = playerCards + selectedCards;
+
+        cardScreen.setNumberOtTiles(1,totalCards);
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
-        for (int i = 0; i < currentPlayer.getCardsInHand().getSize(); i++) {
+
+        int i = 0;
+
+        // drawing cards in playerDeck
+        for (; i < playerCards; i++) {
             font.draw(batch,currentPlayer.getCardsInHand().showCard(i),
-                    cardScreen.getStartX(0,i),cardScreen.getEndY(0,i)-offset, cardScreen.getTileWidth(),
+                    cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
+
+        }
+        // drawing selected cards
+        for (; i < totalCards; i++) {
+            fontGreen.draw(batch, this.selectedCards[currentPlayerIndex].showCard(i-playerCards),
+                    cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
+                    1, true);
+
         }
     }
 
-    private void drawPlayers(int gridSize, int startX) {
+    private void drawPlayers() {
         ArrayList<IPlayer> players= game.getPlayers();
-        for (IPlayer player: players) {
-            batch.draw(this.player,player.getX()*gridSize+startX,player.getY()*gridSize,gridSize,gridSize);
+        int animationSpeed = 4;
+        for (int i = 0; i < players.size(); i++) {
+            int xPosPlayer = boardScreen.getStartX(players.get(i).getX());
+            if (xPositionDrawer[i] != xPosPlayer) {
+                if (xPositionDrawer[i] < xPosPlayer) {
+                    xPositionDrawer[i] = xPositionDrawer[i]+animationSpeed > xPosPlayer ?
+                            xPosPlayer : xPositionDrawer[i]+animationSpeed;
+                } else {
+                    xPositionDrawer[i] = xPositionDrawer[i]-animationSpeed < xPosPlayer ?
+                            xPosPlayer : xPositionDrawer[i]-animationSpeed;
+                }
+            }
+            int yPosPlayer = boardScreen.getStartY(players.get(i).getY());
+            if (yPositionDrawer[i] != yPosPlayer) {
+                if (yPositionDrawer[i] < yPosPlayer) {
+                    yPositionDrawer[i] = yPositionDrawer[i]+animationSpeed > yPosPlayer ?
+                            yPosPlayer : yPositionDrawer[i]+animationSpeed;
+                } else {
+                    yPositionDrawer[i] = yPositionDrawer[i]-animationSpeed < yPosPlayer ?
+                            yPosPlayer : yPositionDrawer[i]-animationSpeed;
+                }
+            }
+            batch.draw(this.player,
+                    xPositionDrawer[i], yPositionDrawer[i],
+                    boardScreen.getTileWidth(), boardScreen.getTileHeight());
         }
-
     }
 
-    private void drawBoard(int gridSize, int startX) {
+    private void drawBoard() {
         int offset = 1;
-
-        for (int y = 0, i = game.getBoard().getColums()-1; i >= 0; y += gridSize, i--) {
-            for (int x = startX, j = 0; j < game.getBoard().getRows(); x += gridSize, j++) {
+        for (int i = 0; i < boardScreen.getHeight(); i++) {
+            for (int j = 0; j < boardScreen.getWidth(); j++) {
                 IObjects object = game.getBoard().getObject(j,i);
                 if (object instanceof Floor) {
-                    batch.draw(floor,x+offset, y+offset, gridSize-offset*2, gridSize-offset*2);
+                    batch.draw(floor,
+                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                 } else if (object instanceof ConveyorBelt) {
-                    batch.draw(floor,x+offset, y+offset, gridSize-offset*2, gridSize-offset*2);
-                    batch.draw(arrow,x+offset, y+offset, gridSize-offset*2, gridSize-offset*2);
+                    batch.draw(floor,
+                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                    batch.draw(arrow,
+                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                 }
             }
         }
