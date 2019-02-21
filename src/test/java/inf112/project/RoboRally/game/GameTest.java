@@ -72,7 +72,7 @@ public class GameTest {
         assertEquals(correctAmountOfCards, numberOfCardsDrawn);
     }
 
-
+/*
     @Test
     public void randTest() {
         game.initializeGame();
@@ -89,11 +89,11 @@ public class GameTest {
         System.out.println(player.getX());
         System.out.println(player.getY());
     }
+'/
 
 
 
-
-
+/*
     @Test
     public void checkIfEveryPlayerWasDealtCards() {
         game.startGame();
@@ -103,5 +103,5 @@ public class GameTest {
             System.out.println("player hand = " + player.getCardsInHand().getSize());
             assertEquals(properStartHandSize, player.getCardsInHand().getSize());
         }
-    }
+    }*/
 }
