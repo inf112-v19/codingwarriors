@@ -35,9 +35,9 @@ public class Laser implements IObjects {
     public Rotation getRotation() {
         return rotation;
     }
-
+    
     @Override
     public void doAction(Player player) {
-
+        // TODO To be implemented
     }
 }

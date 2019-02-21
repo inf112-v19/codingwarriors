@@ -14,6 +14,13 @@ public class ConveyorBelt implements IObjects {
         this.damage=0;
         this.rotation=null;
     }
+    
+    public ConveyorBelt(int speed, GridDirection direction, Rotation rotation) {
+    	this.speed=speed;
+    	this.direction=direction;
+    	this.damage=0;
+    	this.rotation=rotation;
+    }
 
     @Override
     public int getSpeed() {

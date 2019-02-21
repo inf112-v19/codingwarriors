@@ -34,9 +34,9 @@ public class Pit implements IObjects {
     public Rotation getRotation() {
         return rotation;
     }
-
+    
     @Override
     public void doAction(Player player) {
-
+        //TODO To be implemented
     }
 }
