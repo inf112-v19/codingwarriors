@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Player;
+
 public class Flag implements IObjects {
 
     private int speed;
@@ -29,5 +31,10 @@ public class Flag implements IObjects {
     @Override
     public Rotation getRotation() {
         return null;
+    }
+    
+    @Override
+    public void doAction(Player player) {
+        //TODO Implement when IPlayer has the needed methods
     }
 }
