@@ -42,6 +42,10 @@ public class Deck implements IDeck{
         cardDeck.add(card);
     }
 
+    public void addCard(int index, ICard card) {
+        cardDeck.add(index,card);
+    }
+
     public ICard removeCard(int index) {
         if (index > this.getSize() || cardDeck.isEmpty()) { return null; }
         return cardDeck.remove(index);
@@ -131,6 +135,7 @@ public class Deck implements IDeck{
 
     @Override
     public ICard getCardAtPosition(int position) {
+        System.out.println(position);
         if (position >= this.cardDeck.size() || position < 0) {
             throw new IllegalArgumentException("Position is out of bounds");
         }

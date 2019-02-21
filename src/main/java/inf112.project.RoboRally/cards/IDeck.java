@@ -121,4 +121,8 @@ public interface IDeck extends Iterable<ICard>{
     void addCard(ICard card);
 
     String showCard(int i);
+
+    ICard removeCard(int index);
+
+    void addCard(int index, ICard card);
 }
