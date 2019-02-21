@@ -138,7 +138,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         // remove selected card from playerDeck to selected cards
         ICard selectedCard = currentPlayer.getCardsInHand().getCardAtPosition(index);
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
-        selectedCards[currentPlayerIndex].addCard(0,currentPlayer.getCardsInHand().removeCard(index));
+        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0,currentPlayer.getCardsInHand().removeCard(index));
 
         // if five cards selected and there are more players left, switch current player to be next player
         if (game.getPlayers().size()-1 > currentPlayerIndex && selectedCards[currentPlayerIndex].getSize() >= 5) {

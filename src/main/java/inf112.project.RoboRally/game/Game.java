@@ -70,7 +70,7 @@ public class Game implements IGame {
             for (IPlayer player : activePlayers) {
                 revealedCard = player.revealProgramCardForRegisterNumber(registerNumber);
                 cardAndPlayer.put(revealedCard, player);
-                revealedCardsForThisRegister.addCardToDeck(revealedCard);
+                revealedCardsForThisRegister.addCardToDeckAtPosition(revealedCardsForThisRegister.getSize(),revealedCard); // Correct position?
             }
             revealedCardsForThisRegister.sortDeckAfterCardPriority();
             for (ICard card : revealedCardsForThisRegister) {

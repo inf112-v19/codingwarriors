@@ -94,23 +94,33 @@ public interface IDeck extends Iterable<ICard>{
 
 
     /**
-     * Adds the card to the deck.
+     * Adds the card to the deck at the given position.
      *
+     * @param index
+     *              The index to insert the card at.
      * @param card
      *              The card that will be inserted into the deck
      */
+    void addCardToDeckAtPosition(Integer index, ICard card);
+
+
+    /**
+     * Add a card to the bottom off the deck.
+     *
+     * @param card
+     *              The card to be added.
+     */
     void addCardToDeck(ICard card);
 
-    ICard removeCard(int index);
 
-    void addCard(int index, ICard card);
     /**
      * Remove the card at the given position from the deck.
      *
      * @param position
      *              The index of the card to be removed.
+     * @return A reference to the removed card.
      */
-    void removeCard(Integer position);
+    ICard removeCard(Integer position);
 
 
     /**
@@ -136,5 +146,4 @@ public interface IDeck extends Iterable<ICard>{
      *                  The deck to transfer the cards to.
      */
     void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck);
-
 }
