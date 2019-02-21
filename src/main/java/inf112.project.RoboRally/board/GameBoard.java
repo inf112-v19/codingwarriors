@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.board;
 
+import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.objects.*;
 import inf112.project.RoboRally.objects.IObjects;
 
@@ -11,7 +12,7 @@ public class GameBoard {
     public GameBoard(String level) {
         int counter = extractDimensions(level);
         board = new IObjects[colums][rows];
-        for (int y = 0; y < colums; y++) {
+        for (int y = colums-1; y >= 0; y--) {
             for (int x = 0; x < rows; x++) {
                 board[y][x] = factory(level.charAt(counter));
                 counter++;
@@ -72,6 +73,14 @@ public class GameBoard {
      */
     public IObjects getObject(int x, int y) {
         return board[y][x];
+    }
+
+    private boolean locationInsideBoard(int x, int y){
+        return x >= 0 && x < rows && y >= 0 && y < colums;
+    }
+
+    public boolean moveValid(int x, int y) {
+        return locationInsideBoard(x, y);
     }
 
 }
