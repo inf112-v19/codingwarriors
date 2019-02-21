@@ -101,9 +101,6 @@ public interface IDeck extends Iterable<ICard>{
      */
     void addCardToDeck(ICard card);
 
-
-    String showCard(int i);
-
     ICard removeCard(int index);
 
     void addCard(int index, ICard card);
@@ -139,4 +136,5 @@ public interface IDeck extends Iterable<ICard>{
      *                  The deck to transfer the cards to.
      */
     void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck);
+
 }

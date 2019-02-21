@@ -156,7 +156,7 @@ public class Deck implements IDeck{
     }
 
     @Override
-    public ICard getCardAtPosition(int position) {
+    public ICard getCardAtPosition(Integer position) {
         System.out.println(position);
         if (position >= this.cardDeck.size() || position < 0) {
             throw new IllegalArgumentException("Position is out of bounds");
