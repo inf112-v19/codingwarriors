@@ -1,14 +1,11 @@
 package inf112.project.RoboRally.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
-import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
