@@ -30,7 +30,7 @@ public interface IDeck extends Iterable<ICard>{
      * @param posB
      *              Position of card B.
      */
-    void swapCardsInPosition(int posA, int posB);
+    void swapCardsInPosition(Integer posA, Integer posB);
 
 
     /**
@@ -48,32 +48,23 @@ public interface IDeck extends Iterable<ICard>{
 
 
     /**
-     *
-     *
+     * Adds a given collection of cards to the deck.
      *
      * @param collection
+     *                  The collection of cards to be added.
      */
     void addCollectionOfCardsToDeck(Collection<ICard> collection);
 
 
     /**
-     *
-     *
+     * Get the card residing at the given position in the deck.<br><br>
+     * The card is not removed from the deck.
      *
      * @param position
-     * @return
+     *                  The index of the card in the deck.
+     * @return the card at the given position.
      */
-    ICard getCardAtPosition(int position);
-
-
-    /**
-     *
-     *
-     *
-     *
-     * @param card
-     */
-    void addCardToDeck(ICard card);
+    ICard getCardAtPosition(Integer position);
 
 
     /**
@@ -103,26 +94,49 @@ public interface IDeck extends Iterable<ICard>{
 
 
     /**
-     * Gives A deck of cards containing the specified amount of cards, from those available in the deck,
-     * to the requesting player.
+     * Adds the card to the deck.
      *
-     * @param cards
-     *              The number of requested cards.
-     * @return A deck of cards containing the cards dealt to the requesting player.
-     */
-    Deck handOutCards(int cards);
-
-
-    /**
-     * Adds the card to the deck
      * @param card
      *              The card that will be inserted into the deck
      */
-    void addCard(ICard card);
+    void addCardToDeck(ICard card);
+
 
     String showCard(int i);
 
     ICard removeCard(int index);
 
     void addCard(int index, ICard card);
+    /**
+     * Remove the card at the given position from the deck.
+     *
+     * @param position
+     *              The index of the card to be removed.
+     */
+    void removeCard(Integer position);
+
+
+    /**
+     * Get a String representation of the card at the given position.
+     *
+     * @param position
+     *                  The index of the card to be shown.
+     * @return The String representation of the card at the given position.
+     */
+    String showCard(Integer position);
+
+
+    /**
+     * Transfer the given number of cards from this deck,
+     * to the target.<br><br>
+     *
+     * Removes the cards from the origin,
+     * and inserts them in the target deck.
+     *
+     * @param numberOfCardsToTransfer
+     *                  The number of cards to relocate.
+     * @param targetDeck
+     *                  The deck to transfer the cards to.
+     */
+    void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck);
 }
