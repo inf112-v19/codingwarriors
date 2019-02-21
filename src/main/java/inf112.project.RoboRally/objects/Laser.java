@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Player;
+
 public class Laser implements IObjects {
     private int speed;
     private GridDirection direction;
@@ -32,5 +34,10 @@ public class Laser implements IObjects {
     @Override
     public Rotation getRotation() {
         return rotation;
+    }
+    
+    @Override
+    public void doAction(Player player) {
+        // TODO To be implemented
     }
 }
