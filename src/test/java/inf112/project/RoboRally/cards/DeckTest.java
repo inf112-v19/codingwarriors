@@ -3,6 +3,8 @@ package inf112.project.RoboRally.cards;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class DeckTest {
@@ -95,9 +97,18 @@ public class DeckTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getCardAtPositionShouldFailIfPositionIsInvalid() {
+    public void getCardAtPositionShouldFailIfPositionIsTooHigh() {
+        deck.getCardAtPosition(4000);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtPositionShouldFailIfPositionIsNegative() {
         deck.getCardAtPosition(-1);
-        deck.getCardAtPosition(4);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtPositionShouldFailIfPositionIsNull() {
+        deck.getCardAtPosition(null);
     }
 
     @Test
@@ -115,10 +126,9 @@ public class DeckTest {
         assertEquals(0, deck.getSize());
 
         deck.addCollectionOfCardsToDeck(newDeck.handOutNCards(2));
-
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void transferNCardsFromOneDeckToAnotherShouldWork() {
         IDeck newDeck = new Deck();
         ICard card1 = new Card(220, Action.ROTATE_LEFT);
@@ -138,9 +148,37 @@ public class DeckTest {
         assertEquals(numberOfCardsToTransfer, newDeck.getSize());
         assertEquals(card1, newDeck.getCardAtPosition(0));
         assertEquals(card2, newDeck.getCardAtPosition(1));
+    }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void transferringCardsShouldFailIfAmountOfCardsIsTooHigh() {
+        IDeck newDeck = new Deck();
+        ICard card1 = new Card(220, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.transferNCardsFromThisDeckToTargetDeck(10000, newDeck);
+    }
 
-        newDeck.getCardAtPosition(10000); // Should throw IllegalArgumentException
+    @Test (expected = IllegalArgumentException.class)
+    public void transferringCardsShouldFailIfAmountOfCardsIsNegative() {
+        IDeck newDeck = new Deck();
+        ICard card1 = new Card(220, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.transferNCardsFromThisDeckToTargetDeck(-1, newDeck);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void transferringCardsShouldFailIfAmountOfCardsIsNull() {
+        IDeck newDeck = new Deck();
+        ICard card1 = new Card(220, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.transferNCardsFromThisDeckToTargetDeck(null, newDeck);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void transferringCardsShouldFailIfTargetDeckIsNull() {
+        ICard card1 = new Card(220, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.transferNCardsFromThisDeckToTargetDeck(1, null);
     }
 
     @Test
@@ -171,12 +209,6 @@ public class DeckTest {
         assertEquals(card1.toString(), deck.showCard(0));
         assertEquals(card2.toString(), deck.showCard(1));
         assertEquals(card3.toString(), deck.showCard(2));
-
-        assertEquals("", deck.showCard(1000000));
-        assertEquals("", deck.showCard(-1));
-
-        deck.removeAllCardsFromDeck();
-        assertEquals("", deck.showCard(1));
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -196,21 +228,151 @@ public class DeckTest {
         deck.handOutNCards(100000);
     }
 
-    /*
-
     @Test
-    public void handOutCards() {
-        fail();
+    public void shouldBeAbleToSwapPositionOfCardsAtTwoGivenPositions() {
+        ICard card1 = new Card(300, Action.U_TURN);
+        ICard card2 = new Card(500, Action.FORWARD_3);
+        deck.addCardToDeck(card1);
+        deck.addCardToDeck(card2);
+        assertEquals(card1, deck.getCardAtPosition(0));
+        assertEquals(card2, deck.getCardAtPosition(1));
+
+        deck.swapCardsInPosition(0, 1);
+
+        assertEquals(card1, deck.getCardAtPosition(1));
+        assertEquals(card2, deck.getCardAtPosition(0));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void swapCardsShouldFailIfPositionAIsNegative() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.swapCardsInPosition(-1, 0);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void swapCardsShouldFailIfPositionBIsNegative() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.swapCardsInPosition(0, -1);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void swapCardsShouldFailIfPositionAIsTooHigh() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.swapCardsInPosition(53, 0);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void swapCardsShouldFailIfPositionBIsToHigh() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.swapCardsInPosition(0, 56);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void swapCardsShouldFailIfPositionAIsNull() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.swapCardsInPosition(null, 0);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void swapCardsShouldFailIfPositionBIsNull() {
+        ICard card1 = new Card(200, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.swapCardsInPosition(0, null);
     }
 
     @Test
-    public void createDeck() {
-        fail();
+    public void shouldBeAbleToRemoveACardAtAGivenPosition() {
+        ICard card1 = new Card(400, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        assertEquals(1, deck.getSize());
+
+        deck.removeCard(0);
+        assertEquals(0, deck.getSize());
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void removeCardShouldFailIfPositionIsTooHigh() {
+        ICard card1 = new Card(230, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        assertEquals(1, deck.getSize());
+
+        deck.removeCard(1);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void removeCardShouldFailIfPositionIsNegative() {
+        ICard card1 = new Card(230, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        assertEquals(1, deck.getSize());
+
+        deck.removeCard(-1);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void removeCardShouldFailIfPositionIsNull() {
+        ICard card1 = new Card(230, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        assertEquals(1, deck.getSize());
+
+        deck.removeCard(null);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void showCardShouldFailIfPositionIsTooHigh() {
+        ICard card1 = new Card(230, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.showCard(1);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void showCardShouldFailIfPositionIsNegative() {
+        ICard card1 = new Card(230, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.showCard(-1);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void showCardShouldFailIfPositionIsNull() {
+        ICard card1 = new Card(230, Action.ROTATE_LEFT);
+        deck.addCardToDeck(card1);
+        deck.showCard(null);
     }
 
     @Test
-    public void shuffle() {
-        fail();
+    public void shufflingTheDeckShouldLeaveItShuffled() {
+        deck.createProgramCardsDeck();
+        assertEquals(NUMBER_OF_CARDS_IN_A_PROGRAM_CARDS_DECK, deck.getSize());
+        ArrayList<ICard> originalCardPositions = new ArrayList<>();
+        for (int i = 0; i < deck.getSize(); i++) {
+            originalCardPositions.add(deck.getCardAtPosition(i));
+        }
+
+        int numberOfCards = deck.getSize(); // Shuffle the deck many times,
+        int[] numberOfChanges = new int[numberOfCards]; // and count the number of times
+        int numberOfIterations = 100000;    // a card is not in its original position.
+        for (int i = 0; i < numberOfIterations; i++) {
+            deck.shuffle();
+            for (int index = 0; index < deck.getSize(); index++) {
+                if (deck.getCardAtPosition(index) != originalCardPositions.get(index)) {
+                    numberOfChanges[index] += 1;
+                }
+            }
+        }
+
+        int deviation = numberOfIterations / 500;  // Test that the distribution of card
+        int baseCase = numberOfChanges[0];  // placement is relatively even.
+        for (int i = 0; i < numberOfCards; i++) {
+            if (numberOfChanges[i] > (baseCase + deviation)) {
+                fail("Deck is not shuffled evenly.");
+            }
+            if (numberOfChanges[i] < (baseCase - deviation)) {
+                fail("Deck is not shuffled evenly.");
+            }
+        }
     }
-    */
 }

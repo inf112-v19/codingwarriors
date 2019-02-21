@@ -30,7 +30,7 @@ public interface IDeck extends Iterable<ICard>{
      * @param posB
      *              Position of card B.
      */
-    void swapCardsInPosition(int posA, int posB);
+    void swapCardsInPosition(Integer posA, Integer posB);
 
 
     /**
@@ -48,22 +48,23 @@ public interface IDeck extends Iterable<ICard>{
 
 
     /**
-     *
-     *
+     * Adds a given collection of cards to the deck.
      *
      * @param collection
+     *                  The collection of cards to be added.
      */
     void addCollectionOfCardsToDeck(Collection<ICard> collection);
 
 
     /**
-     *
-     *
+     * Get the card residing at the given position in the deck.<br><br>
+     * The card is not removed from the deck.
      *
      * @param position
-     * @return
+     *                  The index of the card in the deck.
+     * @return the card at the given position.
      */
-    ICard getCardAtPosition(int position);
+    ICard getCardAtPosition(Integer position);
 
 
     /**
@@ -101,9 +102,23 @@ public interface IDeck extends Iterable<ICard>{
     void addCardToDeck(ICard card);
 
 
+    /**
+     * Remove the card at the given position from the deck.
+     *
+     * @param position
+     *              The index of the card to be removed.
+     */
+    void removeCard(Integer position);
 
 
-    String showCard(int i);
+    /**
+     * Get a String representation of the card at the given position.
+     *
+     * @param position
+     *                  The index of the card to be shown.
+     * @return The String representation of the card at the given position.
+     */
+    String showCard(Integer position);
 
 
     /**

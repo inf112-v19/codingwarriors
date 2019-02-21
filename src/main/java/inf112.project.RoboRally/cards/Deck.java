@@ -36,26 +36,34 @@ public class Deck implements IDeck{
         this.cardDeck.add(card);
     }
 
-    public ICard removeCard(int index) {
-        if (index > this.getSize() || cardDeck.isEmpty()) { return null; }
-        return cardDeck.remove(index);
+    @Override
+    public void removeCard(Integer position) {
+        if (position == null
+                || position >= this.getSize()
+                || position < 0) {
+            throw new IllegalArgumentException("Position is not valid.");
+        }
+        this.cardDeck.remove((int) position);
     }
 
-    public String showCard(int index) {
-        if (index > this.getSize()
-                || cardDeck.isEmpty()
-                || index < 0) {
-            return "";
+    @Override
+    public String showCard(Integer position) {
+        if (position == null
+                || position >= this.getSize()
+                || position < 0) {
+            throw new IllegalArgumentException("Position is not valid.");
         }
-        return cardDeck.get(index).toString();
+        return cardDeck.get(position).toString();
     }
 
     @Override
     public void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck) {
-        if (numberOfCardsToTransfer < 0
-                || numberOfCardsToTransfer == null
-                || numberOfCardsToTransfer >= this.getSize()) {
-            throw new IllegalArgumentException("Number of cards is invalid");
+        if (numberOfCardsToTransfer == null
+                || numberOfCardsToTransfer < 0
+                || numberOfCardsToTransfer >= this.getSize()
+                || targetDeck == null) {
+            throw new IllegalArgumentException("Number of cards is invalid," +
+                    " or the target deck does not exist");
         }
         ArrayList<ICard> selectedCards = handOutNCards(numberOfCardsToTransfer);
         targetDeck.addCollectionOfCardsToDeck(selectedCards);
@@ -99,11 +107,11 @@ public class Deck implements IDeck{
     }
 
     @Override
-    public void swapCardsInPosition(int posA, int posB) {
-        if (posA >= cardDeck.size() || posA < 0) {
+    public void swapCardsInPosition(Integer posA, Integer posB) {
+        if (posA == null || posA >= cardDeck.size() || posA < 0 ) {
             throw new IllegalArgumentException("posA is not a valid position");
         }
-        if (posB >= cardDeck.size() || posB < 0) {
+        if (posB == null || posB >= cardDeck.size() || posB < 0) {
             throw new IllegalArgumentException("posB is not a valid position");
         }
 
@@ -124,6 +132,7 @@ public class Deck implements IDeck{
         return cardDeck.size();
     }
 
+    @Override
     public String toString() {
         StringBuilder deck = new StringBuilder();
         for (ICard card: cardDeck) {
@@ -138,8 +147,8 @@ public class Deck implements IDeck{
     }
 
     @Override
-    public ICard getCardAtPosition(int position) {
-        if (position >= this.cardDeck.size() || position < 0) {
+    public ICard getCardAtPosition(Integer position) {
+        if (position == null || position >= this.cardDeck.size() || position < 0) {
             throw new IllegalArgumentException("Position is out of bounds");
         }
         return this.cardDeck.get(position);
