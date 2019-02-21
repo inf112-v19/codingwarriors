@@ -29,6 +29,7 @@ public class Game implements IGame {
     private boolean everyFlagHasBeenVisited;
     private GameStatus currentGameStatus;
     private IPlayer currentlyActingPlayer; // The player whose cards are to be displayed.
+    private IDeck[] selectedCards;
 
 
     @Override
@@ -262,8 +263,8 @@ public class Game implements IGame {
         IPlayer player3 = new Player("G-bot", 2, 5);
         this.players = new ArrayList<>();
         this.players.add(player1);
-        //this.players.add(player2);
-        //this.players.add(player3);
+        this.players.add(player2);
+        this.players.add(player3);
         this.activePlayers = new ArrayList<>();
         this.activePlayers.addAll(players);
     }
@@ -297,5 +298,26 @@ public class Game implements IGame {
 
     public GameBoard getBoard() {
         return board;
+    }
+
+    @Override
+    public void setGameStatus(GameStatus status) {
+        currentGameStatus = status;
+    }
+
+    @Override
+    public void doTurn() {
+        if (selectedCards[0].getSize() == 0) {
+            setGameStatus(GameStatus.SELECT_CARDS);
+            return;
+        }
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).movePlayer(selectedCards[i].removeCard(selectedCards[i].getSize()-1));
+        }
+    }
+
+    @Override
+    public void setUpTurn(IDeck[] selectedCards) {
+        this.selectedCards = selectedCards;
     }
 }
