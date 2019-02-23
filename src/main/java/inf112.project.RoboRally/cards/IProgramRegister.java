@@ -17,8 +17,6 @@ public interface IProgramRegister {
 
     int getSize();
 
-    boolean isRegisterSlotNumberNLocked(Integer number);
-
     void addCardToRegister(ICard card);
 
     ICard getCardInSlotNumber(Integer number);
@@ -28,4 +26,8 @@ public interface IProgramRegister {
     boolean checkIfRegisterSlotNumberNIsLocked(Integer slotNumber);
 
     void lockRegisterSlotNumber(Integer slotNumber);
+
+    int getNumberOfRegisterSlots();
+
+    void unlockRegisterSlotNumberN(Integer slotNumber);
 }

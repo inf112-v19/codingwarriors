@@ -23,9 +23,12 @@ public class ProgramRegisterTest {
         IProgramRegister register = new ProgramRegister();
         assertEquals(0, register.getSize());
         for (int i = 0; i < 5; i++) {
-            assertEquals(false, register.isRegisterSlotNumberNLocked(i));
+            assertEquals(false, register.checkIfRegisterSlotNumberNIsLocked(i));
         }
     }
+
+
+
 
     @Test
     public void gettingRegisterSizeShouldReturnCorrectSize() {
@@ -35,8 +38,12 @@ public class ProgramRegisterTest {
         assertEquals(1, register.getSize());
     }
 
+
+
+
+
     @Test
-    public void shouldBeAbleToAddCardsToTheRegister() {
+    public void addingACardToTheRegisterShouldAddTheCorrectCard() {
         assertEquals(0, register.getSize());
         ICard card = new Card(330, Action.FORWARD_1);
 
@@ -49,6 +56,10 @@ public class ProgramRegisterTest {
     public void addingNullToTheRegisterShouldFail() {
         register.addCardToRegister(null);
     }
+
+
+
+
 
     @Test
     public void gettingCardFromSlotNumberNShouldReturnCorrectCard() {
@@ -77,7 +88,7 @@ public class ProgramRegisterTest {
         register.addCardToRegister(card);
         assertEquals(1, register.getSize());
 
-        register.getCardInSlotNumber(1);
+        register.getCardInSlotNumber((register.getNumberOfRegisterSlots() + 1));
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -98,8 +109,13 @@ public class ProgramRegisterTest {
         register.getCardInSlotNumber(null);
     }
 
+
+
+
+
+
     @Test
-    public void addingACollectionOfCardsToTheRegisterShouldWork() {
+    public void addingACollectionOfCardsToTheRegisterShouldAddAllCardsToTheRegister() {
         ArrayList<ICard> listOfCards = new ArrayList<>();
         ICard card1 = new Card(100, Action.ROTATE_LEFT);
         ICard card2 = new Card(200, Action.ROTATE_RIGHT);
@@ -126,21 +142,118 @@ public class ProgramRegisterTest {
         register.addCollectionOfCardsToRegister(null);
     }
 
-    @Test
-    public void shouldBeAbleToLockRegisterSlots() {
-        for (int i = 0; i < register.getSize(); i++) {
-            assertEquals(false, register.isRegisterSlotNumberNLocked(i));
+    @Test (expected = IllegalArgumentException.class)
+    public void addingACollectionOfTooManyCardsShouldFail() {
+        ICard card = new Card(120, Action.ROTATE_LEFT);
+        ArrayList<ICard> listOfCards = new ArrayList<>();
+        for (int i = 0; i <= register.getNumberOfRegisterSlots(); i++) {
+            listOfCards.add(card);
         }
-        register.lockRegisterSlotNumber(4);
-        assertEquals(true, register.isRegisterSlotNumberNLocked(4));
-        register.lockRegisterSlotNumber(3);
-        assertEquals(true, register.isRegisterSlotNumberNLocked(3));
-        register.lockRegisterSlotNumber(2);
-        assertEquals(true, register.isRegisterSlotNumberNLocked(2));
-        register.lockRegisterSlotNumber(1);
-        assertEquals(true, register.isRegisterSlotNumberNLocked(1));
-        register.lockRegisterSlotNumber(0);
-        assertEquals(true, register.isRegisterSlotNumberNLocked(0));
+        register.addCollectionOfCardsToRegister(listOfCards);
     }
 
+
+
+
+
+
+
+    @Test
+    public void lockingARegisterSlotShouldLockTheCorrectSlot() {
+        for (int i = 0; i < register.getSize(); i++) {
+            assertEquals(false, register.checkIfRegisterSlotNumberNIsLocked(i));
+        }
+        register.lockRegisterSlotNumber(4);
+        assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(4));
+        register.lockRegisterSlotNumber(3);
+        assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(3));
+        register.lockRegisterSlotNumber(2);
+        assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(2));
+        register.lockRegisterSlotNumber(1);
+        assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(1));
+        register.lockRegisterSlotNumber(0);
+        assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(0));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void lockingARegisterSlotShouldFailIfNumberIsNull() {
+        register.lockRegisterSlotNumber(null);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void lockingARegisterSlotShouldFailIfNumberIsTooHigh() {
+        register.lockRegisterSlotNumber((register.getNumberOfRegisterSlots() + 1));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void lockingARegisterSlotShouldFailIfNumberIsNegative() {
+        register.lockRegisterSlotNumber(-1);
+    }
+
+
+
+
+
+    @Test
+    public void checkingIfRegisterSlotNumberNIsLockedShouldReturnCorrectResult() {
+        for (int number = 0; number < register.getNumberOfRegisterSlots(); number++) {
+            assertEquals(false, register.checkIfRegisterSlotNumberNIsLocked(number));
+        }
+        register.lockRegisterSlotNumber(4);
+        assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(4));
+        register.lockRegisterSlotNumber(1);
+        assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(1));
+
+        register.unlockRegisterSlotNumberN(4);
+        assertEquals(false, register.checkIfRegisterSlotNumberNIsLocked(4));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkingIfRegisterSlotNumberNIsLockedShouldFailIfNumberIsNull() {
+        register.checkIfRegisterSlotNumberNIsLocked(null);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkingIfRegisterSlotNumberNIsLockedShouldFailIfNumberIsTooHigh() {
+        register.checkIfRegisterSlotNumberNIsLocked((register.getNumberOfRegisterSlots() + 1));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void checkingIfRegisterSlotNumberNIsLockedShouldFailIfNumberIsNegative() {
+        register.checkIfRegisterSlotNumberNIsLocked(-1);
+    }
+
+
+
+
+
+    @Test
+    public void unlockingRegisterSlotNumberNShouldUnlockTheCorrectRegisterSlot() {
+        for (int slotNumber = 0; slotNumber < register.getNumberOfRegisterSlots(); slotNumber++) {
+            assertEquals(false, register.checkIfRegisterSlotNumberNIsLocked(slotNumber));
+            register.lockRegisterSlotNumber(slotNumber);
+            assertEquals(true, register.checkIfRegisterSlotNumberNIsLocked(slotNumber));
+            register.unlockRegisterSlotNumberN(slotNumber);
+            assertEquals(false, register.checkIfRegisterSlotNumberNIsLocked(slotNumber));
+        }
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void tryingToUnlockARegisterSlotNumberThatIsTooHighShouldFail() {
+        register.unlockRegisterSlotNumberN((register.getNumberOfRegisterSlots() + 1));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void tryingToUnlockARegisterSlotNumberThatIsNegativeShouldFail() {
+        register.unlockRegisterSlotNumberN(-1);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void tryingToUnlockRegisterSlotNumberNullShouldFail() {
+        register.unlockRegisterSlotNumberN(null);
+    }
+
+
+
+    
 }
