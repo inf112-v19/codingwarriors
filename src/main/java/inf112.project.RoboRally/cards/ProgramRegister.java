@@ -25,21 +25,26 @@ public class ProgramRegister implements IProgramRegister{
     }
 
     @Override
-    public void addCardToRegister(ICard card) {
+    public void addCardToRegisterAtSlotNumber(Integer slotNumber, ICard card) {
+        if (slotNumber == null
+                || slotNumber < 0
+                || slotNumber > register.getSize()) {
+            throw new IllegalArgumentException("Not a valid number");
+        }
         if (card == null) {
             throw new IllegalArgumentException("null is not a valid card");
         }
-        this.register.addCardToDeck(card);
+        this.register.addCardToDeckAtPosition(slotNumber, card);
     }
 
     @Override
-    public ICard getCardInSlotNumber(Integer number) {
-        if (number == null
-                || number < 0
-                || number > NUMBER_OF_SLOTS) {
+    public ICard getCardInSlotNumber(Integer slotNumber) {
+        if (slotNumber == null
+                || slotNumber < 0
+                || slotNumber > NUMBER_OF_SLOTS) {
             throw new IllegalArgumentException("Not a valid slot number");
         }
-        return this.register.getCardAtPosition(number);
+        return this.register.getCardAtPosition(slotNumber);
     }
 
     @Override
@@ -49,15 +54,15 @@ public class ProgramRegister implements IProgramRegister{
         }
         int slotNumber = 0;
         for (ICard card : listOfCards) {
-            if (!checkIfRegisterSlotNumberNIsLocked(slotNumber)) {
-                this.register.addCardToDeckAtPosition(slotNumber, card);
+            if (!checkIsRegisterSlotNumberNLocked(slotNumber)) {
+                this.addCardToRegisterAtSlotNumber(slotNumber, card);
             }
             slotNumber++;
         }
     }
 
     @Override
-    public boolean checkIfRegisterSlotNumberNIsLocked(Integer slotNumber) {
+    public boolean checkIsRegisterSlotNumberNLocked(Integer slotNumber) {
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber > NUMBER_OF_SLOTS) {
@@ -89,6 +94,17 @@ public class ProgramRegister implements IProgramRegister{
             throw new IllegalArgumentException("Not a valid slot number");
         }
         this.isLocked.set(slotNumber, false);
+    }
+
+    @Override
+    public void clearAllUnlockedCardsFromRegister() {
+        ICard placeHolder = new Card(-1, Action.IF_YOU_SEE_THIS_SOMETHING_WENT_WRONG);
+        for (int slotNumber = 0; slotNumber < register.getSize(); slotNumber++) {
+            if (!checkIsRegisterSlotNumberNLocked(slotNumber)) {
+                register.removeCard(slotNumber);
+                register.addCardToDeckAtPosition(slotNumber, placeHolder);
+            }
+        }
     }
 
 

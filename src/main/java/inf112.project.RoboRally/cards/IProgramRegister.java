@@ -17,17 +17,19 @@ public interface IProgramRegister {
 
     int getSize();
 
-    void addCardToRegister(ICard card);
+    void addCardToRegisterAtSlotNumber(Integer position, ICard card);
 
     ICard getCardInSlotNumber(Integer number);
 
     void addCollectionOfCardsToRegister(Collection<ICard> listOfCards);
 
-    boolean checkIfRegisterSlotNumberNIsLocked(Integer slotNumber);
+    boolean checkIsRegisterSlotNumberNLocked(Integer slotNumber);
 
     void lockRegisterSlotNumber(Integer slotNumber);
 
     int getNumberOfRegisterSlots();
 
     void unlockRegisterSlotNumberN(Integer slotNumber);
+
+    void clearAllUnlockedCardsFromRegister();
 }
