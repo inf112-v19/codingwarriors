@@ -10,9 +10,9 @@ public class GameBoard {
 
     public GameBoard(String level) {
         int counter = extractDimensions(level);
-        board = new IObjects[columns][rows];
-        for (int y = columns -1; y >= 0; y--) {
-            for (int x = 0; x < rows; x++) {
+        board = new IObjects[rows][columns];
+        for (int y = rows -1; y >= 0; y--) {
+            for (int x = 0; x < columns; x++) {
                 board[y][x] = factory(level.charAt(counter));
                 counter++;
             }
