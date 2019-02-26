@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.objects;
 
+import java.util.Random;
 import java.util.SortedMap;
 
 public enum GridDirection {
@@ -34,6 +35,15 @@ public enum GridDirection {
       case WEST: return EAST;
       default: return null;
     }
+  }
+  
+  public static GridDirection[] listOfDirections() {
+    return new GridDirection[]{NORTH, SOUTH, EAST, WEST};
+  }
+  
+  public static GridDirection randomDirection() {
+    Random random = new Random();
+    return listOfDirections()[random.nextInt(listOfDirections().length)];
   }
 }
 

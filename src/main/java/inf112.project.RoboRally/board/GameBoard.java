@@ -83,5 +83,10 @@ public class GameBoard {
     public boolean moveValid(int x, int y) {
         return locationInsideBoard(x, y);
     }
+    
+    public void getObjectType(int x, int y) {
+        IObjects object = getObject(x,y);
+        System.out.println(object.getClass());
+    }
 
 }
