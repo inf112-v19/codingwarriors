@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>inf112.project.RoboRally.actors.Player</OriginalElement>
+  <nodes>
+    <node x="276.0" y="89.0">inf112.project.RoboRally.objects.ConveyorBelt</node>
+    <node x="313.5" y="242.0">inf112.project.RoboRally.game.Game</node>
+    <node x="0.0" y="316.0">inf112.project.RoboRally.gui.GraphicalUserInterface</node>
+    <node x="212.0" y="316.0">inf112.project.RoboRally.RoboRallyMain</node>
+    <node x="415.0" y="89.0">inf112.project.RoboRally.objects.Floor</node>
+    <node x="185.5" y="242.0">inf112.project.RoboRally.actors.Player</node>
+    <node x="312.0" y="163.0">inf112.project.RoboRally.game.IGame</node>
+    <node x="440.5" y="242.0">inf112.project.RoboRally.cards.Deck</node>
+    <node x="561.0" y="163.0">inf112.project.RoboRally.cards.ICard</node>
+    <node x="385.0" y="316.0">inf112.project.RoboRally.game.GameStatus</node>
+    <node x="138.0" y="390.0">inf112.project.RoboRally.cards.Action</node>
+    <node x="541.0" y="316.0">inf112.project.RoboRally.board.GameBoard</node>
+    <node x="0.0" y="390.0">inf112.project.RoboRally.objects.Rotation</node>
+    <node x="186.0" y="89.0">inf112.project.RoboRally.objects.Flag</node>
+    <node x="510.0" y="89.0">inf112.project.RoboRally.objects.Pit</node>
+    <node x="290.0" y="0.0">inf112.project.RoboRally.objects.IObjects</node>
+    <node x="0.0" y="163.0">inf112.project.RoboRally.cards.IProgramRegister</node>
+    <node x="439.0" y="163.0">inf112.project.RoboRally.cards.IDeck</node>
+    <node x="381.0" y="390.0">inf112.project.RoboRally.gui.Tile</node>
+    <node x="562.5" y="242.0">inf112.project.RoboRally.cards.Card</node>
+    <node x="184.0" y="163.0">inf112.project.RoboRally.actors.IPlayer</node>
+    <node x="592.0" y="89.0">inf112.project.RoboRally.objects.RotationCog</node>
+    <node x="1.5" y="242.0">inf112.project.RoboRally.cards.ProgramRegister</node>
+    <node x="0.0" y="89.0">inf112.project.RoboRally.objects.Wall</node>
+    <node x="91.0" y="89.0">inf112.project.RoboRally.objects.Laser</node>
+    <node x="266.0" y="390.0">inf112.project.RoboRally.gui.Grid</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="inf112.project.RoboRally.objects.Floor" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-14.5" />
+      <point x="452.5" y="69.0" />
+      <point x="348.5" y="69.0" />
+      <point x="13.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.actors.Player" target="inf112.project.RoboRally.actors.IPlayer">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.objects.Flag" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-14.5" />
+      <point x="221.0" y="69.0" />
+      <point x="322.5" y="69.0" />
+      <point x="-13.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.game.Game" target="inf112.project.RoboRally.game.IGame">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.cards.ProgramRegister" target="inf112.project.RoboRally.cards.IProgramRegister">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.cards.Card" target="inf112.project.RoboRally.cards.ICard">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.cards.Deck" target="inf112.project.RoboRally.cards.IDeck">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.objects.Pit" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-14.5" />
+      <point x="541.0" y="59.0" />
+      <point x="361.5" y="59.0" />
+      <point x="26.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.objects.Wall" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-14.5" />
+      <point x="35.5" y="49.0" />
+      <point x="296.5" y="49.0" />
+      <point x="-39.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.objects.ConveyorBelt" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.objects.RotationCog" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-14.5" />
+      <point x="649.5" y="49.0" />
+      <point x="374.5" y="49.0" />
+      <point x="39.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.objects.Laser" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-14.5" />
+      <point x="128.5" y="59.0" />
+      <point x="309.5" y="59.0" />
+      <point x="-26.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="612.0" y="416.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
