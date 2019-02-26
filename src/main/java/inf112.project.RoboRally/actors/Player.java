@@ -17,20 +17,22 @@ public class Player implements IPlayer {
 
 
     public Player(String name, int x, int y) {
+        setDefaultValues();
         this.x = x;
         this.y = y;
         this.name = name;
-        setDefaultValues();
     }
 
     public Player(int x, int y) {
+        setDefaultValues();
         this.x=x;
         this.y=y;
-        this.name="";
-        setDefaultValues();
     }
     
     private void setDefaultValues() {
+        this.x=0;
+        this.y=0;
+        this.name="";
         this.playerDirection = GridDirection.NORTH;
         this.cardsInHand = new Deck();
         this.numberOfDamageTokensRecieved = 0;
@@ -179,6 +181,7 @@ public class Player implements IPlayer {
     public void respawnAtLastArchiveMarker() {
         this.x=backupX;
         this.y=backupY;
+        takeOneDamage();
     }
 
     @Override
