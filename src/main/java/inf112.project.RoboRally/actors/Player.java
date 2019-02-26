@@ -9,6 +9,7 @@ public class Player implements IPlayer {
     private int lives = 3;
     private GridDirection playerDirection;
     private int x,y;
+    private int backupX, backupY;
     private String name;
     private IDeck cardsInHand;
     private int numberOfDamageTokensRecieved;
@@ -16,19 +17,26 @@ public class Player implements IPlayer {
 
 
     public Player(String name, int x, int y) {
-        this.playerDirection = GridDirection.NORTH;
         this.x = x;
         this.y = y;
         this.name = name;
-        this.cardsInHand = new Deck();
-        this.numberOfDamageTokensRecieved = 0;
-        this.register = new ProgramRegister();
+        setDefaultValues();
     }
 
     public Player(int x, int y) {
-        this.playerDirection = GridDirection.NORTH;
         this.x=x;
         this.y=y;
+        this.name="";
+        setDefaultValues();
+    }
+    
+    private void setDefaultValues() {
+        this.playerDirection = GridDirection.NORTH;
+        this.cardsInHand = new Deck();
+        this.numberOfDamageTokensRecieved = 0;
+        this.register = new ProgramRegister();
+        this.backupX=this.x;
+        this.backupY=this.y;
     }
 
     @Override
@@ -40,7 +48,20 @@ public class Player implements IPlayer {
     public int getY() {
         return y;
     }
-
+    
+    public int getBackupX() {
+        return backupX;
+    }
+    
+    public int getBackupY() {
+        return backupY;
+    }
+    
+    public void setNewBackupPoint(int x, int y) {
+        this.backupX=x;
+        this.backupY=y;
+    }
+    
     @Override
     public GridDirection getPlayerDirection() {
         return playerDirection;
@@ -156,7 +177,8 @@ public class Player implements IPlayer {
 
     @Override
     public void respawnAtLastArchiveMarker() {
-
+        this.x=backupX;
+        this.y=backupY;
     }
 
     @Override
