@@ -61,7 +61,7 @@ public class GameBoard {
      *
      * @return number of colums of this board
      */
-    public int getColums() {
+    public int getColumns() {
         return colums;
     }
 

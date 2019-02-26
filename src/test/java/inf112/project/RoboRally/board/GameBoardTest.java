@@ -24,7 +24,7 @@ public class GameBoardTest {
 
     @Test
     public void numberOfColumnsInBoard() {
-        assertEquals(2,testBoard1.getColums());
+        assertEquals(2,testBoard1.getColumns());
     }
 
     @Test
