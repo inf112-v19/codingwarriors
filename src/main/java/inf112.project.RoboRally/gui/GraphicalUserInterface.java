@@ -77,7 +77,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                 ,1,currentPlayer.getCardsInHand().getSize());
         boardScreen = new Grid(
                 new Tile(CARD_SCREEN_WIDTH,WIDTH,0,HEIGHT)
-                ,game.getBoard().getRows(),game.getBoard().getColums());
+                ,game.getBoard().getRows(),game.getBoard().getColumns());
     }
 
     private void createNewGame() {

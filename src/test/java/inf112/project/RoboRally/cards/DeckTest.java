@@ -1,8 +1,14 @@
 package inf112.project.RoboRally.cards;
 
+import inf112.project.RoboRally.board.GameBoard;
+import inf112.project.RoboRally.objects.ConveyorBelt;
+import inf112.project.RoboRally.objects.Flag;
+import inf112.project.RoboRally.objects.Floor;
+import inf112.project.RoboRally.objects.RotationCog;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -440,5 +446,61 @@ public class DeckTest {
     @Test (expected = IllegalArgumentException.class)
     public void addingACardToDeckShouldFailIfCardIsNull() {
         deck.addCardToDeckAtPosition(0, null);
+    }
+
+
+    @Test
+    public void name() {
+        String level = "3C2R"
+                + "cfr"
+                + ".r.";
+
+        GameBoard gameBoard = new GameBoard(level);
+/*
+        assertTrue(gameBoard.getObject(0,0) instanceof RotationCog);
+        assertTrue(gameBoard.getObject(1,0) instanceof Flag);
+        assertTrue(gameBoard.getObject(2,0) instanceof ConveyorBelt);
+        assertTrue(gameBoard.getObject(0,1) instanceof Floor);
+        assertTrue(gameBoard.getObject(1,1) instanceof ConveyorBelt);
+        assertTrue(gameBoard.getObject(2,1) instanceof Floor);
+
+
+
+
+ //       assertTrue(gameBoard.getObject(0,0) instanceof RotationCog);
+  //      assertTrue(gameBoard.getObject(0,1) instanceof Flag);
+ //       assertTrue(gameBoard.getObject(0,2) instanceof ConveyorBelt);
+ //       assertTrue(gameBoard.getObject(1,0) instanceof Floor);
+  //      assertTrue(gameBoard.getObject(1,1) instanceof ConveyorBelt);
+ //       assertTrue(gameBoard.getObject(1,2) instanceof Floor);
+
+*/
+        System.out.println(gameBoard.getObject(0,0));
+        System.out.println(gameBoard.getObject(1,0));
+        System.out.println(gameBoard.getObject(2,0));
+        System.out.println(gameBoard.getObject(0,1));
+        System.out.println(gameBoard.getObject(1,1));
+        System.out.println(gameBoard.getObject(2,1));
+
+
+
+        String result = level.substring(4);
+        System.out.println(result);
+        int counter = 0;
+        int columns = 3;
+        int rows = 2;
+        char[][] s = new char[rows][columns];
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                s[y][x] = result.charAt(counter);
+                System.out.println(s[y][x]);
+                System.out.println("y:" + y);
+                System.out.println("x:" + x);
+                counter++;
+            }
+            System.out.println();
+        }
+
+
     }
 }

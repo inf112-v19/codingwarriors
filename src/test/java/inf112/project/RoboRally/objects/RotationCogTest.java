@@ -49,7 +49,7 @@ public class RotationCogTest {
 	
 	@Test
 	public void noRotationCogShouldCauseDamage() {
-		for (int x=0; x < gameboard.getColums(); x++) {
+		for (int x = 0; x < gameboard.getColumns(); x++) {
 			for (int y=0; y < gameboard.getRows(); y++) {
 				IObjects tile = gameboard.getObject(x,y);
 				if (tile instanceof RotationCog) {

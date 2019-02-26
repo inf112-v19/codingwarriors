@@ -16,7 +16,7 @@ public class GameBoardTest {
     @Before
     public void setup() {
         testLevel1 =
-                "2C4R" +
+                "4C2R" +
                 "r..." +
                 "....";
         testBoard1 = new GameBoard(testLevel1);
@@ -24,12 +24,12 @@ public class GameBoardTest {
 
     @Test
     public void numberOfColumnsInBoard() {
-        assertEquals(2,testBoard1.getColums());
+        assertEquals(4,testBoard1.getColumns());
     }
 
     @Test
     public void numberOfRowsInBoard() {
-        assertEquals(4,testBoard1.getRows());
+        assertEquals(2,testBoard1.getRows());
     }
 
     @Test
@@ -55,9 +55,9 @@ public class GameBoardTest {
     @Test
     public void validMove() {
         assertTrue(testBoard1.moveValid(0,1));
-        assertTrue(testBoard1.moveValid(3,1));
+        assertTrue(testBoard1.moveValid(1,1));
         assertTrue(testBoard1.moveValid(0,0));
-        assertTrue(testBoard1.moveValid(3,0));
+        assertTrue(testBoard1.moveValid(1,0));
     }
 
     @Test
