@@ -16,12 +16,12 @@ public class ConveyorBeltTest {
 	
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		String boardSetup = "4C4R" +
-				".uu." +
+				".dd." +
 				"r..l" +
 				"r..l" +
-				".dd.";
+				".uu.";
 		this.gameBoard = new GameBoard(boardSetup);
 	}
 	
@@ -32,6 +32,9 @@ public class ConveyorBeltTest {
 		x=0;
 		y=0;
 		player = new Player(x,y);
+		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
+		assertEquals(tile.getSpeed(), 0);
+		tile.doAction(player);
 		assertEquals(player.getX(), x);
 		assertEquals(player.getY(), y);
 	}
@@ -41,9 +44,13 @@ public class ConveyorBeltTest {
 		x=1;
 		y=0;
 		player = new Player(x,y);
-		IObjects conveyorTile = gameBoard.getObject(player.getX(), player.getY());
-		assert(conveyorTile instanceof  ConveyorBelt);
-		player.movePlayer(conveyorTile.getDirection());
+		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
+		
+		// a small check that may reveal the gameboard to be the reason for failure, not the method
+		assert(tile instanceof  ConveyorBelt);
+		assertEquals(tile.getDirection(), GridDirection.NORTH);
+		
+		tile.doAction(player);
 		assertEquals(player.getX(), x);
 		assertEquals(player.getY(), y+1);
 	}
@@ -53,9 +60,13 @@ public class ConveyorBeltTest {
 		x=1;
 		y=3;
 		player = new Player(x,y);
-		IObjects conveyorTile = gameBoard.getObject(player.getX(), player.getY());
-		assert(conveyorTile instanceof  ConveyorBelt);
-		player.movePlayer(conveyorTile.getDirection());
+		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
+		
+		// a small check that may reveal the gameboard to be the reason for failure, not the method
+		assert(tile instanceof  ConveyorBelt);
+		assertEquals(tile.getDirection(), GridDirection.SOUTH);
+		
+		tile.doAction(player);
 		assertEquals(player.getX(), x);
 		assertEquals(player.getY(), y-1);
 	}
@@ -65,9 +76,13 @@ public class ConveyorBeltTest {
 		x=0;
 		y=1;
 		player = new Player(x,y);
-		IObjects conveyorTile = gameBoard.getObject(player.getX(), player.getY());
-		assert(conveyorTile instanceof  ConveyorBelt);
-		player.movePlayer(conveyorTile.getDirection());
+		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
+		
+		// a small check that may reveal the gameboard to be the reason for failure, not the method
+		assert(tile instanceof  ConveyorBelt);
+		assertEquals(tile.getDirection(), GridDirection.EAST);
+		
+		tile.doAction(player);
 		assertEquals(player.getX(), x+1);
 		assertEquals(player.getY(), y);
 	}
@@ -77,9 +92,13 @@ public class ConveyorBeltTest {
 		x=3;
 		y=1;
 		player = new Player(x,y);
-		IObjects conveyorTile = gameBoard.getObject(player.getX(), player.getY());
-		assert(conveyorTile instanceof  ConveyorBelt);
-		player.movePlayer(conveyorTile.getDirection());
+		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
+		
+		// a small check that may reveal the gameboard to be the reason for failure, not the method
+		assert(tile instanceof  ConveyorBelt);
+		assertEquals(tile.getDirection(), GridDirection.WEST);
+		
+		tile.doAction(player);
 		assertEquals(player.getX(), x-1);
 		assertEquals(player.getY(), y);
 	}

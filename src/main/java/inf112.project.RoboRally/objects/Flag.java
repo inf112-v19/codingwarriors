@@ -36,5 +36,6 @@ public class Flag implements IObjects {
     @Override
     public void doAction(Player player) {
         //TODO Implement when IPlayer has the needed methods
+        
     }
 }
