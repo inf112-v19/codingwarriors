@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.actors;
 
 import inf112.project.RoboRally.cards.*;
+import inf112.project.RoboRally.objects.Flag;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class Player implements IPlayer {
     private IDeck cardsInHand;
     private int numberOfDamageTokensRecieved;
     private IProgramRegister register;
+    private int flagsToVisit;
+    private int flagsVisited;
 
 
     public Player(String name, int x, int y) {
@@ -29,6 +32,7 @@ public class Player implements IPlayer {
         this.y=y;
     }
     
+    // For future use, if we need more constructors for the Player
     private void setDefaultValues() {
         this.x=0;
         this.y=0;
@@ -39,6 +43,8 @@ public class Player implements IPlayer {
         this.register = new ProgramRegister();
         this.backupX=this.x;
         this.backupY=this.y;
+        this.flagsToVisit=Flag.getNumberOfFlags();
+        this.flagsVisited=0;
     }
 
     @Override
@@ -62,6 +68,19 @@ public class Player implements IPlayer {
     public void setNewBackupPoint(int x, int y) {
         this.backupX=x;
         this.backupY=y;
+    }
+    
+    public void setThisPointAsNewBackup() {
+        this.backupX=this.x;
+        this.backupY=this.y;
+    }
+    
+    public int getFlagsVisited() {
+        return flagsVisited;
+    }
+    
+    public void addNewFlagVisited() {
+        flagsVisited++;
     }
     
     @Override

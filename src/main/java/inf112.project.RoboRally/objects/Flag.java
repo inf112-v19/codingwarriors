@@ -4,6 +4,9 @@ import inf112.project.RoboRally.actors.Player;
 
 public class Flag implements IObjects {
 
+    private static int numberOfFlags=0;
+    
+    private int flagNumber;
     private int speed;
     private GridDirection direction;
     private int damage;
@@ -12,6 +15,7 @@ public class Flag implements IObjects {
         this.speed=0;
         this.direction=null;
         this.damage=0;
+        this.flagNumber=++numberOfFlags;
     }
     @Override
     public int getSpeed() {
@@ -35,7 +39,17 @@ public class Flag implements IObjects {
     
     @Override
     public void doAction(Player player) {
-        //TODO Implement when IPlayer has the needed methods
-        
+        player.setThisPointAsNewBackup();
+        if (player.getFlagsVisited() == this.flagNumber-1) {
+            player.addNewFlagVisited();
+        }
+    }
+    
+    public static int getNumberOfFlags() {
+        return Flag.numberOfFlags;
+    }
+    
+    public int getFlagNumber() {
+        return flagNumber;
     }
 }
