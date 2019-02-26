@@ -484,14 +484,19 @@ public class DeckTest {
 
 
 
-
+        String result = level.substring(4);
+        System.out.println(result);
+        int counter = 0;
         int columns = 3;
         int rows = 2;
-        int[][] s = new int[rows][columns];
-        for (int y = rows -1; y >= 0; y--) {
+        char[][] s = new char[rows][columns];
+        for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
-                s[y][x] = x;
-                System.out.print(x);
+                s[y][x] = result.charAt(counter);
+                System.out.println(s[y][x]);
+                System.out.println("y:" + y);
+                System.out.println("x:" + x);
+                counter++;
             }
             System.out.println();
         }

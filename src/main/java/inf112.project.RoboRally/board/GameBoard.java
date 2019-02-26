@@ -11,9 +11,9 @@ public class GameBoard {
     public GameBoard(String level) {
         int counter = extractDimensions(level);
         board = new IObjects[rows][columns];
-        for (int y = rows -1; y >= 0; y--) {
-            for (int x = 0; x < columns; x++) {
-                board[y][x] = factory(level.charAt(counter));
+        for (int x = rows -1; x >= 0; x--) {
+            for (int y = 0; y < columns; y++) {
+                board[x][y] = factory(level.charAt(counter));
                 counter++;
             }
         }
@@ -66,12 +66,14 @@ public class GameBoard {
 
     /**
      * The content of the board at location x,y
-     * @param x coordinate
-     * @param y coordinate
+     * @param row
+     *             The x-coordinate of the object.
+     * @param column
+     *              The y-coordinate of the object.
      * @return the iObject at location x,y of the board
      */
-    public IObjects getObject(int x, int y) {
-        return board[y][x];
+    public IObjects getObject(int column, int row) {
+        return board[row][column];
     }
 
     private boolean locationInsideBoard(int x, int y){
