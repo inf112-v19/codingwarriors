@@ -6,7 +6,7 @@ import inf112.project.RoboRally.objects.GridDirection;
 import java.util.ArrayList;
 
 public class Player implements IPlayer {
-    private int lives = 3;
+    private int lives;
     private GridDirection playerDirection;
     private int x,y;
     private String name;
@@ -23,12 +23,18 @@ public class Player implements IPlayer {
         this.cardsInHand = new Deck();
         this.numberOfDamageTokensRecieved = 0;
         this.register = new ProgramRegister();
+        this.lives = 3;
     }
 
     public Player(int x, int y) {
         this.playerDirection = GridDirection.NORTH;
         this.x=x;
         this.y=y;
+
+        this.cardsInHand = new Deck();
+        this.numberOfDamageTokensRecieved = 0;
+        this.register = new ProgramRegister();
+        this.lives = 3;
     }
 
     @Override
@@ -116,7 +122,7 @@ public class Player implements IPlayer {
 
     @Override
     public void lockNRegisters(int numberOfRegisters) {
-        int registerSlot = this.register.getNumberOfRegisterSlots();
+        int registerSlot = (this.register.getNumberOfRegisterSlots() - 1);
         while (numberOfRegisters > 0) {
             this.register.lockRegisterSlotNumber(registerSlot);
             registerSlot--;
