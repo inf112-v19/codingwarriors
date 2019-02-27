@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.cards;
 
-import com.sun.xml.internal.bind.annotation.XmlLocation;
+// import com.sun.xml.internal.bind.annotation.XmlLocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
