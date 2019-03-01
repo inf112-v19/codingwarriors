@@ -2,12 +2,13 @@ package inf112.project.RoboRally.cards;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ProgramRegister implements IProgramRegister{
 
 
     private IDeck register;
-    private ArrayList<Boolean> isLocked;
+    private List<Boolean> isLocked;
     private final int NUMBER_OF_SLOTS = 5;
 
 

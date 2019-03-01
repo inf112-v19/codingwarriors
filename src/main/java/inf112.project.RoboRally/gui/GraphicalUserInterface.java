@@ -20,7 +20,7 @@ import inf112.project.RoboRally.objects.ConveyorBelt;
 import inf112.project.RoboRally.objects.Floor;
 import inf112.project.RoboRally.objects.IObjects;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GraphicalUserInterface extends ApplicationAdapter {
     private IGame game;
@@ -188,7 +188,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     }
 
     private void drawPlayers() {
-        ArrayList<IPlayer> players= game.getPlayers();
+        List<IPlayer> players= game.getPlayers();
         int animationSpeed = 4;
         for (int i = 0; i < players.size(); i++) {
             int xPosPlayer = boardScreen.getStartX(players.get(i).getX());

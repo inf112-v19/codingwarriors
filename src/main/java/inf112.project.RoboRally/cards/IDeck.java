@@ -1,7 +1,7 @@
 package inf112.project.RoboRally.cards;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 public interface IDeck extends Iterable<ICard>{
 
@@ -13,7 +13,7 @@ public interface IDeck extends Iterable<ICard>{
      *              The number of requested cards.
      * @return The cards dealt to the requesting player.
      */
-    ArrayList<ICard> handOutNCards(Integer num);
+    List<ICard> handOutNCards(Integer num);
 
 
     /**
