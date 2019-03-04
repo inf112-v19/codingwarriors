@@ -12,6 +12,24 @@ møter, og om de ikke kan varsels det i fra tidlig.
 Møter og project borad har fungert bra for oss.
 - Dette spiller igjen innpå dette med brukerhistorier, enkelte har fått større oppgaver som har krevd mer arbeid. (...)
 - Referater: 
+#### Rapport 12.02.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Siden dette var første møte etter innleveringen var det på tide å fordele nye oppgaver og få oversikt over prosjektet videre. Enkelte krav fant vi
+ut var ganske like så videre arbeid krevde nøyere koordinasjon mellom medlemene. 
+
+#### Rapport 19.02.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Det var fokus rundt hvilke krav som var mulig å fullføre til neste innlevering. Utenom dette gikk møtet for det meste ut på å kode. 
+
+#### Rapport 26.02.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore
+Fikk oblig ut samme dag så det ble dermed ett møte dedikert til gjennomgang av oppgaven. Vi kommuniserte med Kim (bortreist) vha. slack slik at 
+han også kunne komme med innspill.
+
+#### Rapport 01.03.19
+##### Oppmøte: Jakob, Jan-Erik, Tore
+Veldig kort møte ettersom at de fleste hadde mye annet de måtte gjøre. Liten diskusjon om test som ikke fungerte - fikk ikke oppklaring i problemet. 
+
 - Punkter:
 	- Bruke project boardet oftere og bedre
 	- Dele opp oppgaver i mindre brukerhistorier
