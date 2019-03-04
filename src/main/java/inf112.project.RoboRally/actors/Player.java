@@ -1,34 +1,51 @@
 package inf112.project.RoboRally.actors;
 
-import inf112.project.RoboRally.cards.Action;
-import inf112.project.RoboRally.cards.Deck;
-import inf112.project.RoboRally.cards.ICard;
-import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.cards.*;
+import inf112.project.RoboRally.objects.Flag;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.ArrayList;
 
 public class Player implements IPlayer {
-    private int lives = 3;
+    private int lives;
     private GridDirection playerDirection;
     private int x,y;
+    private int backupX, backupY;
     private String name;
     private IDeck cardsInHand;
     private int numberOfDamageTokensRecieved;
+    private IProgramRegister register;
+    private int flagsToVisit;
+    private int flagsVisited;
+
 
     public Player(String name, int x, int y) {
-        this.playerDirection = GridDirection.NORTH;
+        setDefaultValues();
         this.x = x;
         this.y = y;
         this.name = name;
-        this.cardsInHand = new Deck();
-        this.numberOfDamageTokensRecieved = 0;
     }
 
     public Player(int x, int y) {
+        setDefaultValues();
+        this.x = x;
+        this.y = y;
+    }
+
+    // For future use, if we need more constructors for the Player
+    private void setDefaultValues() {
+        this.x = 0;
+        this.y = 0;
+        this.name = "";
         this.playerDirection = GridDirection.NORTH;
-        this.x=x;
-        this.y=y;
+        this.cardsInHand = new Deck();
+        this.numberOfDamageTokensRecieved = 0;
+        this.lives = 3;
+        this.register = new ProgramRegister();
+        this.backupX = this.x;
+        this.backupY = this.y;
+        this.flagsToVisit = Flag.getNumberOfFlags();
+        this.flagsVisited = 0;
     }
 
     @Override
@@ -39,6 +56,32 @@ public class Player implements IPlayer {
     @Override
     public int getY() {
         return y;
+    }
+
+    public int getBackupX() {
+        return backupX;
+    }
+
+    public int getBackupY() {
+        return backupY;
+    }
+
+    public void setNewBackupPoint(int x, int y) {
+        this.backupX=x;
+        this.backupY=y;
+    }
+
+    public void setThisPointAsNewBackup() {
+        this.backupX=this.x;
+        this.backupY=this.y;
+    }
+
+    public int getFlagsVisited() {
+        return flagsVisited;
+    }
+
+    public void addNewFlagVisited() {
+        flagsVisited++;
     }
 
     @Override
@@ -110,13 +153,18 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         if (this.lives <= 0) {
-
+// TODO: finish this...
         }
     }
 
     @Override
     public void lockNRegisters(int numberOfRegisters) {
-        // Lock registers from 1 to numberOfRegisters.
+        int registerSlot = (this.register.getNumberOfRegisterSlots() - 1);
+        while (numberOfRegisters > 0) {
+            this.register.lockRegisterSlotNumber(registerSlot);
+            registerSlot--;
+            numberOfRegisters--;
+        }
     }
 
     @Override
@@ -151,7 +199,9 @@ public class Player implements IPlayer {
 
     @Override
     public void respawnAtLastArchiveMarker() {
-
+        this.x=backupX;
+        this.y=backupY;
+        takeOneDamage();
     }
 
     @Override

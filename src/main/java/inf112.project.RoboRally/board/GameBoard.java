@@ -1,27 +1,26 @@
 package inf112.project.RoboRally.board;
 
-import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.objects.*;
 import inf112.project.RoboRally.objects.IObjects;
 
 public class GameBoard {
     private int rows;
-    private int colums;
+    private int columns;
     private IObjects [][] board;
 
     public GameBoard(String level) {
         int counter = extractDimensions(level);
-        board = new IObjects[colums][rows];
-        for (int y = colums-1; y >= 0; y--) {
-            for (int x = 0; x < rows; x++) {
-                board[y][x] = factory(level.charAt(counter));
+        board = new IObjects[rows][columns];
+        for (int x = rows -1; x >= 0; x--) {
+            for (int y = 0; y < columns; y++) {
+                board[x][y] = factory(level.charAt(counter));
                 counter++;
             }
         }
     }
 
     private int extractDimensions(String level) {
-        this.colums = Integer.parseInt(level.substring(0,level.indexOf("C")));
+        this.columns = Integer.parseInt(level.substring(0,level.indexOf("C")));
         this.rows = Integer.parseInt(level.substring(level.indexOf("C")+1,level.indexOf("R")));
         return level.indexOf("R")+1; // returns an integer containing the index of the start of board
     }
@@ -59,28 +58,35 @@ public class GameBoard {
 
     /**
      *
-     * @return number of colums of this board
+     * @return number of columns of this board
      */
-    public int getColums() {
-        return colums;
+    public int getColumns() {
+        return columns;
     }
 
     /**
      * The content of the board at location x,y
-     * @param x coordinate
-     * @param y coordinate
+     * @param row
+     *             The x-coordinate of the object.
+     * @param column
+     *              The y-coordinate of the object.
      * @return the iObject at location x,y of the board
      */
-    public IObjects getObject(int x, int y) {
-        return board[y][x];
+    public IObjects getObject(int column, int row) {
+        return board[row][column];
     }
 
     private boolean locationInsideBoard(int x, int y){
-        return x >= 0 && x < rows && y >= 0 && y < colums;
+        return x >= 0 && x < rows && y >= 0 && y < columns;
     }
 
     public boolean moveValid(int x, int y) {
         return locationInsideBoard(x, y);
+    }
+    
+    public void getObjectType(int x, int y) {
+        IObjects object = getObject(x,y);
+        System.out.println(object.getClass());
     }
 
 }

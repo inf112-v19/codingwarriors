@@ -2,6 +2,8 @@ package inf112.project.RoboRally.objects;
 
 import inf112.project.RoboRally.actors.Player;
 
+import java.util.Random;
+
 public class RotationCog implements IObjects {
     private int speed;
     private GridDirection direction;

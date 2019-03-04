@@ -4,14 +4,16 @@ import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 public class RotationCogTest {
-	String level = "3C3R" +
+	private String level = "3C3R" +
 			".c." +
 			"C.C" +
 			".c.";
-	GameBoard gameboard = new GameBoard(level);
+	private GameBoard gameboard = new GameBoard(level);
 	
 	@Test
 	public void noRotationShouldRetainPlayerDirection() {
@@ -41,12 +43,13 @@ public class RotationCogTest {
 	
 	@Test
 	public void getDirection() {
-		fail("Not implemented yet");
+		RotationCog rotationCog = new RotationCog(Rotation.LEFT);
+		assertEquals(rotationCog.getDirection(), GridDirection.NORTH); //default setting
 	}
 	
 	@Test
 	public void noRotationCogShouldCauseDamage() {
-		for (int x=0; x < gameboard.getColums(); x++) {
+		for (int x = 0; x < gameboard.getColumns(); x++) {
 			for (int y=0; y < gameboard.getRows(); y++) {
 				IObjects tile = gameboard.getObject(x,y);
 				if (tile instanceof RotationCog) {
@@ -58,6 +61,10 @@ public class RotationCogTest {
 	
 	@Test
 	public void getRotation() {
-		fail("Not implemented yet");
+		Random random = new Random();
+		GridDirection direction = GridDirection.listOfDirections()[random.nextInt(GridDirection.listOfDirections().length)];
+		Rotation rotation = Rotation.getRandomRotation();
+		RotationCog rotationCog = new RotationCog(rotation);
+		assertEquals(rotationCog.getRotation(), rotation);
 	}
 }

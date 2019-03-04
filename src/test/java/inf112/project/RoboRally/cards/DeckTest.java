@@ -1,8 +1,14 @@
 package inf112.project.RoboRally.cards;
 
+import inf112.project.RoboRally.board.GameBoard;
+import inf112.project.RoboRally.objects.ConveyorBelt;
+import inf112.project.RoboRally.objects.Flag;
+import inf112.project.RoboRally.objects.Floor;
+import inf112.project.RoboRally.objects.RotationCog;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -374,5 +380,127 @@ public class DeckTest {
                 fail("Deck is not shuffled evenly.");
             }
         }
+    }
+
+    @Test
+    public void addingACardShouldAddTheCardToTheBottomOfTheDeck() {
+        ICard card = new Card(400, Action.ROTATE_LEFT);
+        assertEquals(0, deck.getSize());
+
+        deck.addCardToDeck(card);
+        assertEquals(1, deck.getSize());
+        assertEquals(card, deck.getCardAtPosition(0));
+
+        ICard anotherCard = new Card(100, Action.U_TURN);
+        deck.addCardToDeck(anotherCard);
+
+        assertEquals(2, deck.getSize());
+        assertEquals(anotherCard, deck.getCardAtPosition(1));
+        assertNotEquals(anotherCard, deck.getCardAtPosition(0));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addingNullToADeckShouldFail() {
+        deck.addCardToDeck(null);
+    }
+
+    @Test
+    public void addingACardToPositionShouldWork() {
+        ICard card1 = new Card(300, Action.ROTATE_LEFT);
+        deck.addCardToDeckAtPosition(0, card1);
+        assertEquals(1, deck.getSize());
+        assertEquals(card1, deck.getCardAtPosition(0));
+
+        ICard card2 = new Card(530, Action.FORWARD_3);
+        deck.addCardToDeckAtPosition(0, card2);
+        assertEquals(2, deck.getSize());
+        assertEquals(card1, deck.getCardAtPosition(1));
+        assertEquals(card2, deck.getCardAtPosition(0));
+
+        ICard card3 = new Card(300, Action.U_TURN);
+        deck.addCardToDeckAtPosition(1, card3);
+        assertEquals(3, deck.getSize());
+        assertEquals(card1, deck.getCardAtPosition(2));
+        assertEquals(card2, deck.getCardAtPosition(0));
+        assertEquals(card3, deck.getCardAtPosition(1));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addingACardToDeckShouldFailIfPositionIsNegative() {
+        ICard card = new Card(200, Action.FORWARD_3);
+        deck.addCardToDeckAtPosition(-1, card);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addingACardToDeckShouldFailIfPositionIsTooHigh() {
+        ICard card = new Card(200, Action.FORWARD_3);
+        deck.addCardToDeckAtPosition(1, card);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addingACardToDeckShouldFailIfPositionIsNull() {
+        ICard card = new Card(200, Action.FORWARD_3);
+        deck.addCardToDeckAtPosition(null, card);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void addingACardToDeckShouldFailIfCardIsNull() {
+        deck.addCardToDeckAtPosition(0, null);
+    }
+
+
+    @Test
+    public void name() {
+        String level = "3C2R"
+                + "cfr"
+                + ".r.";
+
+        GameBoard gameBoard = new GameBoard(level);
+/*
+        assertTrue(gameBoard.getObject(0,0) instanceof RotationCog);
+        assertTrue(gameBoard.getObject(1,0) instanceof Flag);
+        assertTrue(gameBoard.getObject(2,0) instanceof ConveyorBelt);
+        assertTrue(gameBoard.getObject(0,1) instanceof Floor);
+        assertTrue(gameBoard.getObject(1,1) instanceof ConveyorBelt);
+        assertTrue(gameBoard.getObject(2,1) instanceof Floor);
+
+
+
+
+ //       assertTrue(gameBoard.getObject(0,0) instanceof RotationCog);
+  //      assertTrue(gameBoard.getObject(0,1) instanceof Flag);
+ //       assertTrue(gameBoard.getObject(0,2) instanceof ConveyorBelt);
+ //       assertTrue(gameBoard.getObject(1,0) instanceof Floor);
+  //      assertTrue(gameBoard.getObject(1,1) instanceof ConveyorBelt);
+ //       assertTrue(gameBoard.getObject(1,2) instanceof Floor);
+
+*/
+        System.out.println(gameBoard.getObject(0,0));
+        System.out.println(gameBoard.getObject(1,0));
+        System.out.println(gameBoard.getObject(2,0));
+        System.out.println(gameBoard.getObject(0,1));
+        System.out.println(gameBoard.getObject(1,1));
+        System.out.println(gameBoard.getObject(2,1));
+
+
+
+        String result = level.substring(4);
+        System.out.println(result);
+        int counter = 0;
+        int columns = 3;
+        int rows = 2;
+        char[][] s = new char[rows][columns];
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                s[y][x] = result.charAt(counter);
+                System.out.println(s[y][x]);
+                System.out.println("y:" + y);
+                System.out.println("x:" + x);
+                counter++;
+            }
+            System.out.println();
+        }
+
+
     }
 }

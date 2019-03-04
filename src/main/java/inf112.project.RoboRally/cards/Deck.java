@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.cards;
 
-import com.sun.xml.internal.bind.annotation.XmlLocation;
+// import com.sun.xml.internal.bind.annotation.XmlLocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,18 +32,34 @@ public class Deck implements IDeck{
     }
 
     @Override
+    public void addCardToDeckAtPosition(Integer index, ICard card) {
+        if (index == null
+                || index > this.getSize()
+                || index < 0) {
+            throw new IllegalArgumentException("Position is not valid.");
+        }
+        if (card == null) {
+            throw new IllegalArgumentException("Card is null");
+        }
+        this.cardDeck.add(index, card);
+    }
+
+    @Override
     public void addCardToDeck(ICard card) {
+        if (card == null) {
+            throw new IllegalArgumentException("null is not a valid card");
+        }
         this.cardDeck.add(card);
     }
 
     @Override
-    public void removeCard(Integer position) {
+    public ICard removeCard(Integer position) {
         if (position == null
                 || position >= this.getSize()
                 || position < 0) {
             throw new IllegalArgumentException("Position is not valid.");
         }
-        this.cardDeck.remove((int) position);
+        return this.cardDeck.remove((int) position);
     }
 
     @Override
@@ -54,15 +70,6 @@ public class Deck implements IDeck{
             throw new IllegalArgumentException("Position is not valid.");
         }
         return cardDeck.get(position).toString();
-    }
-
-    public void addCard(int index, ICard card) {
-        cardDeck.add(index,card);
-    }
-
-    public ICard removeCard(int index) {
-        if (index > this.getSize() || cardDeck.isEmpty()) { return null; }
-        return cardDeck.remove(index);
     }
 
     @Override
@@ -157,8 +164,7 @@ public class Deck implements IDeck{
 
     @Override
     public ICard getCardAtPosition(Integer position) {
-        System.out.println(position);
-        if (position >= this.cardDeck.size() || position < 0) {
+        if (position == null || position >= this.cardDeck.size() || position < 0) {
             throw new IllegalArgumentException("Position is out of bounds");
         }
         return this.cardDeck.get(position);
@@ -178,5 +184,4 @@ public class Deck implements IDeck{
     public void removeAllCardsFromDeck() {
         this.cardDeck.clear();
     }
-
 }
