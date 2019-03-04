@@ -48,6 +48,12 @@ public interface IPlayer {
 
 
     /**
+     * Discard one damage token
+     */
+    void discardOneDamage();
+
+
+    /**
      * Check the amount of damage the player has sustained,
      * and trigger effects accordingly.
      */

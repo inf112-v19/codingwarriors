@@ -27,7 +27,10 @@ public class SingleWrench implements IObjects {
 
     @Override
     public void doAction(Player player) {
-        //TODO Discard one damage token
-        //TODO Update backup position
+        player.discardOneDamage();
+
+
+        //TODO check if backup position is available?
+        player.setThisPointAsNewBackup();
 }
 }

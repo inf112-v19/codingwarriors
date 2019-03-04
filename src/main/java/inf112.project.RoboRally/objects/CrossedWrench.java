@@ -25,9 +25,10 @@ public class CrossedWrench implements IObjects {
 
     @Override
     public void doAction(Player player) {
-        // TODO Discard one damage token and draw one option card
+        player.discardOneDamage();
 
-        //TODO Update backup position
+        //TODO check if backup position is available?
+        player.setThisPointAsNewBackup();
 
     }
 }
