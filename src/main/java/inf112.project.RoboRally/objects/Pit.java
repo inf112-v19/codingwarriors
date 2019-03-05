@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public class Pit implements IObjects {
     private int speed;
@@ -36,7 +36,7 @@ public class Pit implements IObjects {
     }
     
     @Override
-    public void doAction(Player player) {
-        //TODO To be implemented
+    public void doAction(IPlayer player) {
+        player.respawnAtLastArchiveMarker();
     }
 }

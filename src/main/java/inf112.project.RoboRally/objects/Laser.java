@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public class Laser implements IObjects {
     private int speed;
@@ -37,7 +37,7 @@ public class Laser implements IObjects {
     }
     
     @Override
-    public void doAction(Player player) {
+    public void doAction(IPlayer player) {
         // TODO To be implemented
     }
 }

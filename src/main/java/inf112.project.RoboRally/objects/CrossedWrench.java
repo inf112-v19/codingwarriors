@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 
 public class CrossedWrench implements IObjects {
@@ -36,7 +37,7 @@ public class CrossedWrench implements IObjects {
     }
 
     @Override
-    public void doAction(Player player) {
+    public void doAction(IPlayer player) {
         player.discardOneDamage();
 
         player.setThisPointAsNewBackup();

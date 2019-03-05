@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public interface IObjects {
 
@@ -31,6 +31,6 @@ public interface IObjects {
     /**
      * The object's specific action
      */
-    void doAction(Player player);
+    void doAction(IPlayer player);
     
 }

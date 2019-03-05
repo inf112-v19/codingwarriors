@@ -3,7 +3,6 @@ package inf112.project.RoboRally.objects;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Test;
-import org.lwjgl.Sys;
 
 import static org.junit.Assert.*;
 

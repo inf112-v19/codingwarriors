@@ -1,8 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
-
-import java.util.Random;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public class RotationCog implements IObjects {
     private int speed;
@@ -38,7 +36,7 @@ public class RotationCog implements IObjects {
     }
     
     @Override
-    public void doAction(Player player) {
+    public void doAction(IPlayer player) {
         if (rotation == Rotation.LEFT) {
             player.rotateLeft();
         } else if (rotation == Rotation.RIGHT) {

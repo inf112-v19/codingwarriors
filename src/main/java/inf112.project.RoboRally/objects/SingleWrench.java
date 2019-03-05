@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public class SingleWrench implements IObjects {
     private int speed;
@@ -36,7 +36,7 @@ public class SingleWrench implements IObjects {
     }
 
     @Override
-    public void doAction(Player player) {
+    public void doAction(IPlayer player) {
         player.discardOneDamage();
 
         player.setThisPointAsNewBackup();
