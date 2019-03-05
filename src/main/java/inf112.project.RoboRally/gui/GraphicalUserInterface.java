@@ -221,7 +221,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         int offset = 1;
         for (int i = 0; i < boardScreen.getHeight(); i++) {
             for (int j = 0; j < boardScreen.getWidth(); j++) {
-                IObjects object = game.getBoard().getObject(j,i);
+                IObjects object = game.getBoard().getObject(i,j);
                 if (object instanceof Floor) {
                     batch.draw(floor,
                             boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
