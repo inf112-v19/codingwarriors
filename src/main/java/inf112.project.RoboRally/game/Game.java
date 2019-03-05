@@ -18,6 +18,7 @@ public class Game implements IGame {
 
 
     private IDeck programCards;
+    private IDeck discardedProgramCards;
     private List<IPlayer> players; // All the participating players, ordered after player creation.
     // Certain events that prioritises starting order, may use this list for reference.
     // For example: players[0] has higher priority than players[1].
@@ -236,6 +237,7 @@ public class Game implements IGame {
                 ".r..............";
         this.board = new GameBoard(gameBoardLayout);
         this.programCards = new Deck();
+        this.discardedProgramCards = new Deck();
         this.programCards.createProgramCardsDeck();
         this.everyFlagHasBeenVisited = false;
         this.numberOfPlayersLeftInTheGame = players.size();
@@ -311,6 +313,7 @@ public class Game implements IGame {
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
                 executingGameBoardObjects();
+                return;
         }
 
     }
@@ -329,13 +332,41 @@ public class Game implements IGame {
 
     private void executingInstructions() {
         if (selectedCards[0].getSize() == 0) {
+            setupCardSelectionForNewRound();
             setGameStatus(GameStatus.SELECT_CARDS);
+
             return;
         }
         for (int i = 0; i < players.size(); i++) {
-            players.get(i).movePlayer(selectedCards[i].removeCard(selectedCards[i].getSize() - 1));
+            ICard currentCard = selectedCards[i].removeCard(selectedCards[i].getSize() - 1);
+            players.get(i).movePlayer(currentCard);
+            discardedProgramCards.addCardToDeck(currentCard);
         }
         setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+    }
+
+    private void setupCardSelectionForNewRound() {
+        // all un used cards is moved to discard pile
+        for (IPlayer player: players) {
+            IDeck cardsInPlayerDeck = player.getCardsInHand();
+            while (cardsInPlayerDeck.getSize() != 0) {
+                ICard unUsedPlayerCard = cardsInPlayerDeck.removeCard(0);
+                ;
+                discardedProgramCards.addCardToDeck(unUsedPlayerCard);
+            }
+        }
+        // new cards is dealt
+        for (IPlayer player: players) {
+            IDeck playerCards = player.getCardsInHand();
+            while (playerCards.getSize() != 7) {
+                if (programCards.getSize() == 0) {
+                    int discardSize = discardedProgramCards.getSize();
+                    programCards.addCollectionOfCardsToDeck(discardedProgramCards.handOutNCards(discardSize));
+                    programCards.shuffle();
+                }
+                playerCards.addCardToDeck(programCards.removeCard(0));
+            }
+        }
     }
 
     @Override
