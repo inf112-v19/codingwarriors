@@ -8,8 +8,8 @@ import inf112.project.RoboRally.objects.RotationCog;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -353,7 +353,7 @@ public class DeckTest {
     public void shufflingTheDeckShouldLeaveItShuffled() {
         deck.createProgramCardsDeck();
         assertEquals(NUMBER_OF_CARDS_IN_A_PROGRAM_CARDS_DECK, deck.getSize());
-        ArrayList<ICard> originalCardPositions = new ArrayList<>();
+        List<ICard> originalCardPositions = new ArrayList<>();
         for (int i = 0; i < deck.getSize(); i++) {
             originalCardPositions.add(deck.getCardAtPosition(i));
         }

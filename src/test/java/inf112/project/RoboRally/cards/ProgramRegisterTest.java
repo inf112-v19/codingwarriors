@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -153,7 +154,7 @@ public class ProgramRegisterTest {
 
     @Test
     public void addingACollectionOfCardsToTheRegisterShouldAddAllCardsToTheRegister() {
-        ArrayList<ICard> listOfCards = new ArrayList<>();
+        List<ICard> listOfCards = new ArrayList<>();
         ICard card1 = new Card(100, Action.ROTATE_LEFT);
         ICard card2 = new Card(200, Action.ROTATE_RIGHT);
         ICard card3 = new Card(300, Action.FORWARD_1);
@@ -182,7 +183,7 @@ public class ProgramRegisterTest {
     @Test (expected = IllegalArgumentException.class)
     public void addingACollectionOfTooManyCardsShouldFail() {
         ICard card = new Card(120, Action.ROTATE_LEFT);
-        ArrayList<ICard> listOfCards = new ArrayList<>();
+        List<ICard> listOfCards = new ArrayList<>();
         for (int i = 0; i <= register.getNumberOfRegisterSlots(); i++) {
             listOfCards.add(card);
         }
@@ -295,7 +296,7 @@ public class ProgramRegisterTest {
 
     @Test
     public void clearingTheRegisterShouldReplaceAllCardsFromSlotsThatAreNotLocked() {
-        ArrayList<ICard> listOfCards = new ArrayList<>();
+        List<ICard> listOfCards = new ArrayList<>();
         ICard card1 = new Card(100, Action.ROTATE_LEFT);
         ICard card2 = new Card(200, Action.ROTATE_RIGHT);
         ICard card3 = new Card(300, Action.FORWARD_1);
@@ -328,7 +329,7 @@ public class ProgramRegisterTest {
 
     @Test
     public void clearingTheRegisterShouldNotReplaceCardsInLockedSlots() {
-        ArrayList<ICard> listOfCards = new ArrayList<>();
+        List<ICard> listOfCards = new ArrayList<>();
         ICard card1 = new Card(100, Action.ROTATE_LEFT);
         ICard card2 = new Card(200, Action.ROTATE_RIGHT);
         ICard card3 = new Card(300, Action.FORWARD_1);

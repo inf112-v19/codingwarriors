@@ -9,6 +9,7 @@ import inf112.project.RoboRally.cards.IDeck;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static inf112.project.RoboRally.game.GameStatus.*;
 
@@ -17,10 +18,10 @@ public class Game implements IGame {
 
 
     private IDeck programCards;
-    private ArrayList<IPlayer> players; // All the participating players, ordered after player creation.
+    private List<IPlayer> players; // All the participating players, ordered after player creation.
     // Certain events that prioritises starting order, may use this list for reference.
     // For example: players[0] has higher priority than players[1].
-    private ArrayList<IPlayer> activePlayers; // Players that are not incapacitated.
+    private List<IPlayer> activePlayers; // Players that are not incapacitated.
     private GameBoard board;
     private int numberOfPlayersLeftInTheGame;
     private boolean everyFlagHasBeenVisited;
@@ -267,12 +268,12 @@ public class Game implements IGame {
     }
 
     @Override
-    public ArrayList<IPlayer> getActivePlayers() {
+    public List<IPlayer> getActivePlayers() {
         return activePlayers;
     }
 
     @Override
-    public ArrayList<IPlayer> getPlayers() {
+    public List<IPlayer> getPlayers() {
         return players;
     }
 

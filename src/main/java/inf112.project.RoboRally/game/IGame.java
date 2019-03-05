@@ -4,7 +4,7 @@ import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.IDeck;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface IGame {
 
@@ -80,7 +80,7 @@ public interface IGame {
      *
      * @return The list of active players.
      */
-    ArrayList<IPlayer> getActivePlayers();
+    List<IPlayer> getActivePlayers();
 
 
     /**
@@ -88,7 +88,7 @@ public interface IGame {
      *
      * @return The list of players.
      */
-    ArrayList<IPlayer> getPlayers();
+    List<IPlayer> getPlayers();
 
 
     /**
