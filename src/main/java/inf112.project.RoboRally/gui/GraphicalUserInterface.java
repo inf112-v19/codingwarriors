@@ -120,7 +120,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                 int index = cardScreen.getTileIndex(y);
                 selectCards(index);
             }
-        } else if (Gdx.input.justTouched() && game.getTheCurrentGameStatus() == GameStatus.EXECUTING_INSTRUCTIONS) {
+        } else if (Gdx.input.justTouched()) {
             game.doTurn();
         }
     }
@@ -148,6 +148,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
             game.setUpTurn(selectedCards);
             currentPlayerIndex = 0;
             game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+
         }
     }
 
