@@ -27,7 +27,6 @@ public class CrossedWrench implements IObjects {
     public void doAction(Player player) {
         player.discardOneDamage();
 
-        //TODO check if backup position is available?
         player.setThisPointAsNewBackup();
 
     }
