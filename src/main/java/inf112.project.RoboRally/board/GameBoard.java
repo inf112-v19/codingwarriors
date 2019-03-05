@@ -44,6 +44,8 @@ public class GameBoard {
                 return new RotationCog(Rotation.LEFT);
             case 'C':
                 return new RotationCog(Rotation.RIGHT);
+            case 'w':
+                return new SingleWrench();
             default:
                 return new Floor();
         }
