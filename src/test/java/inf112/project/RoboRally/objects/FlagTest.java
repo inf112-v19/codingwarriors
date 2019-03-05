@@ -17,8 +17,8 @@ public class FlagTest {
 	public void flagShouldUpdateBackupPoint() {
 		Player player = new Player(0,0);
 		int oldBackupX=player.getBackupX(), oldBackupY=player.getBackupY();
-		//player.movePlayer(GridDirection.NORTH);
-		//player.movePlayer(GridDirection.EAST);
+		player.movePlayer(GridDirection.NORTH);
+		player.movePlayer(GridDirection.EAST);
 		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
 		gameBoard.getObject(player.getX(), player.getY());
 		
