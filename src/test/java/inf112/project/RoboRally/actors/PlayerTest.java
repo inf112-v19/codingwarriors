@@ -23,7 +23,7 @@ public class PlayerTest {
                 "...l" +
                 "..d.";
         this.gameBoard = new GameBoard(boardSetup);
-        this.player = new Player(1, 1);
+        this.player = new Player("a",1, 1);
         //this.card = new Card(100, FORWARD_1);
     }
 
