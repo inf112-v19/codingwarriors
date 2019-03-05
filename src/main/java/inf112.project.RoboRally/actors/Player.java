@@ -155,7 +155,7 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         if (this.lives <= 0) {
-            //out of the game...
+            //TODO out of the game...
         }
     }
 

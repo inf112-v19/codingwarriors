@@ -39,7 +39,7 @@ public class Flag implements IObjects {
     @Override
     public void doAction(Player player) {
         player.setThisPointAsNewBackup();
-        if (player.getFlagsVisited() == this.flagNumber-1) {
+        if (player.getFlagsVisited() == this.flagNumber) {
             player.addNewFlagVisited();
         }
     }
