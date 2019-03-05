@@ -26,12 +26,6 @@ public class Player implements IPlayer {
         this.name = name;
     }
 
-    public Player(int x, int y) {
-        setDefaultValues();
-        this.x = x;
-        this.y = y;
-    }
-
     // For future use, if we need more constructors for the Player
     private void setDefaultValues() {
         this.x = 0;
@@ -135,6 +129,14 @@ public class Player implements IPlayer {
         this.assessCurrentDamage();
     }
 
+
+    @Override
+    public void discardOneDamage() {
+        if (this.numberOfDamageTokensRecieved > 0)
+            this.numberOfDamageTokensRecieved -= 1;
+
+    }
+
     @Override
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
@@ -153,7 +155,7 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         if (this.lives <= 0) {
-            //out of the game...
+            //TODO out of the game...
         }
     }
 
@@ -174,6 +176,7 @@ public class Player implements IPlayer {
 
     @Override
     public void addCardsToProgramRegister() {
+
 
     }
 
