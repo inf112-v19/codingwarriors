@@ -15,7 +15,7 @@ public class FlagTest {
 	
 	@Test
 	public void flagShouldUpdateBackupPoint() {
-		Player player = new Player(0,0);
+		Player player = new Player("foo", 0,0);
 		int oldBackupX=player.getBackupX(), oldBackupY=player.getBackupY();
 		player.movePlayer(GridDirection.NORTH);
 		player.movePlayer(GridDirection.EAST);
