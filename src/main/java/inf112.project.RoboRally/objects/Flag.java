@@ -3,7 +3,6 @@ package inf112.project.RoboRally.objects;
 import inf112.project.RoboRally.actors.Player;
 
 public class Flag implements IObjects {
-
     private static int numberOfFlags=0;
     
     private int flagNumber;
@@ -15,7 +14,7 @@ public class Flag implements IObjects {
         this.speed=0;
         this.direction=null;
         this.damage=0;
-        this.flagNumber=++numberOfFlags;
+        this.flagNumber=numberOfFlags++;
     }
     @Override
     public int getSpeed() {
@@ -51,5 +50,9 @@ public class Flag implements IObjects {
     
     public int getFlagNumber() {
         return flagNumber;
+    }
+
+    public static void setNumberOfFlags(int numberOfFlags) {
+        Flag.numberOfFlags = numberOfFlags;
     }
 }
