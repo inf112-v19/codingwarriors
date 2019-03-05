@@ -7,11 +7,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class FlagTest {
-	String level = "3C2R" +
+	private String level = "3C2R" +
 			"cfr" +
-			".l.";
+			".lf";
 	
-	GameBoard gameBoard = new GameBoard(level);
+	private GameBoard gameBoard = new GameBoard(level);
 	
 	@Test
 	public void flagShouldUpdateBackupPoint() {
@@ -28,17 +28,17 @@ public class FlagTest {
 		tile.doAction(player);
 		assertEquals(player.getBackupX(), player.getX());
 		assertEquals(player.getBackupY(), player.getY());
-		//assertNotEquals(player.getBackupX(), oldBackupX);
-		//assertNotEquals(player.getBackupY(), oldBackupY);
+		assertNotEquals(player.getBackupX(), oldBackupX);
+		assertNotEquals(player.getBackupY(), oldBackupY);
 	}
 	
-	/*@Test
+	@Test
 	public void flagShouldOnlyBeVisitedIfItIsNextInLine() {
 		Player player = new Player(0,0);
-		IObjects tile1 = gameBoard.getObject(1,1);
-		IObjects tile2 = gameBoard.getObject(1,0);
+		IObjects tile1 = gameBoard.getObject(2,0);
+		IObjects tile2 = gameBoard.getObject(1,1);
 		
 		assert (tile1 instanceof Flag);
 		assert (tile2 instanceof Flag);
-	}*/
+	}
 }
