@@ -16,9 +16,7 @@ import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
-import inf112.project.RoboRally.objects.ConveyorBelt;
-import inf112.project.RoboRally.objects.Floor;
-import inf112.project.RoboRally.objects.IObjects;
+import inf112.project.RoboRally.objects.*;
 
 import java.util.List;
 
@@ -41,6 +39,8 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     private Texture floor;
     private Texture arrow;
     private Texture card;
+    private Texture rotationCogClockWise;
+    private Texture rotationCogCounterClockWise;
 
     private int[] xPositionDrawer;
     private int[] yPositionDrawer;
@@ -69,6 +69,8 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         arrow = new Texture("arrow.png");
         player = new Texture("robotBrawlBot.png");
         card = new Texture("card back blue.png");
+        rotationCogClockWise = new Texture("cog_cw.png");
+        rotationCogCounterClockWise = new Texture("cog_ccw.png");
     }
 
     private void setupScreens() {
@@ -233,6 +235,19 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                     batch.draw(arrow,
                             boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
                             boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                } else if (object instanceof RotationCog) {
+                    batch.draw(floor,
+                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                    if (object.getRotation() == Rotation.LEFT) {
+                        batch.draw(rotationCogCounterClockWise,
+                                boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                                boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                    } else {
+                        batch.draw(rotationCogClockWise,
+                                boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                                boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                    }
                 }
             }
         }
