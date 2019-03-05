@@ -9,6 +9,7 @@ public class GameBoard {
     private IObjects [][] board;
 
     public GameBoard(String level) {
+        Flag.setNumberOfFlags(0); // resetting the static variable in Flag to be able to generate more than one gameboard
         int counter = extractDimensions(level);
         board = new IObjects[rows][columns];
         for (int x = rows -1; x >= 0; x--) {

@@ -129,6 +129,14 @@ public class Player implements IPlayer {
         this.assessCurrentDamage();
     }
 
+
+    @Override
+    public void discardOneDamage() {
+        if (this.numberOfDamageTokensRecieved > 0)
+            this.numberOfDamageTokensRecieved -= 1;
+
+    }
+
     @Override
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
