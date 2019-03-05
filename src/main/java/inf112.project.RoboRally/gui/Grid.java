@@ -2,7 +2,6 @@ package inf112.project.RoboRally.gui;
 
 public class Grid {
     private Tile screen;
-    // private Tile[][] grid;
     private int width;
     private int height;
     private int tileSizeX;
@@ -12,12 +11,10 @@ public class Grid {
         this.width = width;
         this.height = height;
         this.screen = mainTile;
-        // this.grid = new Tile[width][height];
         calculateTileSize();
-        // generateTiles();
     }
 
-    private void calculateTileSize() {
+    public void calculateTileSize() {
         tileSizeX = screen.numberOfPixelsX()/width;
         tileSizeY = screen.numberOfPixelsY()/height;
     }
@@ -27,19 +24,15 @@ public class Grid {
         if (width == 0 || height == 0) { return; }
         this.width = width;
         this.height = height;
-        // this.grid = new Tile[width][height];
         calculateTileSize();
-        // generateTiles();
     }
 
     public int getStartX(int x) {
         return x*tileSizeX+screen.getStartX();
-        // return grid[x][y].getStartX();
     }
 
     public int getStartY(int y) {
         return y*tileSizeY+screen.getStartY();
-        // return grid[x][y].getStartY();
     }
 
     public int getEndX(int x) {
@@ -48,7 +41,6 @@ public class Grid {
 
     public int getEndY(int y) {
         return y*tileSizeY+screen.getStartY()+tileSizeY;
-        //return grid[x][y].getEndY();
     }
 
     public int getTileWidth() {
@@ -65,20 +57,13 @@ public class Grid {
 
     public boolean PositionIsInsideScreen(int x, int y) {
         return x >= screen.getStartX() && x <= screen.getEndX() && y >= screen.getStartY() && y <= screen.getEndY();
-        // return screen.positionInsideTile(x, y);
     }
 
     public int getTileIndex(int y) {
         return y/tileSizeY;
-        /*
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (grid[j][i].positionInsideTile(x,y)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-        */
+    }
+
+    public Tile getScreen() {
+        return screen;
     }
 }
