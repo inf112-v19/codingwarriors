@@ -78,7 +78,7 @@ public class GameBoard {
     }
 
     private boolean locationInsideBoard(int x, int y){
-        return x >= 0 && x < rows && y >= 0 && y < columns;
+        return x >= 0 && x < columns && y >= 0 && y < rows;
     }
 
     public boolean moveValid(int x, int y) {
