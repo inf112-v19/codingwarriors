@@ -305,13 +305,37 @@ public class Game implements IGame {
 
     @Override
     public void doTurn() {
+        switch (this.currentGameStatus) {
+            case EXECUTING_INSTRUCTIONS:
+                executingInstructions();
+                return;
+            case EXECUTING_GAME_BOARD_OBJECTS:
+                executingGameBoardObjects();
+        }
+
+    }
+
+    private void executingGameBoardObjects() {
+        for (IPlayer p: players) {
+            if(board.moveValid(p.getX(),p.getY())) {
+                board.getObject(p.getX(), p.getY()).doAction((Player) p);
+            } else {
+                p.respawnAtLastArchiveMarker();
+            }
+        }
+        setGameStatus(EXECUTING_INSTRUCTIONS);
+
+    }
+
+    private void executingInstructions() {
         if (selectedCards[0].getSize() == 0) {
             setGameStatus(GameStatus.SELECT_CARDS);
             return;
         }
         for (int i = 0; i < players.size(); i++) {
-            players.get(i).movePlayer(selectedCards[i].removeCard(selectedCards[i].getSize()-1));
+            players.get(i).movePlayer(selectedCards[i].removeCard(selectedCards[i].getSize() - 1));
         }
+        setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
     }
 
     @Override
