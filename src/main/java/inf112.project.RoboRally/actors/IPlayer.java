@@ -4,7 +4,7 @@ import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.objects.GridDirection;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface IPlayer {
 
@@ -78,7 +78,7 @@ public interface IPlayer {
      * @param cards
      *              The cards to be added.
      */
-    void receiveCards(ArrayList<ICard> cards);
+    void receiveCards(List<ICard> cards);
 
 
     /**

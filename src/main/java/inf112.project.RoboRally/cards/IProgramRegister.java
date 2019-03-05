@@ -1,6 +1,5 @@
 package inf112.project.RoboRally.cards;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public interface IProgramRegister {

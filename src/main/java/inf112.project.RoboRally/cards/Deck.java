@@ -1,17 +1,16 @@
 package inf112.project.RoboRally.cards;
 
-// import com.sun.xml.internal.bind.annotation.XmlLocation;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import static inf112.project.RoboRally.cards.Action.*;
 
 public class Deck implements IDeck{
 
-    private ArrayList<ICard> cardDeck;
+    private List<ICard> cardDeck;
 
     public Deck() {
         this.cardDeck = new ArrayList<>();
@@ -19,12 +18,12 @@ public class Deck implements IDeck{
 
 
     @Override
-    public ArrayList<ICard> handOutNCards(Integer numberOfCards) {
+    public List<ICard> handOutNCards(Integer numberOfCards) {
         if (numberOfCards == null|| numberOfCards < 0 || numberOfCards > this.getSize()) {
             throw new IllegalArgumentException("numberOfCards is not a valid amount of cards");
         }
 
-        ArrayList<ICard> selectedCards = new ArrayList<>();
+        List<ICard> selectedCards = new ArrayList<>();
         for (int i = 0; i < numberOfCards; i++) {
             selectedCards.add(cardDeck.remove(0));
         }
@@ -81,7 +80,7 @@ public class Deck implements IDeck{
             throw new IllegalArgumentException("Number of cards is invalid," +
                     " or the target deck does not exist");
         }
-        ArrayList<ICard> selectedCards = handOutNCards(numberOfCardsToTransfer);
+        List<ICard> selectedCards = handOutNCards(numberOfCardsToTransfer);
         targetDeck.addCollectionOfCardsToDeck(selectedCards);
     }
 

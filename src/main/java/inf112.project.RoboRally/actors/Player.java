@@ -4,7 +4,7 @@ import inf112.project.RoboRally.cards.*;
 import inf112.project.RoboRally.objects.Flag;
 import inf112.project.RoboRally.objects.GridDirection;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements IPlayer {
     private int lives;
@@ -153,7 +153,7 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         if (this.lives <= 0) {
-// TODO: finish this...
+            //out of the game...
         }
     }
 
@@ -168,7 +168,7 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void receiveCards(ArrayList<ICard> cards) {
+    public void receiveCards(List<ICard> cards) {
         this.cardsInHand.addCollectionOfCardsToDeck(cards);
     }
 
@@ -189,7 +189,7 @@ public class Player implements IPlayer {
 
     @Override
     public void clearRegister() {
-
+        this.register.clearAllUnlockedCardsFromRegister();
     }
 
     @Override
