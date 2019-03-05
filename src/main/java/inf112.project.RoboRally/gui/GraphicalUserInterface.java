@@ -238,15 +238,15 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                             boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                 } else if (object instanceof RotationCog) {
                     batch.draw(floor,
-                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
                             boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                     if (object.getRotation() == Rotation.LEFT) {
                         batch.draw(rotationCogCounterClockWise,
-                                boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                                boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
                                 boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                     } else {
                         batch.draw(rotationCogClockWise,
-                                boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                                boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
                                 boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                     }
                 }
