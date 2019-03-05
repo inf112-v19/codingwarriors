@@ -23,6 +23,8 @@ public class Player implements IPlayer {
         setDefaultValues();
         this.x = x;
         this.y = y;
+        this.backupX = this.x;
+        this.backupY = this.y;
         this.name = name;
     }
 
