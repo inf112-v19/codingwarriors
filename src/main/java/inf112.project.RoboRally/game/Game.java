@@ -221,7 +221,7 @@ public class Game implements IGame {
         //TODO: Make initializeGame take a gameboard as parameter,
         // which can be chosen at the start menu?
         addPlayers();
-        String gameBoardLayout = "12C16R" +
+        String gameBoardLayout = "16C12R" +
                 ".rr..r.rrr......" +
                 ".rrrrrrr........" +
                 ".r.........c...." +

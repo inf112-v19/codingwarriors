@@ -48,4 +48,5 @@ public class ConveyorBelt implements IObjects {
             player.movePlayer(direction);
         }
     }
+
 }

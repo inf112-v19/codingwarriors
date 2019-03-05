@@ -17,6 +17,7 @@ import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.*;
+import org.lwjgl.Sys;
 
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                 ,1,currentPlayer.getCardsInHand().getSize());
         boardScreen = new Grid(
                 new Tile(CARD_SCREEN_WIDTH,WIDTH,0,HEIGHT)
-                ,game.getBoard().getRows(),game.getBoard().getColumns());
+                ,game.getBoard().getColumns(),game.getBoard().getRows());
     }
 
     private void createNewGame() {
@@ -221,19 +222,19 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     private void drawBoard() {
         int offset = 1;
-        for (int i = 0; i < boardScreen.getHeight(); i++) {
-            for (int j = 0; j < boardScreen.getWidth(); j++) {
+        for (int j = 0; j < boardScreen.getHeight(); j++) {
+            for (int i = 0; i < boardScreen.getWidth(); i++) {
                 IObjects object = game.getBoard().getObject(i,j);
                 if (object instanceof Floor) {
                     batch.draw(floor,
-                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
                             boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                 } else if (object instanceof ConveyorBelt) {
                     batch.draw(floor,
-                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
                             boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                     batch.draw(arrow,
-                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
                             boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                 } else if (object instanceof RotationCog) {
                     batch.draw(floor,
