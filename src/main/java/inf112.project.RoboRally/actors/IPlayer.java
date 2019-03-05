@@ -48,9 +48,10 @@ public interface IPlayer {
 
 
     /**
-     * Discard one damage token
+     * This player repairs one point of damage.
+     * Decrements the number of damage tokens.
      */
-    void discardOneDamage();
+    void removeOneDamage();
 
 
     /**
@@ -92,7 +93,7 @@ public interface IPlayer {
      *
      *
      */
-    void addCardsToProgramRegister();
+    void addListOfCardsToProgramRegister(List<ICard> cards);
 
 
     /**
@@ -102,18 +103,24 @@ public interface IPlayer {
 
 
     /**
-     *
-     *
+     * Reveal the card in the players chosen registry slot.<br>
+     * The card is not removed from the registry.
      *
      * @param registerNumber
-     * @return
+     *                      The register slot whose contents are to be revealed.
+     * @return A reference to the card residing in the register slot, if any.<br>
+     *
+     * @throws IllegalArgumentException
+     *        if the slotNumber is negative (slotNumber < 0),<br>
+     *        slotNumber is too high (slotNumber > register.getSize()),<br>
+     *        or if slotNumber is null (slotNumber = null).
      */
-    ICard revealProgramCardForRegisterNumber(int registerNumber);
+    ICard revealProgramCardForRegisterNumber(Integer registerNumber);
 
 
     /**
-     *
-     *
+     * Remove all unlocked cards from this players registry.<br>
+     * Cards in locked slots, remain in their positions.
      */
     void clearRegister();
 
@@ -142,7 +149,7 @@ public interface IPlayer {
      *
      * @return The players deck of cards.
      */
-    public IDeck getCardsInHand();
+    IDeck getCardsInHand();
 
 
     /**

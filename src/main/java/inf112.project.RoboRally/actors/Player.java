@@ -131,10 +131,10 @@ public class Player implements IPlayer {
 
 
     @Override
-    public void discardOneDamage() {
-        if (this.numberOfDamageTokensRecieved > 0)
+    public void removeOneDamage() {
+        if (this.numberOfDamageTokensRecieved > 0) {
             this.numberOfDamageTokensRecieved -= 1;
-
+        }
     }
 
     @Override
@@ -175,9 +175,11 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void addCardsToProgramRegister() {
-
-
+    public void addListOfCardsToProgramRegister(List<ICard> cards) {
+        if (cards == null || cards.size() > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Invalid list of cards");
+        }
+        this.register.addCollectionOfCardsToRegister(cards);
     }
 
     @Override
@@ -186,8 +188,13 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public ICard revealProgramCardForRegisterNumber(int registerNumber) {
-        return null;
+    public ICard revealProgramCardForRegisterNumber(Integer registerNumber) {
+        if (registerNumber == null
+                || registerNumber < 0
+                || registerNumber >= this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Invalid register number");
+        }
+        return this.register.getCardInSlotNumber(registerNumber);
     }
 
     @Override

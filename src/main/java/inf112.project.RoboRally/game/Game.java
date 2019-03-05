@@ -178,7 +178,7 @@ public class Game implements IGame {
 
 
             //player.movePlayer();
-            //   player.addCardsToProgramRegister();
+            //   player.addListOfCardsToProgramRegister();
             player.removeRemainingCardsInHand();
         }
     }

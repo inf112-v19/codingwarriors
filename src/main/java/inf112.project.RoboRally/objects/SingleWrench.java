@@ -27,7 +27,7 @@ public class SingleWrench implements IObjects {
 
     @Override
     public void doAction(Player player) {
-        player.discardOneDamage();
+        player.removeOneDamage();
 
         player.setThisPointAsNewBackup();
 }
