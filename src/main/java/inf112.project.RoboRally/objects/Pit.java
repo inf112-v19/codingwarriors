@@ -39,4 +39,9 @@ public class Pit implements IObjects {
     public void doAction(IPlayer player) {
         player.respawnAtLastArchiveMarker();
     }
+
+    @Override
+    public String getTexture() {
+        return null;
+    }
 }

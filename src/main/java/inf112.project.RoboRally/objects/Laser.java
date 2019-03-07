@@ -40,4 +40,9 @@ public class Laser implements IObjects {
     public void doAction(IPlayer player) {
         // TODO To be implemented
     }
+
+    @Override
+    public String getTexture() {
+        return null;
+    }
 }

@@ -28,4 +28,9 @@ public class Floor implements IObjects {
     public void doAction(IPlayer player) {
         // No action needed here for this specific object ;)
     }
+
+    @Override
+    public String getTexture() {
+        return "assets/floor_metal.jpg";
+    }
 }

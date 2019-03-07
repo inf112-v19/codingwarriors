@@ -45,4 +45,9 @@ public class CrossedWrench implements IObjects {
         //TODO implement draw one option card
 
     }
+
+    @Override
+    public String getTexture() {
+        return "assets/crossedWrench.png";
+    }
 }

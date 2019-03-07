@@ -44,7 +44,12 @@ public class Flag implements IObjects {
             player.addNewFlagVisited();
         }
     }
-    
+
+    @Override
+    public String getTexture() {
+        return null;
+    }
+
     public static int getNumberOfFlags() {
         return Flag.numberOfFlags;
     }

@@ -39,4 +39,9 @@ public class Wall implements IObjects {
     public void doAction(IPlayer player) {
         // TODO No action needed here?
     }
+
+    @Override
+    public String getTexture() {
+        return null;
+    }
 }

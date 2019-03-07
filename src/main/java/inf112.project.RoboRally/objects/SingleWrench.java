@@ -41,4 +41,9 @@ public class SingleWrench implements IObjects {
 
         player.setThisPointAsNewBackup();
 }
+
+    @Override
+    public String getTexture() {
+        return "assets/singleWrench.png";
+    }
 }

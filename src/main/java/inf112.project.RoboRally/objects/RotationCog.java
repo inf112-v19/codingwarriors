@@ -45,4 +45,14 @@ public class RotationCog implements IObjects {
             player.uTurn();
         }
     }
+
+    @Override
+    public String getTexture() {
+        if (this.rotation == Rotation.LEFT) {
+            return "assets/rotationCog_left.png";
+        } else if (this.rotation == Rotation.RIGHT) {
+            return "assets/rotationCog_right.png";
+        }
+        return null;
+    }
 }

@@ -32,5 +32,10 @@ public interface IObjects {
      * The object's specific action
      */
     void doAction(IPlayer player);
-    
+
+    /**
+     * For use in drawing the object
+     * @return Texture location and name in string form ex. assets/textureName.png
+     */
+    String getTexture();
 }
