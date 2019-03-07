@@ -188,4 +188,10 @@ public interface IPlayer {
      * A method for rotating the player to the opposite direction
      */
     void uTurn();
+
+    /**
+     * For use in drawing the player
+     * @return Texture location and name in string form ex. assets/textureName.png
+     */
+    String getTexture();
 }

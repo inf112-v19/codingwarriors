@@ -265,6 +265,11 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public String getTexture() {
+        return "assets/player_one.png";
+    }
+
+    @Override
     public void rotateLeft() {
         this.playerDirection = playerDirection.rotateLeft();
     }
