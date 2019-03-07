@@ -41,6 +41,8 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private Texture card;
     private Texture rotationCogClockWise;
     private Texture rotationCogCounterClockWise;
+    private Texture wrench;
+    private Texture crossedWrench;
 
     private int[] xPositionDrawer;
     private int[] yPositionDrawer;
@@ -72,6 +74,8 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         card = new Texture("card back blue.png");
         rotationCogClockWise = new Texture("cog_cw.png");
         rotationCogCounterClockWise = new Texture("cog_ccw.png");
+        wrench = new Texture("wrench.png");
+        crossedWrench = new Texture("crossedWrench.png");
     }
 
     private void setupScreens() {
@@ -252,6 +256,20 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                                 boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
                                 boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                     }
+                } else if (object instanceof SingleWrench) {
+                    batch.draw(floor,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                    batch.draw(wrench,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                } else if (object instanceof CrossedWrench) {
+                    batch.draw(floor,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                    batch.draw(crossedWrench,
+                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
+                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
                 }
             }
         }
