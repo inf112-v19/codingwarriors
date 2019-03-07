@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.cards.Deck;
@@ -17,18 +17,17 @@ import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.*;
-import org.lwjgl.Sys;
 
 import java.util.List;
 
-public class GraphicalUserInterface extends ApplicationAdapter {
+public class GraphicalUserInterface extends ApplicationAdapter{
     private IGame game;
     private int currentPlayerIndex;
     private IPlayer currentPlayer;
     private Grid cardScreen;
     private Grid boardScreen;
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
     private static final int CARD_SCREEN_WIDTH = 200;
     private static final int CARD_SCREEN_HEIGHT = HEIGHT;
     private OrthographicCamera camera;
@@ -49,14 +48,15 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     // to be moved
     private IDeck[] selectedCards;
 
-
-
     @Override
     public void create () {
         createNewGame();
         setupScreens();
         camera = new OrthographicCamera(WIDTH, HEIGHT);
-        viewport = new FitViewport(WIDTH, HEIGHT, camera);
+        viewport = new FillViewport(WIDTH, HEIGHT, camera);
+        viewport.apply();
+        Input input = new Input(camera);
+        Gdx.input.setInputProcessor(input);
         loadTextures();
 
     }
@@ -104,8 +104,10 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.currentPlayer = game.getPlayers().get(currentPlayerIndex);
-        batch.setProjectionMatrix(camera.combined);
+
+        camera.update();
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         userInputs();
         drawBoard();
         drawCards();
