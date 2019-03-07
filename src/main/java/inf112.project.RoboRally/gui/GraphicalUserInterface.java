@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -35,14 +34,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private Viewport viewport;
     private BitmapFont font;
     private BitmapFont fontGreen;
-    private Texture player;
-    private Texture floor;
-    private Texture arrow;
-    private Texture card;
-    private Texture rotationCogClockWise;
-    private Texture rotationCogCounterClockWise;
-    private Texture wrench;
-    private Texture crossedWrench;
+    private AssetsManagement assetsManager = new AssetsManagement();
 
     private int[] xPositionDrawer;
     private int[] yPositionDrawer;
@@ -68,14 +60,8 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         font = new BitmapFont();
         fontGreen = new BitmapFont();
         fontGreen.setColor(0,1,0,1);
-        floor = new Texture("metalFloor.jpg");
-        arrow = new Texture("arrow.png");
-        player = new Texture("robotBrawlBot.png");
-        card = new Texture("card back blue.png");
-        rotationCogClockWise = new Texture("cog_cw.png");
-        rotationCogCounterClockWise = new Texture("cog_ccw.png");
-        wrench = new Texture("wrench.png");
-        crossedWrench = new Texture("crossedWrench.png");
+        assetsManager.loadTextures();
+        assetsManager.finishLoading();
     }
 
     private void setupScreens() {
@@ -221,7 +207,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                             yPosPlayer : yPositionDrawer[i]-animationSpeed;
                 }
             }
-            batch.draw(this.player,
+            batch.draw(assetsManager.getAssetFileName(players.get(i).getTexture()),
                     xPositionDrawer[i], yPositionDrawer[i],
                     boardScreen.getTileWidth(), boardScreen.getTileHeight());
         }
@@ -232,44 +218,14 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         for (int j = 0; j < boardScreen.getHeight(); j++) {
             for (int i = 0; i < boardScreen.getWidth(); i++) {
                 IObjects object = game.getBoard().getObject(i,j);
-                if (object instanceof Floor) {
-                    batch.draw(floor,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                } else if (object instanceof ConveyorBelt) {
-                    batch.draw(floor,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                    batch.draw(arrow,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                } else if (object instanceof RotationCog) {
-                    batch.draw(floor,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                    if (object.getRotation() == Rotation.LEFT) {
-                        batch.draw(rotationCogCounterClockWise,
-                                boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                                boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                    } else {
-                        batch.draw(rotationCogClockWise,
-                                boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                                boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                    }
-                } else if (object instanceof SingleWrench) {
-                    batch.draw(floor,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                    batch.draw(wrench,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                } else if (object instanceof CrossedWrench) {
-                    batch.draw(floor,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                    batch.draw(crossedWrench,
-                            boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                String texture = object.getTexture();
+                batch.draw(assetsManager.getAssetFileName("assets/floor_metal.jpg"),
+                        boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
+                        boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                if (texture != null) {
+                    batch.draw(assetsManager.getAssetFileName(object.getTexture()),
+                            boardScreen.getStartX(i) + offset, boardScreen.getStartY(j) + offset,
+                            boardScreen.getTileWidth() - offset * 2, boardScreen.getTileHeight() - offset * 2);
                 }
             }
         }
@@ -278,10 +234,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     @Override
     public void dispose () {
         batch.dispose();
-        floor.dispose();
-        arrow.dispose();
-        player.dispose();
-        card.dispose();
+        assetsManager.dispose();
         font.dispose();
     }
 
