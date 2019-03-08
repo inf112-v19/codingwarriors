@@ -54,6 +54,12 @@ public class ConveyorBelt implements IObjects {
     public String getTexture() {
         if (this.direction == GridDirection.EAST) {
             return "assets/conveyorBelt_east.png";
+        } else if (this.direction == GridDirection.WEST) {
+            return "assets/conveyorBelt_west.png";
+        } else if (this.direction == GridDirection.NORTH) {
+            return  "assets/conveyorBelt_north.png";
+        } else if (this.direction == GridDirection.SOUTH) {
+            return "assets/conveyorBelt_south.png";
         }
         return null;
     }
