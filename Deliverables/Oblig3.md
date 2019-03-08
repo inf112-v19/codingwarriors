@@ -5,7 +5,7 @@
 - Ikke noe spesielt som er verdt å nevne. Må bli flinkere til å bryte ned oppgaver i bruker-historier, men ellers er vi fornøyd med valgene vi har tatt. Vi prøver å ha god dokumentasjon og metodenavn slik at det er lett for andre medlemmer å sette seg inn i hverandres kode. Vi har begynt med code reviews, noe som gir oss bedre kunnskap og oversikt over flere deler av programmet, og hvordan helheten fungerer.
 - Gruppedynamikken fungerer bra. Det har ikke vært noen konflikter. 
 - Det er bra kommunikasjon, vi benytter oss av fysiske møter og slack. Når noen stiller spørsmål, får de tidlig svar. Folk møter opp på møter, og om de ikke kan varsels det i fra tidlig. 
-- Vi har laget en prosjektsstruktur hvor alle bidrar. Project-boardet har vi satt opp og fungert, men burde muligens oppdateres oftere. Møter og project borad har fungert bra for oss. 
+- Vi har laget en prosjektsstruktur hvor alle bidrar. Project-boardet har vi satt opp og fungert, men burde muligens oppdateres oftere. Møter og project board har fungert bra for oss. 
 - Dette spiller igjen innpå dette med brukerhistorier, enkelte har fått større oppgaver som har krevd mer arbeid. Antall linjer lagt til kan være misvisende for eksempel Tore har en veldig inflatert linjetotal pga uml diagram. Vi skal jobbe videre med å gjøre fordelingen enda jevnere. 
 
 #### Retrospektiv
