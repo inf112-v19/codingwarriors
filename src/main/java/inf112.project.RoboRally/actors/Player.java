@@ -94,6 +94,9 @@ public class Player implements IPlayer {
 
     @Override
     public void movePlayer(ICard card) {
+        if (card == null) {
+            throw new IllegalArgumentException("Not a valid card");
+        }
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
@@ -186,13 +189,13 @@ public class Player implements IPlayer {
 
 
     @Override
-    public void unlockNRegisters(Integer numberOfSlots) {
-        if (numberOfSlots == null
-                || numberOfSlots < 0
-                || numberOfSlots > this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Not a valid slot number");
+    public void unlockNRegisters(Integer numberOfSlotsToUnlock) {
+        if (numberOfSlotsToUnlock == null
+                || numberOfSlotsToUnlock < 0
+                || numberOfSlotsToUnlock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid number of slots");
         }
-        for (int slotNumber = 0; slotNumber < numberOfSlots; slotNumber++) {
+        for (int slotNumber = 0; slotNumber < numberOfSlotsToUnlock; slotNumber++) {
             this.register.unlockRegisterSlotNumberN(slotNumber);
         }
     }
@@ -204,17 +207,25 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void lockNRegisters(int numberOfRegisters) {
+    public void lockNRegisters(Integer numberOfSlotsToLock) {
+        if (numberOfSlotsToLock == null
+                || numberOfSlotsToLock < 0
+                || numberOfSlotsToLock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid number of slots");
+        }
         int registerSlot = (this.register.getNumberOfRegisterSlots() - 1);
-        while (numberOfRegisters > 0) {
+        while (numberOfSlotsToLock > 0) {
             this.register.lockRegisterSlotNumber(registerSlot);
             registerSlot--;
-            numberOfRegisters--;
+            numberOfSlotsToLock--;
         }
     }
 
     @Override
     public void receiveCards(List<ICard> cards) {
+        if (cards == null) {
+            throw new IllegalArgumentException("List of cards is invalid");
+        }
         this.cardsInHand.addCollectionOfCardsToDeck(cards);
     }
 

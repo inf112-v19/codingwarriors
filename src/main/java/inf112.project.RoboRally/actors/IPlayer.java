@@ -32,6 +32,9 @@ public interface IPlayer {
      *
      * @param card
      *             The card containing the instructions which are to be executed.
+     *
+     * @throws IllegalArgumentException
+     *      if card == null.
      */
     void movePlayer(ICard card);
 
@@ -72,6 +75,14 @@ public interface IPlayer {
      *                              The number of registers that should be locked.
      * @param numberOfRegistersToUnlock
      *                              The number of registers that should be unlocked.
+     *
+     * @throws IllegalArgumentException
+     *       if numberOfRegistersToLock == null,
+     *       or numberOfRegistersToUnLock == null,
+     *       or numberOfRegistersToLock < 0,
+     *       or numberOfRegistersToUnLock < 0,
+     *       or numberOfRegistersToLock > register.getSize(),
+     *       or numberOfRegistersToUnLock > register.getSize().
      */
     void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
                                            Integer numberOfRegistersToUnlock);
@@ -80,10 +91,15 @@ public interface IPlayer {
     /**
      * Unlock N register slots in the players register.
      *
-     * @param numberOfSlots
-     *                      The number of registers to be unlocked.
+     * @param numberOfSlotsToUnlock
+     *                      The number of register slots to be unlocked.
+     *
+     * @throws IllegalArgumentException <br>
+     *      if numberOfSlotsToUnlock == null,<br>
+     *      or numberOfSlotsToUnlock < 0,<br>
+     *      or numberOfSlotsToUnlock > register.getSize().
      */
-    void unlockNRegisters(Integer numberOfSlots);
+    void unlockNRegisters(Integer numberOfSlotsToUnlock);
 
 
     /**
@@ -95,10 +111,15 @@ public interface IPlayer {
     /**
      * Lock N register slots in the players register.
      *
-     * @param numberOfRegisters
-     *                          The number of registers to be locked.
+     * @param numberOfSlotsToLock
+     *                          The number of register slots to be locked.
+     *
+     * @throws IllegalArgumentException <br>
+     *      if numberOfSlotsToLock == null,<br>
+     *      or numberOfSlotsToLock < 0,<br>
+     *      or numberOfSlotsToLock > register.getSize().
      */
-    void lockNRegisters(int numberOfRegisters);
+    void lockNRegisters(Integer numberOfSlotsToLock);
 
 
     /**
@@ -106,6 +127,8 @@ public interface IPlayer {
      *
      * @param cards
      *              The cards to be added.
+     * @throws IllegalArgumentException
+     *      if cards == null.
      */
     void receiveCards(List<ICard> cards);
 
