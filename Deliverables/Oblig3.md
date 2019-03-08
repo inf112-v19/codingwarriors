@@ -5,11 +5,12 @@
 - Ikke noe spesielt som er verdt å nevne. Må bli flinkere til å bryte ned oppgaver i bruker-historier, men ellers er vi fornøyd med valgene vi har tatt. Vi prøver å ha god dokumentasjon og metodenavn slik at det er lett for andre medlemmer å sette seg inn i hverandres kode. Vi har begynt med code reviews, noe som gir oss bedre kunnskap og oversikt over flere deler av programmet, og hvordan helheten fungerer.
 - Gruppedynamikken fungerer bra. Det har ikke vært noen konflikter. 
 - Det er bra kommunikasjon, vi benytter oss av fysiske møter og slack. Når noen stiller spørsmål, får de tidlig svar. Folk møter opp på møter, og om de ikke kan varsels det i fra tidlig. 
-- Vi har laget en prosjektsstruktur hvor alle bidrar. Project-boardet har vi satt opp og fungert, men burde muligens oppdateres oftere. Møter og project board har fungert bra for oss. 
+- Vi har laget en prosjektsstruktur hvor alle bidrar. Project-boardet har vi satt opp og fungert, men burde muligens oppdateres oftere. Møter og project borad har fungert bra for oss. 
 - Dette spiller igjen innpå dette med brukerhistorier, enkelte har fått større oppgaver som har krevd mer arbeid. Antall linjer lagt til kan være misvisende for eksempel Tore har en veldig inflatert linjetotal pga uml diagram. Vi skal jobbe videre med å gjøre fordelingen enda jevnere. 
 
 #### Retrospektiv
-Vi har fått på plass mye funskjonalitet i denne sprinten. Vi må bli bedre på å fullføre oppgavene vi begynner på før vi tar på oss nye oppgaver, samt dele opp oppgavene i mindre biter slik at de blir ferdig i tide. Fokus generelt på møtene kan forbedres slik at effektivitet og produktivitet går opp. En ordstyrer som sørger for at en sak blir tatt opp, snakket om og fullført, før vi går videre på neste sak. Vi er fornøyd med å ha begynt med codereviews, det gir oss mye kunnskap og forståelse om programmet.
+Vi har fått på plass mye funskjonalitet i denne sprinten. Vi må bli bedre på å fullføre oppgavene vi begynner på før vi tar på oss nye oppgaver, samt dele opp oppgavene i mindre biter slik at de blir ferdig i tide. Fokus generelt på møtene kan forbedres slik at effektivitet og produktivitet går opp. En ordstyrer som sørger for at en sak blir tatt opp, snakket om og fullført, før vi går videre på neste sak. Vi er fornøyd med å ha begynt med codereviews, det gir oss mye kunnskap og forståelse om programmet. Planen var å bruke en blanding av XP og Scrum, og dette har vi holdt oss til. Fra XP bruker vi "user stories", korte sykluser (likt en sprint) og har "collective ownership". Vi har prøvd TDD og har begynt med code review. Scrum prinsipper vi har tatt i bruk er sprinten og prosjekttavlen.   
+
 - Punkter:
 	- Bruke project boardet oftere og bedre
 	- Dele opp oppgaver i mindre brukerhistorier
