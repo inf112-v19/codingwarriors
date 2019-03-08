@@ -34,17 +34,36 @@ public class FlagTest {
 	
 	@Test
 	public void playerCanOnlyPickUpCorrectFlag() {
-		player.movePlayer(GridDirection.EAST);
+		Flag aFlag = (Flag) gameBoard.getObject(1,0);
+		Flag otherFlag = (Flag) gameBoard.getObject(1,1);
 
-		gameBoard.getObject(player.getX(), player.getY()).doAction(player); // player should not be able to pick up this flag
-		assertEquals(0, player.getFlagsVisited());
+		if (aFlag.getFlagNumber() == 0) {
+			player.movePlayer(GridDirection.EAST);
 
-		player.movePlayer(GridDirection.NORTH); // player should be able to pick up this flag
-		gameBoard.getObject(player.getX(), player.getY()).doAction(player);
-		assertEquals(1, player.getFlagsVisited());
-		
-		player.movePlayer(GridDirection.SOUTH); // now, this flag is next in line, and player should be able to pick it up
-		gameBoard.getObject(player.getX(), player.getY()).doAction(player);
-		assertEquals(2, player.getFlagsVisited());
+			otherFlag.doAction(player); // player should not be able to pick up this flag
+			assertEquals(0, player.getFlagsVisited());
+
+			player.movePlayer(GridDirection.NORTH); // player should be able to pick up this flag
+			aFlag.doAction(player);
+			assertEquals(1, player.getFlagsVisited());
+
+			player.movePlayer(GridDirection.SOUTH); // now, this flag is next in line, and player should be able to pick it up
+			otherFlag.doAction(player);
+			assertEquals(2, player.getFlagsVisited());
+		} else {
+			player.movePlayer(GridDirection.EAST);
+			player.movePlayer(GridDirection.NORTH);
+
+			aFlag.doAction(player); // player should not be able to pick up this flag
+			assertEquals(0, player.getFlagsVisited());
+
+			player.movePlayer(GridDirection.SOUTH); // player should be able to pick up this flag
+			otherFlag.doAction(player);
+			assertEquals(1, player.getFlagsVisited());
+
+			player.movePlayer(GridDirection.NORTH); // now, this flag is next in line, and player should be able to pick it up
+			aFlag.doAction(player);
+			assertEquals(2, player.getFlagsVisited());
+		}
 	}
 }
