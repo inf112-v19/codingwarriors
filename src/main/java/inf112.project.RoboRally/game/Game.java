@@ -8,7 +8,6 @@ import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static inf112.project.RoboRally.game.GameStatus.*;
