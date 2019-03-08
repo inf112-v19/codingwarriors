@@ -1,10 +1,6 @@
 package inf112.project.RoboRally.cards;
 
 import inf112.project.RoboRally.board.GameBoard;
-import inf112.project.RoboRally.objects.ConveyorBelt;
-import inf112.project.RoboRally.objects.Flag;
-import inf112.project.RoboRally.objects.Floor;
-import inf112.project.RoboRally.objects.RotationCog;
 import org.junit.Before;
 import org.junit.Test;
 

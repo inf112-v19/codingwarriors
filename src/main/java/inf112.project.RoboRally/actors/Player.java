@@ -1,7 +1,6 @@
 package inf112.project.RoboRally.actors;
 
 import inf112.project.RoboRally.cards.*;
-import inf112.project.RoboRally.objects.Flag;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.List;
@@ -15,9 +14,7 @@ public class Player implements IPlayer {
     private IDeck cardsInHand;
     private int numberOfDamageTokensRecieved;
     private IProgramRegister register;
-    private int flagsToVisit;
     private int flagsVisited;
-
 
     public Player(String name, int x, int y) {
         setDefaultValues();
@@ -40,7 +37,6 @@ public class Player implements IPlayer {
         this.register = new ProgramRegister();
         this.backupX = this.x;
         this.backupY = this.y;
-        this.flagsToVisit = Flag.getNumberOfFlags();
         this.flagsVisited = 0;
     }
 
@@ -60,13 +56,6 @@ public class Player implements IPlayer {
 
     public int getBackupY() {
         return backupY;
-    }
-
-    // Possibly redundant
-    // TODO Remove if redundant
-    public void setNewBackupPoint(int x, int y) {
-        this.backupX=x;
-        this.backupY=y;
     }
 
     @Override
@@ -162,7 +151,7 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         if (this.lives <= 0) {
-            //TODO out of the game...
+            //TODO
         }
     }
 
@@ -220,14 +209,8 @@ public class Player implements IPlayer {
     }
 
     private GridDirection opposite() {
-        GridDirection playersCurrentDirection = this.playerDirection;
-        switch (playersCurrentDirection) {
-            case NORTH: return GridDirection.SOUTH;
-            case WEST: return GridDirection.EAST;
-            case EAST: return GridDirection.WEST;
-            case SOUTH: return GridDirection.NORTH;
-            default: return null;
-        }
+        GridDirection dir = playerDirection.invert();
+        return dir;
     }
 
     private void moveInDirection(GridDirection direction, int steps) {
@@ -283,12 +266,7 @@ public class Player implements IPlayer {
         return this.name;
     }
     
-    public int getFlagsToVisit() {
-        return flagsToVisit;
-    }
-    
-    // For use with leaderboard, may be removed if unnecessary
-    public int getRemainingFlagsToVisit() {
-        return flagsToVisit-flagsVisited;
+    public boolean isAlive() {
+        return this.lives <= 0;
     }
 }

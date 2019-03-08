@@ -224,17 +224,17 @@ public class Game implements IGame {
         addPlayers();
         String gameBoardLayout = "16C12R" +
                 "f....r.rrr...f.." +
-                ".rrrrrrr........" +
+                ".rrrrrrr....uu.." +
                 ".r.........c...." +
                 ".r...f....|....." +
-                ".r...........p.." +
+                ".r......ll....p.." +
                 "rr......f......." +
                 "ll.....w....C..." +
                 ".r..p....lll...." +
                 ".r.....w........" +
                 ".r.....w.....p.." +
                 ".r...f....-....." +
-                ".r....WW........";
+                ".r....WW....dd..";
         this.board = new GameBoard(gameBoardLayout);
         this.programCards = new Deck();
         this.discardedProgramCards = new Deck();
@@ -321,7 +321,7 @@ public class Game implements IGame {
     private void executingGameBoardObjects() {
         for (IPlayer p: players) {
             if(board.moveValid(p.getX(),p.getY())) {
-                board.getObject(p.getX(), p.getY()).doAction((Player) p);
+                board.getObject(p.getX(), p.getY()).doAction(p);
             } else {
                 p.respawnAtLastArchiveMarker();
             }
@@ -351,7 +351,7 @@ public class Game implements IGame {
             IDeck cardsInPlayerDeck = player.getCardsInHand();
             while (cardsInPlayerDeck.getSize() != 0) {
                 ICard unUsedPlayerCard = cardsInPlayerDeck.removeCard(0);
-                ;
+                
                 discardedProgramCards.addCardToDeck(unUsedPlayerCard);
             }
         }
