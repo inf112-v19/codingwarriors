@@ -41,7 +41,6 @@ public class Flag implements IObjects {
         player.setThisPointAsNewBackup();
         if (player.getFlagsVisited() == this.flagNumber) {
             player.addNewFlagVisited();
-            System.out.println("Found a flag!");
         }
     }
 
@@ -57,7 +56,7 @@ public class Flag implements IObjects {
         return Flag.numberOfFlags;
     }
     
-    public int getFlagNumber() {
+    int getFlagNumber() {
         return flagNumber;
     }
 
