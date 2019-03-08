@@ -66,13 +66,34 @@ public interface IPlayer {
 
 
     /**
+     * Handles the locking and unlocking of registers when the player is damaged.
+     *
+     * @param numberOfRegistersToLock
+     *                              The number of registers that should be locked.
+     * @param numberOfRegistersToUnlock
+     *                              The number of registers that should be unlocked.
+     */
+    void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
+                                           Integer numberOfRegistersToUnlock);
+
+
+    /**
+     * Unlock N register slots in the players register.
+     *
+     * @param numberOfSlots
+     *                      The number of registers to be unlocked.
+     */
+    void unlockNRegisters(Integer numberOfSlots);
+
+
+    /**
      * Decrement the players life-total by one.
      */
     void destroyPlayer();
 
 
     /**
-     * Lock N registers of the players register.
+     * Lock N register slots in the players register.
      *
      * @param numberOfRegisters
      *                          The number of registers to be locked.
@@ -90,9 +111,14 @@ public interface IPlayer {
 
 
     /**
+     * Takes a list of cards, and adds them to the players register.
      *
+     * @param cards
+     *              The list of cards to add to the register.
      *
-     *
+     * @throws IllegalArgumentException
+     *       if the list of cards is null (cards == null),
+     *       or if it contains too many cards (cards.size() > register.getSize()).
      */
     void addListOfCardsToProgramRegister(List<ICard> cards);
 
@@ -127,8 +153,7 @@ public interface IPlayer {
 
 
     /**
-     *
-     *
+     * Check if the player was destroyed during the current turn.
      *
      * @return true if the player was destroyed<br>
      *         false otherwise.
@@ -182,7 +207,8 @@ public interface IPlayer {
 
     /**
      * A method for moving the player one step in a given direction
-     * @param direction The direction to be moved
+     * @param direction
+     *              The direction to be moved
      */
     void movePlayer(GridDirection direction);
 

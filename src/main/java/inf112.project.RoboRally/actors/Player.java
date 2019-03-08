@@ -150,33 +150,51 @@ public class Player implements IPlayer {
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
         switch (currentDamageTaken) {
-            case 5: this.lockNRegisters(1); break;
-            case 6: this.lockNRegisters(2); break;
-            case 7: this.lockNRegisters(3); break;
-            case 8: this.lockNRegisters(4); break;
-            case 9: this.lockNRegisters(5); break;
-            case 10: this.destroyPlayer(); break;
+            case 5: this.lockNRegistersAndUnlockMRegisters(1, 4);
+                    break;
+            case 6: this.lockNRegistersAndUnlockMRegisters(2, 3);
+                    break;
+            case 7: this.lockNRegistersAndUnlockMRegisters(3, 2);
+                    break;
+            case 8: this.lockNRegistersAndUnlockMRegisters(4, 1);
+                    break;
+            case 9: this.lockNRegistersAndUnlockMRegisters(5, 0);
+                    break;
+            case 10: this.destroyPlayer();
+                     this.unlockNRegisters(5);
+                     break;
             default: this.unlockNRegisters(5); break;
         }
     }
 
-   // @Override
-    private void unlockNRegisters(Integer numberOfSlots) {
+    @Override
+    public void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
+                                                  Integer numberOfRegistersToUnlock) {
+        if (numberOfRegistersToLock == null
+                || numberOfRegistersToLock < 0
+                || numberOfRegistersToLock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid register to lock");
+        }
+        if (numberOfRegistersToUnlock == null
+                || numberOfRegistersToUnlock < 0
+                || numberOfRegistersToUnlock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid register to unlock");
+        }
+        this.lockNRegisters(numberOfRegistersToLock);
+        this.unlockNRegisters(numberOfRegistersToUnlock);
+    }
+
+
+    @Override
+    public void unlockNRegisters(Integer numberOfSlots) {
         if (numberOfSlots == null
                 || numberOfSlots < 0
                 || numberOfSlots > this.register.getNumberOfRegisterSlots()) {
             throw new IllegalArgumentException("Not a valid slot number");
         }
-        /*
-
-
-
-
-
-         */
-
-
-
+        for (int slotNumber = 0; slotNumber < numberOfSlots; slotNumber++) {
+            this.register.unlockRegisterSlotNumberN(slotNumber);
+        }
     }
 
     @Override
