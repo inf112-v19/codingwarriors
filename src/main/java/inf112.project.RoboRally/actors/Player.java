@@ -17,28 +17,18 @@ public class Player implements IPlayer {
     private int flagsVisited;
 
     public Player(String name, int x, int y) {
-        setDefaultValues();
         this.x = x;
         this.y = y;
         this.backupX = this.x;
         this.backupY = this.y;
         this.name = name;
-    }
-
-    // For future use, if we need more constructors for the Player
-    private void setDefaultValues() {
-        this.x = 0;
-        this.y = 0;
-        this.name = "";
         this.playerDirection = GridDirection.NORTH;
-        this.cardsInHand = new Deck();
-        this.numberOfDamageTokensRecieved = 0;
         this.lives = 3;
+        this.numberOfDamageTokensRecieved = 0;
         this.register = new ProgramRegister();
-        this.backupX = this.x;
-        this.backupY = this.y;
         this.flagsVisited = 0;
     }
+
 
     @Override
     public int getX() {
@@ -209,8 +199,7 @@ public class Player implements IPlayer {
     }
 
     private GridDirection opposite() {
-        GridDirection dir = playerDirection.invert();
-        return dir;
+        return playerDirection.invert();
     }
 
     private void moveInDirection(GridDirection direction, int steps) {

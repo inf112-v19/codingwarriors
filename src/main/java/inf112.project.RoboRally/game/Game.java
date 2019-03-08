@@ -311,11 +311,11 @@ public class Game implements IGame {
     }
 
     private void executingGameBoardObjects() {
-        for (IPlayer p: players) {
-            if(board.moveValid(p.getX(),p.getY())) {
-                board.getObject(p.getX(), p.getY()).doAction(p);
+        for (IPlayer player: players) {
+            if(board.moveValid(player.getX(),player.getY())) {
+                board.getObject(player.getX(), player.getY()).doAction(player);
             } else {
-                p.respawnAtLastArchiveMarker();
+                player.respawnAtLastArchiveMarker();
             }
         }
         setGameStatus(EXECUTING_INSTRUCTIONS);
