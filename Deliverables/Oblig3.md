@@ -6,6 +6,14 @@
 - Det er bra kommunikasjon, vi benytter oss av fysiske møter og slack. Når noen stiller spørsmål for de tidlig svar. Folk møter opp på møter, og om de ikke kan varsels det i fra tidlig. 
 - Vi har laget en prosjektsstruktur hvor alle bidrar. Project boardet har vi satt opp og fungert, men burde muligens oppdateres oftere. Møter og project borad har fungert bra for oss. 
 - Dette spiller igjen innpå dette med brukerhistorier, enkelte har fått større oppgaver som har krevd mer arbeid. Antall linjer lagt til kan være misvisende for eksempel Tore har en veldig inflatert linjetotal pga uml diagram. Vi skal jobbe videre med å gjøre fordelingen enda jevnere. 
+
+#### Retrospektiv
+Vi har fått på plass mye funskjonalitet i denne sprinten. Vi må bli bedre på å fullføre oppgavene vi begynner på før vi tar på oss nye oppgaver. Fokus generelt på møtene kan forbedres slik at effektivitet og produktivitet går opp. 
+- Punkter:
+	- Bruke project boardet oftere og bedre
+	- Dele opp oppgaver i mindre brukerhistorier
+	- Arbeidsmengde skal jevnt fordeles
+
 - Referater: 
 #### Rapport 12.02.19
 ##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
@@ -33,11 +41,6 @@ Fikset problem med tidligere nevnte test. En bug med gameboard ble også rettet 
 ##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
 Finpusset på innleveringen og gjorde et kort retrospektiv. 
 
-- Punkter:
-	- Bruke project boardet oftere og bedre
-	- Dele opp oppgaver i mindre brukerhistorier
-	- Tester skal fungere før de blir pushet til master
-	- Arbeidsmengde skal jevnt fordeles
 
 # Oppgave 2 
 
@@ -48,16 +51,33 @@ Tre av oppgavene var allerede gjort. Vi valgte å få på plass i GUI-en å velg
 	- dele ut kort
 	- player interaksjon med kortene
 * Dele ut 9 kort (allerede gjort)
-	- 
+	- Dele ut 9 kort med forskjellig prioritet
 * Velge 5 kort (godkjenne valg/si “nå er jeg klar”)
-	- 
+	- Når det femte kortet velges går turen til neste spiller
 * Eksekvere program utfra valgte kort
 * (Høy prioritet) Besøke flagg
 * Hvis robot går av brettet blir den ødelagt og går tilbake til siste backup
 * Oppdatere backup hvis robot blir stående på skiftenøkkelrute i slutten av en fase
 * Flytte backup ved besøk på flagg
+	- Backup flyttes ved besøk på flagg i riktig prioritet
 * (Lavere prioritet) Kunne spille en fullverdig runde med alle faser
 * Få nye kort til ny runde
 
 - Vi valgte å prioritere gameobjects tidlig, selv om dette ikke sto nevnt - dette var for at alle skulle få noe å gjøre. Interaksjon mellom spilleren og disse objektene ble også implementert slik at vi ikke hadde mye ubrukt kode. 
 - Vi verifiserer at kravene er oppfylt vha. JUnit tester og (muligens) manuelle tester. 
+
+#Spillinstruksjon
+* 
+* Spillet kjøres ved å trykke run på RoboRallyMain
+* Når spillet starter skal hver spiller velge sine 5 kort ved å klikke på dem i riktig rekkefølge, valgte kort vises i rekkefølge i grønt
+* Dersom man angrer på et valg av kort kan man klikke på det samme kortet igjen for å ta det vekk fra valgte kort
+* Når det femte kortet velges er det neste spiller sin tur
+* Etter at alle spillere har valgt sine kort klikker man et sted på brettet for å utføre instruksjonen på kortene (dette er spillerenes bevegelse)
+* Alle spillere utfører sine bevegelser samtidig
+* Ved neste klikk på brettet interagerer ting på brettet med spillerne
+* Etter at alle fem kort og bevegelser er utført blir det delt ut nye kort
+* Spillerene velger så kort på nytt 
+
+* UML-diagram finnes vedlagt i UML-Diagrams mappen i prosjektet. Noen av diagrammene må man klikke "show dependencies" på for å vise avhengigheter.
+* Prosjektet importeres som Maven prosjekt, man trenger ikke et working directory
+
