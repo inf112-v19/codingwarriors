@@ -17,22 +17,22 @@ public class SingleWrench implements IObjects {
 
     @Override
     public int getSpeed() {
-        return 0;
+        return this.speed;
     }
 
     @Override
     public GridDirection getDirection() {
-        return null;
+        return this.direction;
     }
 
     @Override
     public int getDamage() {
-        return 0;
+        return this.damage;
     }
 
     @Override
     public Rotation getRotation() {
-        return null;
+        return this.rotation;
     }
 
     @Override
