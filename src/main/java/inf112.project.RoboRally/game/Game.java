@@ -373,22 +373,4 @@ public class Game implements IGame {
     public void setUpTurn(IDeck[] selectedCards) {
         this.selectedCards = selectedCards;
     }
-
-
-
-
-
-
-
-    public void a() {
-
-
-
-
-
-    }
-
-
-
-
 }
