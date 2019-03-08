@@ -75,7 +75,7 @@ public class Deck implements IDeck{
     public void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck) {
         if (numberOfCardsToTransfer == null
                 || numberOfCardsToTransfer < 0
-                || numberOfCardsToTransfer >= this.getSize()
+                || numberOfCardsToTransfer > this.getSize()
                 || targetDeck == null) {
             throw new IllegalArgumentException("Number of cards is invalid," +
                     " or the target deck does not exist");

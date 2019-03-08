@@ -38,7 +38,7 @@ public class CrossedWrench implements IObjects {
 
     @Override
     public void doAction(IPlayer player) {
-        player.discardOneDamage();
+        player.removeOneDamage();
         player.setThisPointAsNewBackup();
 
         //TODO implement draw one option card

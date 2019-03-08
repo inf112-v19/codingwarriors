@@ -15,6 +15,7 @@ public class Player implements IPlayer {
     private int numberOfDamageTokensRecieved;
     private IProgramRegister register;
     private int flagsVisited;
+    private boolean wasDestroyedThisTurn;
 
     public Player(String name, int x, int y) {
         this.x = x;
@@ -28,6 +29,7 @@ public class Player implements IPlayer {
         this.lives = 3;
         this.register = new ProgramRegister();
         this.flagsVisited = 0;
+        this.wasDestroyedThisTurn = false;
     }
 
     @Override
@@ -71,6 +73,9 @@ public class Player implements IPlayer {
 
     @Override
     public void movePlayer(ICard card) {
+        if (card == null) {
+            throw new IllegalArgumentException("Not a valid card");
+        }
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
@@ -117,53 +122,98 @@ public class Player implements IPlayer {
 
 
     @Override
-    public void discardOneDamage() {
-        if (this.numberOfDamageTokensRecieved > 0)
+    public void removeOneDamage() {
+        if (this.numberOfDamageTokensRecieved > 0) {
             this.numberOfDamageTokensRecieved -= 1;
-
+        }
     }
 
     @Override
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
         switch (currentDamageTaken) {
-            case 5: this.lockNRegisters(1); break;
-            case 6: this.lockNRegisters(2); break;
-            case 7: this.lockNRegisters(3); break;
-            case 8: this.lockNRegisters(4); break;
-            case 9: this.lockNRegisters(5); break;
-            case 10: this.destroyPlayer(); break;
-            default: break;
+            case 5: this.lockNRegistersAndUnlockMRegisters(1, 4);
+                    break;
+            case 6: this.lockNRegistersAndUnlockMRegisters(2, 3);
+                    break;
+            case 7: this.lockNRegistersAndUnlockMRegisters(3, 2);
+                    break;
+            case 8: this.lockNRegistersAndUnlockMRegisters(4, 1);
+                    break;
+            case 9: this.lockNRegistersAndUnlockMRegisters(5, 0);
+                    break;
+            case 10: this.destroyPlayer();
+                     this.unlockNRegisters(5);
+                     break;
+            default: this.unlockNRegisters(5); break;
+        }
+    }
+
+    @Override
+    public void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
+                                                  Integer numberOfRegistersToUnlock) {
+        if (numberOfRegistersToLock == null
+                || numberOfRegistersToLock < 0
+                || numberOfRegistersToLock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid register to lock");
+        }
+        if (numberOfRegistersToUnlock == null
+                || numberOfRegistersToUnlock < 0
+                || numberOfRegistersToUnlock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid register to unlock");
+        }
+        this.lockNRegisters(numberOfRegistersToLock);
+        this.unlockNRegisters(numberOfRegistersToUnlock);
+    }
+
+
+    @Override
+    public void unlockNRegisters(Integer numberOfSlotsToUnlock) {
+        if (numberOfSlotsToUnlock == null
+                || numberOfSlotsToUnlock < 0
+                || numberOfSlotsToUnlock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid number of slots");
+        }
+        for (int slotNumber = 0; slotNumber < numberOfSlotsToUnlock; slotNumber++) {
+            this.register.unlockRegisterSlotNumberN(slotNumber);
         }
     }
 
     @Override
     public void destroyPlayer() {
         this.lives -= 1;
-        if (this.lives <= 0) {
-            //TODO
-        }
+        this.wasDestroyedThisTurn = true;
     }
 
     @Override
-    public void lockNRegisters(int numberOfRegisters) {
+    public void lockNRegisters(Integer numberOfSlotsToLock) {
+        if (numberOfSlotsToLock == null
+                || numberOfSlotsToLock < 0
+                || numberOfSlotsToLock > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid number of slots");
+        }
         int registerSlot = (this.register.getNumberOfRegisterSlots() - 1);
-        while (numberOfRegisters > 0) {
+        while (numberOfSlotsToLock > 0) {
             this.register.lockRegisterSlotNumber(registerSlot);
             registerSlot--;
-            numberOfRegisters--;
+            numberOfSlotsToLock--;
         }
     }
 
     @Override
     public void receiveCards(List<ICard> cards) {
+        if (cards == null) {
+            throw new IllegalArgumentException("List of cards is invalid");
+        }
         this.cardsInHand.addCollectionOfCardsToDeck(cards);
     }
 
     @Override
-    public void addCardsToProgramRegister() {
-
-
+    public void addListOfCardsToProgramRegister(List<ICard> cards) {
+        if (cards == null || cards.size() > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Invalid list of cards");
+        }
+        this.register.addCollectionOfCardsToRegister(cards);
     }
 
     @Override
@@ -172,8 +222,13 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public ICard revealProgramCardForRegisterNumber(int registerNumber) {
-        return null;
+    public ICard revealProgramCardForRegisterNumber(Integer registerNumber) {
+        if (registerNumber == null
+                || registerNumber < 0
+                || registerNumber >= this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Invalid register number");
+        }
+        return this.register.getCardInSlotNumber(registerNumber);
     }
 
     @Override
@@ -183,13 +238,14 @@ public class Player implements IPlayer {
 
     @Override
     public boolean wasDestroyedThisTurn() {
-        return false;
+        return this.wasDestroyedThisTurn;
     }
 
     @Override
     public void respawnAtLastArchiveMarker() {
         this.x=backupX;
         this.y=backupY;
+        takeOneDamage();
         takeOneDamage();
     }
 
@@ -255,7 +311,8 @@ public class Player implements IPlayer {
         return this.name;
     }
     
-    public boolean isAlive() {
-        return this.lives <= 0;
+    @Override
+    public int getNumberOfLivesRemaining() {
+        return this.lives;
     }
 }
