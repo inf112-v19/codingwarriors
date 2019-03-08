@@ -102,43 +102,6 @@ public class PlayerTest {
         assertEquals(1, this.player.getY());
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Test
     public void clearingAPlayersRegisterShouldClearAllUnlockedCards() {
         ICard card1 = new Card(100, FORWARD_2);

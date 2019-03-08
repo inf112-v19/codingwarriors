@@ -62,10 +62,7 @@ public interface IPlayer {
 
 
     /**
-     *
-     *
-     *
-     *
+     * Decrement the players life-total by one.
      */
     void destroyPlayer();
 

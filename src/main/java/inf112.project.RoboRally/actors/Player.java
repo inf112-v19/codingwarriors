@@ -161,9 +161,6 @@ public class Player implements IPlayer {
     @Override
     public void destroyPlayer() {
         this.lives -= 1;
-        if (this.lives <= 0) {
-            //TODO out of the game...
-        }
     }
 
     @Override
