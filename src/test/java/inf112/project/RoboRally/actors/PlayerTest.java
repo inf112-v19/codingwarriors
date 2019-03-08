@@ -201,7 +201,7 @@ public class PlayerTest {
 
 
     @Test
-    public void takingFourDamageShouldLeaveAllRegisterSlotsUnlocked() {
+    public void takingFourOrLessDamageShouldLeaveAllRegisterSlotsUnlocked() {
         ICard card1 = new Card(100, ROTATE_LEFT);
         ICard card2 = new Card(200, ROTATE_RIGHT);
         ICard card3 = new Card(300, FORWARD_2);
@@ -225,15 +225,14 @@ public class PlayerTest {
         final int FOUR_DAMAGE = 4;
         for (int i = 0; i < FOUR_DAMAGE; i++) {
             player.takeOneDamage();
+            player.clearRegister();
+            ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
+            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
+            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(1));
+            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(2));
+            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(3));
+            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(4));
         }
-        player.clearRegister();
-
-        ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(1));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(2));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(3));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(4));
     }
 
     @Test
