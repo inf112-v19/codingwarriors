@@ -23,12 +23,12 @@ public class Player implements IPlayer {
         this.backupY = this.y;
         this.name = name;
         this.playerDirection = GridDirection.NORTH;
-        this.lives = 3;
+        this.cardsInHand = new Deck();
         this.numberOfDamageTokensRecieved = 0;
+        this.lives = 3;
         this.register = new ProgramRegister();
         this.flagsVisited = 0;
     }
-
 
     @Override
     public int getX() {
