@@ -87,14 +87,7 @@ public class Game implements IGame {
 
     @Override
     public boolean checkIfTheGameIsOver() {
-        if (numberOfPlayersLeftInTheGame <= 0) {
-            return true;
-        }
-        if (everyFlagHasBeenVisited) {
-            return true;
-            // return playerCommunication.askIfPlayersWantToContinuePlaying();
-        }
-        return false;
+        return (numberOfPlayersLeftInTheGame <= 0 || everyFlagHasBeenVisited);
     }
 
     @Override
@@ -313,7 +306,6 @@ public class Game implements IGame {
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
                 executingGameBoardObjects();
-                return;
         }
 
     }
@@ -358,7 +350,7 @@ public class Game implements IGame {
         // new cards is dealt
         for (IPlayer player: players) {
             IDeck playerCards = player.getCardsInHand();
-            while (playerCards.getSize() != 7) {
+            while (playerCards.getSize() != 9) {
                 if (programCards.getSize() == 0) {
                     int discardSize = discardedProgramCards.getSize();
                     programCards.addCollectionOfCardsToDeck(discardedProgramCards.handOutNCards(discardSize));
