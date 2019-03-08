@@ -8,20 +8,24 @@ import java.util.List;
 
 public interface IPlayer {
 
+
     /**
      * @return x-coordinate of player
      */
     int getX();
+
 
     /**
      * @return y-coordinate of player
      */
     int getY();
 
+
     /**
      * @return The direction the player currently faces.
      */
     GridDirection getPlayerDirection();
+
 
     /**
      * Move the player as instructed on the given program card.
@@ -41,14 +45,14 @@ public interface IPlayer {
 
 
     /**
-     * Deal one point of damage to this player.
+     * Deal one point of damage to this player.<br>
      * Increments the number of damage tokens.
      */
     void takeOneDamage();
 
 
     /**
-     * This player repairs one point of damage.
+     * This player repairs one point of damage.<br>
      * Decrements the number of damage tokens.
      */
     void removeOneDamage();
@@ -56,7 +60,7 @@ public interface IPlayer {
 
     /**
      * Check the amount of damage the player has sustained,
-     * and trigger effects accordingly.
+     * and lock register slots or destroy the player if necessary.
      */
     void assessCurrentDamage();
 
@@ -155,47 +159,63 @@ public interface IPlayer {
      * @return The players current name.
      */
     String getName();
-    
+
+
     /**
      * A method for setting backup point to the given position
      */
     void setThisPointAsNewBackup();
-    
+
+
     /**
      * A method for obtaining the number of flags that have been visited by the IPlayer
      * @return The number of flags visited
      */
     int getFlagsVisited();
-    
+
+
     /**
      * Add a flag to the number of visited flags
      */
     void addNewFlagVisited();
-    
+
+
     /**
      * A method for moving the player one step in a given direction
      * @param direction The direction to be moved
      */
     void movePlayer(GridDirection direction);
-    
+
+
     /**
      * A method for rotating the player to the left (counter-clockwise)
      */
     void rotateLeft();
-    
+
+
     /**
      * A method for rotating the player to the right (clockwise)
      */
     void rotateRight();
-    
+
+
     /**
      * A method for rotating the player to the opposite direction
      */
     void uTurn();
+
 
     /**
      * For use in drawing the player
      * @return Texture location and name in string form ex. assets/textureName.png
      */
     String getTexture();
+
+
+    /**
+     * Get the number of lives the player currently has.
+     *
+     * @return the number of lives the player has left.
+     */
+    int getNumberOfLivesRemaining();
 }

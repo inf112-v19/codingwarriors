@@ -2,7 +2,9 @@ package inf112.project.RoboRally.actors;
 
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.Card;
+import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
+import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.objects.GridDirection;
 import org.junit.Before;
 import org.junit.Test;
@@ -188,4 +190,13 @@ public class PlayerTest {
         cardList.add(card6);
         player.addListOfCardsToProgramRegister(cardList);
     }
+
+    @Test
+    public void destroyingAPlayerShouldRemoveOnePointFromThePlayersLives() {
+        int numberOfLives = player.getNumberOfLivesRemaining();
+        player.destroyPlayer();
+        assertEquals(numberOfLives - 1, player.getNumberOfLivesRemaining());
+    }
+
+
 }

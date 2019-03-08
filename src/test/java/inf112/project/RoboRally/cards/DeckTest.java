@@ -161,7 +161,7 @@ public class DeckTest {
         IDeck newDeck = new Deck();
         ICard card1 = new Card(220, Action.ROTATE_LEFT);
         deck.addCardToDeck(card1);
-        deck.transferNCardsFromThisDeckToTargetDeck(10000, newDeck);
+        deck.transferNCardsFromThisDeckToTargetDeck((deck.getSize() + 1), newDeck);
     }
 
     @Test (expected = IllegalArgumentException.class)

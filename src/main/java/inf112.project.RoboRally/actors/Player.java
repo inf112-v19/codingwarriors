@@ -17,6 +17,7 @@ public class Player implements IPlayer {
     private IProgramRegister register;
     private int flagsToVisit;
     private int flagsVisited;
+    private boolean wasDestroyedThisTurn;
 
 
     public Player(String name, int x, int y) {
@@ -42,6 +43,7 @@ public class Player implements IPlayer {
         this.backupY = this.y;
         this.flagsToVisit = Flag.getNumberOfFlags();
         this.flagsVisited = 0;
+        this.wasDestroyedThisTurn = false;
     }
 
     @Override
@@ -154,13 +156,33 @@ public class Player implements IPlayer {
             case 8: this.lockNRegisters(4); break;
             case 9: this.lockNRegisters(5); break;
             case 10: this.destroyPlayer(); break;
-            default: break;
+            default: this.unlockNRegisters(5); break;
         }
+    }
+
+   // @Override
+    private void unlockNRegisters(Integer numberOfSlots) {
+        if (numberOfSlots == null
+                || numberOfSlots < 0
+                || numberOfSlots > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid slot number");
+        }
+        /*
+
+
+
+
+
+         */
+
+
+
     }
 
     @Override
     public void destroyPlayer() {
         this.lives -= 1;
+        this.wasDestroyedThisTurn = true;
     }
 
     @Override
@@ -208,13 +230,14 @@ public class Player implements IPlayer {
 
     @Override
     public boolean wasDestroyedThisTurn() {
-        return false;
+        return this.wasDestroyedThisTurn;
     }
 
     @Override
     public void respawnAtLastArchiveMarker() {
         this.x=backupX;
         this.y=backupY;
+        takeOneDamage();
         takeOneDamage();
     }
 
@@ -294,5 +317,10 @@ public class Player implements IPlayer {
     // For use with leaderboard, may be removed if unnecessary
     public int getRemainingFlagsToVisit() {
         return flagsToVisit-flagsVisited;
+    }
+
+    @Override
+    public int getNumberOfLivesRemaining() {
+        return this.lives;
     }
 }
