@@ -3,12 +3,17 @@ package inf112.project.RoboRally.gui;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
-public class AssetsManagement {
+import javax.xml.soap.Text;
 
-    public final AssetManager assetManager = new AssetManager();
+class AssetsManagement {
 
-    public void loadTextures() {
+    private final AssetManager assetManager = new AssetManager();
+
+    void loadTextures() {
         assetManager.load("assets/conveyorBelt_east.png", Texture.class);
+        assetManager.load("assets/conveyorBelt_west.png", Texture.class);
+        assetManager.load("assets/conveyorBelt_north.png", Texture.class);
+        assetManager.load("assets/conveyorBelt_south.png", Texture.class);
         assetManager.load("assets/crossedWrench.png", Texture.class);
         assetManager.load("assets/floor_metal.jpg", Texture.class);
         assetManager.load("assets/player_one.png", Texture.class);
@@ -30,18 +35,18 @@ public class AssetsManagement {
     
     }
 
-    public void finishLoading() {
+    void finishLoading() {
         while (!assetManager.isFinished()) {
             assetManager.update();
         }
         assetManager.finishLoading();
     }
 
-    public Texture getAssetFileName(String s) {
+    Texture getAssetFileName(String s) {
         return assetManager.get(s,Texture.class);
     }
 
-    public void dispose() {
+    void dispose() {
         assetManager.dispose();
     }
 }
