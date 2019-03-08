@@ -4,10 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.cards.Deck;
@@ -16,20 +15,18 @@ import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
-import inf112.project.RoboRally.objects.ConveyorBelt;
-import inf112.project.RoboRally.objects.Floor;
-import inf112.project.RoboRally.objects.IObjects;
+import inf112.project.RoboRally.objects.*;
 
 import java.util.List;
 
-public class GraphicalUserInterface extends ApplicationAdapter {
+public class GraphicalUserInterface extends ApplicationAdapter{
     private IGame game;
     private int currentPlayerIndex;
     private IPlayer currentPlayer;
     private Grid cardScreen;
     private Grid boardScreen;
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
     private static final int CARD_SCREEN_WIDTH = 200;
     private static final int CARD_SCREEN_HEIGHT = HEIGHT;
     private OrthographicCamera camera;
@@ -37,10 +34,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     private Viewport viewport;
     private BitmapFont font;
     private BitmapFont fontGreen;
-    private Texture player;
-    private Texture floor;
-    private Texture arrow;
-    private Texture card;
+    private AssetsManagement assetsManager = new AssetsManagement();
 
     private int[] xPositionDrawer;
     private int[] yPositionDrawer;
@@ -48,14 +42,15 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     // to be moved
     private IDeck[] selectedCards;
 
-
-
     @Override
     public void create () {
         createNewGame();
         setupScreens();
         camera = new OrthographicCamera(WIDTH, HEIGHT);
-        viewport = new FitViewport(WIDTH, HEIGHT, camera);
+        viewport = new FillViewport(WIDTH, HEIGHT, camera);
+        viewport.apply();
+        Input input = new Input(camera);
+        Gdx.input.setInputProcessor(input);
         loadTextures();
 
     }
@@ -65,10 +60,8 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         font = new BitmapFont();
         fontGreen = new BitmapFont();
         fontGreen.setColor(0,1,0,1);
-        floor = new Texture("metalFloor.jpg");
-        arrow = new Texture("arrow.png");
-        player = new Texture("robotBrawlBot.png");
-        card = new Texture("card back blue.png");
+        assetsManager.loadTextures();
+        assetsManager.finishLoading();
     }
 
     private void setupScreens() {
@@ -77,7 +70,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                 ,1,currentPlayer.getCardsInHand().getSize());
         boardScreen = new Grid(
                 new Tile(CARD_SCREEN_WIDTH,WIDTH,0,HEIGHT)
-                ,game.getBoard().getRows(),game.getBoard().getColumns());
+                ,game.getBoard().getColumns(),game.getBoard().getRows());
     }
 
     private void createNewGame() {
@@ -101,8 +94,10 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.currentPlayer = game.getPlayers().get(currentPlayerIndex);
-        batch.setProjectionMatrix(camera.combined);
+
+        camera.update();
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         userInputs();
         drawBoard();
         drawCards();
@@ -119,7 +114,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                 int index = cardScreen.getTileIndex(y);
                 selectCards(index);
             }
-        } else if (Gdx.input.justTouched() && game.getTheCurrentGameStatus() == GameStatus.EXECUTING_INSTRUCTIONS) {
+        } else if (Gdx.input.justTouched()) {
             game.doTurn();
         }
     }
@@ -147,6 +142,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
             game.setUpTurn(selectedCards);
             currentPlayerIndex = 0;
             game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+
         }
     }
 
@@ -211,7 +207,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                             yPosPlayer : yPositionDrawer[i]-animationSpeed;
                 }
             }
-            batch.draw(this.player,
+            batch.draw(assetsManager.getAssetFileName(players.get(i).getTexture()),
                     xPositionDrawer[i], yPositionDrawer[i],
                     boardScreen.getTileWidth(), boardScreen.getTileHeight());
         }
@@ -219,20 +215,17 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     private void drawBoard() {
         int offset = 1;
-        for (int i = 0; i < boardScreen.getHeight(); i++) {
-            for (int j = 0; j < boardScreen.getWidth(); j++) {
+        for (int j = 0; j < boardScreen.getHeight(); j++) {
+            for (int i = 0; i < boardScreen.getWidth(); i++) {
                 IObjects object = game.getBoard().getObject(i,j);
-                if (object instanceof Floor) {
-                    batch.draw(floor,
-                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                } else if (object instanceof ConveyorBelt) {
-                    batch.draw(floor,
-                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
-                    batch.draw(arrow,
-                            boardScreen.getStartX(j)+offset, boardScreen.getStartY(i)+offset,
-                            boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                String texture = object.getTexture();
+                batch.draw(assetsManager.getAssetFileName("assets/floor_metal.jpg"),
+                        boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
+                        boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                if (texture != null) {
+                    batch.draw(assetsManager.getAssetFileName(object.getTexture()),
+                            boardScreen.getStartX(i) + offset, boardScreen.getStartY(j) + offset,
+                            boardScreen.getTileWidth() - offset * 2, boardScreen.getTileHeight() - offset * 2);
                 }
             }
         }
@@ -241,10 +234,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     @Override
     public void dispose () {
         batch.dispose();
-        floor.dispose();
-        arrow.dispose();
-        player.dispose();
-        card.dispose();
+        assetsManager.dispose();
         font.dispose();
     }
 

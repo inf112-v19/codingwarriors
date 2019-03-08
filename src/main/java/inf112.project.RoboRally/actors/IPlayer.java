@@ -158,4 +158,47 @@ public interface IPlayer {
      * @return The players current name.
      */
     String getName();
+    
+    /**
+     * A method for setting backup point to the given position
+     */
+    void setThisPointAsNewBackup();
+    
+    /**
+     * A method for obtaining the number of flags that have been visited by the IPlayer
+     * @return The number of flags visited
+     */
+    int getFlagsVisited();
+    
+    /**
+     * Add a flag to the number of visited flags
+     */
+    void addNewFlagVisited();
+    
+    /**
+     * A method for moving the player one step in a given direction
+     * @param direction The direction to be moved
+     */
+    void movePlayer(GridDirection direction);
+    
+    /**
+     * A method for rotating the player to the left (counter-clockwise)
+     */
+    void rotateLeft();
+    
+    /**
+     * A method for rotating the player to the right (clockwise)
+     */
+    void rotateRight();
+    
+    /**
+     * A method for rotating the player to the opposite direction
+     */
+    void uTurn();
+
+    /**
+     * For use in drawing the player
+     * @return Texture location and name in string form ex. assets/textureName.png
+     */
+    String getTexture();
 }

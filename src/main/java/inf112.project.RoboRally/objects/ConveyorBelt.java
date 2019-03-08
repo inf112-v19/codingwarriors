@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 
 public class ConveyorBelt implements IObjects {
@@ -43,9 +44,18 @@ public class ConveyorBelt implements IObjects {
     }
     
     @Override
-    public void doAction(Player player) {
+    public void doAction(IPlayer player) {
         for (int i=0; i<speed; i++) {
             player.movePlayer(direction);
         }
     }
+
+    @Override
+    public String getTexture() {
+        if (this.direction == GridDirection.EAST) {
+            return "assets/conveyorBelt_east.png";
+        }
+        return null;
+    }
+
 }

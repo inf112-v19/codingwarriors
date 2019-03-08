@@ -40,4 +40,11 @@ public class Tile {
     public boolean positionInsideTile(int x, int y) {
         return x >= this.getStartX() && x <= this.getEndX() && y >= this.getStartY() && y <= this.getEndY();
     }
+
+    public void resize(int startX, int endX, int startY, int endY) {
+        this.startX = startX;
+        this.endX = endX;
+        this.startY = startY;
+        this.endY = endY;
+    }
 }

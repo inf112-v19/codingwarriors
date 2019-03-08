@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public class Laser implements IObjects {
     private int speed;
@@ -37,7 +37,15 @@ public class Laser implements IObjects {
     }
     
     @Override
-    public void doAction(Player player) {
-        // TODO To be implemented
+    public void doAction(IPlayer player) {
+        player.takeOneDamage();
+    }
+
+    @Override
+    public String getTexture() {
+        if (direction == GridDirection.SOUTH || direction == GridDirection.NORTH) {
+            return "assets/laserVertical.png";
+        }
+        return "assets/laserHorizontal.png";
     }
 }

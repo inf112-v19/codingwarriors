@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public class Pit implements IObjects {
     private int speed;
@@ -8,10 +8,10 @@ public class Pit implements IObjects {
     private int damage;
     private Rotation rotation;
 
-    public Pit (int damage) {
+    public Pit () {
         this.speed=0;
         this.direction=GridDirection.NORTH;
-        this.damage=damage;
+        this.damage=1;
         this.rotation=null;
     }
 
@@ -36,7 +36,12 @@ public class Pit implements IObjects {
     }
     
     @Override
-    public void doAction(Player player) {
-        //TODO To be implemented
+    public void doAction(IPlayer player) {
+        player.respawnAtLastArchiveMarker();
+    }
+
+    @Override
+    public String getTexture() {
+        return "assets/pit.png";
     }
 }

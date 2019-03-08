@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Before;

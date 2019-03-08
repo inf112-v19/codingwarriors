@@ -1,8 +1,21 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 
 public class CrossedWrench implements IObjects {
+    private int speed;
+    private GridDirection direction;
+    private int damage;
+    private Rotation rotation;
+
+    public CrossedWrench () {
+        this.speed=0;
+        this.direction=null;
+        this.damage=0;
+        this.rotation=null;
+    }
+
     @Override
     public int getSpeed() {
         return 0;
@@ -24,10 +37,17 @@ public class CrossedWrench implements IObjects {
     }
 
     @Override
-    public void doAction(Player player) {
+    public void doAction(IPlayer player) {
         player.removeOneDamage();
 
         player.setThisPointAsNewBackup();
 
+        //TODO implement draw one option card
+
+    }
+
+    @Override
+    public String getTexture() {
+        return "assets/crossedWrench.png";
     }
 }

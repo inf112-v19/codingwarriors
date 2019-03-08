@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.objects;
 
-import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.actors.IPlayer;
 
 public class Floor implements IObjects {
 
@@ -25,7 +25,12 @@ public class Floor implements IObjects {
     }
     
     @Override
-    public void doAction(Player player) {
+    public void doAction(IPlayer player) {
         // No action needed here for this specific object ;)
+    }
+
+    @Override
+    public String getTexture() {
+        return "assets/floor_metal.jpg";
     }
 }

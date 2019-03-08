@@ -23,6 +23,8 @@ public class Player implements IPlayer {
         setDefaultValues();
         this.x = x;
         this.y = y;
+        this.backupX = this.x;
+        this.backupY = this.y;
         this.name = name;
     }
 
@@ -60,20 +62,25 @@ public class Player implements IPlayer {
         return backupY;
     }
 
+    // Possibly redundant
+    // TODO Remove if redundant
     public void setNewBackupPoint(int x, int y) {
         this.backupX=x;
         this.backupY=y;
     }
 
+    @Override
     public void setThisPointAsNewBackup() {
         this.backupX=this.x;
         this.backupY=this.y;
     }
 
+    @Override
     public int getFlagsVisited() {
         return flagsVisited;
     }
 
+    @Override
     public void addNewFlagVisited() {
         flagsVisited++;
     }
@@ -105,7 +112,7 @@ public class Player implements IPlayer {
         }
     }
 
-    
+    @Override
     public void movePlayer(GridDirection direction) {
         if (direction == GridDirection.NORTH) {
             y++;
@@ -155,7 +162,7 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         if (this.lives <= 0) {
-            //out of the game...
+            //TODO out of the game...
         }
     }
 
@@ -259,19 +266,36 @@ public class Player implements IPlayer {
         }
     }
 
+    @Override
     public void uTurn() {
         this.playerDirection = playerDirection.invert();
     }
 
+    @Override
+    public String getTexture() {
+        return "assets/player_one.png";
+    }
+
+    @Override
     public void rotateLeft() {
         this.playerDirection = playerDirection.rotateLeft();
     }
 
+    @Override
     public void rotateRight() {
         this.playerDirection = playerDirection.rotateRight();
     }
 
     public String getName() {
         return this.name;
+    }
+    
+    public int getFlagsToVisit() {
+        return flagsToVisit;
+    }
+    
+    // For use with leaderboard, may be removed if unnecessary
+    public int getRemainingFlagsToVisit() {
+        return flagsToVisit-flagsVisited;
     }
 }

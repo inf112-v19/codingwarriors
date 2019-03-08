@@ -3,190 +3,191 @@
   <ID>JAVA</ID>
   <OriginalElement>inf112.project.RoboRally.RoboRallyMain</OriginalElement>
   <nodes>
-    <node x="676.25" y="257.0">inf112.project.RoboRally.objects.ConveyorBelt</node>
-    <node x="321.80691964285705" y="435.0">inf112.project.RoboRally.game.Game</node>
-    <node x="302.33333333333337" y="534.0">inf112.project.RoboRally.gui.GraphicalUserInterface</node>
-    <node x="321.83333333333337" y="613.0">inf112.project.RoboRally.RoboRallyMain</node>
-    <node x="581.25" y="257.0">inf112.project.RoboRally.objects.Floor</node>
-    <node x="432.96093749999994" y="158.0">inf112.project.RoboRally.actors.Player</node>
-    <node x="69.0" y="346.0">inf112.project.RoboRally.gui.Tile</node>
-    <node x="303.46093749999994" y="79.0">inf112.project.RoboRally.cards.Deck</node>
-    <node x="243.08593749999994" y="0.0">inf112.project.RoboRally.cards.Card</node>
-    <node x="333.6381324404763" y="346.0">inf112.project.RoboRally.board.GameBoard</node>
-    <node x="351.25" y="257.0">inf112.project.RoboRally.objects.RotationCog</node>
-    <node x="0.0" y="158.0">inf112.project.RoboRally.cards.ProgramRegister</node>
-    <node x="170.25" y="257.0">inf112.project.RoboRally.objects.Wall</node>
-    <node x="486.25" y="257.0">inf112.project.RoboRally.objects.Laser</node>
-    <node x="261.25" y="257.0">inf112.project.RoboRally.objects.Flag</node>
-    <node x="54.40613839285703" y="435.0">inf112.project.RoboRally.gui.Grid</node>
-    <node x="815.25" y="257.0">inf112.project.RoboRally.objects.Pit</node>
+    <node x="748.5833333333333" y="346.0">inf112.project.RoboRally.game.Game</node>
+    <node x="387.00000000000006" y="158.0">inf112.project.RoboRally.objects.ConveyorBelt</node>
+    <node x="878.0833333333333" y="455.0">inf112.project.RoboRally.gui.GraphicalUserInterface</node>
+    <node x="1193.7083333333333" y="455.0">inf112.project.RoboRally.gui.CardGUI</node>
+    <node x="897.5833333333333" y="534.0">inf112.project.RoboRally.RoboRallyMain</node>
+    <node x="0.0" y="158.0">inf112.project.RoboRally.objects.Floor</node>
+    <node x="1192.431992337165" y="257.0">inf112.project.RoboRally.gui.Tile</node>
+    <node x="965.8299808429118" y="257.0">inf112.project.RoboRally.actors.Player</node>
+    <node x="236.0" y="158.0">inf112.project.RoboRally.objects.CrossedWrench</node>
+    <node x="1097.2916666666667" y="79.0">inf112.project.RoboRally.cards.Deck</node>
+    <node x="1036.9166666666667" y="0.0">inf112.project.RoboRally.cards.Card</node>
+    <node x="508.50000000000006" y="257.0">inf112.project.RoboRally.board.GameBoard</node>
+    <node x="703.0" y="158.0">inf112.project.RoboRally.objects.RotationCog</node>
+    <node x="928.0" y="158.0">inf112.project.RoboRally.cards.ProgramRegister</node>
+    <node x="847.5833333333333" y="346.0">inf112.project.RoboRally.gui.AssetsManagement</node>
+    <node x="0.0" y="608.0">inf112.project.RoboRally.objects.Wall</node>
+    <node x="652.5833333333333" y="346.0">inf112.project.RoboRally.gui.Input</node>
+    <node x="838.0" y="158.0">inf112.project.RoboRally.objects.Flag</node>
+    <node x="526.0" y="158.0">inf112.project.RoboRally.objects.Laser</node>
+    <node x="95.0" y="158.0">inf112.project.RoboRally.objects.SingleWrench</node>
+    <node x="1205.204980842912" y="346.0">inf112.project.RoboRally.gui.Grid</node>
+    <node x="621.0" y="158.0">inf112.project.RoboRally.objects.Pit</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="inf112.project.RoboRally.objects.Laser" target="inf112.project.RoboRally.actors.Player">
-      <point x="0.0" y="-14.5" />
-      <point x="523.75" y="237.0" />
-      <point x="477.96093749999994" y="237.0" />
-      <point x="5.0" y="14.5" />
-    </edge>
-    <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.objects.Floor">
-      <point x="23.85714285714289" y="-14.5" />
-      <point x="409.69047619047626" y="494.0" />
-      <point x="637.5" y="494.0" />
-      <point x="18.75" y="14.5" />
-    </edge>
-    <edge source="inf112.project.RoboRally.objects.Floor" target="inf112.project.RoboRally.actors.Player">
-      <point x="0.0" y="-14.5" />
-      <point x="618.75" y="227.0" />
-      <point x="487.96093749999994" y="227.0" />
-      <point x="15.0" y="14.5" />
-    </edge>
     <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.gui.Grid">
-      <point x="-71.57142857142856" y="-14.5" />
-      <point x="314.2619047619048" y="514.0" />
-      <point x="71.90613839285703" y="514.0" />
-      <point x="-17.5" y="14.5" />
-    </edge>
-    <edge source="inf112.project.RoboRally.actors.Player" target="inf112.project.RoboRally.cards.Deck">
-      <point x="0.0" y="-14.5" />
-      <point x="472.96093749999994" y="138.0" />
-      <point x="349.71093749999994" y="138.0" />
-      <point x="9.25" y="14.5" />
-    </edge>
-    <edge source="inf112.project.RoboRally.objects.Flag" target="inf112.project.RoboRally.actors.Player">
-      <point x="0.0" y="-14.5" />
-      <point x="296.25" y="227.0" />
-      <point x="457.96093749999994" y="227.0" />
-      <point x="-15.0" y="14.5" />
+      <point x="55.66666666666674" y="-14.5" />
+      <point x="1017.25" y="415.0" />
+      <point x="1216.8716475095787" y="415.0" />
+      <point x="-23.333333333333258" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.cards.ProgramRegister" target="inf112.project.RoboRally.cards.Card">
       <point x="-34.0" y="-14.5" />
-      <point x="34.0" y="54.0" />
-      <point x="261.33593749999994" y="54.0" />
+      <point x="962.0" y="54.0" />
+      <point x="1055.1666666666667" y="54.0" />
       <point x="-18.25" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.actors.Player" target="inf112.project.RoboRally.cards.Deck">
+      <point x="26.666666666666856" y="-14.5" />
+      <point x="1032.4966475095787" y="237.0" />
+      <point x="1132.5416666666667" y="237.0" />
+      <point x="1132.5416666666667" y="133.0" />
+      <point x="1125.0416666666667" y="133.0" />
+      <point x="-9.25" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.gui.Input">
+      <point x="-55.66666666666674" y="-14.5" />
+      <point x="905.9166666666665" y="425.0" />
+      <point x="709.5833333333333" y="425.0" />
+      <point x="19.0" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.cards.Deck" target="inf112.project.RoboRally.cards.Card">
       <point x="0.0" y="-14.5" />
-      <point x="340.46093749999994" y="54.0" />
-      <point x="297.83593749999994" y="54.0" />
+      <point x="1134.2916666666667" y="54.0" />
+      <point x="1091.6666666666667" y="54.0" />
       <point x="18.25" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.cards.Deck">
-      <point x="71.57142857142856" y="-14.5" />
-      <point x="457.4047619047619" y="514.0" />
-      <point x="887.75" y="514.0" />
-      <point x="887.75" y="128.0" />
-      <point x="368.21093749999994" y="128.0" />
+      <point x="18.555555555555657" y="-14.5" />
+      <point x="980.1388888888889" y="395.0" />
+      <point x="1178.0986590038315" y="395.0" />
+      <point x="1178.0986590038315" y="133.0" />
+      <point x="1162.0416666666667" y="133.0" />
       <point x="27.75" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.ConveyorBelt">
-      <point x="41.25" y="-14.5" />
-      <point x="429.8881324404763" y="326.0" />
-      <point x="706.0" y="326.0" />
-      <point x="-29.75" y="14.5" />
+      <point x="-12.222222222222229" y="-14.5" />
+      <point x="551.2777777777778" y="207.0" />
+      <point x="446.50000000000006" y="207.0" />
+      <point x="0.0" y="14.5" />
     </edge>
-    <edge source="inf112.project.RoboRally.objects.ConveyorBelt" target="inf112.project.RoboRally.actors.Player">
-      <point x="0.0" y="-14.5" />
-      <point x="735.75" y="217.0" />
-      <point x="497.96093749999994" y="217.0" />
-      <point x="25.0" y="14.5" />
+    <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.gui.AssetsManagement">
+      <point x="-18.555555555555657" y="-14.5" />
+      <point x="943.0277777777776" y="405.0" />
+      <point x="885.5833333333333" y="405.0" />
+      <point x="-38.0" y="14.5" />
     </edge>
-    <edge source="inf112.project.RoboRally.objects.Wall" target="inf112.project.RoboRally.actors.Player">
-      <point x="0.0" y="-14.5" />
-      <point x="205.75" y="217.0" />
-      <point x="447.96093749999994" y="217.0" />
-      <point x="-25.0" y="14.5" />
+    <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.SingleWrench">
+      <point x="-36.666666666666686" y="-14.5" />
+      <point x="526.8333333333334" y="227.0" />
+      <point x="155.5" y="227.0" />
+      <point x="0.0" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.Floor">
-      <point x="13.75" y="-14.5" />
-      <point x="402.3881324404763" y="316.0" />
-      <point x="600.0" y="316.0" />
-      <point x="-18.75" y="14.5" />
-    </edge>
-    <edge source="inf112.project.RoboRally.objects.Pit" target="inf112.project.RoboRally.actors.Player">
-      <point x="0.0" y="-14.5" />
-      <point x="846.25" y="207.0" />
-      <point x="507.96093749999994" y="207.0" />
-      <point x="35.0" y="14.5" />
+      <point x="-48.888888888888914" y="-14.5" />
+      <point x="514.6111111111111" y="237.0" />
+      <point x="37.5" y="237.0" />
+      <point x="0.0" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.game.Game" target="inf112.project.RoboRally.actors.Player">
-      <point x="-15.800000000000011" y="-14.5" />
-      <point x="345.50691964285704" y="395.0" />
-      <point x="159.75" y="395.0" />
-      <point x="159.75" y="207.0" />
-      <point x="437.96093749999994" y="207.0" />
-      <point x="-35.0" y="14.5" />
+      <point x="19.75" y="-14.5" />
+      <point x="807.8333333333333" y="316.0" />
+      <point x="1025.829980842912" y="316.0" />
+      <point x="20.000000000000114" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.game.Game" target="inf112.project.RoboRally.cards.Deck">
-      <point x="-31.600000000000023" y="-14.5" />
-      <point x="329.70691964285703" y="405.0" />
-      <point x="146.5" y="405.0" />
-      <point x="146.5" y="138.0" />
-      <point x="331.21093749999994" y="138.0" />
-      <point x="-9.25" y="14.5" />
+      <point x="32.91666666666663" y="-14.5" />
+      <point x="821.0" y="326.0" />
+      <point x="1143.5416666666667" y="326.0" />
+      <point x="9.25" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.RotationCog">
-      <point x="-13.75" y="-14.5" />
-      <point x="374.8881324404763" y="306.0" />
-      <point x="408.75" y="306.0" />
+      <point x="24.444444444444457" y="-14.5" />
+      <point x="587.9444444444446" y="217.0" />
+      <point x="760.5" y="217.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.CrossedWrench">
+      <point x="-24.444444444444457" y="-14.5" />
+      <point x="539.0555555555557" y="217.0" />
+      <point x="301.5" y="217.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.Pit">
+      <point x="12.222222222222229" y="-14.5" />
+      <point x="575.7222222222223" y="207.0" />
+      <point x="652.0" y="207.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.actors.Player" target="inf112.project.RoboRally.cards.ProgramRegister">
+      <point x="1.1368683772161603E-13" y="-14.5" />
+      <point x="1005.8299808429119" y="237.0" />
+      <point x="996.0" y="237.0" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.cards.ProgramRegister" target="inf112.project.RoboRally.cards.Deck">
       <point x="34.0" y="-14.5" />
-      <point x="102.0" y="128.0" />
-      <point x="312.71093749999994" y="128.0" />
+      <point x="1030.0" y="133.0" />
+      <point x="1106.5416666666667" y="133.0" />
       <point x="-27.75" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.gui.Grid" target="inf112.project.RoboRally.gui.Tile">
-      <point x="17.5" y="-14.5" />
-      <point x="106.90613839285703" y="415.0" />
-      <point x="102.5" y="415.0" />
+      <point x="-17.5" y="-14.5" />
+      <point x="1222.704980842912" y="326.0" />
+      <point x="1225.931992337165" y="326.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.Laser">
+      <point x="0.0" y="-14.5" />
       <point x="0.0" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.gui.Tile">
-      <point x="-23.857142857142776" y="-14.5" />
-      <point x="361.9761904761906" y="494.0" />
-      <point x="177.30401785714292" y="494.0" />
-      <point x="177.30401785714292" y="415.0" />
-      <point x="124.83333333333337" y="415.0" />
-      <point x="22.33333333333337" y="14.5" />
+      <point x="37.111111111111086" y="-14.5" />
+      <point x="998.6944444444443" y="405.0" />
+      <point x="1194.704980842912" y="405.0" />
+      <point x="1194.704980842912" y="326.0" />
+      <point x="1203.5986590038315" y="326.0" />
+      <point x="-22.333333333333258" y="14.5" />
     </edge>
-    <edge source="inf112.project.RoboRally.objects.RotationCog" target="inf112.project.RoboRally.actors.Player">
+    <edge source="inf112.project.RoboRally.gui.CardGUI" target="inf112.project.RoboRally.gui.Grid">
       <point x="0.0" y="-14.5" />
-      <point x="408.75" y="237.0" />
-      <point x="467.96093749999994" y="237.0" />
-      <point x="-5.0" y="14.5" />
+      <point x="1239.7083333333333" y="435.0" />
+      <point x="1263.5383141762452" y="435.0" />
+      <point x="23.333333333333258" y="14.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.actors.Player" target="inf112.project.RoboRally.objects.Flag">
+      <point x="-26.666666666666515" y="-14.5" />
+      <point x="979.1633141762453" y="237.0" />
+      <point x="896.3333333333335" y="237.0" />
+      <point x="23.33333333333337" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.board.GameBoard" target="inf112.project.RoboRally.objects.Flag">
-      <point x="-41.25" y="-14.5" />
-      <point x="347.3881324404763" y="326.0" />
-      <point x="296.25" y="326.0" />
-      <point x="0.0" y="14.5" />
+      <point x="36.666666666666686" y="-14.5" />
+      <point x="600.1666666666667" y="227.0" />
+      <point x="849.6666666666667" y="227.0" />
+      <point x="-23.33333333333337" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.game.Game" target="inf112.project.RoboRally.board.GameBoard">
-      <point x="0.0" y="-14.5" />
-      <point x="361.30691964285705" y="415.0" />
-      <point x="351.97146577380954" y="415.0" />
+      <point x="-32.91666666666663" y="-14.5" />
+      <point x="755.1666666666667" y="326.0" />
+      <point x="526.8333333333334" y="326.0" />
       <point x="-36.666666666666686" y="14.5" />
     </edge>
     <edge source="inf112.project.RoboRally.RoboRallyMain" target="inf112.project.RoboRally.gui.GraphicalUserInterface">
       <point x="0.0" y="-14.5" />
       <point x="0.0" y="14.5" />
     </edge>
-    <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.objects.ConveyorBelt">
-      <point x="47.71428571428578" y="-14.5" />
-      <point x="433.54761904761915" y="504.0" />
-      <point x="765.5" y="504.0" />
-      <point x="29.75" y="14.5" />
-    </edge>
     <edge source="inf112.project.RoboRally.gui.GraphicalUserInterface" target="inf112.project.RoboRally.game.Game">
-      <point x="0.0" y="-14.5" />
-      <point x="385.83333333333337" y="484.0" />
-      <point x="361.30691964285705" y="484.0" />
+      <point x="-37.111111111111086" y="-14.5" />
+      <point x="924.4722222222222" y="415.0" />
+      <point x="788.0833333333333" y="415.0" />
       <point x="0.0" y="14.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="315.0" y="337.0" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="747.0" y="317.0" />
   <SelectedNodes />
   <Categories />
   <SCOPE>All</SCOPE>
