@@ -38,11 +38,14 @@ public class Laser implements IObjects {
     
     @Override
     public void doAction(IPlayer player) {
-        // TODO To be implemented
+        player.takeOneDamage();
     }
 
     @Override
     public String getTexture() {
-        return null;
+        if (direction == GridDirection.SOUTH || direction == GridDirection.NORTH) {
+            return "assets/laserVertical.png";
+        }
+        return "assets/laserHorizontal.png";
     }
 }

@@ -8,10 +8,10 @@ public class Pit implements IObjects {
     private int damage;
     private Rotation rotation;
 
-    public Pit (int damage) {
+    public Pit () {
         this.speed=0;
         this.direction=GridDirection.NORTH;
-        this.damage=damage;
+        this.damage=1;
         this.rotation=null;
     }
 
@@ -42,6 +42,6 @@ public class Pit implements IObjects {
 
     @Override
     public String getTexture() {
-        return null;
+        return "assets/pit.png";
     }
 }

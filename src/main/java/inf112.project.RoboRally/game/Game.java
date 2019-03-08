@@ -223,18 +223,18 @@ public class Game implements IGame {
         // which can be chosen at the start menu?
         addPlayers();
         String gameBoardLayout = "16C12R" +
-                ".rr..r.rrr......" +
+                "f....r.rrr...f.." +
                 ".rrrrrrr........" +
                 ".r.........c...." +
-                ".r.............." +
-                ".r.............." +
-                "rr.............." +
-                "rr..........C..." +
-                ".r.............." +
-                ".r.............." +
-                ".r.............." +
-                ".r.............." +
-                ".r..............";
+                ".r...f....|....." +
+                ".r...........p.." +
+                "rr......f......." +
+                "ll.....w....C..." +
+                ".r..p....lll...." +
+                ".r.....w........" +
+                ".r.....w.....p.." +
+                ".r...f....-....." +
+                ".r....WW........";
         this.board = new GameBoard(gameBoardLayout);
         this.programCards = new Deck();
         this.discardedProgramCards = new Deck();

@@ -15,7 +15,19 @@ public class AssetsManagement {
         assetManager.load("assets/rotationCog_right.png", Texture.class);
         assetManager.load("assets/rotationCog_left.png", Texture.class);
         assetManager.load("assets/singleWrench.png", Texture.class);
-
+        assetManager.load("assets/flag1.png", Texture.class);
+        assetManager.load("assets/flag2.png", Texture.class);
+        assetManager.load("assets/flag3.png", Texture.class);
+        assetManager.load("assets/flag4.png", Texture.class);
+        assetManager.load("assets/flag5.png", Texture.class);
+        assetManager.load("assets/flag6.png", Texture.class);
+        assetManager.load("assets/flag7.png", Texture.class);
+        assetManager.load("assets/flag8.png", Texture.class);
+        assetManager.load("assets/flag9.png", Texture.class);
+        assetManager.load("assets/pit.png", Texture.class);
+        assetManager.load("assets/laserHorizontal.png", Texture.class);
+        assetManager.load("assets/laserVertical.png", Texture.class);
+    
     }
 
     public void finishLoading() {

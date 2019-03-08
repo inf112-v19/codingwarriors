@@ -2,6 +2,11 @@ package inf112.project.RoboRally.board;
 
 import inf112.project.RoboRally.objects.*;
 import inf112.project.RoboRally.objects.IObjects;
+import inf112.project.RoboRally.objects.Flag;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class GameBoard {
     private int rows;
@@ -12,14 +17,47 @@ public class GameBoard {
         Flag.setNumberOfFlags(0); // resetting the static variable in Flag to be able to generate more than one gameboard
         int counter = extractDimensions(level);
         board = new IObjects[rows][columns];
+        ArrayList<Integer> xCoordinates = new ArrayList<>();
+        ArrayList<Integer> yCoordinates = new ArrayList<>();
         for (int x = rows -1; x >= 0; x--) {
             for (int y = 0; y < columns; y++) {
                 board[x][y] = factory(level.charAt(counter));
                 counter++;
+                if (board[x][y] instanceof  Flag) {
+                    xCoordinates.add(x);
+                    yCoordinates.add(y);
+                }
             }
         }
+        randomizeOrderOfFlags(xCoordinates, yCoordinates);
     }
-
+    
+    /**
+     * A method where the flag numbers are randomized on the GameBoard. Without it, the flag numbers will be set in sequence.
+     * @param xCoordinates The x-coordinates for each flag
+     * @param yCoordinates The y-coordinates for each flag
+     * Each index in xCoordinates corresponds with the same index in yCoordinates, so for each i there is a flag located at
+     *                     (xCoordinates.get(i), yCoordinates.get(i))
+     */
+    private void randomizeOrderOfFlags(ArrayList<Integer> xCoordinates, ArrayList<Integer> yCoordinates) {
+        if (xCoordinates.size() != yCoordinates.size()) {
+            System.out.println("Something is wrong with the randomization of the flags' orders");
+            return;
+        }
+        List<Integer> flagNumbers = new ArrayList<>();
+        for (int i=0; i<Flag.getNumberOfFlags(); i++) {
+            flagNumbers.add(i);
+        }
+        Random random = new Random();
+        for (int j=0; j<xCoordinates.size(); j++) {
+            int flagNumber=random.nextInt(flagNumbers.size());
+            assert board[xCoordinates.get(j)][yCoordinates.get(j)] instanceof Flag;
+            Flag flag = (Flag) board[xCoordinates.get(j)][yCoordinates.get(j)];
+            flag.setFlagNumber(Integer.parseInt(""+flagNumbers.get(flagNumber)));
+            flagNumbers.remove(flagNumber);
+        }
+    }
+    
     private int extractDimensions(String level) {
         this.columns = Integer.parseInt(level.substring(0,level.indexOf("C")));
         this.rows = Integer.parseInt(level.substring(level.indexOf("C")+1,level.indexOf("R")));
@@ -46,6 +84,14 @@ public class GameBoard {
                 return new RotationCog(Rotation.RIGHT);
             case 'w':
                 return new SingleWrench();
+            case 'p':
+                return new Pit();
+            case 'W':
+                return new CrossedWrench();
+            case '|':
+                return new Laser(GridDirection.NORTH,1);
+            case '-':
+                return new Laser(GridDirection.EAST,1);
             default:
                 return new Floor();
         }

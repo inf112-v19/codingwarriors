@@ -1,7 +1,6 @@
 package inf112.project.RoboRally.objects;
 
 import inf112.project.RoboRally.actors.IPlayer;
-import inf112.project.RoboRally.actors.Player;
 
 public class Flag implements IObjects {
     private static int numberOfFlags=0;
@@ -42,12 +41,16 @@ public class Flag implements IObjects {
         player.setThisPointAsNewBackup();
         if (player.getFlagsVisited() == this.flagNumber) {
             player.addNewFlagVisited();
+            System.out.println("Found a flag!");
         }
     }
 
     @Override
     public String getTexture() {
-        return null;
+        if (flagNumber>9) {
+            return "assets/flag.png";
+        }
+        return "assets/flag" + (flagNumber+1) + ".png";
     }
 
     public static int getNumberOfFlags() {
@@ -60,5 +63,13 @@ public class Flag implements IObjects {
 
     public static void setNumberOfFlags(int numberOfFlags) {
         Flag.numberOfFlags = numberOfFlags;
+    }
+    
+    /**
+     * A method made for randomizing the order of the flags
+     * @param flagNumber The assigned number for the flag
+     */
+    public void setFlagNumber(int flagNumber) {
+        this.flagNumber=flagNumber;
     }
 }
