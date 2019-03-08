@@ -80,7 +80,7 @@ public class Deck implements IDeck{
             throw new IllegalArgumentException("Number of cards is invalid," +
                     " or the target deck does not exist");
         }
-        List<ICard> selectedCards = handOutNCards(numberOfCardsToTransfer);
+        List<ICard> selectedCards = this.handOutNCards(numberOfCardsToTransfer);
         targetDeck.addCollectionOfCardsToDeck(selectedCards);
     }
 

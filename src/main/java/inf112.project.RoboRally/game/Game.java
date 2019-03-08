@@ -160,11 +160,8 @@ public class Game implements IGame {
         // all un used cards is moved to discard pile
         for (IPlayer player: players) {
             IDeck cardsInPlayerDeck = player.getCardsInHand();
-            while (cardsInPlayerDeck.getSize() != 0) {
-                ICard unUsedPlayerCard = cardsInPlayerDeck.removeCard(0);
-                
-                discardedProgramCards.addCardToDeck(unUsedPlayerCard);
-            }
+            cardsInPlayerDeck.transferNCardsFromThisDeckToTargetDeck(cardsInPlayerDeck.getSize(),
+                                                                            discardedProgramCards);
         }
         // new cards is dealt
         for (IPlayer player: players) {
