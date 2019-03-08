@@ -87,14 +87,7 @@ public class Game implements IGame {
 
     @Override
     public boolean checkIfTheGameIsOver() {
-        if (numberOfPlayersLeftInTheGame <= 0) {
-            return true;
-        }
-        if (everyFlagHasBeenVisited) {
-            return true;
-            // return playerCommunication.askIfPlayersWantToContinuePlaying();
-        }
-        return false;
+        return (numberOfPlayersLeftInTheGame <= 0 || everyFlagHasBeenVisited);
     }
 
     @Override
@@ -224,17 +217,17 @@ public class Game implements IGame {
         addPlayers();
         String gameBoardLayout = "16C12R" +
                 "f....r.rrr...f.." +
-                ".rrrrrrr........" +
+                ".rrrrrrr....uu.." +
                 ".r.........c...." +
                 ".r...f....|....." +
-                ".r...........p.." +
+                ".r......ll....p.." +
                 "rr......f......." +
                 "ll.....w....C..." +
                 ".r..p....lll...." +
                 ".r.....w........" +
                 ".r.....w.....p.." +
                 ".r...f....-....." +
-                ".r....WW........";
+                ".r....WW....dd..";
         this.board = new GameBoard(gameBoardLayout);
         this.programCards = new Deck();
         this.discardedProgramCards = new Deck();
@@ -313,7 +306,6 @@ public class Game implements IGame {
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
                 executingGameBoardObjects();
-                return;
         }
 
     }
@@ -321,7 +313,7 @@ public class Game implements IGame {
     private void executingGameBoardObjects() {
         for (IPlayer p: players) {
             if(board.moveValid(p.getX(),p.getY())) {
-                board.getObject(p.getX(), p.getY()).doAction((Player) p);
+                board.getObject(p.getX(), p.getY()).doAction(p);
             } else {
                 p.respawnAtLastArchiveMarker();
             }
@@ -351,14 +343,14 @@ public class Game implements IGame {
             IDeck cardsInPlayerDeck = player.getCardsInHand();
             while (cardsInPlayerDeck.getSize() != 0) {
                 ICard unUsedPlayerCard = cardsInPlayerDeck.removeCard(0);
-                ;
+                
                 discardedProgramCards.addCardToDeck(unUsedPlayerCard);
             }
         }
         // new cards is dealt
         for (IPlayer player: players) {
             IDeck playerCards = player.getCardsInHand();
-            while (playerCards.getSize() != 7) {
+            while (playerCards.getSize() != 9) {
                 if (programCards.getSize() == 0) {
                     int discardSize = discardedProgramCards.getSize();
                     programCards.addCollectionOfCardsToDeck(discardedProgramCards.handOutNCards(discardSize));

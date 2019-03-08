@@ -185,7 +185,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void drawPlayers() {
         List<IPlayer> players= game.getPlayers();
-        int animationSpeed = 4;
+        int animationSpeed = 9;
         for (int i = 0; i < players.size(); i++) {
             int xPosPlayer = boardScreen.getStartX(players.get(i).getX());
             if (xPositionDrawer[i] != xPosPlayer) {
