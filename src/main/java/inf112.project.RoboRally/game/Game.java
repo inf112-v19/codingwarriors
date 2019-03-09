@@ -30,6 +30,37 @@ public class Game implements IGame {
     private IDeck[] selectedCards;
 
 
+
+    public void drawCards(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
+        List<ICard> drawnCards;
+        int numberOfCardsToDraw = calculateTheNumberOfCardsThePlayerCanDraw(player);
+        int numberOfCardsLeftInProgramCardsDeck = this.programCards.getSize();
+        int numberOfCardsMissing = numberOfCardsToDraw -
+                                        numberOfCardsLeftInProgramCardsDeck;
+        if (numberOfCardsMissing > 0) {
+            drawnCards = this.programCards.handOutNCards(numberOfCardsLeftInProgramCardsDeck);
+            shuffleDiscardedProgramCardsIntoProgramCardsDeck();
+            drawnCards.addAll(this.programCards.handOutNCards(numberOfCardsMissing));
+        } else {
+            drawnCards = this.programCards.handOutNCards(numberOfCardsToDraw);
+        }
+        player.addCardsToPlayersHand(drawnCards);
+    }
+
+    private void shuffleDiscardedProgramCardsIntoProgramCardsDeck() {
+        this.discardedProgramCards.transferNCardsFromThisDeckToTargetDeck(
+                discardedProgramCards.getSize(),
+                this.programCards);
+        this.programCards.shuffle();
+
+
+
+    }
+
+
     @Override
     public void dealOutProgramCards() {
         programCards.shuffle();
@@ -37,12 +68,15 @@ public class Game implements IGame {
             int numberOfCardsPlayerCanDraw =
                     calculateTheNumberOfCardsThePlayerCanDraw(player);
             System.out.println("player receives " + numberOfCardsPlayerCanDraw + " cards");
-            player.receiveCards(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
+            player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
         }
     }
 
     @Override
     public int calculateTheNumberOfCardsThePlayerCanDraw(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
         int numberOfCards = 9; // The default and maximum number of cards
         // that can be dealt to a player.
         int playerDamage = player.getPlayerDamage(); // The number of damage tokens

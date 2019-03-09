@@ -19,7 +19,9 @@ public class Deck implements IDeck{
 
     @Override
     public List<ICard> handOutNCards(Integer numberOfCards) {
-        if (numberOfCards == null|| numberOfCards < 0 || numberOfCards > this.getSize()) {
+        if (numberOfCards == null
+                || numberOfCards < 0
+                || numberOfCards > this.getSize()) {
             throw new IllegalArgumentException("numberOfCards is not a valid amount of cards");
         }
 
@@ -163,7 +165,9 @@ public class Deck implements IDeck{
 
     @Override
     public ICard getCardAtPosition(Integer position) {
-        if (position == null || position >= this.cardDeck.size() || position < 0) {
+        if (position == null
+                || position >= this.cardDeck.size()
+                || position < 0) {
             throw new IllegalArgumentException("Position is out of bounds");
         }
         return this.cardDeck.get(position);

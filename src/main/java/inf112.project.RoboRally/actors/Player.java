@@ -201,7 +201,7 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void receiveCards(List<ICard> cards) {
+    public void addCardsToPlayersHand(List<ICard> cards) {
         if (cards == null) {
             throw new IllegalArgumentException("List of cards is invalid");
         }
@@ -307,6 +307,7 @@ public class Player implements IPlayer {
         this.playerDirection = playerDirection.rotateRight();
     }
 
+    @Override
     public String getName() {
         return this.name;
     }

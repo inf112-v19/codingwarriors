@@ -130,7 +130,7 @@ public interface IPlayer {
      * @throws IllegalArgumentException
      *      if cards == null.
      */
-    void receiveCards(List<ICard> cards);
+    void addCardsToPlayersHand(List<ICard> cards);
 
 
     /**

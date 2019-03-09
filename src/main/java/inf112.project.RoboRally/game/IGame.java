@@ -33,6 +33,9 @@ public interface IGame {
      * @param player
      *              The chosen player.
      * @return The number of cards this player should be dealt.
+     *
+     * @throws IllegalArgumentException
+     *      if player == null.
      */
     int calculateTheNumberOfCardsThePlayerCanDraw(IPlayer player);
 
