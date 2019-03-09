@@ -31,6 +31,7 @@ public class Game implements IGame {
 
 
 
+    @Override
     public void drawCards(IPlayer player) {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
@@ -50,14 +51,16 @@ public class Game implements IGame {
         player.addCardsToPlayersHand(drawnCards);
     }
 
+    /**
+     * Put all the discarded program cards from the discard pile,
+     * into the main program cards deck,
+     * and randomise the programCards deck.
+     */
     private void shuffleDiscardedProgramCardsIntoProgramCardsDeck() {
         this.discardedProgramCards.transferNCardsFromThisDeckToTargetDeck(
                 discardedProgramCards.getSize(),
                 this.programCards);
         this.programCards.shuffle();
-
-
-
     }
 
 
@@ -199,6 +202,10 @@ public class Game implements IGame {
         }
         // new cards is dealt
         for (IPlayer player: players) {
+            drawCards(player);
+
+            /*
+
             IDeck playerCards = player.getCardsInHand();
             while (playerCards.getSize() != 9) {
                 if (programCards.getSize() == 0) {
@@ -207,7 +214,7 @@ public class Game implements IGame {
                     programCards.shuffle();
                 }
                 playerCards.addCardToDeck(programCards.removeCard(0));
-            }
+            }*/
         }
     }
 

@@ -57,6 +57,24 @@ public interface IGame {
 
 
     /**
+     * The given player draws as many cards as they are allowed
+     * from the program cards deck.<br>
+     * If the deck doesn't have enough cards,
+     * then the player draws the cards that are left in the deck.<br>
+     *
+     * The pile of discarded program cards are
+     * subsequently shuffled back into the main deck,
+     * and the player draws the remaining cards owed.
+     *
+     * @param player
+     *              The player that wants to draw cards.
+     *
+     * @throws IllegalArgumentException
+     *      if player == null.
+     */
+    void drawCards(IPlayer player);
+
+    /**
      * Shuffle the program cards deck.
      * Each player draw cards,
      * depending on how many damage tokens they have.
