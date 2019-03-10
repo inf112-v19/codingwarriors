@@ -20,13 +20,15 @@ public interface IProgramRegister {
      *                  The position the card should be inserted into.
      * @param card
      *              The card to add.
+     * @return The removed card.
+     *
      * @throws IllegalArgumentException
      *        if the slotNumber is negative (slotNumber < 0),<br>
-     *        slotNumber is too high (slotNumber > register.getSize()),<br>
+     *        slotNumber is too high (slotNumber >= register.getSize()),<br>
      *        slotNumber is null (slotNumber = null),<br>
      *        or if the card is null (card = null).
      */
-    void addCardToRegisterAtSlotNumber(Integer slotNumber, ICard card);
+    ICard replaceTheCardInRegisterSlotNumberNWithThisCard(Integer slotNumber, ICard card);
 
 
     /**

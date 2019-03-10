@@ -35,7 +35,9 @@ public class ProgramRegisterTest {
     public void gettingRegisterSizeShouldReturnCorrectSize() {
         assertEquals(0, register.getSize());
         ICard card = new Card(200, Action.FORWARD_3);
-        register.addCardToRegisterAtSlotNumber(0, card);
+        List<ICard> cards = new ArrayList<>();
+        cards.add(card);
+        register.addCollectionOfCardsToRegister(cards);
         assertEquals(1, register.getSize());
     }
 
@@ -44,55 +46,75 @@ public class ProgramRegisterTest {
 
 
     @Test
-    public void addingACardToTheRegisterShouldAddTheCorrectCardToTheCorrectSlot() {
+    public void replacingACardShouldLeaveTheNewCardInTheCorrectSlot() {
         assertEquals(0, register.getSize());
         ICard card1 = new Card(330, Action.FORWARD_1);
         ICard card2 = new Card(200, Action.ROTATE_RIGHT);
         ICard card3 = new Card(300, Action.FORWARD_1);
         ICard card4 = new Card(400, Action.FORWARD_2);
         ICard card5 = new Card(500, Action.FORWARD_3);
-        register.addCardToRegisterAtSlotNumber(0, card1);
-        assertEquals(1, register.getSize());
+        List<ICard> listOfCards = new ArrayList<>();
+        listOfCards.add(card1);
+        listOfCards.add(card2);
+        listOfCards.add(card3);
+        listOfCards.add(card4);
+        listOfCards.add(card5);
+        register.addCollectionOfCardsToRegister(listOfCards);
+
+        assertEquals(5, register.getSize());
         assertEquals(card1, register.getCardInSlotNumber(0));
-
-        register.addCardToRegisterAtSlotNumber(1, card2);
-        assertEquals(2, register.getSize());
         assertEquals(card2, register.getCardInSlotNumber(1));
-
-        register.addCardToRegisterAtSlotNumber(2, card3);
-        assertEquals(3, register.getSize());
         assertEquals(card3, register.getCardInSlotNumber(2));
+        assertEquals(card4, register.getCardInSlotNumber(3));
+        assertEquals(card5, register.getCardInSlotNumber(4));
 
-        register.addCardToRegisterAtSlotNumber(3, card4);
-        assertEquals(4, register.getSize());
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(0, card5);
+        assertEquals(5, register.getSize());
+        assertEquals(card5, register.getCardInSlotNumber(0));
+        assertEquals(card5, register.getCardInSlotNumber(4));
+
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(1, card4);
+        assertEquals(card4, register.getCardInSlotNumber(1));
         assertEquals(card4, register.getCardInSlotNumber(3));
 
-        register.addCardToRegisterAtSlotNumber(4, card5);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(2, card3);
+        assertEquals(card3, register.getCardInSlotNumber(2));
+
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(3, card2);
+        assertEquals(card2, register.getCardInSlotNumber(3));
+        assertEquals(card4, register.getCardInSlotNumber(1));
+
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(4, card1);
         assertEquals(5, register.getSize());
-        assertEquals(card5, register.getCardInSlotNumber(4));
+        assertEquals(card1, register.getCardInSlotNumber(4));
+        assertEquals(card5, register.getCardInSlotNumber(0));
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void addingACardToTheRegisterAtTooHighASlotNumberShouldFail() {
+    public void replacingACardAtTooHighASlotNumberShouldFail() {
         ICard card = new Card(200, Action.ROTATE_RIGHT);
-        register.addCardToRegisterAtSlotNumber((register.getSize() + 1), card);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(register.getSize(), card);
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void addingACardToTheRegisterAtANegativeSlotNumberShouldFail() {
+    public void replacingACardAtANegativeSlotNumberShouldFail() {
         ICard card = new Card(200, Action.ROTATE_RIGHT);
-        register.addCardToRegisterAtSlotNumber(-1, card);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(-1, card);
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void addingACardToTheRegisterAtSlotNumberNullShouldFail() {
+    public void replacingACardAtSlotNumberNullShouldFail() {
         ICard card = new Card(200, Action.ROTATE_RIGHT);
-        register.addCardToRegisterAtSlotNumber(null, card);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(null, card);
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void addingNullToTheRegisterShouldFail() {
-        register.addCardToRegisterAtSlotNumber(0, null);
+    public void replacingACardInTheRegisterWithNullShouldFail() {
+        ICard card = new Card(2,Action.ROTATE_RIGHT);
+        List<ICard> cards = new ArrayList<>();
+        cards.add(card);
+        register.addCollectionOfCardsToRegister(cards);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(0, null);
     }
 
 
@@ -106,11 +128,13 @@ public class ProgramRegisterTest {
         ICard card3 = new Card(300, Action.FORWARD_1);
         ICard card4 = new Card(400, Action.FORWARD_2);
         ICard card5 = new Card(500, Action.FORWARD_3);
-        register.addCardToRegisterAtSlotNumber(0, card1);
-        register.addCardToRegisterAtSlotNumber(1, card2);
-        register.addCardToRegisterAtSlotNumber(2, card3);
-        register.addCardToRegisterAtSlotNumber(3, card4);
-        register.addCardToRegisterAtSlotNumber(4, card5);
+        List<ICard> listOfCards = new ArrayList<>();
+        listOfCards.add(card1);
+        listOfCards.add(card2);
+        listOfCards.add(card3);
+        listOfCards.add(card4);
+        listOfCards.add(card5);
+        register.addCollectionOfCardsToRegister(listOfCards);
         assertEquals(5, register.getSize());
         
         assertEquals(card1, register.getCardInSlotNumber(0));
@@ -123,7 +147,7 @@ public class ProgramRegisterTest {
     @Test (expected = IllegalArgumentException.class)
     public void gettingCardFromTooHighASlotNumberShouldFail() {
         ICard card = new Card(150, Action.ROTATE_RIGHT);
-        register.addCardToRegisterAtSlotNumber(0, card);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(0, card);
         assertEquals(1, register.getSize());
 
         register.getCardInSlotNumber((register.getNumberOfRegisterSlots() + 1));
@@ -132,7 +156,7 @@ public class ProgramRegisterTest {
     @Test (expected = IllegalArgumentException.class)
     public void gettingCardFromANegativeSlotNumberShouldFail() {
         ICard card = new Card(150, Action.ROTATE_RIGHT);
-        register.addCardToRegisterAtSlotNumber(0, card);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(0, card);
         assertEquals(1, register.getSize());
 
         register.getCardInSlotNumber(-1);
@@ -141,7 +165,7 @@ public class ProgramRegisterTest {
     @Test (expected = IllegalArgumentException.class)
     public void gettingCardFromSlotNumberNullShouldFail() {
         ICard card = new Card(150, Action.ROTATE_RIGHT);
-        register.addCardToRegisterAtSlotNumber(0, card);
+        register.replaceTheCardInRegisterSlotNumberNWithThisCard(0, card);
         assertEquals(1, register.getSize());
 
         register.getCardInSlotNumber(null);

@@ -191,4 +191,22 @@ public interface IDeck extends Iterable<ICard>{
      *      If targetDeck is null (targetDeck == null).
      */
     void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck);
+
+
+    /**
+     * Replaces the card at the given position with the new card.
+     *
+     * @param position
+     *              The position of the card to replace.
+     * @param card
+     *              The replacement card.
+     * @return The removed card.
+     *
+     * @throws IllegalArgumentException
+     *       if the position is negative (position < 0),<br>
+     *       position is too high (position >= deck.getSize()),<br>
+     *       position is null (position = null),<br>
+     *       or if the card is null (card = null).
+     */
+    ICard replaceCardAtPosition(Integer position, ICard card);
 }

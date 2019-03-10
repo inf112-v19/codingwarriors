@@ -47,16 +47,17 @@ public class ProgramRegister implements IProgramRegister{
     }
 
     @Override
-    public void addCardToRegisterAtSlotNumber(Integer slotNumber, ICard card) {
+    public ICard replaceTheCardInRegisterSlotNumberNWithThisCard(Integer slotNumber, ICard card) {
         if (slotNumber == null
                 || slotNumber < 0
-                || slotNumber > register.getSize()) {
+                || slotNumber >= register.getSize()) {
             throw new IllegalArgumentException("Not a valid number");
         }
         if (card == null) {
             throw new IllegalArgumentException("null is not a valid card");
         }
-        this.register.addCardToDeckAtPosition(slotNumber, card);
+        ICard removedCard = this.register.replaceCardAtPosition(slotNumber, card);
+        return removedCard;
     }
 
     @Override
@@ -74,13 +75,24 @@ public class ProgramRegister implements IProgramRegister{
         if (listOfCards == null || listOfCards.size() > NUMBER_OF_SLOTS) {
             throw new IllegalArgumentException("Not a valid collection of cards");
         }
-        int slotNumber = 0;
+        if (this.register.getSize() == 0) { // If the register is empty, just add the cards.
+            this.register.addCollectionOfCardsToDeck(listOfCards);
+        } else {
+            int slotNumber = 0;
+            for (ICard card : listOfCards) {
+                if (!checkIsRegisterSlotNumberNLocked(slotNumber)) {
+                    this.replaceTheCardInRegisterSlotNumberNWithThisCard(slotNumber, card);
+                }
+                slotNumber++;
+            }
+        }
+        /*
         for (ICard card : listOfCards) {
             if (!checkIsRegisterSlotNumberNLocked(slotNumber)) {
-                this.addCardToRegisterAtSlotNumber(slotNumber, card);
+                this.replaceTheCardInRegisterSlotNumberNWithThisCard(slotNumber, card);
             }
             slotNumber++;
-        }
+        }*/
     }
 
     @Override
@@ -124,9 +136,9 @@ public class ProgramRegister implements IProgramRegister{
         ICard placeHolder = new Card(-1, Action.IF_YOU_SEE_THIS_SOMETHING_WENT_WRONG);
         for (int slotNumber = 0; slotNumber < register.getSize(); slotNumber++) {
             if (!checkIsRegisterSlotNumberNLocked(slotNumber)) {
-                ICard removedCard = register.removeCard(slotNumber);
+                ICard removedCard = this.register.replaceCardAtPosition(slotNumber,
+                                                                        placeHolder);
                 removedCards.addCardToDeck(removedCard);
-                register.addCardToDeckAtPosition(slotNumber, placeHolder);
             }
         }
         return removedCards;

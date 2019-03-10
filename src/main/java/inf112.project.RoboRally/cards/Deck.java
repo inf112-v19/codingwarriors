@@ -87,6 +87,21 @@ public class Deck implements IDeck{
     }
 
     @Override
+    public ICard replaceCardAtPosition(Integer position, ICard card) {
+        if (position == null
+                || position < 0
+                || position >= this.getSize()) {
+            throw new IllegalArgumentException("Not a valid position");
+        }
+        if (card == null) {
+            throw new IllegalArgumentException("null is not a valid card");
+        }
+        ICard removedCard = this.removeCard(position);
+        this.addCardToDeckAtPosition(position, card);
+        return removedCard;
+    }
+
+    @Override
     public void createProgramCardsDeck() {
         int priority = 0; // The priority to give the card.
         for (int i = 0; i < 6; i++) {
