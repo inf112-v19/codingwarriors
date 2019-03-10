@@ -119,35 +119,50 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         }
     }
 
-    private void selectCards(int index) {
-        int playerDeckSize = currentPlayer.getCardsInHand().getSize();
+    private void selectCards(int indexOfSelectedCard) {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
-
-        // if selected card is in selectedCards, then move the card to playerDeck and return
-        if (index >= playerDeckSize) {
-            ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(index-playerDeckSize);
-            playersDeckOfCards.addCardToDeck(deSelectedCard);
-            System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectedCard);
+        // if the selected card is one of the already selectedCards,
+        if (indexOfSelectedCard >= playersDeckOfCards.getSize()) { // then move it back to the players hand.
+            moveSelectedCardFromThePlayersDeckOfSelectedCardsToThePlayersDeckOfCards(indexOfSelectedCard);
             return;
+        } else {
+            moveSelectedCardFromThePlayersDeckOfCardsToThePlayersDeckOfSelectedCards(indexOfSelectedCard);
         }
 
-        // remove selected card from playerDeck to selected cards
-        ICard selectedCard = playersDeckOfCards.getCardAtPosition(index);
-        System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
-        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0, playersDeckOfCards.removeCard(index));
-
-
         int numberOfCardsToChoose = currentPlayer.getNumberOfUnlockedRegisterSlots();
-
-        // if five cards selected and there are more players left, switch current player to be next player
-        if (game.getPlayers().size()-1 > currentPlayerIndex
-                && selectedCards[currentPlayerIndex].getSize() >= numberOfCardsToChoose) {
+        int indexOfTheLastPlayer = game.getPlayers().size() - 1;
+        int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
+        if (numberOfSelectedCards >= numberOfCardsToChoose && currentPlayerIndex < indexOfTheLastPlayer) {
             currentPlayerIndex++;
-        } else if (selectedCards[currentPlayerIndex].getSize() >= numberOfCardsToChoose) { // done, all cards for all players is selected
+        } else if (numberOfSelectedCards >= numberOfCardsToChoose) { // done, all cards for all players is selected
             game.setUpTurn(selectedCards);
             currentPlayerIndex = 0;
             game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
         }
+    }
+
+    /*
+    Remove the selected card from the players hand,
+    and add it to the players deck of selected cards.
+     */
+    private void moveSelectedCardFromThePlayersDeckOfCardsToThePlayersDeckOfSelectedCards(int index) {
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
+        ICard selectedCard = playersDeckOfCards.removeCard(index);
+        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0, selectedCard);
+        System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
+    }
+
+    /*
+    Remove the selected card from the players deck of selected cards,
+    and add it to the players hand.
+     */
+    private void moveSelectedCardFromThePlayersDeckOfSelectedCardsToThePlayersDeckOfCards(int index) {
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
+        int positionOfCardToRemove = index - playersDeckOfCards.getSize();
+
+        ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(positionOfCardToRemove);
+        playersDeckOfCards.addCardToDeck(deSelectedCard);
+        System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectedCard);
     }
 
     private void drawCards() {
