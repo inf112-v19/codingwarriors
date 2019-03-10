@@ -121,19 +121,20 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void selectCards(int index) {
         int playerDeckSize = currentPlayer.getCardsInHand().getSize();
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
 
         // if selected card is in selectedCards, then move the card to playerDeck and return
         if (index >= playerDeckSize) {
             ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(index-playerDeckSize);
-            currentPlayer.getCardsInHand().addCardToDeck(deSelectedCard);
+            playersDeckOfCards.addCardToDeck(deSelectedCard);
             System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectedCard);
             return;
         }
 
         // remove selected card from playerDeck to selected cards
-        ICard selectedCard = currentPlayer.getCardsInHand().getCardAtPosition(index);
+        ICard selectedCard = playersDeckOfCards.getCardAtPosition(index);
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
-        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0,currentPlayer.getCardsInHand().removeCard(index));
+        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0, playersDeckOfCards.removeCard(index));
 
         // if five cards selected and there are more players left, switch current player to be next player
         if (game.getPlayers().size()-1 > currentPlayerIndex && selectedCards[currentPlayerIndex].getSize() >= 5) {
