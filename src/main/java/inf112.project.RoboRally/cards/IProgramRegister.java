@@ -26,7 +26,8 @@ public interface IProgramRegister {
      *        if the slotNumber is negative (slotNumber < 0),<br>
      *        slotNumber is too high (slotNumber >= register.getSize()),<br>
      *        slotNumber is null (slotNumber = null),<br>
-     *        or if the card is null (card = null).
+     *        or if the card is null (card = null),<br>
+     *        or if the register slot with this slotNumber is locked.
      */
     ICard replaceTheCardInRegisterSlotNumberNWithThisCard(Integer slotNumber, ICard card);
 
@@ -76,7 +77,7 @@ public interface IProgramRegister {
      *        slotNumber is too high (slotNumber > register.getNumberOfRegisterSlots()),<br>
      *        or if slotNumber is null (slotNumber = null).
      */
-    boolean checkIsRegisterSlotNumberNLocked(Integer slotNumber);
+    boolean checkIsTheRegisterSlotNumberNLocked(Integer slotNumber);
 
 
     /**
