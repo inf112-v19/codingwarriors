@@ -211,4 +211,13 @@ public interface IDeck extends Iterable<ICard>{
      *       or if the card is null (card = null).
      */
     ICard replaceCardAtPosition(Integer position, ICard card);
+
+
+    /**
+     * Check if the deck contains any cards.
+     *
+     * @return true if the deck has no cards,<br>
+     *     false otherwise.
+     */
+    boolean isEmpty();
 }

@@ -202,4 +202,9 @@ public class Deck implements IDeck{
     public void removeAllCardsFromDeck() {
         this.cardDeck.clear();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return this.cardDeck.size() == 0;
+    }
 }

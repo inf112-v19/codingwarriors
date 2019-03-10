@@ -80,7 +80,7 @@ public class ProgramRegister implements IProgramRegister{
         if (listOfCards == null || listOfCards.size() > NUMBER_OF_SLOTS) {
             throw new IllegalArgumentException("Not a valid collection of cards");
         }
-        if (this.register.getSize() == 0) { // If the register is empty, just add the cards.
+        if (this.register.isEmpty()) {
             this.register.addCollectionOfCardsToDeck(listOfCards);
         } else {
             int slotNumber = 0;
