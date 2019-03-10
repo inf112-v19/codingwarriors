@@ -7,7 +7,9 @@ public interface IDeck extends Iterable<ICard>{
 
     /**
      * Give the specified amount of cards, from those available in the deck,
-     * to the requesting player.
+     * to the requesting player.<br>
+     *
+     * Cards are taken from the top of the deck (position 0).
      *
      * @param num
      *              The number of requested cards.
