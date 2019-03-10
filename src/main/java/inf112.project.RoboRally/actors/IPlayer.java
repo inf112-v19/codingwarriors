@@ -147,6 +147,20 @@ public interface IPlayer {
 
 
     /**
+     * Takes a deck of cards,
+     * and adds the cards to the register.
+     *
+     * @param deck
+     *              The deck of cards to be added.
+     * @throws IllegalArgumentException
+     *      if deck == null,<br>
+     *      or deck contains too many cards
+     *     (deck.getSize() > register.getNumberOfRegisterSlots).
+     */
+    void addADeckOfCardsToTheProgramRegister(IDeck deck);
+
+
+    /**
      * Player discards their hand.
      */
     void removeRemainingCardsInHand();

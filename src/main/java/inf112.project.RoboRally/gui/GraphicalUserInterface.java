@@ -133,12 +133,19 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         int indexOfTheLastPlayer = game.getPlayers().size() - 1;
         int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
         if (numberOfSelectedCards >= numberOfCardsToChoose && currentPlayerIndex < indexOfTheLastPlayer) {
+            addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             currentPlayerIndex++;
         } else if (numberOfSelectedCards >= numberOfCardsToChoose) { // done, all cards for all players is selected
+            addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             game.setUpTurn(selectedCards);
             currentPlayerIndex = 0;
             game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
         }
+    }
+
+    private void addTheSelectedCardsToTheCurrentPlayersProgramRegister() {
+        IDeck chosenCards = selectedCards[currentPlayerIndex];
+        currentPlayer.addADeckOfCardsToTheProgramRegister(chosenCards);
     }
 
     /*

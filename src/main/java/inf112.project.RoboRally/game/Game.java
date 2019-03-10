@@ -179,6 +179,11 @@ public class Game implements IGame {
     }
 
     private void executingInstructions() {
+        
+
+
+
+
         if (selectedCards[0].isEmpty()) {
             setupCardSelectionForNewRound();
             setGameStatus(GameStatus.SELECT_CARDS);

@@ -217,6 +217,14 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public void addADeckOfCardsToTheProgramRegister(IDeck deck) {
+        if (deck == null || deck.getSize() > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Invalid deck of cards");
+        }
+        this.register.addADeckOfCardsToTheRegister(deck);
+    }
+
+    @Override
     public void removeRemainingCardsInHand() {
         this.cardsInHand.removeAllCardsFromDeck();
     }

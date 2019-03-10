@@ -94,6 +94,19 @@ public class ProgramRegister implements IProgramRegister{
     }
 
     @Override
+    public void addADeckOfCardsToTheRegister(IDeck deckOfCards) {
+        if (deckOfCards == null || deckOfCards.getSize() > this.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Not a valid deck of cards");
+        }
+        List<ICard> listOfCards = new ArrayList<>();
+        for (ICard card : deckOfCards) {
+            listOfCards.add(card);
+        }
+        this.addCollectionOfCardsToRegister(listOfCards);
+    }
+
+
+    @Override
     public boolean checkIsTheRegisterSlotNumberNLocked(Integer slotNumber) {
         if (slotNumber == null
                 || slotNumber < 0

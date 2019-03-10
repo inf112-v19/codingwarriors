@@ -66,6 +66,15 @@ public interface IProgramRegister {
 
 
     /**
+     * Converts a deck of cards into a collection,
+     * and adds it to the register.
+     *
+     * @param deckOfCards
+     *                  The deck of cards to be added.
+     */
+    void addADeckOfCardsToTheRegister(IDeck deckOfCards);
+
+    /**
      * Checks if the specified register slot is locked.
      *
      * @param slotNumber
