@@ -4,6 +4,7 @@ import java.util.Collection;
 
 public interface IProgramRegister {
 
+
     /**
      * Get the current size of the register.
      *
@@ -40,7 +41,7 @@ public interface IProgramRegister {
      * @throws IllegalArgumentException
      *        if the slotNumber is negative (slotNumber < 0),<br>
      *        slotNumber is greater than the number of slots
-     *        (slotNumber > register.getNumberOfRegisterSlots()),<br>
+     *        (slotNumber >= register.getSize()),<br>
      *        or if slotNumber is null (slotNumber = null).
      */
     ICard getCardInSlotNumber(Integer slotNumber);

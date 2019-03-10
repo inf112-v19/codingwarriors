@@ -75,7 +75,7 @@ public class ProgramRegisterTest {
     @Test (expected = IllegalArgumentException.class)
     public void addingACardToTheRegisterAtTooHighASlotNumberShouldFail() {
         ICard card = new Card(200, Action.ROTATE_RIGHT);
-        register.addCardToRegisterAtSlotNumber(4, card);
+        register.addCardToRegisterAtSlotNumber((register.getSize() + 1), card);
     }
 
     @Test (expected = IllegalArgumentException.class)

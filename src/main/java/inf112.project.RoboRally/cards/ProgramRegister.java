@@ -6,6 +6,27 @@ import java.util.List;
 
 public class ProgramRegister implements IProgramRegister{
 
+    /**
+     * How to use.
+     * A standard register has five register slots,
+     * numbered starting from zero.
+     * (register slot 0 == slot 1),
+     * (register slot 4 == slot 5),
+     * (register slot 5 == out of bounds).
+     *
+     * You can add a collection of ICards to the register,
+     * (ArrayLists and other classes that implement the collection interface)
+     * or a single ICard at a position that does not exceed the registers current size.
+     *
+     * When an ICard is added to a register slot,
+     * the card, if any, that previously occupied that slot,
+     * is removed and
+     *
+     * Each register slot can be locked to prevent the card from being overwritten.
+     *
+     *
+     */
+
 
     private IDeck register;
     private List<Boolean> isLocked;
@@ -42,7 +63,7 @@ public class ProgramRegister implements IProgramRegister{
     public ICard getCardInSlotNumber(Integer slotNumber) {
         if (slotNumber == null
                 || slotNumber < 0
-                || slotNumber > NUMBER_OF_SLOTS) {
+                || slotNumber >= this.register.getSize()) {
             throw new IllegalArgumentException("Not a valid slot number");
         }
         return this.register.getCardAtPosition(slotNumber);
