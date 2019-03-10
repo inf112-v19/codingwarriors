@@ -85,7 +85,7 @@ public interface IProgramRegister {
      *                  The register slot to be locked.
      * @throws IllegalArgumentException
      *        if the slotNumber is negative (slotNumber < 0),<br>
-     *        slotNumber is too high (slotNumber > register.getSize()),<br>
+     *        slotNumber is too high (slotNumber >= register.getSize()),<br>
      *        or if slotNumber is null (slotNumber = null).
      */
     void lockRegisterSlotNumber(Integer slotNumber);
@@ -117,6 +117,8 @@ public interface IProgramRegister {
     /**
      * Replace all cards in the register,
      * except those in locked slots.
+     *
+     * @return A deck holding the removed cards.
      */
-    void clearAllUnlockedCardsFromRegister();
+    IDeck removeAllUnlockedCardsFromTheRegister();
 }

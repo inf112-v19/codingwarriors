@@ -295,7 +295,7 @@ public class ProgramRegisterTest {
 
 
     @Test
-    public void clearingTheRegisterShouldReplaceAllCardsFromSlotsThatAreNotLocked() {
+    public void removingAllUnlockedCardsFromTheRegisterShouldReplaceAllCardsInSlotsThatAreNotLocked() {
         List<ICard> listOfCards = new ArrayList<>();
         ICard card1 = new Card(100, Action.ROTATE_LEFT);
         ICard card2 = new Card(200, Action.ROTATE_RIGHT);
@@ -316,7 +316,7 @@ public class ProgramRegisterTest {
         assertEquals(card4, register.getCardInSlotNumber(3));
         assertEquals(card5, register.getCardInSlotNumber(4));
 
-        register.clearAllUnlockedCardsFromRegister();
+        register.removeAllUnlockedCardsFromTheRegister();
         assertEquals(5, register.getSize());
 
         ICard placeHolderCard = register.getCardInSlotNumber(0);
@@ -328,7 +328,7 @@ public class ProgramRegisterTest {
     }
 
     @Test
-    public void clearingTheRegisterShouldNotReplaceCardsInLockedSlots() {
+    public void removingAllUnlockedCardsFromTheRegisterShouldNotReplaceCardsInLockedSlots() {
         List<ICard> listOfCards = new ArrayList<>();
         ICard card1 = new Card(100, Action.ROTATE_LEFT);
         ICard card2 = new Card(200, Action.ROTATE_RIGHT);
@@ -345,7 +345,7 @@ public class ProgramRegisterTest {
         register.lockRegisterSlotNumber(4);
         register.lockRegisterSlotNumber(1);
 
-        register.clearAllUnlockedCardsFromRegister();
+        register.removeAllUnlockedCardsFromTheRegister();
         assertEquals(5, register.getSize());
         ICard placeHolderCard = register.getCardInSlotNumber(0);
 
@@ -357,7 +357,7 @@ public class ProgramRegisterTest {
 
         // Second pass after a slot is unlocked
         register.unlockRegisterSlotNumberN(1);
-        register.clearAllUnlockedCardsFromRegister();
+        register.removeAllUnlockedCardsFromTheRegister();
         assertEquals(5, register.getSize());
         ICard placeHolderCardSecondPass = register.getCardInSlotNumber(0);
 
@@ -365,6 +365,34 @@ public class ProgramRegisterTest {
         assertEquals(placeHolderCardSecondPass, register.getCardInSlotNumber(1));
         assertEquals(placeHolderCardSecondPass, register.getCardInSlotNumber(2));
         assertEquals(placeHolderCardSecondPass, register.getCardInSlotNumber(3));
+        assertEquals(card5, register.getCardInSlotNumber(4));
+    }
+
+    @Test
+    public void removingAllUnlockedCardsFromTheRegisterShouldReturnADeckContainingTheRemovedCards() {
+        List<ICard> listOfCards = new ArrayList<>();
+        ICard card1 = new Card(150, Action.ROTATE_RIGHT);
+        ICard card2 = new Card(220, Action.ROTATE_RIGHT);
+        ICard card3 = new Card(340, Action.U_TURN);
+        ICard card4 = new Card(450, Action.FORWARD_2);
+        ICard card5 = new Card(520, Action.FORWARD_1);
+        listOfCards.add(card1);
+        listOfCards.add(card2);
+        listOfCards.add(card3);
+        listOfCards.add(card4);
+        listOfCards.add(card5);
+        register.addCollectionOfCardsToRegister(listOfCards);
+
+        register.lockRegisterSlotNumber(3);
+        register.lockRegisterSlotNumber(4);
+
+        IDeck removedCards = register.removeAllUnlockedCardsFromTheRegister();
+        int numberOfCardsRemoved = 3;
+        assertEquals(numberOfCardsRemoved, removedCards.getSize());
+        assertEquals(card1, removedCards.getCardAtPosition(0));
+        assertEquals(card2, removedCards.getCardAtPosition(1));
+        assertEquals(card3, removedCards.getCardAtPosition(2));
+        assertEquals(card4, register.getCardInSlotNumber(3));
         assertEquals(card5, register.getCardInSlotNumber(4));
     }
 }

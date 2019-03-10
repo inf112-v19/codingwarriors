@@ -203,6 +203,7 @@ public class Game implements IGame {
         // new cards is dealt
         for (IPlayer player: players) {
             drawCards(player);
+            //TODO: GUI needs to alter how many cards each player can choose.
 
             /*
 

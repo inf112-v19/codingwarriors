@@ -76,7 +76,7 @@ public class ProgramRegister implements IProgramRegister{
     public void lockRegisterSlotNumber(Integer slotNumber) {
         if (slotNumber == null
                 || slotNumber < 0
-                || slotNumber > NUMBER_OF_SLOTS) {
+                || slotNumber >= NUMBER_OF_SLOTS) {
             throw new IllegalArgumentException("Not a valid slot number");
         }
         this.isLocked.set(slotNumber, true);
@@ -98,13 +98,16 @@ public class ProgramRegister implements IProgramRegister{
     }
 
     @Override
-    public void clearAllUnlockedCardsFromRegister() {
+    public IDeck removeAllUnlockedCardsFromTheRegister() {
+        IDeck removedCards = new Deck();
         ICard placeHolder = new Card(-1, Action.IF_YOU_SEE_THIS_SOMETHING_WENT_WRONG);
         for (int slotNumber = 0; slotNumber < register.getSize(); slotNumber++) {
             if (!checkIsRegisterSlotNumberNLocked(slotNumber)) {
-                register.removeCard(slotNumber);
+                ICard removedCard = register.removeCard(slotNumber);
+                removedCards.addCardToDeck(removedCard);
                 register.addCardToDeckAtPosition(slotNumber, placeHolder);
             }
         }
+        return removedCards;
     }
 }

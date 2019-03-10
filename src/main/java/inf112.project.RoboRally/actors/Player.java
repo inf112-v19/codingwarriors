@@ -233,7 +233,7 @@ public class Player implements IPlayer {
 
     @Override
     public void clearRegister() {
-        this.register.clearAllUnlockedCardsFromRegister();
+        this.register.removeAllUnlockedCardsFromTheRegister();
     }
 
     @Override
