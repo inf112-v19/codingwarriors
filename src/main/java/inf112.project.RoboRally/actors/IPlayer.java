@@ -175,6 +175,8 @@ public interface IPlayer {
     void clearRegister();
 
 
+    int getNumberOfUnlockedRegisterSlots();
+
     /**
      * Check if the player was destroyed during the current turn.
      *

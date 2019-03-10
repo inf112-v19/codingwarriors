@@ -141,4 +141,15 @@ public class ProgramRegister implements IProgramRegister{
         }
         return removedCards;
     }
+
+    @Override
+    public int numberOfUnlockedRegisterSlots() {
+        int numberOfUnlockedSlots = 0;
+        for (int slotNumber = 0; slotNumber < this.isLocked.size(); slotNumber++) {
+            if (!checkIsTheRegisterSlotNumberNLocked(slotNumber)) {
+                numberOfUnlockedSlots++;
+            }
+        }
+        return numberOfUnlockedSlots;
+    }
 }

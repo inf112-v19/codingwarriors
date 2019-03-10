@@ -237,6 +237,12 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public int getNumberOfUnlockedRegisterSlots() {
+        return this.register.numberOfUnlockedRegisterSlots();
+    }
+
+
+    @Override
     public boolean wasDestroyedThisTurn() {
         return this.wasDestroyedThisTurn;
     }

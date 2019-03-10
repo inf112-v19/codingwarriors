@@ -136,14 +136,17 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
         selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0, playersDeckOfCards.removeCard(index));
 
+
+        int numberOfCardsToChoose = currentPlayer.getNumberOfUnlockedRegisterSlots();
+
         // if five cards selected and there are more players left, switch current player to be next player
-        if (game.getPlayers().size()-1 > currentPlayerIndex && selectedCards[currentPlayerIndex].getSize() >= 5) {
+        if (game.getPlayers().size()-1 > currentPlayerIndex
+                && selectedCards[currentPlayerIndex].getSize() >= numberOfCardsToChoose) {
             currentPlayerIndex++;
-        } else if (selectedCards[currentPlayerIndex].getSize() >= 5) { // done, all cards for all players is selected
+        } else if (selectedCards[currentPlayerIndex].getSize() >= numberOfCardsToChoose) { // done, all cards for all players is selected
             game.setUpTurn(selectedCards);
             currentPlayerIndex = 0;
             game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-
         }
     }
 

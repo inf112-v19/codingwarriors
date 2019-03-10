@@ -125,4 +125,12 @@ public interface IProgramRegister {
      * @return A deck holding the removed cards.
      */
     IDeck removeAllUnlockedCardsFromTheRegister();
+
+
+    /**
+     * Get the number of unlocked register slots.
+     *
+     * @return The number of unlocked slots.
+     */
+    int numberOfUnlockedRegisterSlots();
 }

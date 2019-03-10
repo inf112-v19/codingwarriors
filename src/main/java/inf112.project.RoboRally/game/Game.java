@@ -179,13 +179,14 @@ public class Game implements IGame {
     }
 
     private void executingInstructions() {
-        if (selectedCards[0].getSize() == 0) {
+        if (selectedCards[0].isEmpty()) {
             setupCardSelectionForNewRound();
             setGameStatus(GameStatus.SELECT_CARDS);
 
             return;
         }
         for (int i = 0; i < players.size(); i++) {
+            System.out.println(selectedCards[i].getSize() - 1);
             ICard currentCard = selectedCards[i].removeCard(selectedCards[i].getSize() - 1);
             players.get(i).movePlayer(currentCard);
             discardedProgramCards.addCardToDeck(currentCard);
@@ -203,7 +204,6 @@ public class Game implements IGame {
         // new cards is dealt
         for (IPlayer player: players) {
             drawCards(player);
-            //TODO: GUI needs to alter how many cards each player can choose.
 
             /*
 
