@@ -124,9 +124,9 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
         // if selected card is in selectedCards, then move the card to playerDeck and return
         if (index >= playerDeckSize) {
-            ICard deSelectCard = selectedCards[currentPlayerIndex].removeCard(index-playerDeckSize);
-            currentPlayer.getCardsInHand().addCardToDeck(deSelectCard);
-            System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectCard);
+            ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(index-playerDeckSize);
+            currentPlayer.getCardsInHand().addCardToDeck(deSelectedCard);
+            System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectedCard);
             return;
         }
 
