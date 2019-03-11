@@ -28,6 +28,8 @@ public class Game implements IGame {
     private GameStatus currentGameStatus;
     private IPlayer currentlyActingPlayer; // The player whose cards are to be displayed.
     private IDeck[] selectedCards;
+    private int currentSlotNumber;
+    private final int NUMBER_OF_REGISTER_SLOTS = 5;
 
 
 
@@ -114,6 +116,7 @@ public class Game implements IGame {
         this.programCards.createProgramCardsDeck();
         this.everyFlagHasBeenVisited = false;
         this.numberOfPlayersLeftInTheGame = players.size();
+        this.currentSlotNumber = 0;
     }
 
     @Override
@@ -155,6 +158,16 @@ public class Game implements IGame {
     }
 
     @Override
+    public void setCurrentSlotNumber(Integer number) {
+        if (number == null
+                || number < 0
+                || number > this.NUMBER_OF_REGISTER_SLOTS) {
+            throw new IllegalArgumentException("Not a valid number");
+        }
+        this.currentSlotNumber = number;
+    }
+
+    @Override
     public void doTurn() {
         switch (this.currentGameStatus) {
             case EXECUTING_INSTRUCTIONS:
@@ -179,11 +192,29 @@ public class Game implements IGame {
     }
 
     private void executingInstructions() {
-        
+        IDeck cardsForThisRegisterSlot = new Deck();
+        ArrayList<IPlayer> listOfPlayers = new ArrayList<>(); // For keeping track of players and their cards.
+        for (IPlayer player : this.activePlayers) {
+            ICard programCard = player.revealProgramCardForRegisterNumber(currentSlotNumber);
+            cardsForThisRegisterSlot.addCardToDeck(programCard);
+            listOfPlayers.add(player);
+        }
+        this.sortCardsAfterPriority(cardsForThisRegisterSlot, listOfPlayers);
 
-
-
-
+        for (int i = 0; i < listOfPlayers.size(); i++) {
+            ICard card = cardsForThisRegisterSlot.getCardAtPosition(i);
+            IPlayer player = listOfPlayers.get(i);
+            player.movePlayer(card);
+        }
+        if (this.currentSlotNumber == (this.NUMBER_OF_REGISTER_SLOTS - 1)) {
+            this.emptyEachPlayersRegister();
+            this.setGameStatus(GameStatus.SELECT_CARDS);
+            this.setupCardSelectionForNewRound();
+            this.updateCurrentRegisterSlot();
+            return;
+        }
+        updateCurrentRegisterSlot();
+/*
         if (selectedCards[0].isEmpty()) {
             setupCardSelectionForNewRound();
             setGameStatus(GameStatus.SELECT_CARDS);
@@ -191,12 +222,87 @@ public class Game implements IGame {
             return;
         }
         for (int i = 0; i < players.size(); i++) {
-            System.out.println(selectedCards[i].getSize() - 1);
+            System.out.println(selectedCards[i].getSize() - 1); // <- TODO: remove this line
             ICard currentCard = selectedCards[i].removeCard(selectedCards[i].getSize() - 1);
             players.get(i).movePlayer(currentCard);
             discardedProgramCards.addCardToDeck(currentCard);
-        }
+        }*/
+
         setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+    }
+
+    /**
+     * Move all unlocked cards from each players registry,
+     * to the pile of discarded program cards.
+     */
+    private void emptyEachPlayersRegister() {
+        for (IPlayer player : this.players) {
+            IDeck cardsToBeDiscarded = player.clearRegister();
+            cardsToBeDiscarded.transferNCardsFromThisDeckToTargetDeck(
+                                        cardsToBeDiscarded.getSize(),
+                                        this.discardedProgramCards);
+        }
+    }
+
+    /**
+     * Increment the current register slot number.
+     * If it is too high, it is reset to zero.
+     */
+    private void updateCurrentRegisterSlot() {
+        if (this.currentSlotNumber >= (this.NUMBER_OF_REGISTER_SLOTS - 1)) {
+            this.setCurrentSlotNumber(0);
+        } else {
+            this.setCurrentSlotNumber(this.currentSlotNumber + 1);
+        }
+    }
+
+    /**
+     * Sort the deck of cards based on priority,
+     * so that those with highest priority comes first.
+     * <br><br>
+     * The index of the cards and players,
+     * determine which player the card belongs to.
+     *
+     * @param cardsForThisRegisterSlot
+     *                              The deck of cards to sort.
+     * @param listOfPlayers
+     *                      The accompanying list of players.
+     */
+    private void sortCardsAfterPriority(IDeck cardsForThisRegisterSlot, ArrayList<IPlayer> listOfPlayers) {
+        int numberOfCards = cardsForThisRegisterSlot.getSize() - 1; // -1 for proper index.
+        for (int i = numberOfCards; i > 0; i--) {
+            for (int j = 0; j < numberOfCards; j++) {
+                if (i == j) {
+                    break;
+                }
+                ICard card = cardsForThisRegisterSlot.getCardAtPosition(i);
+                ICard otherCard = cardsForThisRegisterSlot.getCardAtPosition(j);
+                if (card.compareTo(otherCard) > 0) {
+                    this.swap(i, j, cardsForThisRegisterSlot, listOfPlayers);
+                }
+            }
+        }
+    }
+
+    /**
+     * Swap the positions of cards and players,
+     * so that their indexes remain the same.
+     *
+     * @param i
+     *          Index i.
+     * @param j
+     *          Index j.
+     * @param cardsForThisRegisterSlot
+     *                              The deck of cards.
+     * @param listOfPlayers
+     *                      The list of players.
+     */
+    private void swap(int i, int j, IDeck cardsForThisRegisterSlot, ArrayList<IPlayer> listOfPlayers) {
+        cardsForThisRegisterSlot.swapCardsInPosition(i, j);
+        IPlayer playerI = listOfPlayers.remove(i);
+        IPlayer playerJ = listOfPlayers.remove(j);
+        listOfPlayers.add(j, playerI);
+        listOfPlayers.add(i, playerJ);
     }
 
     private void setupCardSelectionForNewRound() {

@@ -99,6 +99,8 @@ public interface IGame {
 
     void setGameStatus(GameStatus status);
 
+    void setCurrentSlotNumber(Integer number);
+
     void doTurn();
 
     void setUpTurn(IDeck[] selectedCards);

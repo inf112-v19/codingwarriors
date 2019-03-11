@@ -149,8 +149,23 @@ public class Player implements IPlayer {
         }
     }
 
-    @Override
-    public void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
+    /**
+     * Handles the locking and unlocking of registers when the player is damaged.
+     *
+     * @param numberOfRegistersToLock
+     *                              The number of registers that should be locked.
+     * @param numberOfRegistersToUnlock
+     *                              The number of registers that should be unlocked.
+     *
+     * @throws IllegalArgumentException
+     *       if numberOfRegistersToLock == null,
+     *       or numberOfRegistersToUnLock == null,
+     *       or numberOfRegistersToLock < 0,
+     *       or numberOfRegistersToUnLock < 0,
+     *       or numberOfRegistersToLock > register.getSize(),
+     *       or numberOfRegistersToUnLock > register.getSize().
+     */
+    private void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
                                                   Integer numberOfRegistersToUnlock) {
         if (numberOfRegistersToLock == null
                 || numberOfRegistersToLock < 0
@@ -240,8 +255,8 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void clearRegister() {
-        this.register.removeAllUnlockedCardsFromTheRegister();
+    public IDeck clearRegister() {
+        return this.register.removeAllUnlockedCardsFromTheRegister();
     }
 
     @Override

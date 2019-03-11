@@ -69,26 +69,6 @@ public interface IPlayer {
 
 
     /**
-     * Handles the locking and unlocking of registers when the player is damaged.
-     *
-     * @param numberOfRegistersToLock
-     *                              The number of registers that should be locked.
-     * @param numberOfRegistersToUnlock
-     *                              The number of registers that should be unlocked.
-     *
-     * @throws IllegalArgumentException
-     *       if numberOfRegistersToLock == null,
-     *       or numberOfRegistersToUnLock == null,
-     *       or numberOfRegistersToLock < 0,
-     *       or numberOfRegistersToUnLock < 0,
-     *       or numberOfRegistersToLock > register.getSize(),
-     *       or numberOfRegistersToUnLock > register.getSize().
-     */
-    void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
-                                           Integer numberOfRegistersToUnlock);
-
-
-    /**
      * Unlock N register slots in the players register.
      *
      * @param numberOfSlotsToUnlock
@@ -185,11 +165,19 @@ public interface IPlayer {
     /**
      * Remove all unlocked cards from this players registry.<br>
      * Cards in locked slots, remain in their positions.
+     *
+     * @return A deck with the removed cards.
      */
-    void clearRegister();
+    IDeck clearRegister();
 
 
+    /**
+     * Get the number of register slots that remains unlocked.
+     *
+     * @return The number of unlocked register slots.
+     */
     int getNumberOfUnlockedRegisterSlots();
+
 
     /**
      * Check if the player was destroyed during the current turn.

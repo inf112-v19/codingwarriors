@@ -143,14 +143,17 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         }
     }
 
+    /**
+     * Add this players chosen cards to this players register.
+     */
     private void addTheSelectedCardsToTheCurrentPlayersProgramRegister() {
         IDeck chosenCards = selectedCards[currentPlayerIndex];
         currentPlayer.addADeckOfCardsToTheProgramRegister(chosenCards);
     }
 
-    /*
-    Remove the selected card from the players hand,
-    and add it to the players deck of selected cards.
+    /**
+     * Remove the selected card from the players hand,
+     * and add it to the players deck of selected cards.
      */
     private void moveSelectedCardFromThePlayersDeckOfCardsToThePlayersDeckOfSelectedCards(int index) {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
@@ -159,9 +162,9 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
     }
 
-    /*
-    Remove the selected card from the players deck of selected cards,
-    and add it to the players hand.
+    /**
+     * Remove the selected card from the players deck of selected cards,
+     * and add it to the players hand.
      */
     private void moveSelectedCardFromThePlayersDeckOfSelectedCardsToThePlayersDeckOfCards(int index) {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
