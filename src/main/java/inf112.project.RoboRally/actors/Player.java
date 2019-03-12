@@ -274,6 +274,7 @@ public class Player implements IPlayer {
     public void respawnAtLastArchiveMarker() {
         this.x=backupX;
         this.y=backupY;
+       // this.numberOfDamageTokensRecieved = 0; // Reset damage
         takeOneDamage();
         takeOneDamage();
     }

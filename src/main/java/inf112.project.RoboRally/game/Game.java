@@ -27,7 +27,6 @@ public class Game implements IGame {
     private boolean everyFlagHasBeenVisited;
     private GameStatus currentGameStatus;
     private IPlayer currentlyActingPlayer; // The player whose cards are to be displayed.
-    private IDeck[] selectedCards;
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
 
@@ -208,26 +207,12 @@ public class Game implements IGame {
         }
         if (this.currentSlotNumber == (this.NUMBER_OF_REGISTER_SLOTS - 1)) {
             this.emptyEachPlayersRegister();
-            this.setGameStatus(GameStatus.SELECT_CARDS);
             this.setupCardSelectionForNewRound();
+            this.setGameStatus(GameStatus.SELECT_CARDS);
             this.updateCurrentRegisterSlot();
             return;
         }
         updateCurrentRegisterSlot();
-/*
-        if (selectedCards[0].isEmpty()) {
-            setupCardSelectionForNewRound();
-            setGameStatus(GameStatus.SELECT_CARDS);
-
-            return;
-        }
-        for (int i = 0; i < players.size(); i++) {
-            System.out.println(selectedCards[i].getSize() - 1); // <- TODO: remove this line
-            ICard currentCard = selectedCards[i].removeCard(selectedCards[i].getSize() - 1);
-            players.get(i).movePlayer(currentCard);
-            discardedProgramCards.addCardToDeck(currentCard);
-        }*/
-
         setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
     }
 
@@ -315,23 +300,11 @@ public class Game implements IGame {
         // new cards is dealt
         for (IPlayer player: players) {
             drawCards(player);
-
-            /*
-
-            IDeck playerCards = player.getCardsInHand();
-            while (playerCards.getSize() != 9) {
-                if (programCards.getSize() == 0) {
-                    int discardSize = discardedProgramCards.getSize();
-                    programCards.addCollectionOfCardsToDeck(discardedProgramCards.handOutNCards(discardSize));
-                    programCards.shuffle();
-                }
-                playerCards.addCardToDeck(programCards.removeCard(0));
-            }*/
         }
     }
 
     @Override
     public void setUpTurn(IDeck[] selectedCards) {
-        this.selectedCards = selectedCards;
+     //   this.selectedCards = selectedCards;
     }
 }

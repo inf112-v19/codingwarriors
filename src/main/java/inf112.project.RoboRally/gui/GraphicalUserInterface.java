@@ -121,26 +121,57 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void selectCards(int indexOfSelectedCard) {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
-        // if the selected card is one of the already selectedCards,
-        if (indexOfSelectedCard >= playersDeckOfCards.getSize()) { // then move it back to the players hand.
-            moveSelectedCardFromThePlayersDeckOfSelectedCardsToThePlayersDeckOfCards(indexOfSelectedCard);
-            return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (!playersDeckOfCards.isEmpty()) {
+            // if the selected card is one of the already selectedCards,
+            if (indexOfSelectedCard >= playersDeckOfCards.getSize()) { // then move it back to the players hand.
+                moveSelectedCardFromThePlayersDeckOfSelectedCardsToThePlayersDeckOfCards(indexOfSelectedCard);
+                return;
+            } else {
+                moveSelectedCardFromThePlayersDeckOfCardsToThePlayersDeckOfSelectedCards(indexOfSelectedCard);
+            }
+
+            int numberOfCardsToChoose = currentPlayer.getNumberOfUnlockedRegisterSlots();
+            int indexOfTheLastPlayer = game.getPlayers().size() - 1;
+            int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
+            if (numberOfSelectedCards >= numberOfCardsToChoose && currentPlayerIndex < indexOfTheLastPlayer) {
+                addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+                currentPlayerIndex++;
+            } else if (numberOfSelectedCards >= numberOfCardsToChoose) { // done, all cards for all players is selected
+                addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+                game.setUpTurn(selectedCards);
+                currentPlayerIndex = 0;
+                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+            }
         } else {
-            moveSelectedCardFromThePlayersDeckOfCardsToThePlayersDeckOfSelectedCards(indexOfSelectedCard);
         }
 
-        int numberOfCardsToChoose = currentPlayer.getNumberOfUnlockedRegisterSlots();
-        int indexOfTheLastPlayer = game.getPlayers().size() - 1;
-        int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
-        if (numberOfSelectedCards >= numberOfCardsToChoose && currentPlayerIndex < indexOfTheLastPlayer) {
-            addTheSelectedCardsToTheCurrentPlayersProgramRegister();
-            currentPlayerIndex++;
-        } else if (numberOfSelectedCards >= numberOfCardsToChoose) { // done, all cards for all players is selected
-            addTheSelectedCardsToTheCurrentPlayersProgramRegister();
-            game.setUpTurn(selectedCards);
-            currentPlayerIndex = 0;
-            game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-        }
+
+
+
+
     }
 
     /**
@@ -149,6 +180,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private void addTheSelectedCardsToTheCurrentPlayersProgramRegister() {
         IDeck chosenCards = selectedCards[currentPlayerIndex];
         currentPlayer.addADeckOfCardsToTheProgramRegister(chosenCards);
+        selectedCards[currentPlayerIndex].removeAllCardsFromDeck();
     }
 
     /**
