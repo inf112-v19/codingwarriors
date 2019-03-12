@@ -1,7 +1,6 @@
 package inf112.project.RoboRally.objects;
 
 import inf112.project.RoboRally.actors.IPlayer;
-import inf112.project.RoboRally.actors.Player;
 
 import java.util.ArrayList;
 
