@@ -99,7 +99,7 @@ public class GameBoard {
     }
     
     private void buildWalls(char c, int x, int y) {
-        IObjects object = getObject(x,y);
+        IObjects object = getObject(y,x);
         switch (c) {
             case 'w':
                 object.buildWall(GridDirection.WEST); break;

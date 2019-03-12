@@ -10,8 +10,11 @@ public class FlagTest {
 	private String level = "3C2R" +
 			"cfr" +
 			".f.";
+	private String walls = "" +
+			"..." +
+			"...";
 	
-	private GameBoard gameBoard = new GameBoard(level);
+	private GameBoard gameBoard = new GameBoard(level, walls);
 	private Player player = new Player("foo", 0,0);
 
 	@Test

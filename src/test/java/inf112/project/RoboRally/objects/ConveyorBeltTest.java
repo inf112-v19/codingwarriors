@@ -22,7 +22,12 @@ public class ConveyorBeltTest {
 				"r..l" +
 				"r..l" +
 				".uu.";
-		this.gameBoard = new GameBoard(boardSetup);
+		String walls = "" +
+				"...." +
+				"...." +
+				"...." +
+				"....";
+		this.gameBoard = new GameBoard(boardSetup, walls);
 	}
 	
 	
