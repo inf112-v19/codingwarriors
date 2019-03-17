@@ -346,4 +346,9 @@ public class Player implements IPlayer {
     public int getNumberOfLivesRemaining() {
         return this.lives;
     }
+
+    @Override
+    public boolean hasLifeLeft() {
+        return this.lives > 0;
+    }
 }

@@ -22,6 +22,11 @@ public class Game implements IGame {
     // Certain events that prioritises starting order, may use this list for reference.
     // For example: players[0] has higher priority than players[1].
     private List<IPlayer> activePlayers; // Players that are not incapacitated.
+    private List<IPlayer> destroyedPlayers; // Players that are destroyed, but can come back.
+    private List<IPlayer> playersOutOfTheGame; // Players with no more lives, and permanently out of the game.
+    // First to loose is ordered last in the list.
+    // For example: When somebody is removed from the game,
+    // they are inserted into position 0 in this list.
     private GameBoard board;
     private int numberOfPlayersLeftInTheGame;
     private boolean everyFlagHasBeenVisited;
@@ -116,6 +121,9 @@ public class Game implements IGame {
         this.everyFlagHasBeenVisited = false;
         this.numberOfPlayersLeftInTheGame = players.size();
         this.currentSlotNumber = 0;
+
+        this.destroyedPlayers = new ArrayList<>();
+        this.playersOutOfTheGame = new ArrayList<>();
     }
 
     @Override
@@ -180,14 +188,17 @@ public class Game implements IGame {
 
     private void executingGameBoardObjects() {
         for (IPlayer player: players) {
-            if(board.moveValid(player.getX(),player.getY())) {
-                board.getObject(player.getX(), player.getY()).doAction(player);
-            } else {
-                player.respawnAtLastArchiveMarker();
+            if (!this.playersOutOfTheGame.contains(player)
+                    && !this.destroyedPlayers.contains(player)) {
+                if (board.moveValid(player.getX(), player.getY())) {
+                    board.getObject(player.getX(), player.getY()).doAction(player);
+                } else {
+                    this.destroyPlayer(player);
+//                    player.respawnAtLastArchiveMarker();
+                }
             }
         }
         setGameStatus(EXECUTING_INSTRUCTIONS);
-
     }
 
     private void executingInstructions() {
@@ -289,6 +300,38 @@ public class Game implements IGame {
         listOfPlayers.add(j, playerI);
         listOfPlayers.add(i, playerJ);
     }
+
+
+    /**
+     * Removes a player from the game.<br>
+     * If the player is out of lives,
+     * they will be moved to the list of dead players.
+     * Otherwise they are temporarily removed until the end of the current turn.<br><br>
+     *
+     * If there are no players left alive,
+     * the game is considered to be over.???
+     *
+     * @param player
+     *              The player to be destroyed.
+     */
+    private void destroyPlayer(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
+        player.destroyPlayer();
+        this.activePlayers.remove(player);
+        if (!player.hasLifeLeft()) {
+            this.playersOutOfTheGame.add(player);
+            if (this.playersOutOfTheGame.size() == this.players.size()) {
+                //game over?
+            }
+        } else {
+            this.destroyedPlayers.add(player);
+        }
+    }
+
+
+
 
     private void setupCardSelectionForNewRound() {
         // all un used cards is moved to discard pile

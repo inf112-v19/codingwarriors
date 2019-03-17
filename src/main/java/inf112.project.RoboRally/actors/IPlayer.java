@@ -271,4 +271,13 @@ public interface IPlayer {
      * @return the number of lives the player has left.
      */
     int getNumberOfLivesRemaining();
+
+
+    /**
+     * Check whether a player is still alive or not.
+     *
+     * @return true if the player has more lives left,<br>
+     *       false if (lives <= 0).
+     */
+    boolean hasLifeLeft();
 }
