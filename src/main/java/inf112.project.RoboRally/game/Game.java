@@ -6,6 +6,9 @@ import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.objects.CrossedWrench;
+import inf112.project.RoboRally.objects.IObjects;
+import inf112.project.RoboRally.objects.SingleWrench;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -182,8 +185,49 @@ public class Game implements IGame {
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
                 executingGameBoardObjects();
+                return;
+            case FIRING_LASERS:
+            //TODO:    fireLasers();
+                return;
+            case FINISHING_UP_THE_TURN:
+                this.cleanUpTurn();
+                return;
+            case THE_END:
+                System.out.println("All players are out, the game ends in a draw...");
+                return;
         }
 
+    }
+
+
+    /**
+     * Clean up the game before the next round.<br>
+     * Restore all destroyed players,
+     * and players standing on wrench tiles removes one damage.
+     */
+    private void cleanUpTurn() {
+        for (IPlayer player : players) {
+            if (!this.playersOutOfTheGame.contains(player)
+                    && !this.destroyedPlayers.contains(player)) {
+                IObjects playerIsStandingOn = this.getBoard().getObject(player.getX(), player.getY());
+                if (playerIsStandingOn.equals(CrossedWrench.class)) {
+                    player.removeOneDamage();
+                    // TODO: this.drawOneOptionCard(player);
+                } else if (playerIsStandingOn.equals(SingleWrench.class)) {
+                    player.removeOneDamage();
+                }
+            }
+        }
+
+        for (IPlayer player : destroyedPlayers) {
+            destroyedPlayers.remove(player);
+            activePlayers.add(player);
+            player.respawnAtLastArchiveMarker();
+            //TODO: Ask player for which direction they would like to face.
+        }
+        this.emptyEachPlayersRegister();
+        this.setupCardSelectionForNewRound();
+        this.setGameStatus(SELECT_CARDS);
     }
 
     private void executingGameBoardObjects() {
@@ -217,10 +261,13 @@ public class Game implements IGame {
             player.movePlayer(card);
         }
         if (this.currentSlotNumber == (this.NUMBER_OF_REGISTER_SLOTS - 1)) {
-            this.emptyEachPlayersRegister();
-            this.setupCardSelectionForNewRound();
-            this.setGameStatus(GameStatus.SELECT_CARDS);
             this.updateCurrentRegisterSlot();
+            this.setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+            this.doTurn(); // Final for this turn.
+            this.setGameStatus(FIRING_LASERS);
+            this.doTurn();
+            this.setGameStatus(FINISHING_UP_THE_TURN);
+            this.doTurn();
             return;
         }
         updateCurrentRegisterSlot();
@@ -324,6 +371,7 @@ public class Game implements IGame {
             this.playersOutOfTheGame.add(player);
             if (this.playersOutOfTheGame.size() == this.players.size()) {
                 //game over?
+                this.setGameStatus(THE_END);
             }
         } else {
             this.destroyedPlayers.add(player);
@@ -341,7 +389,7 @@ public class Game implements IGame {
                                                                             discardedProgramCards);
         }
         // new cards is dealt
-        for (IPlayer player: players) {
+        for (IPlayer player: activePlayers) {
             drawCards(player);
         }
     }
