@@ -7,6 +7,7 @@ public class Laser implements IObjects {
     private GridDirection direction;
     private int damage;
     private Rotation rotation;
+    private int x,y;
 
     public Laser (GridDirection direction, int damage) {
         this.speed=0;
@@ -15,6 +16,21 @@ public class Laser implements IObjects {
         this.rotation=null;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 
     @Override
     public int getSpeed() {
@@ -35,11 +51,26 @@ public class Laser implements IObjects {
     public Rotation getRotation() {
         return rotation;
     }
-    
+
     @Override
     public void doAction(IPlayer player) {
-        player.takeOneDamage();
+        switch (player.getPlayerDirection()) {
+            case NORTH:
+                y = y + 1;
+                break;
+            case WEST:
+                x = x - 1;
+                break;
+            case EAST:
+                x = x + 1;
+                break;
+            case SOUTH:
+                y = y - 1;
+                break;
+        }
     }
+
+
 
     @Override
     public String getTexture() {

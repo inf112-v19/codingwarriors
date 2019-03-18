@@ -1,7 +1,9 @@
 package inf112.project.RoboRally.actors;
 
+import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.List;
@@ -267,4 +269,6 @@ public interface IPlayer {
      * @return the number of lives the player has left.
      */
     int getNumberOfLivesRemaining();
+
+    List fireLaser(int boardRows, int boardColumns);
 }
