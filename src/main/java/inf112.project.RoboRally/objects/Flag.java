@@ -105,4 +105,9 @@ public class Flag implements IObjects {
     public void setFlagNumber(int flagNumber) {
         this.flagNumber=flagNumber;
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
 }

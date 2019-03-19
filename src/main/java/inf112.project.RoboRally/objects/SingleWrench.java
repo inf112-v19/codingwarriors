@@ -80,4 +80,9 @@ public class SingleWrench implements IObjects {
     public String getTexture() {
         return "assets/singleWrench.png";
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
 }

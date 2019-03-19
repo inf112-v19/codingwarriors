@@ -81,4 +81,9 @@ public class CrossedWrench implements IObjects {
     public String getTexture() {
         return "assets/crossedWrench.png";
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
 }

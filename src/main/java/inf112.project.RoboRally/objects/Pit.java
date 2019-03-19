@@ -77,4 +77,9 @@ public class Pit implements IObjects {
     public String getTexture() {
         return "assets/pit.png";
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
 }

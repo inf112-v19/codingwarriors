@@ -80,4 +80,9 @@ public class Laser implements IObjects {
         }
         return "assets/laserHorizontal.png";
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
 }

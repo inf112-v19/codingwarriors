@@ -88,5 +88,10 @@ public class ConveyorBelt implements IObjects {
         }
         return null;
     }
-
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
+    
 }
