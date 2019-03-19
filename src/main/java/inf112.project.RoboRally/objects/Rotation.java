@@ -4,11 +4,11 @@ package inf112.project.RoboRally.objects;
 import java.util.Random;
 
 public enum Rotation {
-    LEFT, RIGHT, HALFWAY;
+    NONE, LEFT, RIGHT, HALFWAY;
     
     
     public static Rotation[] getAllRotations() {
-        return new Rotation[]{Rotation.LEFT, Rotation.RIGHT, Rotation.HALFWAY};
+        return new Rotation[]{Rotation.NONE, Rotation.LEFT, Rotation.RIGHT, Rotation.HALFWAY};
     }
     
     public static Rotation getRandomRotation() {

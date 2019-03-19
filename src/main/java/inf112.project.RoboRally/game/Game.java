@@ -119,7 +119,20 @@ public class Game implements IGame {
                 ".r.....w.....p.." +
                 ".r...f....-....." +
                 ".r....WW....dd..";
-        this.board = new GameBoard(gameBoardLayout);
+        String gameBoardWalls = "" +
+                "fnnnnnnnnnnnnnng" +
+                "|atr...........l" +
+                "w..............e" +
+                "................" +
+                "................" +
+                "................" +
+                "....Mexico......" +
+                "................" +
+                "................" +
+                "................" +
+                "dsolgndpgjpgojsd" +
+                "......haha......";
+        this.board = new GameBoard(gameBoardLayout, gameBoardWalls);
         this.programCards = new Deck();
         this.discardedProgramCards = new Deck();
         this.programCards.createProgramCardsDeck();

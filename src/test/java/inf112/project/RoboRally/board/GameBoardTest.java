@@ -11,6 +11,7 @@ import org.junit.Test;
 
 public class GameBoardTest {
     private String testLevel1;
+    private String walls;
     private GameBoard testBoard1;
 
     @Before
@@ -19,7 +20,10 @@ public class GameBoardTest {
                 "4C2R" +
                 "r..." +
                 "....";
-        testBoard1 = new GameBoard(testLevel1);
+        walls =
+                "...." +
+                "....";
+        testBoard1 = new GameBoard(testLevel1, walls);
     }
 
     @Test

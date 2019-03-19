@@ -27,7 +27,12 @@ public class PlayerTest {
                 "r..l" +
                 "...l" +
                 "..d.";
-        this.gameBoard = new GameBoard(boardSetup);
+        String walls = "" +
+                "...." +
+                "...." +
+                "...." +
+                "....";
+        this.gameBoard = new GameBoard(boardSetup, walls);
         this.player = new Player("a",1, 1);
         //this.card = new Card(100, FORWARD_1);
     }

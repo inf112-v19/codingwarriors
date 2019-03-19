@@ -1,21 +1,53 @@
 package inf112.project.RoboRally.objects;
 
 import inf112.project.RoboRally.actors.IPlayer;
-import inf112.project.RoboRally.actors.Player;
+
+import java.util.ArrayList;
 
 public class CrossedWrench implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
     private Rotation rotation;
+    private ArrayList<GridDirection> walls;
 
     public CrossedWrench () {
         this.speed=0;
         this.direction=null;
         this.damage=0;
         this.rotation=null;
+        this.walls = new ArrayList<>();
     }
-
+    
+    @Override
+    public boolean isWall(GridDirection direction) {
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public void buildWall(GridDirection direction) {
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                return;
+            }
+        }
+        walls.add(direction);
+    }
+    
+    @Override
+    public void removeWall(GridDirection direction) {
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                walls.remove(direction);
+            }
+        }
+    }
+    
     @Override
     public int getSpeed() {
         return this.speed;
