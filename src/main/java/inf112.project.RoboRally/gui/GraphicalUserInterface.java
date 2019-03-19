@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import inf112.project.RoboRally.actors.AI;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
@@ -108,14 +109,32 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void userInputs() {
         if (Gdx.input.justTouched() && game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-            int x = Gdx.input.getX();
-            int y = HEIGHT-Gdx.input.getY();
-            if (cardScreen.PositionIsInsideScreen(x,y)) {
-                int index = cardScreen.getTileIndex(y);
-                selectCards(index);
+            if (currentPlayer instanceof AI) {
+                AISelectCards();
+            } else {
+                int x = Gdx.input.getX();
+                int y = HEIGHT - Gdx.input.getY();
+                if (cardScreen.PositionIsInsideScreen(x, y)) {
+                    int index = cardScreen.getTileIndex(y);
+                    selectCards(index);
+                }
             }
-        } else if (Gdx.input.justTouched()) {
-            game.doTurn();
+            } else if (Gdx.input.justTouched()) {
+                game.doTurn();
+            }
+
+    }
+
+    private void AISelectCards() {
+        for (int i = 0; i < 5; i++) {
+            selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0,currentPlayer.getCardsInHand().removeCard(i));
+        }
+        if (game.getPlayers().size()-1 > currentPlayerIndex && selectedCards[currentPlayerIndex].getSize() >= 5) {
+            currentPlayerIndex++;
+        } else if (selectedCards[currentPlayerIndex].getSize() >= 5) { // done, all cards for all players is selected
+            game.setUpTurn(selectedCards);
+            currentPlayerIndex = 0;
+            game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
         }
     }
 

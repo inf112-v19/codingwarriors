@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.game;
 
+import inf112.project.RoboRally.actors.AI;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
@@ -97,7 +98,7 @@ public class Game implements IGame {
      // Hardcoded players for demonstration.
         IPlayer player1 = new Player("Buzz", 0, 10);
         IPlayer player2 = new Player("Emma", 5, 10);
-        IPlayer player3 = new Player("G-bot", 2, 5);
+        IPlayer player3 = new AI("G-bot", 2, 5);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);
@@ -149,7 +150,7 @@ public class Game implements IGame {
                 List coordinatesHitByLaser = player.fireLaser(board.getRows(), board.getColumns());
                 List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser);
                 for (IPlayer otherPlayer : players) { // poor optimization
-                    if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())) {
+                    if (shortestPathToPlayer.contains(((IPlayer) otherPlayer).getCoordinates())) {
                         otherPlayer.takeOneDamage();
                         System.out.println(otherPlayer.getName() + " was hit by a laser from " + player.getName());
                     }
@@ -170,7 +171,7 @@ public class Game implements IGame {
 
         for (IPlayer player : players) {
             for (int i = 0; i < laserCoordinates.size(); i++) {
-                if (laserCoordinates.get(i).equals(((Player) player).getCoordinates())) {
+                if (laserCoordinates.get(i).equals(player.getCoordinates())) {
                     comparativeList.add(laserCoordinates.get(i));
                     if (comparativeList.size() < smallestListSize) {
                         smallestListSize = comparativeList.size();
