@@ -60,7 +60,7 @@ public interface IObjects {
 	
 	/**
 	 * For use when the object has a wall
-	 * @return Wall texture location and name in string form, e.g. assets/wallNorth.png
+	 * @return Wall texture location and name in string form, e.g. assets/walls/wall_North.png
 	 * The wall texture name is given in the form "wall_" and then the valid directions in the
 	 * following prioritized order: North, south, east, west
 	 */

@@ -132,7 +132,7 @@ public enum GridDirection {
     String wallTexture=null;
     ArrayList<GridDirection> sortedDirectionList = GridDirection.sortUniqueDirectionsInPrioritizedOrder(walls);
     if (walls.size() > 0) {
-      wallTexture="assets/wall_";
+      wallTexture="assets/walls/wall_";
       for (GridDirection direction: sortedDirectionList) {
         wallTexture += direction.toString();
       }
