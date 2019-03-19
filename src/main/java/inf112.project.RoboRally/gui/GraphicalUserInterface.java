@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.actors.IPlayer;
+import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
@@ -40,7 +41,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private int[] yPositionDrawer;
 
     // to be moved
-    private IDeck[] selectedCards;
+    //private IDeck[] selectedCards;
 
     @Override
     public void create () {
@@ -78,10 +79,10 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         game.initializeGame();
         game.dealOutProgramCards();
         game.setGameStatus(GameStatus.SELECT_CARDS);
-        selectedCards = new Deck[game.getPlayers().size()];
-        for (int i = 0; i < game.getPlayers().size(); i++) {
-            selectedCards[i] = new Deck();
-        }
+    //    selectedCards = game.getSelectedCards();//new Deck[game.getPlayers().size()];
+     //   for (int i = 0; i < game.getPlayers().size(); i++) {
+    //        selectedCards[i] = new Deck();
+     //   }
         currentPlayerIndex = 0;
         currentPlayer = game.getPlayers().get(currentPlayerIndex);
         xPositionDrawer = new int[game.getPlayers().size()];
@@ -93,7 +94,12 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.currentPlayer = game.getPlayers().get(currentPlayerIndex);
+        if (game.getActivePlayers().size() > 0) {
+                this.currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+        } else {
+            IPlayer standInDummy = new Player("Game over stand in", 0, 0);
+            this.currentPlayer = standInDummy;
+        }
 
         camera.update();
         batch.begin();
@@ -119,31 +125,100 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         }
     }
 
-    private void selectCards(int index) {
-        int playerDeckSize = currentPlayer.getCardsInHand().getSize();
-
-        // if selected card is in selectedCards, then move the card to playerDeck and return
-        if (index >= playerDeckSize) {
-            ICard deSelectCard = selectedCards[currentPlayerIndex].removeCard(index-playerDeckSize);
-            currentPlayer.getCardsInHand().addCardToDeck(deSelectCard);
-            System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectCard);
+    private void selectCards(int indexOfSelectedCard) {
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
+        if (playersDeckOfCards.isEmpty()) {
             return;
         }
-
-        // remove selected card from playerDeck to selected cards
-        ICard selectedCard = currentPlayer.getCardsInHand().getCardAtPosition(index);
-        System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
-        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0,currentPlayer.getCardsInHand().removeCard(index));
-
-        // if five cards selected and there are more players left, switch current player to be next player
-        if (game.getPlayers().size()-1 > currentPlayerIndex && selectedCards[currentPlayerIndex].getSize() >= 5) {
-            currentPlayerIndex++;
-        } else if (selectedCards[currentPlayerIndex].getSize() >= 5) { // done, all cards for all players is selected
-            game.setUpTurn(selectedCards);
-            currentPlayerIndex = 0;
-            game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-
+        // Switch selected card between players deck,
+        // and the players list of selected cards.
+        if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
+            moveSelectedCardBackToPlayersDeck(indexOfSelectedCard);
+            return; // Not finished selecting cards yet.
+        } else {
+            moveSelectedCardToPlayersListOfSelectedCards(indexOfSelectedCard);
         }
+
+        IDeck[] selectedCards = game.getSelectedCards();
+        int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
+        int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
+        int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
+        System.out.println("last player index: " + indexOfTheLastPlayer);
+        if (numberOfSelectedCards >= numberOfCardsToSelect) {
+            this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+            if (currentPlayerIndex == indexOfTheLastPlayer) {
+                currentPlayerIndex = 0;
+                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+                System.out.println("finished selecting cards");
+            } else {
+                System.out.println("updating current player");
+                currentPlayerIndex++;
+            }
+        }
+
+/*
+        if (!playersDeckOfCards.isEmpty()) {
+            // if the selected card is one of the already selectedCards,
+            if (indexOfSelectedCard >= playersDeckOfCards.getSize()) { // then move it back to the players hand.
+                moveSelectedCardBackToPlayersDeck(indexOfSelectedCard);
+                return;
+            } else {
+                moveSelectedCardToPlayersListOfSelectedCards(indexOfSelectedCard);
+            }
+
+            int numberOfCardsToChoose = currentPlayer.getNumberOfUnlockedRegisterSlots();
+            int indexOfTheLastPlayer = game.getPlayers().size() - 1;
+            int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
+            if (numberOfSelectedCards >= numberOfCardsToChoose && currentPlayerIndex < indexOfTheLastPlayer) {
+                addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+                currentPlayerIndex++;
+            } else if (numberOfSelectedCards >= numberOfCardsToChoose) { // done, all cards for all players is selected
+                addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+                game.setUpTurn(selectedCards);
+                currentPlayerIndex = 0;
+                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+            }
+        }
+
+*/
+    }
+
+    /**
+     * Add this players chosen cards to this players register.
+     */
+    private void addTheSelectedCardsToTheCurrentPlayersProgramRegister() {
+        IDeck[] selectedCards = game.getSelectedCards();
+        IDeck chosenCards = selectedCards[currentPlayerIndex];
+        currentPlayer.addADeckOfCardsToTheProgramRegister(chosenCards);
+        selectedCards[currentPlayerIndex].removeAllCardsFromDeck();
+    }
+
+    /**
+     * Remove the selected card from the players hand,
+     * and add it to the players deck of selected cards.
+     */
+    private void moveSelectedCardToPlayersListOfSelectedCards(int index) {
+        IDeck[] selectedCards = game.getSelectedCards();
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
+        ICard selectedCard = playersDeckOfCards.removeCard(index);
+        int lastPos = selectedCards[currentPlayerIndex].getSize();
+        System.out.println(lastPos);
+        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(lastPos, selectedCard);
+        System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
+    }
+
+    /**
+     * Remove the selected card from the players deck of selected cards,
+     * and add it to the players hand.
+     */
+    private void moveSelectedCardBackToPlayersDeck(int index) {
+        IDeck[] selectedCards = game.getSelectedCards();
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
+        int positionOfCardToRemove = index - playersDeckOfCards.getSize();
+
+        ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(positionOfCardToRemove);
+        playersDeckOfCards.addCardToDeck(deSelectedCard);
+        System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectedCard);
     }
 
     private void drawCards() {
@@ -157,10 +232,19 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     }
 
     private void drawSelectCards() {
+        IDeck[] selectedCards = game.getSelectedCards();
+        if (game.getNumberOfPlayersLeftInTheGame() <= 0) {
+            System.out.println("No players left");
+            return;
+        }
+
+     //   System.out.println("current player: " + currentPlayerIndex);
+     //   System.out.println("players hand size: " + currentPlayer.getCardsInHand().getSize());
+     //   System.out.println("selectedCards.size: " + selectedCards[currentPlayerIndex].getSize());
         int fontSize = 30;
         int playerCards = currentPlayer.getCardsInHand().getSize();
-        int selectedCards = this.selectedCards[currentPlayerIndex].getSize();
-        int totalCards = playerCards + selectedCards;
+        int amountOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
+        int totalCards = playerCards + amountOfSelectedCards;
 
         cardScreen.setNumberOtTiles(1,totalCards);
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
@@ -176,7 +260,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         }
         // drawing selected cards
         for (; i < totalCards; i++) {
-            fontGreen.draw(batch, this.selectedCards[currentPlayerIndex].showCard(i-playerCards),
+            fontGreen.draw(batch, selectedCards[currentPlayerIndex].showCard(i-playerCards),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
 
@@ -184,7 +268,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     }
 
     private void drawPlayers() {
-        List<IPlayer> players= game.getPlayers();
+        List<IPlayer> players = game.getPlayers();
         int animationSpeed = 9;
         for (int i = 0; i < players.size(); i++) {
             int xPosPlayer = boardScreen.getStartX(players.get(i).getX());

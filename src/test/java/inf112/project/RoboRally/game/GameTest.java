@@ -2,6 +2,9 @@ package inf112.project.RoboRally.game;
 
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.cards.Action;
+import inf112.project.RoboRally.cards.Card;
+import inf112.project.RoboRally.cards.ICard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,7 +89,7 @@ public class GameTest {
         System.out.println(player.getX());
         System.out.println(player.getY());
     }
-'/
+*/
 
 
 

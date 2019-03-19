@@ -1,8 +1,13 @@
 package inf112.project.RoboRally.actors;
 
+import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.*;
+import inf112.project.RoboRally.game.Game;
+import inf112.project.RoboRally.objects.Flag;
 import inf112.project.RoboRally.objects.GridDirection;
+import inf112.project.RoboRally.objects.Laser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
@@ -16,6 +21,7 @@ public class Player implements IPlayer {
     private IProgramRegister register;
     private int flagsVisited;
     private boolean wasDestroyedThisTurn;
+    private Laser laser;
 
     public Player(String name, int x, int y) {
         this.x = x;
@@ -30,6 +36,7 @@ public class Player implements IPlayer {
         this.register = new ProgramRegister();
         this.flagsVisited = 0;
         this.wasDestroyedThisTurn = false;
+        this.laser = new Laser(playerDirection, 1);
     }
 
     @Override
@@ -128,6 +135,10 @@ public class Player implements IPlayer {
         }
     }
 
+    public int getNumberOfDamageTokensRecieved() {
+        return numberOfDamageTokensRecieved;
+    }
+
     @Override
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
@@ -149,8 +160,23 @@ public class Player implements IPlayer {
         }
     }
 
-    @Override
-    public void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
+    /**
+     * Handles the locking and unlocking of registers when the player is damaged.
+     *
+     * @param numberOfRegistersToLock
+     *                              The number of registers that should be locked.
+     * @param numberOfRegistersToUnlock
+     *                              The number of registers that should be unlocked.
+     *
+     * @throws IllegalArgumentException
+     *       if numberOfRegistersToLock == null,
+     *       or numberOfRegistersToUnLock == null,
+     *       or numberOfRegistersToLock < 0,
+     *       or numberOfRegistersToUnLock < 0,
+     *       or numberOfRegistersToLock > register.getSize(),
+     *       or numberOfRegistersToUnLock > register.getSize().
+     */
+    private void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
                                                   Integer numberOfRegistersToUnlock) {
         if (numberOfRegistersToLock == null
                 || numberOfRegistersToLock < 0
@@ -201,7 +227,7 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void receiveCards(List<ICard> cards) {
+    public void addCardsToPlayersHand(List<ICard> cards) {
         if (cards == null) {
             throw new IllegalArgumentException("List of cards is invalid");
         }
@@ -214,6 +240,14 @@ public class Player implements IPlayer {
             throw new IllegalArgumentException("Invalid list of cards");
         }
         this.register.addCollectionOfCardsToRegister(cards);
+    }
+
+    @Override
+    public void addADeckOfCardsToTheProgramRegister(IDeck deck) {
+        if (deck == null || deck.getSize() > this.register.getNumberOfRegisterSlots()) {
+            throw new IllegalArgumentException("Invalid deck of cards");
+        }
+        this.register.addADeckOfCardsToTheRegister(deck);
     }
 
     @Override
@@ -232,9 +266,15 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void clearRegister() {
-        this.register.clearAllUnlockedCardsFromRegister();
+    public IDeck clearRegister() {
+        return this.register.removeAllUnlockedCardsFromTheRegister();
     }
+
+    @Override
+    public int getNumberOfUnlockedRegisterSlots() {
+        return this.register.numberOfUnlockedRegisterSlots();
+    }
+
 
     @Override
     public boolean wasDestroyedThisTurn() {
@@ -245,7 +285,8 @@ public class Player implements IPlayer {
     public void respawnAtLastArchiveMarker() {
         this.x=backupX;
         this.y=backupY;
-        takeOneDamage();
+        this.numberOfDamageTokensRecieved = 0; // Reset damage
+        takeOneDamage(); // Take two damage
         takeOneDamage();
     }
 
@@ -307,6 +348,7 @@ public class Player implements IPlayer {
         this.playerDirection = playerDirection.rotateRight();
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
@@ -314,5 +356,59 @@ public class Player implements IPlayer {
     @Override
     public int getNumberOfLivesRemaining() {
         return this.lives;
+    }
+
+    @Override
+    public boolean hasLifeLeft() {
+        return this.lives > 0;
+    }
+
+    public List<Coordinates> fireLaser(int boardRows, int boardColumns) {
+        ArrayList<Coordinates> visitedPositionsByLaser = new ArrayList<>();
+        laser.setX(getX());
+        laser.setY(getY());
+
+        int i = 0; // don't really need this
+
+        while (insideBoard(laser.getX(), laser.getY(), boardRows, boardColumns)) {
+            laser.doAction(this);
+            if (insideBoard(laser.getX(), laser.getY(), boardRows, boardColumns)) {
+                visitedPositionsByLaser.add(i++,new Coordinates(laser.getX(), laser.getY()));
+            }
+        }
+        return visitedPositionsByLaser;
+    }
+
+    public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
+        return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
+    }
+
+    public Coordinates getCoordinates() {
+        return new Coordinates(getX(), getY());
+    }
+}
+
+class Coordinates {
+    private int x,y;
+
+    public Coordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Coordinates otherCord = (Coordinates) obj;
+        if (otherCord.x == x && otherCord.y == y)
+            return true;
+        return false;
     }
 }
