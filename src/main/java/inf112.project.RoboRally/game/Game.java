@@ -278,6 +278,7 @@ public class Game implements IGame {
                     && !this.destroyedPlayers.contains(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
+                    this.firePlayersLaser(player); // to be moved
                 } else {
                     this.destroyPlayer(player);
                     if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
@@ -290,6 +291,51 @@ public class Game implements IGame {
             }
         }
         setGameStatus(EXECUTING_INSTRUCTIONS);
+    }
+
+
+
+
+    private void firePlayersLaser(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
+        List coordinatesHitByLaser = player.fireLaser(board.getRows(), board.getColumns());
+        List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser);
+        for (IPlayer otherPlayer : players) { // poor optimization
+            if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())) {
+                otherPlayer.takeOneDamage();
+                System.out.println(otherPlayer.getName() + " was hit by a laser from " + player.getName());
+            }
+        }
+    }
+
+
+
+
+
+    // in the case of multiple players being on the same line this method checks for the shortest path to a player
+    public List shortestPathToObstacle(List laserCoordinates) {
+        List finalLaserCoordinates = new ArrayList();
+        List comparativeList = new ArrayList();
+        int smallestListSize = laserCoordinates.size();
+
+        for (IPlayer player : players) {
+            for (int i = 0; i < laserCoordinates.size(); i++) {
+                if (laserCoordinates.get(i).equals(((Player) player).getCoordinates())) {
+                    comparativeList.add(laserCoordinates.get(i));
+                    if (comparativeList.size() < smallestListSize) {
+                        smallestListSize = comparativeList.size();
+                        finalLaserCoordinates = new ArrayList(comparativeList);
+                        comparativeList.clear();
+                    }
+                    break;
+                }
+                comparativeList.add(laserCoordinates.get(i));
+            }
+            comparativeList.clear();
+        }
+        return finalLaserCoordinates;
     }
 
     private void executingInstructions() {

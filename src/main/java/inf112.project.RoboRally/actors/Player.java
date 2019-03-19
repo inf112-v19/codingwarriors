@@ -1,8 +1,13 @@
 package inf112.project.RoboRally.actors;
 
+import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.*;
+import inf112.project.RoboRally.game.Game;
+import inf112.project.RoboRally.objects.Flag;
 import inf112.project.RoboRally.objects.GridDirection;
+import inf112.project.RoboRally.objects.Laser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
@@ -16,6 +21,7 @@ public class Player implements IPlayer {
     private IProgramRegister register;
     private int flagsVisited;
     private boolean wasDestroyedThisTurn;
+    private Laser laser;
 
     public Player(String name, int x, int y) {
         this.x = x;
@@ -30,6 +36,7 @@ public class Player implements IPlayer {
         this.register = new ProgramRegister();
         this.flagsVisited = 0;
         this.wasDestroyedThisTurn = false;
+        this.laser = new Laser(playerDirection, 1);
     }
 
     @Override
@@ -126,6 +133,10 @@ public class Player implements IPlayer {
         if (this.numberOfDamageTokensRecieved > 0) {
             this.numberOfDamageTokensRecieved -= 1;
         }
+    }
+
+    public int getNumberOfDamageTokensRecieved() {
+        return numberOfDamageTokensRecieved;
     }
 
     @Override
@@ -350,5 +361,54 @@ public class Player implements IPlayer {
     @Override
     public boolean hasLifeLeft() {
         return this.lives > 0;
+    }
+
+    public List<Coordinates> fireLaser(int boardRows, int boardColumns) {
+        ArrayList<Coordinates> visitedPositionsByLaser = new ArrayList<>();
+        laser.setX(getX());
+        laser.setY(getY());
+
+        int i = 0; // don't really need this
+
+        while (insideBoard(laser.getX(), laser.getY(), boardRows, boardColumns)) {
+            laser.doAction(this);
+            if (insideBoard(laser.getX(), laser.getY(), boardRows, boardColumns)) {
+                visitedPositionsByLaser.add(i++,new Coordinates(laser.getX(), laser.getY()));
+            }
+        }
+        return visitedPositionsByLaser;
+    }
+
+    public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
+        return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
+    }
+
+    public Coordinates getCoordinates() {
+        return new Coordinates(getX(), getY());
+    }
+}
+
+class Coordinates {
+    private int x,y;
+
+    public Coordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Coordinates otherCord = (Coordinates) obj;
+        if (otherCord.x == x && otherCord.y == y)
+            return true;
+        return false;
     }
 }

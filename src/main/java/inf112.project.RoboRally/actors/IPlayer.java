@@ -1,7 +1,9 @@
 package inf112.project.RoboRally.actors;
 
+import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.objects.GridDirection;
 
 import java.util.List;
@@ -280,4 +282,6 @@ public interface IPlayer {
      *       false if (lives <= 0).
      */
     boolean hasLifeLeft();
+
+    List fireLaser(int boardRows, int boardColumns);
 }
