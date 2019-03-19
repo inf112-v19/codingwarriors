@@ -101,15 +101,44 @@ public interface IGame {
      */
     GameBoard getBoard();
 
+
+
     IDeck[] getSelectedCards();
 
+
+    /**
+     * Get the amount of players that has one or more lives left.
+     *
+     * @return The number of players still in the game.
+     */
     int getNumberOfPlayersLeftInTheGame();
 
+
+    /**
+     * Update the current state of the game.
+     *
+     * @param status
+     *              The new game status.
+     */
     void setGameStatus(GameStatus status);
 
+
+    /**
+     * Update the current slot number to
+     *
+     * @param number
+     *              The new slot number.<br>
+     *              Must not be negative or above the NUMBER_OF_REGISTER_SLOTS.
+     * @throws IllegalArgumentException
+     *       if slotNumber is negative (slotNumber < 0),<br>
+     *       slotNumber is too high (slotNumber > NUMBER_OF_REGISTER_SLOTS),<br>
+     *       or slotNumber == null.
+     */
     void setCurrentSlotNumber(Integer number);
 
-    void doTurn();
 
-    void setUpTurn(IDeck[] selectedCards);
+    /**
+     * Perform round actions based on the games current state.
+     */
+    void doTurn();
 }
