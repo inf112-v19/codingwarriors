@@ -201,7 +201,9 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         IDeck[] selectedCards = game.getSelectedCards();
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         ICard selectedCard = playersDeckOfCards.removeCard(index);
-        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0, selectedCard);
+        int lastPos = selectedCards[currentPlayerIndex].getSize();
+        System.out.println(lastPos);
+        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(lastPos, selectedCard);
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
     }
 
