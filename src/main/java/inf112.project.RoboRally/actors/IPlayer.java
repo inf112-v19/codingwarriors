@@ -271,4 +271,6 @@ public interface IPlayer {
     int getNumberOfLivesRemaining();
 
     List fireLaser(int boardRows, int boardColumns);
+
+    Coordinates getCoordinates();
 }
