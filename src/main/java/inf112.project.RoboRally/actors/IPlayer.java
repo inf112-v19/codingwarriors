@@ -71,26 +71,6 @@ public interface IPlayer {
 
 
     /**
-     * Handles the locking and unlocking of registers when the player is damaged.
-     *
-     * @param numberOfRegistersToLock
-     *                              The number of registers that should be locked.
-     * @param numberOfRegistersToUnlock
-     *                              The number of registers that should be unlocked.
-     *
-     * @throws IllegalArgumentException
-     *       if numberOfRegistersToLock == null,
-     *       or numberOfRegistersToUnLock == null,
-     *       or numberOfRegistersToLock < 0,
-     *       or numberOfRegistersToUnLock < 0,
-     *       or numberOfRegistersToLock > register.getSize(),
-     *       or numberOfRegistersToUnLock > register.getSize().
-     */
-    void lockNRegistersAndUnlockMRegisters(Integer numberOfRegistersToLock,
-                                           Integer numberOfRegistersToUnlock);
-
-
-    /**
      * Unlock N register slots in the players register.
      *
      * @param numberOfSlotsToUnlock
@@ -132,7 +112,7 @@ public interface IPlayer {
      * @throws IllegalArgumentException
      *      if cards == null.
      */
-    void receiveCards(List<ICard> cards);
+    void addCardsToPlayersHand(List<ICard> cards);
 
 
     /**
@@ -146,6 +126,20 @@ public interface IPlayer {
      *       or if it contains too many cards (cards.size() > register.getSize()).
      */
     void addListOfCardsToProgramRegister(List<ICard> cards);
+
+
+    /**
+     * Takes a deck of cards,
+     * and adds the cards to the register.
+     *
+     * @param deck
+     *              The deck of cards to be added.
+     * @throws IllegalArgumentException
+     *      if deck == null,<br>
+     *      or deck contains too many cards
+     *     (deck.getSize() > register.getNumberOfRegisterSlots).
+     */
+    void addADeckOfCardsToTheProgramRegister(IDeck deck);
 
 
     /**
@@ -173,8 +167,18 @@ public interface IPlayer {
     /**
      * Remove all unlocked cards from this players registry.<br>
      * Cards in locked slots, remain in their positions.
+     *
+     * @return A deck with the removed cards.
      */
-    void clearRegister();
+    IDeck clearRegister();
+
+
+    /**
+     * Get the number of register slots that remains unlocked.
+     *
+     * @return The number of unlocked register slots.
+     */
+    int getNumberOfUnlockedRegisterSlots();
 
 
     /**
@@ -269,6 +273,15 @@ public interface IPlayer {
      * @return the number of lives the player has left.
      */
     int getNumberOfLivesRemaining();
+
+
+    /**
+     * Check whether a player is still alive or not.
+     *
+     * @return true if the player has more lives left,<br>
+     *       false if (lives <= 0).
+     */
+    boolean hasLifeLeft();
 
     List fireLaser(int boardRows, int boardColumns);
 }

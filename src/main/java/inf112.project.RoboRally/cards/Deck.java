@@ -19,7 +19,9 @@ public class Deck implements IDeck{
 
     @Override
     public List<ICard> handOutNCards(Integer numberOfCards) {
-        if (numberOfCards == null|| numberOfCards < 0 || numberOfCards > this.getSize()) {
+        if (numberOfCards == null
+                || numberOfCards < 0
+                || numberOfCards > this.getSize()) {
             throw new IllegalArgumentException("numberOfCards is not a valid amount of cards");
         }
 
@@ -80,8 +82,23 @@ public class Deck implements IDeck{
             throw new IllegalArgumentException("Number of cards is invalid," +
                     " or the target deck does not exist");
         }
-        List<ICard> selectedCards = handOutNCards(numberOfCardsToTransfer);
+        List<ICard> selectedCards = this.handOutNCards(numberOfCardsToTransfer);
         targetDeck.addCollectionOfCardsToDeck(selectedCards);
+    }
+
+    @Override
+    public ICard replaceCardAtPosition(Integer position, ICard card) {
+        if (position == null
+                || position < 0
+                || position >= this.getSize()) {
+            throw new IllegalArgumentException("Not a valid position");
+        }
+        if (card == null) {
+            throw new IllegalArgumentException("null is not a valid card");
+        }
+        ICard removedCard = this.removeCard(position);
+        this.addCardToDeckAtPosition(position, card);
+        return removedCard;
     }
 
     @Override
@@ -163,7 +180,9 @@ public class Deck implements IDeck{
 
     @Override
     public ICard getCardAtPosition(Integer position) {
-        if (position == null || position >= this.cardDeck.size() || position < 0) {
+        if (position == null
+                || position >= this.cardDeck.size()
+                || position < 0) {
             throw new IllegalArgumentException("Position is out of bounds");
         }
         return this.cardDeck.get(position);
@@ -182,5 +201,10 @@ public class Deck implements IDeck{
     @Override
     public void removeAllCardsFromDeck() {
         this.cardDeck.clear();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.cardDeck.size() == 0;
     }
 }

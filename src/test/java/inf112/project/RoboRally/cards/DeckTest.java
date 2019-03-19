@@ -443,4 +443,18 @@ public class DeckTest {
     public void addingACardToDeckShouldFailIfCardIsNull() {
         deck.addCardToDeckAtPosition(0, null);
     }
+
+    @Test
+    public void ifTheDeckHasNoCardsItShouldBeEmpty() {
+        assertEquals(0, deck.getSize());
+        assertEquals(true, deck.isEmpty());
+    }
+
+    @Test
+    public void ifTheDeckHasCardsItShouldNotBeEmpty() {
+        ICard card = new Card(100, Action.FORWARD_1);
+        deck.addCardToDeck(card);
+        assertEquals(1, deck.getSize());
+        assertEquals(false, deck.isEmpty());
+    }
 }

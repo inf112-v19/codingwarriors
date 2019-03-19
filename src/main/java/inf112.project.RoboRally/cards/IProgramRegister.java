@@ -4,6 +4,7 @@ import java.util.Collection;
 
 public interface IProgramRegister {
 
+
     /**
      * Get the current size of the register.
      *
@@ -19,13 +20,16 @@ public interface IProgramRegister {
      *                  The position the card should be inserted into.
      * @param card
      *              The card to add.
+     * @return The removed card.
+     *
      * @throws IllegalArgumentException
      *        if the slotNumber is negative (slotNumber < 0),<br>
-     *        slotNumber is too high (slotNumber > register.getSize()),<br>
+     *        slotNumber is too high (slotNumber >= register.getSize()),<br>
      *        slotNumber is null (slotNumber = null),<br>
-     *        or if the card is null (card = null).
+     *        or if the card is null (card = null),<br>
+     *        or if the register slot with this slotNumber is locked.
      */
-    void addCardToRegisterAtSlotNumber(Integer slotNumber, ICard card);
+    ICard replaceTheCardInRegisterSlotNumberNWithThisCard(Integer slotNumber, ICard card);
 
 
     /**
@@ -40,7 +44,7 @@ public interface IProgramRegister {
      * @throws IllegalArgumentException
      *        if the slotNumber is negative (slotNumber < 0),<br>
      *        slotNumber is greater than the number of slots
-     *        (slotNumber > register.getNumberOfRegisterSlots()),<br>
+     *        (slotNumber >= register.getSize()),<br>
      *        or if slotNumber is null (slotNumber = null).
      */
     ICard getCardInSlotNumber(Integer slotNumber);
@@ -62,6 +66,15 @@ public interface IProgramRegister {
 
 
     /**
+     * Converts a deck of cards into a collection,
+     * and adds it to the register.
+     *
+     * @param deckOfCards
+     *                  The deck of cards to be added.
+     */
+    void addADeckOfCardsToTheRegister(IDeck deckOfCards);
+
+    /**
      * Checks if the specified register slot is locked.
      *
      * @param slotNumber
@@ -73,7 +86,7 @@ public interface IProgramRegister {
      *        slotNumber is too high (slotNumber > register.getNumberOfRegisterSlots()),<br>
      *        or if slotNumber is null (slotNumber = null).
      */
-    boolean checkIsRegisterSlotNumberNLocked(Integer slotNumber);
+    boolean checkIsTheRegisterSlotNumberNLocked(Integer slotNumber);
 
 
     /**
@@ -85,7 +98,7 @@ public interface IProgramRegister {
      *                  The register slot to be locked.
      * @throws IllegalArgumentException
      *        if the slotNumber is negative (slotNumber < 0),<br>
-     *        slotNumber is too high (slotNumber > register.getSize()),<br>
+     *        slotNumber is too high (slotNumber >= register.getSize()),<br>
      *        or if slotNumber is null (slotNumber = null).
      */
     void lockRegisterSlotNumber(Integer slotNumber);
@@ -117,6 +130,16 @@ public interface IProgramRegister {
     /**
      * Replace all cards in the register,
      * except those in locked slots.
+     *
+     * @return A deck holding the removed cards.
      */
-    void clearAllUnlockedCardsFromRegister();
+    IDeck removeAllUnlockedCardsFromTheRegister();
+
+
+    /**
+     * Get the number of unlocked register slots.
+     *
+     * @return The number of unlocked slots.
+     */
+    int numberOfUnlockedRegisterSlots();
 }

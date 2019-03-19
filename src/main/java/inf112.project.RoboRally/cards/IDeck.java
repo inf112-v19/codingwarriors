@@ -7,11 +7,18 @@ public interface IDeck extends Iterable<ICard>{
 
     /**
      * Give the specified amount of cards, from those available in the deck,
-     * to the requesting player.
+     * to the requesting player.<br>
+     *
+     * Cards are taken from the top of the deck (position 0).
      *
      * @param num
      *              The number of requested cards.
      * @return The cards dealt to the requesting player.
+     *
+     * @throws IllegalArgumentException
+     *      if the number of cards is null (num == null),<br>
+     *      or num is negative (num < 0),<br>
+     *      or num is too high (num > deck.getSize()).
      */
     List<ICard> handOutNCards(Integer num);
 
@@ -29,6 +36,14 @@ public interface IDeck extends Iterable<ICard>{
      *              Position of card A.
      * @param posB
      *              Position of card B.
+     *
+     * @throws IllegalArgumentException
+     *      if posA == null,<br>
+     *      or posB == null,<br>
+     *      or posA < 0,<br>
+     *      or posB < 0,<br>
+     *      or posA >= deck.getSize(),<br>
+     *      or posB >= deck.getSize().
      */
     void swapCardsInPosition(Integer posA, Integer posB);
 
@@ -63,6 +78,11 @@ public interface IDeck extends Iterable<ICard>{
      * @param position
      *                  The index of the card in the deck.
      * @return the card at the given position.
+     *
+     * @throws IllegalArgumentException
+     *      if the position is null (position == null),<br>
+     *      or position is negative (position < 0),<br>
+     *      or position is greater than the deck size (position >= deck.getSize()).
      */
     ICard getCardAtPosition(Integer position);
 
@@ -100,6 +120,13 @@ public interface IDeck extends Iterable<ICard>{
      *              The index to insert the card at.
      * @param card
      *              The card that will be inserted into the deck
+     *
+     * @throws IllegalArgumentException
+     *      if the index is null (index == null),<br>
+     *      or the index is negative (index < 0),<br>
+     *      or the index is greater than the deck size (index > deck.getSize()).
+     *      <br>
+     *      If the card is null (card == null).
      */
     void addCardToDeckAtPosition(Integer index, ICard card);
 
@@ -109,6 +136,9 @@ public interface IDeck extends Iterable<ICard>{
      *
      * @param card
      *              The card to be added.
+     *
+     * @throws IllegalArgumentException
+     *      if card == null.
      */
     void addCardToDeck(ICard card);
 
@@ -119,6 +149,11 @@ public interface IDeck extends Iterable<ICard>{
      * @param position
      *              The index of the card to be removed.
      * @return A reference to the removed card.
+     *
+     * @throws IllegalArgumentException
+     *      if the position is null (position == null),<br>
+     *      or position is negative (position < 0),<br>
+     *      or position is greater than the deck size (position >= deck.getSize()).
      */
     ICard removeCard(Integer position);
 
@@ -129,6 +164,11 @@ public interface IDeck extends Iterable<ICard>{
      * @param position
      *                  The index of the card to be shown.
      * @return The String representation of the card at the given position.
+     *
+     * @throws IllegalArgumentException
+     *      if the position is null (position == null),<br>
+     *      or position is negative (position < 0),<br>
+     *      or position is greater than the deck size (position >= deck.getSize()).
      */
     String showCard(Integer position);
 
@@ -144,6 +184,40 @@ public interface IDeck extends Iterable<ICard>{
      *                  The number of cards to relocate.
      * @param targetDeck
      *                  The deck to transfer the cards to.
+     *
+     * @throws IllegalArgumentException <br>
+     *      if the numberOfCardsToTransfer is null<br> (numberOfCardsToTransfer == null),<br>
+     *      or numberOfCardsToTransfer is negative<br> (numberOfCardsToTransfer < 0),<br>
+     *      or numberOfCardsToTransfer is greater than the deck size<br>
+     *          (numberOfCardsToTransfer >= deck.getSize()).<br>
+     *      If targetDeck is null (targetDeck == null).
      */
     void transferNCardsFromThisDeckToTargetDeck(Integer numberOfCardsToTransfer, IDeck targetDeck);
+
+
+    /**
+     * Replaces the card at the given position with the new card.
+     *
+     * @param position
+     *              The position of the card to replace.
+     * @param card
+     *              The replacement card.
+     * @return The removed card.
+     *
+     * @throws IllegalArgumentException
+     *       if the position is negative (position < 0),<br>
+     *       position is too high (position >= deck.getSize()),<br>
+     *       position is null (position = null),<br>
+     *       or if the card is null (card = null).
+     */
+    ICard replaceCardAtPosition(Integer position, ICard card);
+
+
+    /**
+     * Check if the deck contains any cards.
+     *
+     * @return true if the deck has no cards,<br>
+     *     false otherwise.
+     */
+    boolean isEmpty();
 }
