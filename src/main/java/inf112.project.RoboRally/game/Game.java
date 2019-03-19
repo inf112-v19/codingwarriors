@@ -37,6 +37,7 @@ public class Game implements IGame {
     private IPlayer currentlyActingPlayer; // The player whose cards are to be displayed.
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
+    private IDeck[] selectedCards;
 
 
 
@@ -57,6 +58,7 @@ public class Game implements IGame {
         } else {
             drawnCards = this.programCards.handOutNCards(numberOfCardsToDraw);
         }
+        System.out.println("dealt cards to player: " + player.getName());
         player.addCardsToPlayersHand(drawnCards);
     }
 
@@ -124,9 +126,10 @@ public class Game implements IGame {
         this.everyFlagHasBeenVisited = false;
         this.numberOfPlayersLeftInTheGame = players.size();
         this.currentSlotNumber = 0;
-
         this.destroyedPlayers = new ArrayList<>();
         this.playersOutOfTheGame = new ArrayList<>();
+
+        this.updateDeckOfSelectedCards();
     }
 
     @Override
@@ -154,12 +157,32 @@ public class Game implements IGame {
     }
 
     @Override
+    public List<IPlayer> getDestroyedPlayers() {
+        return destroyedPlayers;
+    }
+
+    @Override
+    public List<IPlayer> getPlayersOutOfTheGame() {
+        return playersOutOfTheGame;
+    }
+
+    @Override
     public GameStatus getTheCurrentGameStatus() {
         return this.currentGameStatus;
     }
 
     public GameBoard getBoard() {
         return board;
+    }
+
+    @Override
+    public IDeck[] getSelectedCards() {
+        return this.selectedCards;
+    }
+
+    @Override
+    public int getNumberOfPlayersLeftInTheGame() {
+        return this.numberOfPlayersLeftInTheGame;
     }
 
     @Override
@@ -185,8 +208,10 @@ public class Game implements IGame {
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
                 executingGameBoardObjects();
+                System.out.println("exe game obj");
                 return;
             case FIRING_LASERS:
+                System.out.println("firing lasers");
             //TODO:    fireLasers();
                 return;
             case FINISHING_UP_THE_TURN:
@@ -202,10 +227,11 @@ public class Game implements IGame {
 
     /**
      * Clean up the game before the next round.<br>
-     * Restore all destroyed players,
-     * and players standing on wrench tiles removes one damage.
+     * Players standing on wrench tiles removes one damage,
+     * and all destroyed players are brought back into the game.
      */
     private void cleanUpTurn() {
+        System.out.println("cleaning");
         for (IPlayer player : players) {
             if (!this.playersOutOfTheGame.contains(player)
                     && !this.destroyedPlayers.contains(player)) {
@@ -220,11 +246,14 @@ public class Game implements IGame {
         }
 
         for (IPlayer player : destroyedPlayers) {
-            destroyedPlayers.remove(player);
+            System.out.println("respawning player: " + player.getName());
+            System.out.println("x: " + player.getX());
+            System.out.println("y: " + player.getY());
             activePlayers.add(player);
             player.respawnAtLastArchiveMarker();
             //TODO: Ask player for which direction they would like to face.
         }
+        this.destroyedPlayers.clear(); // All destroyed players has been restored.
         this.emptyEachPlayersRegister();
         this.setupCardSelectionForNewRound();
         this.setGameStatus(SELECT_CARDS);
@@ -238,6 +267,11 @@ public class Game implements IGame {
                     board.getObject(player.getX(), player.getY()).doAction(player);
                 } else {
                     this.destroyPlayer(player);
+                    if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
+                        this.setCurrentSlotNumber(0);
+                        this.setGameStatus(FINISHING_UP_THE_TURN);
+                        return;
+                    }
 //                    player.respawnAtLastArchiveMarker();
                 }
             }
@@ -246,6 +280,7 @@ public class Game implements IGame {
     }
 
     private void executingInstructions() {
+        System.out.println("exe instr");
         IDeck cardsForThisRegisterSlot = new Deck();
         ArrayList<IPlayer> listOfPlayers = new ArrayList<>(); // For keeping track of players and their cards.
         for (IPlayer player : this.activePlayers) {
@@ -261,13 +296,13 @@ public class Game implements IGame {
             player.movePlayer(card);
         }
         if (this.currentSlotNumber == (this.NUMBER_OF_REGISTER_SLOTS - 1)) {
+            System.out.println("Finished executing all instr");
             this.updateCurrentRegisterSlot();
             this.setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
             this.doTurn(); // Final for this turn.
             this.setGameStatus(FIRING_LASERS);
             this.doTurn();
             this.setGameStatus(FINISHING_UP_THE_TURN);
-            this.doTurn();
             return;
         }
         updateCurrentRegisterSlot();
@@ -279,12 +314,23 @@ public class Game implements IGame {
      * to the pile of discarded program cards.
      */
     private void emptyEachPlayersRegister() {
-        for (IPlayer player : this.players) {
-            IDeck cardsToBeDiscarded = player.clearRegister();
-            cardsToBeDiscarded.transferNCardsFromThisDeckToTargetDeck(
+        for (IPlayer player : this.activePlayers) {
+            this.emptyThePlayersRegister(player);
+        }
+    }
+
+    /**
+     * Move all unlocked cards from the players register,
+     * to the pile of discarded cards.
+     *
+     * @param player
+     *              The player whose register should be emptied.
+     */
+    private void emptyThePlayersRegister(IPlayer player) {
+        IDeck cardsToBeDiscarded = player.clearRegister();
+        cardsToBeDiscarded.transferNCardsFromThisDeckToTargetDeck(
                                         cardsToBeDiscarded.getSize(),
                                         this.discardedProgramCards);
-        }
     }
 
     /**
@@ -365,14 +411,21 @@ public class Game implements IGame {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
         }
+        System.out.println("player " + player.getName() + " was destroyed at");
+        System.out.println("x: " + player.getX());
+        System.out.println("y: " + player.getY());
         player.destroyPlayer();
         this.activePlayers.remove(player);
         if (!player.hasLifeLeft()) {
             this.playersOutOfTheGame.add(player);
-            if (this.playersOutOfTheGame.size() == this.players.size()) {
+            this.numberOfPlayersLeftInTheGame--;
+            this.emptyThePlayersRegister(player);
+            if (this.numberOfPlayersLeftInTheGame <= 0) {
                 //game over?
                 this.setGameStatus(THE_END);
+                this.doTurn();
             }
+            System.out.println("player " + player.getName() + " is permanently out of the game");
         } else {
             this.destroyedPlayers.add(player);
         }
@@ -392,10 +445,25 @@ public class Game implements IGame {
         for (IPlayer player: activePlayers) {
             drawCards(player);
         }
+
+        this.updateDeckOfSelectedCards();
     }
+
+
+    /**
+     * Remakes the decks that hold the cards during the selection process.<br>
+     * Ensures that the decks are only made for players that needs it.
+     */
+    private void updateDeckOfSelectedCards() {
+        this.selectedCards = new IDeck[numberOfPlayersLeftInTheGame];
+        for (int i = 0; i < numberOfPlayersLeftInTheGame; i++) {
+            this.selectedCards[i] = new Deck();
+        }
+    }
+
 
     @Override
     public void setUpTurn(IDeck[] selectedCards) {
-     //   this.selectedCards = selectedCards;
+       // this.selectedCards = selectedCards;
     }
 }

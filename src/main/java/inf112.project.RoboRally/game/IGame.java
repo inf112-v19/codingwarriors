@@ -82,6 +82,10 @@ public interface IGame {
     void dealOutProgramCards();
 
 
+    List<IPlayer> getDestroyedPlayers();
+
+    List<IPlayer> getPlayersOutOfTheGame();
+
     /**
      * Get the games current status,
      * to determine GUI drawing mode.
@@ -96,6 +100,10 @@ public interface IGame {
      * @return Returns the game board
      */
     GameBoard getBoard();
+
+    IDeck[] getSelectedCards();
+
+    int getNumberOfPlayersLeftInTheGame();
 
     void setGameStatus(GameStatus status);
 
