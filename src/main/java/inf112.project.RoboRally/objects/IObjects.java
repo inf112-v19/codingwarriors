@@ -3,9 +3,28 @@ package inf112.project.RoboRally.objects;
 import inf112.project.RoboRally.actors.IPlayer;
 
 public interface IObjects {
-
+    
     /**
-     * For use when objects have a speed
+     * For checking whether there is a wall on the given side of the object
+     * @param direction: Which side to check for a wall
+     * @return True if there is a wall, false otherwise
+     */
+    boolean isWall(GridDirection direction);
+	
+	/**
+	 * For building a wall on the given side of the object
+	 * @param direction: Which side to build wall on
+	 */
+	void buildWall(GridDirection direction);
+	
+	/**
+	 * For removing a wall on the given side of the object
+	 * @param direction: Which side of the object to remove the wall from
+	 */
+	void removeWall(GridDirection direction);
+	
+	/**
+	 * For use when objects have a speed
      * @return object speed
      */
     int getSpeed();

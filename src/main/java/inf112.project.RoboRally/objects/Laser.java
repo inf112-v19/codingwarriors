@@ -2,18 +2,23 @@ package inf112.project.RoboRally.objects;
 
 import inf112.project.RoboRally.actors.IPlayer;
 
+import java.util.ArrayList;
+
 public class Laser implements IObjects {
     private int speed;
     private GridDirection direction;
     private int damage;
     private Rotation rotation;
     private int x,y;
+    private ArrayList<GridDirection> walls;
+
 
     public Laser (GridDirection direction, int damage) {
         this.speed=0;
         this.direction=direction;
         this.damage=damage;
         this.rotation=null;
+        this.walls=new ArrayList<>();
     }
 
     public int getX() {
@@ -30,6 +35,35 @@ public class Laser implements IObjects {
 
     public void setY(int y) {
         this.y = y;
+    }
+    
+    @Override
+    public boolean isWall(GridDirection direction) {
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public void buildWall(GridDirection direction) {
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                return;
+            }
+        }
+        walls.add(direction);
+    }
+    
+    @Override
+    public void removeWall(GridDirection direction) {
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                walls.remove(direction);
+            }
+        }
     }
 
     @Override

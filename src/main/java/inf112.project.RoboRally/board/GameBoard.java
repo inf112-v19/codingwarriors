@@ -14,7 +14,7 @@ public class GameBoard {
     private int columns;
     private IObjects [][] board;
 
-    public GameBoard(String level) {
+    public GameBoard(String level, String walls) {
         Flag.setNumberOfFlags(0); // resetting the static variable in Flag to be able to generate more than one gameboard
         int counter = extractDimensions(level);
         board = new IObjects[rows][columns];
@@ -28,6 +28,7 @@ public class GameBoard {
                     xCoordinates.add(x);
                     yCoordinates.add(y);
                 }
+                buildWalls(walls.charAt(x+y),x,y);
             }
         }
         randomizeOrderOfFlags(xCoordinates, yCoordinates);
@@ -68,13 +69,13 @@ public class GameBoard {
     private IObjects factory(char c) {
         switch (c) {
             case 'r':
-                return new ConveyorBelt(1,GridDirection.EAST);
+                return new ConveyorBelt(1,GridDirection.EAST, Rotation.NONE);
             case 'u':
-                return new ConveyorBelt(1,GridDirection.NORTH);
+                return new ConveyorBelt(1,GridDirection.NORTH, Rotation.NONE);
             case 'd':
-                return new ConveyorBelt(1,GridDirection.SOUTH);
+                return new ConveyorBelt(1,GridDirection.SOUTH, Rotation.NONE);
             case 'l':
-                return new ConveyorBelt(1,GridDirection.WEST);
+                return new ConveyorBelt(1,GridDirection.WEST, Rotation.NONE);
             case 'f':
                 return new Flag();
             case '.':
@@ -95,6 +96,69 @@ public class GameBoard {
                 return new Laser(GridDirection.EAST,1);
             default:
                 return new Floor();
+        }
+    }
+    
+    private void buildWalls(char c, int x, int y) {
+        IObjects object = getObject(y,x);
+        switch (c) {
+            case 'w':
+                object.buildWall(GridDirection.WEST); break;
+            case 'e':
+                object.buildWall(GridDirection.EAST); break;
+            case 'n':
+                object.buildWall(GridDirection.NORTH); break;
+            case 's':
+                object.buildWall(GridDirection.SOUTH); break;
+            case 'f':
+                object.buildWall(GridDirection.WEST);
+                object.buildWall(GridDirection.NORTH);
+                break;
+            case 'g':
+                object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.EAST);
+                break;
+            case '|':
+                object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.SOUTH);
+                break;
+            case '-':
+                object.buildWall(GridDirection.EAST);
+                object.buildWall(GridDirection.WEST);
+                break;
+            case 'a':
+                object.buildWall(GridDirection.WEST);
+                object.buildWall(GridDirection.SOUTH);
+                break;
+            case 't':
+                object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.EAST);
+                break;
+            case 'u':
+                object.buildWall(GridDirection.EAST);
+                object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.WEST);
+                break;
+            case 'd':
+                object.buildWall(GridDirection.WEST);
+                object.buildWall(GridDirection.EAST);
+                object.buildWall(GridDirection.NORTH);
+                break;
+            case 'r':
+                object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.WEST);
+                object.buildWall(GridDirection.SOUTH);
+            case 'l':
+                object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.EAST);
+                break;
+            case 'o':
+                object.buildWall(GridDirection.EAST);
+                object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.WEST);
+                break;
         }
     }
 

@@ -14,7 +14,22 @@ public class Wall implements IObjects {
         this.damage=0;
         this.rotation=null;
     }
-
+    
+    @Override
+    public boolean isWall(GridDirection direction) {
+        return false;
+    }
+    
+    @Override
+    public void buildWall(GridDirection direction) {
+    
+    }
+    
+    @Override
+    public void removeWall(GridDirection direction) {
+    
+    }
+    
     @Override
     public int getSpeed() {
         return speed;

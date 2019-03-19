@@ -13,7 +13,11 @@ public class RotationCogTest {
 			".c." +
 			"C.C" +
 			".c.";
-	private GameBoard gameboard = new GameBoard(level);
+	private String walls = "" +
+			"..." +
+			"..." +
+			"...";
+	private GameBoard gameboard = new GameBoard(level, walls);
 	
 	@Test
 	public void noRotationShouldRetainPlayerDirection() {

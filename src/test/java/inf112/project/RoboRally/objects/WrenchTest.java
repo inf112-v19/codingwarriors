@@ -11,7 +11,11 @@ public class WrenchTest {
             ".w." +
             "w.w" +
             ".w.";
-    private GameBoard gameboard = new GameBoard(level);
+    private String walls = "" +
+            "..." +
+            "..." +
+            "...";
+    private GameBoard gameboard = new GameBoard(level, walls);
 
     @Test
     public void playerWithZeroDamageTokensStillHasZeroDamageTokenOnWrench() {
