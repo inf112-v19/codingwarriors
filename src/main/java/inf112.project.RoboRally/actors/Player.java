@@ -363,24 +363,9 @@ public class Player implements IPlayer {
         return this.lives > 0;
     }
 
-    public List<Coordinates> fireLaser(int boardRows, int boardColumns) {
-        ArrayList<Coordinates> visitedPositionsByLaser = new ArrayList<>();
-        laser.setX(getX());
-        laser.setY(getY());
-
-        int i = 0; // don't really need this
-
-        while (insideBoard(laser.getX(), laser.getY(), boardRows, boardColumns)) {
-            laser.doAction(this);
-            if (insideBoard(laser.getX(), laser.getY(), boardRows, boardColumns)) {
-                visitedPositionsByLaser.add(i++,new Coordinates(laser.getX(), laser.getY()));
-            }
-        }
-        return visitedPositionsByLaser;
-    }
-
-    public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
-        return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
+    @Override
+    public Laser getLaser() {
+        return laser;
     }
 
     public Coordinates getCoordinates() {
@@ -388,27 +373,3 @@ public class Player implements IPlayer {
     }
 }
 
-class Coordinates {
-    private int x,y;
-
-    public Coordinates(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Coordinates otherCord = (Coordinates) obj;
-        if (otherCord.x == x && otherCord.y == y)
-            return true;
-        return false;
-    }
-}

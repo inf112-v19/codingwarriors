@@ -300,7 +300,7 @@ public class Game implements IGame {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
         }
-        List coordinatesHitByLaser = player.fireLaser(board.getRows(), board.getColumns());
+        List coordinatesHitByLaser = player.getLaser().doAction(player, board.getRows(), board.getColumns());
         List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser);
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())) {
