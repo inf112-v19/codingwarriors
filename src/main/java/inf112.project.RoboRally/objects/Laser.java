@@ -1,8 +1,10 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Laser implements IObjects {
     private int speed;
@@ -11,7 +13,6 @@ public class Laser implements IObjects {
     private Rotation rotation;
     private int x,y;
     private ArrayList<GridDirection> walls;
-
 
     public Laser (GridDirection direction, int damage) {
         this.speed=0;
@@ -88,6 +89,27 @@ public class Laser implements IObjects {
 
     @Override
     public void doAction(IPlayer player) {
+
+
+    }
+
+    public List<Coordinates> doAction(IPlayer player, int boardRows, int boardColumns) {
+        ArrayList<Coordinates> visitedPositionsByLaser = new ArrayList<>();
+        setX(player.getX());
+        setY(player.getY());
+
+        while (insideBoard(getX(), getY(), boardRows, boardColumns)) {
+            moveLaser(player);
+            if (insideBoard(getX(), getY(), boardRows, boardColumns)) {
+                visitedPositionsByLaser.add(new Coordinates(getX(), getY()));
+            }
+        }
+
+        return visitedPositionsByLaser;
+    }
+
+
+    public void moveLaser(IPlayer player) {
         switch (player.getPlayerDirection()) {
             case NORTH:
                 y = y + 1;
@@ -104,6 +126,9 @@ public class Laser implements IObjects {
         }
     }
 
+    public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
+        return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
+    }
 
 
     @Override
@@ -113,4 +138,15 @@ public class Laser implements IObjects {
         }
         return "assets/laserHorizontal.png";
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
+    
+    @Override
+    public boolean hasWalls() {
+        return !walls.isEmpty();
+    }
+    
 }

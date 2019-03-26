@@ -5,6 +5,7 @@ import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.objects.GridDirection;
+import inf112.project.RoboRally.objects.Laser;
 
 import java.util.List;
 
@@ -283,5 +284,5 @@ public interface IPlayer {
      */
     boolean hasLifeLeft();
 
-    List fireLaser(int boardRows, int boardColumns);
+    Laser getLaser();
 }

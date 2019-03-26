@@ -66,7 +66,7 @@ public class RotationCogTest {
 	@Test
 	public void getRotation() {
 		Random random = new Random();
-		GridDirection direction = GridDirection.listOfDirections()[random.nextInt(GridDirection.listOfDirections().length)];
+		GridDirection direction = GridDirection.listOfDirections().get(random.nextInt(GridDirection.listOfDirections().size()));
 		Rotation rotation = Rotation.getRandomRotation();
 		RotationCog rotationCog = new RotationCog(rotation);
 		assertEquals(rotationCog.getRotation(), rotation);

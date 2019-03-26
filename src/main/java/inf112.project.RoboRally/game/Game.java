@@ -60,17 +60,17 @@ public class Game implements IGame {
                 ".r....WW....dd..";
         String defaultWalls = "" +
                 "fnnnnnnnnnnnnnng" +
-                "|atr...........l" +
-                "w..............e" +
                 "................" +
                 "................" +
                 "................" +
-                "....Mexico......" +
+                "......Mexico...." +
                 "................" +
                 "................" +
                 "................" +
-                "dsolgndpgjpgojsd" +
-                "......haha......";
+                "................" +
+                "................" +
+                "................" +
+                "................";
         this.initializeGame(defaultLayout, defaultWalls);
     }
 
@@ -376,7 +376,7 @@ public class Game implements IGame {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
         }
-        List coordinatesHitByLaser = player.fireLaser(board.getRows(), board.getColumns());
+        List coordinatesHitByLaser = player.getLaser().doAction(player, board.getRows(), board.getColumns());
         List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser);
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())) {

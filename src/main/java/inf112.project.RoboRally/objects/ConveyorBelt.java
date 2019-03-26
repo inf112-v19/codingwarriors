@@ -30,6 +30,11 @@ public class ConveyorBelt implements IObjects {
     }
     
     @Override
+    public boolean hasWalls() {
+        return !walls.isEmpty();
+    }
+    
+    @Override
     public void buildWall(GridDirection direction) {
         for (GridDirection dir: walls) {
             if (dir == direction) {
@@ -78,15 +83,20 @@ public class ConveyorBelt implements IObjects {
     @Override
     public String getTexture() {
         if (this.direction == GridDirection.EAST) {
-            return "assets/conveyorBelt_east.png";
+            return "assets/conveyorbelts/conveyorBelt_east" + getSpeed() +".png";
         } else if (this.direction == GridDirection.WEST) {
-            return "assets/conveyorBelt_west.png";
+            return "assets/conveyorbelts/conveyorBelt_west" + getSpeed() + ".png";
         } else if (this.direction == GridDirection.NORTH) {
-            return  "assets/conveyorBelt_north.png";
+            return  "assets/conveyorbelts/conveyorBelt_north" + getSpeed() + ".png";
         } else if (this.direction == GridDirection.SOUTH) {
-            return "assets/conveyorBelt_south.png";
+            return "assets/conveyorbelts/conveyorBelt_south" + getSpeed() + ".png";
         }
         return null;
     }
-
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
+    
 }

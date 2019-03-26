@@ -286,6 +286,11 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                             boardScreen.getStartX(i) + offset, boardScreen.getStartY(j) + offset,
                             boardScreen.getTileWidth() - offset * 2, boardScreen.getTileHeight() - offset * 2);
                 }
+                if (object.hasWalls()) {
+                    batch.draw(assetsManager.getAssetFileName(object.getWallTexture()),
+                            boardScreen.getStartX(i) + offset, boardScreen.getStartY(j) + offset,
+                            boardScreen.getTileWidth() - offset * 2, boardScreen.getTileHeight() - offset * 2);
+                }
             }
         }
     }

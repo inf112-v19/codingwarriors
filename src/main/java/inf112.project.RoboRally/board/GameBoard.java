@@ -28,7 +28,11 @@ public class GameBoard {
                     xCoordinates.add(x);
                     yCoordinates.add(y);
                 }
-                buildWalls(walls.charAt(x+y),x,y);
+            }
+        }
+        for (int x=0; x<rows; x++) {
+            for (int y=0; y<columns; y++) {
+                buildWalls(walls.charAt(rows*columns-x*columns-y-1),x,columns-1-y);
             }
         }
         randomizeOrderOfFlags(xCoordinates, yCoordinates);
@@ -76,6 +80,14 @@ public class GameBoard {
                 return new ConveyorBelt(1,GridDirection.SOUTH, Rotation.NONE);
             case 'l':
                 return new ConveyorBelt(1,GridDirection.WEST, Rotation.NONE);
+            case 'R':
+                return new ConveyorBelt(2, GridDirection.EAST, Rotation.NONE);
+            case 'U':
+                return new ConveyorBelt(2, GridDirection.NORTH, Rotation.NONE);
+            case 'D':
+                return new ConveyorBelt(2, GridDirection.SOUTH, Rotation.NONE);
+            case 'L':
+                return new ConveyorBelt(2, GridDirection.WEST, Rotation.NONE);
             case 'f':
                 return new Flag();
             case '.':
@@ -102,6 +114,7 @@ public class GameBoard {
     private void buildWalls(char c, int x, int y) {
         IObjects object = getObject(y,x);
         switch (c) {
+            default: break;
             case 'w':
                 object.buildWall(GridDirection.WEST); break;
             case 'e':
@@ -111,8 +124,8 @@ public class GameBoard {
             case 's':
                 object.buildWall(GridDirection.SOUTH); break;
             case 'f':
-                object.buildWall(GridDirection.WEST);
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.WEST);
                 break;
             case 'g':
                 object.buildWall(GridDirection.NORTH);
@@ -127,36 +140,36 @@ public class GameBoard {
                 object.buildWall(GridDirection.WEST);
                 break;
             case 'a':
-                object.buildWall(GridDirection.WEST);
                 object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.WEST);
                 break;
             case 't':
                 object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.EAST);
                 break;
             case 'u':
-                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.WEST);
                 break;
             case 'd':
-                object.buildWall(GridDirection.WEST);
-                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.EAST);
+                object.buildWall(GridDirection.WEST);
                 break;
             case 'r':
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.WEST);
-                object.buildWall(GridDirection.SOUTH);
             case 'l':
-                object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.EAST);
                 break;
             case 'o':
-                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.NORTH);
                 object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.WEST);
                 break;
         }
