@@ -111,8 +111,8 @@ public class GameBoard {
             case 's':
                 object.buildWall(GridDirection.SOUTH); break;
             case 'f':
-                object.buildWall(GridDirection.WEST);
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.WEST);
                 break;
             case 'g':
                 object.buildWall(GridDirection.NORTH);
@@ -127,36 +127,36 @@ public class GameBoard {
                 object.buildWall(GridDirection.WEST);
                 break;
             case 'a':
-                object.buildWall(GridDirection.WEST);
                 object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.WEST);
                 break;
             case 't':
                 object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.EAST);
                 break;
             case 'u':
-                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.WEST);
                 break;
             case 'd':
-                object.buildWall(GridDirection.WEST);
-                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.EAST);
+                object.buildWall(GridDirection.WEST);
                 break;
             case 'r':
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.WEST);
-                object.buildWall(GridDirection.SOUTH);
             case 'l':
-                object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.NORTH);
+                object.buildWall(GridDirection.SOUTH);
                 object.buildWall(GridDirection.EAST);
                 break;
             case 'o':
-                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.NORTH);
                 object.buildWall(GridDirection.SOUTH);
+                object.buildWall(GridDirection.EAST);
                 object.buildWall(GridDirection.WEST);
                 break;
         }

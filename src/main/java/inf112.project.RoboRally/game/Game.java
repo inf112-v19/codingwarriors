@@ -120,7 +120,7 @@ public class Game implements IGame {
                 ".r...f....-....." +
                 ".r....WW....dd..";
         String gameBoardWalls = "" +
-                "fnnnnnnnnnnnnnng" +
+                "nnnnnnnnnnnnnnng" +
                 "|atr...........l" +
                 "w..............e" +
                 "................" +

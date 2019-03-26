@@ -93,34 +93,16 @@ public enum GridDirection {
    */
   public static ArrayList<GridDirection> sortUniqueDirectionsInPrioritizedOrder(ArrayList<GridDirection> directions) {
     ArrayList<GridDirection> sortedUniqueList = new ArrayList<>();
-    for (GridDirection direction: directions) {
-      if (direction == GridDirection.NORTH) {
-        directions.add(direction);
-        break;
+    ArrayList<GridDirection> allDirections = GridDirection.listOfDirections();
+    for (GridDirection directionFromList: listOfDirections()) {
+      for (GridDirection direction: directions) {
+        if (direction==directionFromList) {
+          sortedUniqueList.add(direction);
+          break;
+        }
       }
     }
-    
-    for (GridDirection direction: directions) {
-      if (direction == GridDirection.SOUTH) {
-        directions.add(direction);
-        break;
-      }
-    }
-    
-    for (GridDirection direction: directions) {
-      if (direction == GridDirection.EAST) {
-        directions.add(direction);
-        break;
-      }
-    }
-    
-    for (GridDirection direction: directions) {
-      if (direction == GridDirection.WEST) {
-        directions.add(direction);
-        break;
-      }
-    }
-    return directions;
+    return sortedUniqueList;
   }
   
   /**
@@ -129,7 +111,7 @@ public enum GridDirection {
    * @return The wall texture reference
    */
   public static String getWallTexture(ArrayList<GridDirection> walls) {
-    String wallTexture=null;
+    String wallTexture="";
     ArrayList<GridDirection> sortedDirectionList = GridDirection.sortUniqueDirectionsInPrioritizedOrder(walls);
     if (walls.size() > 0) {
       wallTexture="assets/walls/wall_";

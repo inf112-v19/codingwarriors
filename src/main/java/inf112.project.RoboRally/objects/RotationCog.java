@@ -93,4 +93,10 @@ public class RotationCog implements IObjects {
     public String getWallTexture() {
         return GridDirection.getWallTexture(walls);
     }
+    
+    @Override
+    public boolean hasWalls() {
+        return !walls.isEmpty();
+    }
+    
 }

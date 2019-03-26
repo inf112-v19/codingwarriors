@@ -30,6 +30,11 @@ public class ConveyorBelt implements IObjects {
     }
     
     @Override
+    public boolean hasWalls() {
+        return !walls.isEmpty();
+    }
+    
+    @Override
     public void buildWall(GridDirection direction) {
         for (GridDirection dir: walls) {
             if (dir == direction) {
