@@ -80,6 +80,14 @@ public class GameBoard {
                 return new ConveyorBelt(1,GridDirection.SOUTH, Rotation.NONE);
             case 'l':
                 return new ConveyorBelt(1,GridDirection.WEST, Rotation.NONE);
+            case 'R':
+                return new ConveyorBelt(2, GridDirection.EAST, Rotation.NONE);
+            case 'U':
+                return new ConveyorBelt(2, GridDirection.NORTH, Rotation.NONE);
+            case 'D':
+                return new ConveyorBelt(2, GridDirection.SOUTH, Rotation.NONE);
+            case 'L':
+                return new ConveyorBelt(2, GridDirection.WEST, Rotation.NONE);
             case 'f':
                 return new Flag();
             case '.':
