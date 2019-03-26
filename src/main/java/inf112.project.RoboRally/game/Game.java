@@ -40,6 +40,51 @@ public class Game implements IGame {
     private IDeck[] selectedCards;
 
 
+    /**
+     * Default constructor for making a new game with default settings.<br>
+     * Uses a standard board and walls layout.
+     */
+    public Game() {
+        String defaultLayout = "16C12R" +
+                "f....r.rrr...f.." +
+                ".rrrrrrr....uu.." +
+                ".r.........c...." +
+                ".r...f....|....." +
+                ".r......ll....p.." +
+                "rr......f......." +
+                "ll.....w....C..." +
+                ".r..p....lll...." +
+                ".r.....w........" +
+                ".r.....w.....p.." +
+                ".r...f....-....." +
+                ".r....WW....dd..";
+        String defaultWalls = "" +
+                "fnnnnnnnnnnnnnng" +
+                "|atr...........l" +
+                "w..............e" +
+                "................" +
+                "................" +
+                "................" +
+                "....Mexico......" +
+                "................" +
+                "................" +
+                "................" +
+                "dsolgndpgjpgojsd" +
+                "......haha......";
+        this.initializeGame(defaultLayout, defaultWalls);
+    }
+
+    /**
+     * Constructor for custom boards.
+     *
+     * @param boardLayout
+     *                  The custom made board.
+     * @param boardWallLayout
+     *                  The custom made boards walls.
+     */
+    public Game(String boardLayout, String boardWallLayout) {
+        this.initializeGame(boardLayout, boardWallLayout);
+    }
 
     @Override
     public void drawCards(IPlayer player) {
@@ -74,14 +119,12 @@ public class Game implements IGame {
         this.programCards.shuffle();
     }
 
-
     @Override
     public void dealOutProgramCards() {
         programCards.shuffle();
         for (IPlayer player : activePlayers) {
             int numberOfCardsPlayerCanDraw =
                     calculateTheNumberOfCardsThePlayerCanDraw(player);
-            System.out.println("player receives " + numberOfCardsPlayerCanDraw + " cards");
             player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
         }
     }
@@ -102,36 +145,10 @@ public class Game implements IGame {
     }
 
     @Override
-    public void initializeGame() {
+    public void initializeGame(String gameBoardLayout, String gameBoardWalls) {
         //TODO: Make initializeGame take a gameboard as parameter,
         // which can be chosen at the start menu?
         addPlayers();
-        String gameBoardLayout = "16C12R" +
-                "f....r.rrr...f.." +
-                ".rrrrrrr....uu.." +
-                ".r.........c...." +
-                ".r...f....|....." +
-                ".r......ll....p.." +
-                "rr......f......." +
-                "ll.....w....C..." +
-                ".r..p....lll...." +
-                ".r.....w........" +
-                ".r.....w.....p.." +
-                ".r...f....-....." +
-                ".r....WW....dd..";
-        String gameBoardWalls = "" +
-                "fnnnnnnnnnnnnnng" +
-                "|atr...........l" +
-                "w..............e" +
-                "................" +
-                "................" +
-                "................" +
-                "....Mexico......" +
-                "................" +
-                "................" +
-                "................" +
-                "dsolgndpgjpgojsd" +
-                "......haha......";
         this.board = new GameBoard(gameBoardLayout, gameBoardWalls);
         this.programCards = new Deck();
         this.discardedProgramCards = new Deck();
@@ -143,6 +160,8 @@ public class Game implements IGame {
         this.playersOutOfTheGame = new ArrayList<>();
 
         this.updateDeckOfSelectedCards();
+        this.dealOutProgramCards();
+        this.setGameStatus(SELECT_CARDS);
     }
 
     @Override
@@ -409,16 +428,6 @@ public class Game implements IGame {
         this.executeProgramCardsForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
         updateCurrentRegisterSlot();
         setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
-      /*  if (this.currentSlotNumber == (this.NUMBER_OF_REGISTER_SLOTS - 1)) {
-            System.out.println("Finished executing all instr");
-            this.updateCurrentRegisterSlot();
-            this.setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
-            this.doTurn(); // Final for this turn.
-            this.setGameStatus(FIRING_LASERS);
-            this.doTurn();
-            this.setGameStatus(FINISHING_UP_THE_TURN);
-            return;
-        }*/
     }
 
     /**

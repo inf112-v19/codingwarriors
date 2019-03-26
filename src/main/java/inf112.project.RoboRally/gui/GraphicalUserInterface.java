@@ -76,9 +76,6 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void createNewGame() {
         game = new Game();
-        game.initializeGame();
-        game.dealOutProgramCards();
-        game.setGameStatus(GameStatus.SELECT_CARDS);
         currentPlayerIndex = 0;
         currentPlayer = game.getPlayers().get(currentPlayerIndex);
         xPositionDrawer = new int[game.getPlayers().size()];
@@ -149,7 +146,6 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
         int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        System.out.println("last player index: " + indexOfTheLastPlayer);
         if (numberOfSelectedCards >= numberOfCardsToSelect) {
             this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             if (currentPlayerIndex == indexOfTheLastPlayer) {
@@ -182,7 +178,6 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         ICard selectedCard = playersDeckOfCards.removeCard(index);
         int positionOfLastCard = selectedCards[currentPlayerIndex].getSize();
-        System.out.println(positionOfLastCard);
         selectedCards[currentPlayerIndex].addCardToDeckAtPosition(positionOfLastCard, selectedCard);
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
     }

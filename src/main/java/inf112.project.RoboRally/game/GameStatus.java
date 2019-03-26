@@ -22,10 +22,8 @@ public enum GameStatus {
     public static boolean validStatus(GameStatus status) {
         boolean isValidStatus = false;
         for (GameStatus value : GameStatus.values()) {
-            System.out.println("checked: " + value);
             if (value == status) {
                 isValidStatus = true;
-                System.out.println(value + " is a valid");
             }
         }
         return isValidStatus;
