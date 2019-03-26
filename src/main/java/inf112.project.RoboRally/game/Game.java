@@ -40,6 +40,51 @@ public class Game implements IGame {
     private IDeck[] selectedCards;
 
 
+    /**
+     * Default constructor for making a new game with default settings.<br>
+     * Uses a standard board and walls layout.
+     */
+    public Game() {
+        String defaultLayout = "16C12R" +
+                "f....r.rrr...f.." +
+                ".rrrrrrr....uu.." +
+                ".r.........c...." +
+                ".r...f....|....." +
+                ".r......ll....p.." +
+                "rr......f......." +
+                "ll.....w....C..." +
+                ".r..p....lll...." +
+                ".r.....w........" +
+                ".r.....w.....p.." +
+                ".r...f....-....." +
+                ".r....WW....dd..";
+        String defaultWalls = "" +
+                "fnnnnnnnnnnnnnng" +
+                "................" +
+                "................" +
+                "................" +
+                "......Mexico...." +
+                "................" +
+                "................" +
+                "................" +
+                "................" +
+                "................" +
+                "................" +
+                "................";
+        this.initializeGame(defaultLayout, defaultWalls);
+    }
+
+    /**
+     * Constructor for custom boards.
+     *
+     * @param boardLayout
+     *                  The custom made board.
+     * @param boardWallLayout
+     *                  The custom made boards walls.
+     */
+    public Game(String boardLayout, String boardWallLayout) {
+        this.initializeGame(boardLayout, boardWallLayout);
+    }
 
     @Override
     public void drawCards(IPlayer player) {
@@ -74,14 +119,12 @@ public class Game implements IGame {
         this.programCards.shuffle();
     }
 
-
     @Override
     public void dealOutProgramCards() {
         programCards.shuffle();
         for (IPlayer player : activePlayers) {
             int numberOfCardsPlayerCanDraw =
                     calculateTheNumberOfCardsThePlayerCanDraw(player);
-            System.out.println("player receives " + numberOfCardsPlayerCanDraw + " cards");
             player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
         }
     }
@@ -102,36 +145,10 @@ public class Game implements IGame {
     }
 
     @Override
-    public void initializeGame() {
+    public void initializeGame(String gameBoardLayout, String gameBoardWalls) {
         //TODO: Make initializeGame take a gameboard as parameter,
         // which can be chosen at the start menu?
         addPlayers();
-        String gameBoardLayout = "16C12R" +
-                "f....r.rrr...f.." +
-                ".rrrrrrr....uu.." +
-                ".r.........c...." +
-                ".r...f....|....." +
-                ".r......ll....p.." +
-                "rr......f......." +
-                "ll.....w....C..." +
-                ".r..p....lll...." +
-                ".r.....w........" +
-                ".r.....w.....p.." +
-                ".r...f....-....." +
-                ".r....WW....dd..";
-        String gameBoardWalls = "" +
-                "fnnnnnnnnnnnnnng" +
-                "................" +
-                "................" +
-                "................" +
-                "......Mexico...." +
-                "................" +
-                "................" +
-                "................" +
-                "................" +
-                "................" +
-                "................" +
-                "................";
         this.board = new GameBoard(gameBoardLayout, gameBoardWalls);
         this.programCards = new Deck();
         this.discardedProgramCards = new Deck();
@@ -143,6 +160,8 @@ public class Game implements IGame {
         this.playersOutOfTheGame = new ArrayList<>();
 
         this.updateDeckOfSelectedCards();
+        this.dealOutProgramCards();
+        this.setGameStatus(SELECT_CARDS);
     }
 
     @Override
@@ -200,6 +219,11 @@ public class Game implements IGame {
 
     @Override
     public void setGameStatus(GameStatus status) {
+        if (status == null
+            || !GameStatus.validStatus(status)) {
+            throw new IllegalArgumentException("Not a valid status");
+        }
+
         currentGameStatus = status;
     }
 
@@ -225,7 +249,7 @@ public class Game implements IGame {
                 return;
             case FIRING_LASERS:
                 System.out.println("firing lasers");
-            //TODO:    fireLasers();
+                this.fireLasers();
                 return;
             case FINISHING_UP_THE_TURN:
                 this.cleanUpTurn();
@@ -237,7 +261,6 @@ public class Game implements IGame {
 
     }
 
-
     /**
      * Clean up the game before the next round.<br>
      * Players standing on wrench tiles removes one damage,
@@ -246,8 +269,7 @@ public class Game implements IGame {
     private void cleanUpTurn() {
         System.out.println("cleaning");
         for (IPlayer player : players) {
-            if (!this.playersOutOfTheGame.contains(player)
-                    && !this.destroyedPlayers.contains(player)) {
+            if (this.checkIfThePlayerIsInTheGame(player)) {
                 IObjects playerIsStandingOn = this.getBoard().getObject(player.getX(), player.getY());
                 if (playerIsStandingOn.equals(CrossedWrench.class)) {
                     player.removeOneDamage();
@@ -258,6 +280,17 @@ public class Game implements IGame {
             }
         }
 
+        this.restoreDestroyedPlayers();
+        this.destroyedPlayers.clear(); // All destroyed players has been restored.
+        this.emptyEachPlayersRegister();
+        this.setupCardSelectionForNewRound();
+        this.setGameStatus(SELECT_CARDS);
+    }
+
+    /**
+     * Restore all the destroyed players to their last backup locations.
+     */
+    private void restoreDestroyedPlayers() {
         for (IPlayer player : destroyedPlayers) {
             System.out.println("respawning player: " + player.getName());
             System.out.println("x: " + player.getX());
@@ -266,19 +299,19 @@ public class Game implements IGame {
             player.respawnAtLastArchiveMarker();
             //TODO: Ask player for which direction they would like to face.
         }
-        this.destroyedPlayers.clear(); // All destroyed players has been restored.
-        this.emptyEachPlayersRegister();
-        this.setupCardSelectionForNewRound();
-        this.setGameStatus(SELECT_CARDS);
     }
 
+    /**
+     * All players interact with Game objects if they stand on any.<br>
+     * If a player is in an invalid position (outside the board),
+     * they are destroyed.
+     */
     private void executingGameBoardObjects() {
         for (IPlayer player: players) {
-            if (!this.playersOutOfTheGame.contains(player)
-                    && !this.destroyedPlayers.contains(player)) {
+            if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
-                    this.firePlayersLaser(player); // to be moved
+                 //   this.firePlayersLaser(player); // to be moved
                 } else {
                     this.destroyPlayer(player);
                     if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
@@ -286,16 +319,59 @@ public class Game implements IGame {
                         this.setGameStatus(FINISHING_UP_THE_TURN);
                         return;
                     }
-//                    player.respawnAtLastArchiveMarker();
                 }
             }
         }
-        setGameStatus(EXECUTING_INSTRUCTIONS);
+        setGameStatus(FIRING_LASERS);
     }
 
+    /**
+     * A player is outside of the game if they are currently destroyed,
+     * or permanently out of the game.
+     *
+     * @param player
+     *              The player to be checked.
+     * @return true if the player is in the game,<br>
+     *     false otherwise.
+     * @throws IllegalArgumentException
+     *      If the player is null (player == null).
+     */
+    private boolean checkIfThePlayerIsInTheGame(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
+        boolean playerIsInTheGame = false;
+        if (!this.playersOutOfTheGame.contains(player)
+                && !this.destroyedPlayers.contains(player)) {
+            playerIsInTheGame = true;
+        }
+        return playerIsInTheGame;
+    }
 
+    /**
+     * Fire the laser of every active player.
+     */
+    private void fireLasers() {
+        for (IPlayer player : activePlayers) {
+            this.firePlayersLaser(player);
+        }
 
+        if (this.currentSlotNumber == 0) { // Gone through all the register slots,
+            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+        } else {
+            this.setGameStatus(EXECUTING_INSTRUCTIONS);
+        }
+    }
 
+    /**
+     * Fire the given players laser.<br>
+     * Dealing one damage to any player in direct line of sight.
+     *
+     * @param player
+     *              The player whose laser should be fired.
+     * @throws IllegalArgumentException
+     *       if player is null (player == null).
+     */
     private void firePlayersLaser(IPlayer player) {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
@@ -309,9 +385,6 @@ public class Game implements IGame {
             }
         }
     }
-
-
-
 
 
     // in the case of multiple players being on the same line this method checks for the shortest path to a player
@@ -338,34 +411,63 @@ public class Game implements IGame {
         return finalLaserCoordinates;
     }
 
+    /**
+     * Reveals the selected program cards for the current register slot,
+     * sorts them by priority before executing the commands in order,
+     * and then updates the register slot for the next pass.
+     *
+     * If the current register slot is the last one,
+     * execute instructions in a TODO: finish this
+     */
     private void executingInstructions() {
         System.out.println("exe instr");
         IDeck cardsForThisRegisterSlot = new Deck();
         ArrayList<IPlayer> listOfPlayers = new ArrayList<>(); // For keeping track of players and their cards.
-        for (IPlayer player : this.activePlayers) {
-            ICard programCard = player.revealProgramCardForRegisterNumber(currentSlotNumber);
-            cardsForThisRegisterSlot.addCardToDeck(programCard);
-            listOfPlayers.add(player);
-        }
+        this.revealEachPlayersProgramCardForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
         this.sortCardsAfterPriority(cardsForThisRegisterSlot, listOfPlayers);
+        this.executeProgramCardsForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
+        updateCurrentRegisterSlot();
+        setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+    }
 
+    /**
+     * Execute the revealed program cards with their associated players.
+     *
+     * @param cardsForThisRegisterSlot
+     *                              The deck of revealed Program cards.
+     * @param listOfPlayers
+     *                      The list of players connected with the revealed program cards.
+     */
+    private void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
+                                                          ArrayList<IPlayer> listOfPlayers) {
         for (int i = 0; i < listOfPlayers.size(); i++) {
             ICard card = cardsForThisRegisterSlot.getCardAtPosition(i);
             IPlayer player = listOfPlayers.get(i);
             player.movePlayer(card);
         }
-        if (this.currentSlotNumber == (this.NUMBER_OF_REGISTER_SLOTS - 1)) {
-            System.out.println("Finished executing all instr");
-            this.updateCurrentRegisterSlot();
-            this.setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
-            this.doTurn(); // Final for this turn.
-            this.setGameStatus(FIRING_LASERS);
-            this.doTurn();
-            this.setGameStatus(FINISHING_UP_THE_TURN);
-            return;
+    }
+
+    /**
+     * Reveal each players program card for this register slot,
+     * and connects it with the player it belongs to.
+     * <br><br>
+     * Players and cards are connected by their mutual index.
+     *
+     * @param cardsForThisRegisterSlot
+     *                              The deck of revealed Program cards.<br>
+     *                              Should contain all the revealed program cards
+     *                              after this method finishes.
+     * @param listOfPlayers
+     *                      The list of players connected with the revealed program cards.<br>
+     *                      Should contain all the players whose cards were revealed.
+     */
+    private void revealEachPlayersProgramCardForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
+                                                                   ArrayList<IPlayer> listOfPlayers) {
+        for (IPlayer player : this.activePlayers) {
+            ICard programCard = player.revealProgramCardForRegisterNumber(currentSlotNumber);
+            cardsForThisRegisterSlot.addCardToDeck(programCard);
+            listOfPlayers.add(player);
         }
-        updateCurrentRegisterSlot();
-        setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
     }
 
     /**
@@ -453,7 +555,6 @@ public class Game implements IGame {
         listOfPlayers.add(i, playerJ);
     }
 
-
     /**
      * Removes a player from the game.<br>
      * If the player is out of lives,
@@ -480,7 +581,7 @@ public class Game implements IGame {
             this.numberOfPlayersLeftInTheGame--;
             this.emptyThePlayersRegister(player);
             if (this.numberOfPlayersLeftInTheGame <= 0) {
-                //game over?
+                //game over
                 this.setGameStatus(THE_END);
                 this.doTurn();
             }
@@ -490,17 +591,14 @@ public class Game implements IGame {
         }
     }
 
-
-
-
+    /**
+     * Empties each players deck of cards,
+     * before dealing out new cards and
+     * preparing for the selection of a new program.
+     */
     private void setupCardSelectionForNewRound() {
-        // all un used cards is moved to discard pile
-        for (IPlayer player: players) {
-            IDeck cardsInPlayerDeck = player.getCardsInHand();
-            cardsInPlayerDeck.transferNCardsFromThisDeckToTargetDeck(cardsInPlayerDeck.getSize(),
-                                                                            discardedProgramCards);
-        }
-        // new cards is dealt
+        this.removeAllCardsFromEachPlayersHand();
+
         for (IPlayer player: activePlayers) {
             drawCards(player);
         }
@@ -508,6 +606,18 @@ public class Game implements IGame {
         this.updateDeckOfSelectedCards();
     }
 
+    /**
+     * Takes all the players program cards,
+     * and moves the cards to the discard pile.
+     */
+    private void removeAllCardsFromEachPlayersHand() {
+        for (IPlayer player: players) {
+            IDeck cardsInPlayerDeck = player.getCardsInHand();
+            cardsInPlayerDeck.transferNCardsFromThisDeckToTargetDeck(
+                                            cardsInPlayerDeck.getSize(),
+                                            discardedProgramCards);
+        }
+    }
 
     /**
      * Remakes the decks that hold the cards during the selection process.<br>
@@ -520,9 +630,4 @@ public class Game implements IGame {
         }
     }
 
-
-    @Override
-    public void setUpTurn(IDeck[] selectedCards) {
-       // this.selectedCards = selectedCards;
-    }
 }
