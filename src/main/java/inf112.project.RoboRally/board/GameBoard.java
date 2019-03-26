@@ -28,7 +28,11 @@ public class GameBoard {
                     xCoordinates.add(x);
                     yCoordinates.add(y);
                 }
-                buildWalls(walls.charAt(x+y),x,y);
+            }
+        }
+        for (int x=0; x<rows; x++) {
+            for (int y=0; y<columns; y++) {
+                buildWalls(walls.charAt(rows*columns-x*columns-y-1),x,columns-1-y);
             }
         }
         randomizeOrderOfFlags(xCoordinates, yCoordinates);
@@ -102,6 +106,7 @@ public class GameBoard {
     private void buildWalls(char c, int x, int y) {
         IObjects object = getObject(y,x);
         switch (c) {
+            default: break;
             case 'w':
                 object.buildWall(GridDirection.WEST); break;
             case 'e':
