@@ -46,6 +46,7 @@ class AssetsManagement {
         assetManager.load("assets/flags/flag9.png", Texture.class);
         assetManager.load("assets/flags/flag.png", Texture.class);
         
+        //Lasers
         assetManager.load("assets/laserHorizontal.png", Texture.class);
         assetManager.load("assets/laserVertical.png", Texture.class);
         
