@@ -30,6 +30,11 @@ public class CrossedWrench implements IObjects {
     }
     
     @Override
+    public boolean hasWalls() {
+        return !walls.isEmpty();
+    }
+    
+    @Override
     public void buildWall(GridDirection direction) {
         for (GridDirection dir: walls) {
             if (dir == direction) {
@@ -80,5 +85,10 @@ public class CrossedWrench implements IObjects {
     @Override
     public String getTexture() {
         return "assets/crossedWrench.png";
+    }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
     }
 }

@@ -1,6 +1,6 @@
 package inf112.project.RoboRally.cards;
 
-public class Card implements ICard, Comparable<Card> {
+public class Card implements ICard, Comparable<ICard> {
 
     private int priority;
     private Action command;
@@ -22,7 +22,7 @@ public class Card implements ICard, Comparable<Card> {
     }
 
     @Override
-    public int compareTo(Card that) {
+    public int compareTo(ICard that) {
         if (this.getPriority() > that.getPriority()) {
             return 1;
         } else if (this.getPriority() < that.getPriority()) {

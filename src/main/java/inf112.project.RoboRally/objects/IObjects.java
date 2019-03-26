@@ -12,6 +12,11 @@ public interface IObjects {
     boolean isWall(GridDirection direction);
 	
 	/**
+	 * For checking whether the object has a wall at all
+	 * @return True if the object has a wall, false otherwise
+	 */
+	boolean hasWalls();
+	/**
 	 * For building a wall on the given side of the object
 	 * @param direction: Which side to build wall on
 	 */
@@ -57,4 +62,12 @@ public interface IObjects {
      * @return Texture location and name in string form ex. assets/textureName.png
      */
     String getTexture();
+	
+	/**
+	 * For use when the object has a wall
+	 * @return Wall texture location and name in string form, e.g. assets/walls/wall_North.png
+	 * The wall texture name is given in the form "wall_" and then the valid directions in the
+	 * following prioritized order: North, south, east, west
+	 */
+	String getWallTexture();
 }

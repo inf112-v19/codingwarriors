@@ -77,4 +77,15 @@ public class Floor implements IObjects {
     public String getTexture() {
         return "assets/floor_metal.jpg";
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
+    
+    @Override
+    public boolean hasWalls() {
+        return !walls.isEmpty();
+    }
+    
 }

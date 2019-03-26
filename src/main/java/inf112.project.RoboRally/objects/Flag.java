@@ -81,9 +81,9 @@ public class Flag implements IObjects {
     @Override
     public String getTexture() {
         if (flagNumber>9) {
-            return "assets/flag.png";
+            return "assets/flags/flag.png";
         }
-        return "assets/flag" + (flagNumber+1) + ".png";
+        return "assets/flags/flag" + (flagNumber+1) + ".png";
     }
 
     public static int getNumberOfFlags() {
@@ -105,4 +105,15 @@ public class Flag implements IObjects {
     public void setFlagNumber(int flagNumber) {
         this.flagNumber=flagNumber;
     }
+    
+    @Override
+    public String getWallTexture() {
+        return GridDirection.getWallTexture(walls);
+    }
+    
+    @Override
+    public boolean hasWalls() {
+        return !walls.isEmpty();
+    }
+    
 }
