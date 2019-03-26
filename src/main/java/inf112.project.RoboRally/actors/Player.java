@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.*;
 import inf112.project.RoboRally.game.Game;
@@ -22,8 +23,10 @@ public class Player implements IPlayer {
     private int flagsVisited;
     private boolean wasDestroyedThisTurn;
     private Laser laser;
+    private Color color;
 
-    public Player(String name, int x, int y) {
+    public Player(String name, int x, int y, Color color) {
+        this.color = color;
         this.x = x;
         this.y = y;
         this.backupX = this.x;
@@ -366,6 +369,11 @@ public class Player implements IPlayer {
     @Override
     public Laser getLaser() {
         return laser;
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
     }
 
     public Coordinates getCoordinates() {

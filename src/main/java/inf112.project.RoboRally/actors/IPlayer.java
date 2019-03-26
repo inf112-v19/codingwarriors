@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
@@ -285,4 +286,6 @@ public interface IPlayer {
     boolean hasLifeLeft();
 
     Laser getLaser();
+
+    Color getColor();
 }

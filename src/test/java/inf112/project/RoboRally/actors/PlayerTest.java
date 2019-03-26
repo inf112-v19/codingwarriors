@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.Card;
 import inf112.project.RoboRally.cards.Deck;
@@ -33,7 +34,7 @@ public class PlayerTest {
                 "...." +
                 "....";
         this.gameBoard = new GameBoard(boardSetup, walls);
-        this.player = new Player("a",1, 1);
+        this.player = new Player("a",1, 1, Color.RED);
         //this.card = new Card(100, FORWARD_1);
     }
 

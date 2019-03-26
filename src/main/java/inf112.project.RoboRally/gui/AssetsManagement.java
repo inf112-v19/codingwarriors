@@ -17,6 +17,7 @@ class AssetsManagement {
         assetManager.load("assets/crossedWrench.png", Texture.class);
         assetManager.load("assets/floor_metal.jpg", Texture.class);
         assetManager.load("assets/player_one.png", Texture.class);
+        assetManager.load("assets/player_color.png", Texture.class);
         assetManager.load("assets/rotationCog_right.png", Texture.class);
         assetManager.load("assets/rotationCog_left.png", Texture.class);
         assetManager.load("assets/singleWrench.png", Texture.class);

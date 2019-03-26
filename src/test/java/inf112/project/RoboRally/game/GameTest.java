@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.game;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.cards.Action;
@@ -33,7 +34,7 @@ public class GameTest {
 
     @Test
     public void aPlayerThatHasTakenZeroDamageDrawsCorrectAmountOfCards() {
-        IPlayer hasTakenZeroDamage = new Player("ZeroDamage", 0, 0);
+        IPlayer hasTakenZeroDamage = new Player("ZeroDamage", 0, 0, Color.RED);
         int numberOfCards = game.calculateTheNumberOfCardsThePlayerCanDraw(hasTakenZeroDamage);
         int maxNumberOfCards = 9;
         assertEquals(maxNumberOfCards, numberOfCards);
@@ -41,7 +42,7 @@ public class GameTest {
 
     @Test
     public void aPlayerThatHasTakenFiveDamageDrawsCorrectAmountOfCards() {
-        IPlayer hasTakenFiveDamage = new Player("FiveDamage", 0,0);
+        IPlayer hasTakenFiveDamage = new Player("FiveDamage", 0,0, Color.RED);
         int correctAmountOfCards = 4;
         for (int i = 0; i < 5; i++) {
             hasTakenFiveDamage.takeOneDamage();
@@ -52,7 +53,7 @@ public class GameTest {
 
     @Test
     public void aPlayerThatHasTakenNineDamageDrawsCorrectAmountOfCards() {
-        IPlayer hasTakenNineDamage = new Player("NineDamage", 0,0);
+        IPlayer hasTakenNineDamage = new Player("NineDamage", 0,0, Color.RED);
         int correctAmountOfCards = 0;
         for (int i = 0; i < 9; i++) {
             hasTakenNineDamage.takeOneDamage();
@@ -63,7 +64,7 @@ public class GameTest {
 
     @Test
     public void aPlayerThatHasTakenTenDamageDrawsCorrectAmountOfCards() {
-        IPlayer hasTakenTenDamage = new Player("TenDamage", 0,0);
+        IPlayer hasTakenTenDamage = new Player("TenDamage", 0,0, Color.RED);
         int correctAmountOfCards = 0;
         for (int i = 0; i < 10; i++) {
             hasTakenTenDamage.takeOneDamage();

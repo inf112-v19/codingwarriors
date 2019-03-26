@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.game;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
@@ -148,9 +149,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
      // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 0, 10);
-        IPlayer player2 = new Player("Emma", 5, 10);
-        IPlayer player3 = new Player("G-bot", 2, 5);
+        IPlayer player1 = new Player("Buzz", 0, 10, Color.RED);
+        IPlayer player2 = new Player("Emma", 5, 10, Color.BLUE);
+        IPlayer player3 = new Player("G-bot", 2, 5, Color.GOLD);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);

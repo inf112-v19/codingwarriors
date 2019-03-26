@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.objects;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class FlagTest {
 			"...";
 	
 	private GameBoard gameBoard = new GameBoard(level, walls);
-	private Player player = new Player("foo", 0,0);
+	private Player player = new Player("foo", 0,0, Color.RED);
 
 	@Test
 	public void flagShouldUpdateBackupPoint() {
