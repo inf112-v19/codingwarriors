@@ -12,6 +12,11 @@ public interface IObjects {
     boolean isWall(GridDirection direction);
 	
 	/**
+	 * For checking whether the object has a wall at all
+	 * @return True if the object has a wall, false otherwise
+	 */
+	boolean hasWalls();
+	/**
 	 * For building a wall on the given side of the object
 	 * @param direction: Which side to build wall on
 	 */
