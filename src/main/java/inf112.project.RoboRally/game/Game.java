@@ -8,6 +8,7 @@ import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.objects.CrossedWrench;
 import inf112.project.RoboRally.objects.IObjects;
+import inf112.project.RoboRally.objects.Laser;
 import inf112.project.RoboRally.objects.SingleWrench;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class Game implements IGame {
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
     private IDeck[] selectedCards;
+    private List<Laser> lasers;
 
 
     /**
@@ -174,6 +176,10 @@ public class Game implements IGame {
         this.players.add(player1);
         this.players.add(player2);
         this.players.add(player3);
+        this.lasers = new ArrayList<>();
+        this.lasers.add(player1.getLaser());
+        this.lasers.add(player2.getLaser());
+        this.lasers.add(player3.getLaser());
         this.activePlayers = new ArrayList<>();
         this.activePlayers.addAll(players);
     }
@@ -352,8 +358,9 @@ public class Game implements IGame {
      * Fire the laser of every active player.
      */
     private void fireLasers() {
-        for (IPlayer player : activePlayers) {
-            this.firePlayersLaser(player);
+        for (Laser laser : lasers) {
+            fireLaser(laser);
+            laser.resetLaserPosition(laser.getPlayer().getCoordinates(), laser.getPlayer().getPlayerDirection());
         }
 
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
@@ -367,33 +374,36 @@ public class Game implements IGame {
      * Fire the given players laser.<br>
      * Dealing one damage to any player in direct line of sight.
      *
-     * @param player
-     *              The player whose laser should be fired.
+     * @param laser
+     *              The laser that should be fired.
      * @throws IllegalArgumentException
-     *       if player is null (player == null).
+     *       if laser is null (laser == null).
      */
-    private void firePlayersLaser(IPlayer player) {
-        if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+    private void fireLaser(Laser laser) {
+        if (laser == null) {
+            throw new IllegalArgumentException("Not a valid laser");
         }
-        List coordinatesHitByLaser = player.getLaser().doAction(player, board.getRows(), board.getColumns());
-        List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser);
+        List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
+        List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser, laser);
         for (IPlayer otherPlayer : players) { // poor optimization
-            if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())) {
+            if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates()) &&
+                    otherPlayer.getLaser() != laser) {
                 otherPlayer.takeOneDamage();
-                System.out.println(otherPlayer.getName() + " was hit by a laser from " + player.getName());
+                System.out.println(otherPlayer.getName() + " was hit by a laser from " + laser.getPlayer().getName());
             }
         }
     }
 
 
     // in the case of multiple players being on the same line this method checks for the shortest path to a player
-    public List shortestPathToObstacle(List laserCoordinates) {
+    public List shortestPathToObstacle(List laserCoordinates, Laser laser) {
         List finalLaserCoordinates = new ArrayList();
         List comparativeList = new ArrayList();
         int smallestListSize = laserCoordinates.size();
 
         for (IPlayer player : players) {
+            if (player.getLaser().equals(laser)) // if the laser fired hits the player who fired it just continue
+                continue;
             for (int i = 0; i < laserCoordinates.size(); i++) {
                 if (laserCoordinates.get(i).equals(((Player) player).getCoordinates())) {
                     comparativeList.add(laserCoordinates.get(i));

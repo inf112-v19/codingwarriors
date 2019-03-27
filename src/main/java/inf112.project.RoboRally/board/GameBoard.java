@@ -1,6 +1,5 @@
 package inf112.project.RoboRally.board;
 
-import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.objects.*;
 import inf112.project.RoboRally.objects.IObjects;
 import inf112.project.RoboRally.objects.Flag;
@@ -103,9 +102,9 @@ public class GameBoard {
             case 'W':
                 return new CrossedWrench();
             case '|':
-                return new Laser(GridDirection.NORTH,1);
+                //return new Laser(GridDirection.NORTH,1, this);
             case '-':
-                return new Laser(GridDirection.EAST,1);
+                //return new Laser(GridDirection.EAST,1, this);
             default:
                 return new Floor();
         }
