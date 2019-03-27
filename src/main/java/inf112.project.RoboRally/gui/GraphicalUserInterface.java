@@ -132,6 +132,26 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     }
 
     private void AISelectCards() {
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
+
+        IDeck[] selectedCards = game.getSelectedCards();
+        int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
+        int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
+
+        for (int i = 0; i < numberOfCardsToSelect; i++) {
+            selectedCards[currentPlayerIndex].addCardToDeckAtPosition(i,currentPlayer.getCardsInHand().removeCard(i));
+        }
+
+        if (currentPlayerIndex == indexOfTheLastPlayer) {
+            currentPlayerIndex = 0;
+            game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+            System.out.println("finished selecting cards");
+        } else {
+            System.out.println("updating current player");
+            currentPlayerIndex++;
+        }
+
+        /*
         for (int i = 0; i < 5; i++) {
             selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0,currentPlayer.getCardsInHand().removeCard(i));
         }
@@ -141,7 +161,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
             game.setUpTurn(selectedCards);
             currentPlayerIndex = 0;
             game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-        }
+        }*/
     }
 
     private void selectCards(int indexOfSelectedCard) {
@@ -163,7 +183,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
         System.out.println("last player index: " + indexOfTheLastPlayer);
-        if (numberOfSelectedCards >= numberOfCardsToSelect) {
+
             this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
@@ -174,7 +194,6 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                 currentPlayerIndex++;
             }
         }
-
 /*
         if (!playersDeckOfCards.isEmpty()) {
             // if the selected card is one of the already selectedCards,
@@ -200,7 +219,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         }
 
 */
-    }
+
 
     /**
      * Add this players chosen cards to this players register.
