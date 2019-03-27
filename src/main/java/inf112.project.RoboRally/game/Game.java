@@ -1,15 +1,13 @@
 package inf112.project.RoboRally.game;
 
+import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
-import inf112.project.RoboRally.objects.CrossedWrench;
-import inf112.project.RoboRally.objects.IObjects;
-import inf112.project.RoboRally.objects.Laser;
-import inf112.project.RoboRally.objects.SingleWrench;
+import inf112.project.RoboRally.objects.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class Game implements IGame {
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
     private IDeck[] selectedCards;
-    private List<Laser> lasers;
+    private List<Laser> lasers = new ArrayList<>();
 
 
     /**
@@ -49,7 +47,7 @@ public class Game implements IGame {
     public Game() {
         String defaultLayout = "16C12R" +
                 "f....r.rrr...f.." +
-                ".rrrrrrr....uu.." +
+                "............uu.." +
                 ".r.........c...." +
                 ".r...f....|....." +
                 ".r......ll....p.." +
@@ -79,13 +77,17 @@ public class Game implements IGame {
     /**
      * Constructor for custom boards.
      *
-     * @param boardLayout
-     *                  The custom made board.
-     * @param boardWallLayout
-     *                  The custom made boards walls.
+     * @param boardLayout     The custom made board.
+     * @param boardWallLayout The custom made boards walls.
      */
     public Game(String boardLayout, String boardWallLayout) {
         this.initializeGame(boardLayout, boardWallLayout);
+    }
+
+    public void addLaserTowers() {
+        // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
+        LaserTower tower = new LaserTower(new Coordinates(2, 12), GridDirection.SOUTH);
+        lasers.add(tower.getLaser());
     }
 
     @Override
@@ -97,7 +99,7 @@ public class Game implements IGame {
         int numberOfCardsToDraw = calculateTheNumberOfCardsThePlayerCanDraw(player);
         int numberOfCardsLeftInProgramCardsDeck = this.programCards.getSize();
         int numberOfCardsMissing = numberOfCardsToDraw -
-                                        numberOfCardsLeftInProgramCardsDeck;
+                numberOfCardsLeftInProgramCardsDeck;
         if (numberOfCardsMissing > 0) {
             drawnCards = this.programCards.handOutNCards(numberOfCardsLeftInProgramCardsDeck);
             shuffleDiscardedProgramCardsIntoProgramCardsDeck();
@@ -160,6 +162,7 @@ public class Game implements IGame {
         this.currentSlotNumber = 0;
         this.destroyedPlayers = new ArrayList<>();
         this.playersOutOfTheGame = new ArrayList<>();
+        addLaserTowers();
 
         this.updateDeckOfSelectedCards();
         this.dealOutProgramCards();
@@ -168,16 +171,15 @@ public class Game implements IGame {
 
     @Override
     public void addPlayers() {
-     // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 0, 10);
+        // Hardcoded players for demonstration.
+        IPlayer player1 = new Player("Buzz", 2, 10);
         IPlayer player2 = new Player("Emma", 5, 10);
         IPlayer player3 = new Player("G-bot", 2, 5);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);
         this.players.add(player3);
-        this.lasers = new ArrayList<>();
-        this.lasers.add(player1.getLaser());
+        this.lasers.add(player1.getLaser()); // adds the lasers belonging to the players
         this.lasers.add(player2.getLaser());
         this.lasers.add(player3.getLaser());
         this.activePlayers = new ArrayList<>();
@@ -226,7 +228,7 @@ public class Game implements IGame {
     @Override
     public void setGameStatus(GameStatus status) {
         if (status == null
-            || !GameStatus.validStatus(status)) {
+                || !GameStatus.validStatus(status)) {
             throw new IllegalArgumentException("Not a valid status");
         }
 
@@ -313,11 +315,11 @@ public class Game implements IGame {
      * they are destroyed.
      */
     private void executingGameBoardObjects() {
-        for (IPlayer player: players) {
+        for (IPlayer player : players) {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
-                 //   this.firePlayersLaser(player); // to be moved
+                    //   this.firePlayersLaser(player); // to be moved
                 } else {
                     this.destroyPlayer(player);
                     if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
@@ -335,12 +337,10 @@ public class Game implements IGame {
      * A player is outside of the game if they are currently destroyed,
      * or permanently out of the game.
      *
-     * @param player
-     *              The player to be checked.
+     * @param player The player to be checked.
      * @return true if the player is in the game,<br>
-     *     false otherwise.
-     * @throws IllegalArgumentException
-     *      If the player is null (player == null).
+     * false otherwise.
+     * @throws IllegalArgumentException If the player is null (player == null).
      */
     private boolean checkIfThePlayerIsInTheGame(IPlayer player) {
         if (player == null) {
@@ -360,7 +360,11 @@ public class Game implements IGame {
     private void fireLasers() {
         for (Laser laser : lasers) {
             fireLaser(laser);
-            laser.resetLaserPosition(laser.getPlayer().getCoordinates(), laser.getPlayer().getPlayerDirection());
+            if (laser.hasPlayer()) // checks if its a laser fired from a player or a tower
+                laser.resetLaserPosition(laser.getPlayer().getCoordinates(), laser.getPlayer().getPlayerDirection());
+            else {
+                laser.resetLaserPosition(laser.getTower().getCoordinates(), null);
+            }
         }
 
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
@@ -374,10 +378,8 @@ public class Game implements IGame {
      * Fire the given players laser.<br>
      * Dealing one damage to any player in direct line of sight.
      *
-     * @param laser
-     *              The laser that should be fired.
-     * @throws IllegalArgumentException
-     *       if laser is null (laser == null).
+     * @param laser The laser that should be fired.
+     * @throws IllegalArgumentException if laser is null (laser == null).
      */
     private void fireLaser(Laser laser) {
         if (laser == null) {
@@ -389,7 +391,9 @@ public class Game implements IGame {
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates()) &&
                     otherPlayer.getLaser() != laser) {
                 otherPlayer.takeOneDamage();
-                System.out.println(otherPlayer.getName() + " was hit by a laser from " + laser.getPlayer().getName());
+                System.out.print(otherPlayer.getName() + " was hit by a laser from ");
+                if (laser.hasPlayer()) System.out.println(laser.getPlayer().getName());
+                else System.out.println("a tower");
             }
         }
     }
@@ -402,7 +406,7 @@ public class Game implements IGame {
         int smallestListSize = laserCoordinates.size();
 
         for (IPlayer player : players) {
-            if (player.getLaser().equals(laser)) // if the laser fired hits the player who fired it just continue
+            if (laser.hasPlayer() && player.getLaser() == laser) // if the laser fired hits the player who fired it just continue
                 continue;
             for (int i = 0; i < laserCoordinates.size(); i++) {
                 if (laserCoordinates.get(i).equals(((Player) player).getCoordinates())) {
@@ -425,7 +429,7 @@ public class Game implements IGame {
      * Reveals the selected program cards for the current register slot,
      * sorts them by priority before executing the commands in order,
      * and then updates the register slot for the next pass.
-     *
+     * <p>
      * If the current register slot is the last one,
      * execute instructions in a TODO: finish this
      */
@@ -443,10 +447,8 @@ public class Game implements IGame {
     /**
      * Execute the revealed program cards with their associated players.
      *
-     * @param cardsForThisRegisterSlot
-     *                              The deck of revealed Program cards.
-     * @param listOfPlayers
-     *                      The list of players connected with the revealed program cards.
+     * @param cardsForThisRegisterSlot The deck of revealed Program cards.
+     * @param listOfPlayers            The list of players connected with the revealed program cards.
      */
     private void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
                                                           ArrayList<IPlayer> listOfPlayers) {
@@ -463,13 +465,11 @@ public class Game implements IGame {
      * <br><br>
      * Players and cards are connected by their mutual index.
      *
-     * @param cardsForThisRegisterSlot
-     *                              The deck of revealed Program cards.<br>
-     *                              Should contain all the revealed program cards
-     *                              after this method finishes.
-     * @param listOfPlayers
-     *                      The list of players connected with the revealed program cards.<br>
-     *                      Should contain all the players whose cards were revealed.
+     * @param cardsForThisRegisterSlot The deck of revealed Program cards.<br>
+     *                                 Should contain all the revealed program cards
+     *                                 after this method finishes.
+     * @param listOfPlayers            The list of players connected with the revealed program cards.<br>
+     *                                 Should contain all the players whose cards were revealed.
      */
     private void revealEachPlayersProgramCardForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
                                                                    ArrayList<IPlayer> listOfPlayers) {
@@ -494,14 +494,13 @@ public class Game implements IGame {
      * Move all unlocked cards from the players register,
      * to the pile of discarded cards.
      *
-     * @param player
-     *              The player whose register should be emptied.
+     * @param player The player whose register should be emptied.
      */
     private void emptyThePlayersRegister(IPlayer player) {
         IDeck cardsToBeDiscarded = player.clearRegister();
         cardsToBeDiscarded.transferNCardsFromThisDeckToTargetDeck(
-                                        cardsToBeDiscarded.getSize(),
-                                        this.discardedProgramCards);
+                cardsToBeDiscarded.getSize(),
+                this.discardedProgramCards);
     }
 
     /**
@@ -523,10 +522,8 @@ public class Game implements IGame {
      * The index of the cards and players,
      * determine which player the card belongs to.
      *
-     * @param cardsForThisRegisterSlot
-     *                              The deck of cards to sort.
-     * @param listOfPlayers
-     *                      The accompanying list of players.
+     * @param cardsForThisRegisterSlot The deck of cards to sort.
+     * @param listOfPlayers            The accompanying list of players.
      */
     private void sortCardsAfterPriority(IDeck cardsForThisRegisterSlot, ArrayList<IPlayer> listOfPlayers) {
         int numberOfCards = cardsForThisRegisterSlot.getSize() - 1; // -1 for proper index.
@@ -548,14 +545,10 @@ public class Game implements IGame {
      * Swap the positions of cards and players,
      * so that their indexes remain the same.
      *
-     * @param i
-     *          Index i.
-     * @param j
-     *          Index j.
-     * @param cardsForThisRegisterSlot
-     *                              The deck of cards.
-     * @param listOfPlayers
-     *                      The list of players.
+     * @param i                        Index i.
+     * @param j                        Index j.
+     * @param cardsForThisRegisterSlot The deck of cards.
+     * @param listOfPlayers            The list of players.
      */
     private void swap(int i, int j, IDeck cardsForThisRegisterSlot, ArrayList<IPlayer> listOfPlayers) {
         cardsForThisRegisterSlot.swapCardsInPosition(i, j);
@@ -570,12 +563,11 @@ public class Game implements IGame {
      * If the player is out of lives,
      * they will be moved to the list of dead players.
      * Otherwise they are temporarily removed until the end of the current turn.<br><br>
-     *
+     * <p>
      * If there are no players left alive,
      * the game is considered to be over.???
      *
-     * @param player
-     *              The player to be destroyed.
+     * @param player The player to be destroyed.
      */
     private void destroyPlayer(IPlayer player) {
         if (player == null) {
@@ -609,7 +601,7 @@ public class Game implements IGame {
     private void setupCardSelectionForNewRound() {
         this.removeAllCardsFromEachPlayersHand();
 
-        for (IPlayer player: activePlayers) {
+        for (IPlayer player : activePlayers) {
             drawCards(player);
         }
 
@@ -621,11 +613,11 @@ public class Game implements IGame {
      * and moves the cards to the discard pile.
      */
     private void removeAllCardsFromEachPlayersHand() {
-        for (IPlayer player: players) {
+        for (IPlayer player : players) {
             IDeck cardsInPlayerDeck = player.getCardsInHand();
             cardsInPlayerDeck.transferNCardsFromThisDeckToTargetDeck(
-                                            cardsInPlayerDeck.getSize(),
-                                            discardedProgramCards);
+                    cardsInPlayerDeck.getSize(),
+                    discardedProgramCards);
         }
     }
 

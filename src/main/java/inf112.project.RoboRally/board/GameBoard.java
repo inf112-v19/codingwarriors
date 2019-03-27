@@ -102,7 +102,7 @@ public class GameBoard {
             case 'W':
                 return new CrossedWrench();
             case '|':
-                //return new Laser(GridDirection.NORTH,1, this);
+                //return new LaserTower();
             case '-':
                 //return new Laser(GridDirection.EAST,1, this);
             default:

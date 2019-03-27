@@ -15,6 +15,7 @@ public class Laser implements IObjects {
     private int x,y;
     private ArrayList<GridDirection> walls;
     private Player player;
+    private LaserTower tower;
 
     public Laser(GridDirection direction, int damage, Player player) {
         this.speed=0;
@@ -23,6 +24,17 @@ public class Laser implements IObjects {
         this.rotation=null;
         this.walls=new ArrayList<>();
         this.player = player;
+    }
+
+    public Laser(GridDirection direction, int damage, LaserTower tower) {
+        this.speed=0;
+        this.direction=direction;
+        this.damage=damage;
+        this.rotation=null;
+        this.walls=new ArrayList<>();
+        this.tower = tower;
+        this.x = tower.getCoordinates().getX();
+        this.y = tower.getCoordinates().getY();
     }
 
     public Player getPlayer() {
@@ -113,18 +125,12 @@ public class Laser implements IObjects {
         return visitedPositionsByLaser;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        Laser laser = (Laser) obj;
-        if (laser.getPlayer().equals(getPlayer()))
-            return true;
-        return false;
-    }
 
     public void resetLaserPosition(Coordinates coordinates, GridDirection direction) {
         setX(coordinates.getX());
         setY(coordinates.getY());
-        setDirection(direction);
+        if (direction != null)
+            setDirection(direction);
     }
 
     public void moveLaser() {
@@ -145,7 +151,7 @@ public class Laser implements IObjects {
     }
 
     public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
-        return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
+        return (x <= boardColumns && x >= 0 && y <= boardRows && y >= 0);
     }
 
 
@@ -169,5 +175,13 @@ public class Laser implements IObjects {
 
     public void setDirection(GridDirection direction) {
         this.direction = direction;
+    }
+
+    public LaserTower getTower() {
+        return tower;
+    }
+
+    public boolean hasPlayer() {
+        return player != null;
     }
 }
