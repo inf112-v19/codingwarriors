@@ -28,7 +28,7 @@ public class CardGui {
         this.game = game;
         this.width = width;
         this.height = height;
-        currentPlayer = game.getPlayers().get(0);
+        currentPlayer = game.getActivePlayers().get(0);
         currentPlayerIndex = 0;
         shapeRenderer = new ShapeRenderer();
         setUpTextures();
@@ -75,12 +75,12 @@ public class CardGui {
     }
 
     private void drawExecutingCards() {
-        cardScreen.setNumberOtTiles(1,game.getPlayers().size());
+        cardScreen.setNumberOtTiles(1,game.getActivePlayers().size());
         int fontSize = 30;
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
-        for (int i = 0; i < game.getPlayers().size(); i++) {
-            font.setColor(game.getPlayers().get(i).getColor());
-            font.draw(cardBatch,game.getPlayers().get(i).revealProgramCardForRegisterNumber(0).toString(),
+        for (int i = 0; i < game.getActivePlayers().size(); i++) {
+            font.setColor(game.getActivePlayers().get(i).getColor());
+            font.draw(cardBatch,game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(0).toString(),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
             font.setColor(Color.WHITE);
@@ -126,8 +126,15 @@ public class CardGui {
     }
 
     void selectCards(int indexOfSelectedCard) {
+        currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+        System.out.println("Entering select cards for " + currentPlayer.getName());
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         if (playersDeckOfCards.isEmpty()) {
+            System.out.println("No more cards left for  " + currentPlayer.getName());
+            System.out.println("current index  " + currentPlayerIndex + " active player size " + (game.getActivePlayers().size() - 1));
+            currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
+            currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+            System.out.println("new index  " + currentPlayerIndex + " active player size " + (game.getActivePlayers().size() - 1));
             return;
         }
         // Switch selected card between players deck,
@@ -148,15 +155,14 @@ public class CardGui {
             this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
-                currentPlayer = game.getPlayers().get(currentPlayerIndex);
                 game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
                 System.out.println("finished selecting cards");
             } else {
                 System.out.println("updating current player");
                 currentPlayerIndex++;
-                currentPlayer = game.getPlayers().get(currentPlayerIndex);
             }
         }
+        currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
     }
 
     /**
