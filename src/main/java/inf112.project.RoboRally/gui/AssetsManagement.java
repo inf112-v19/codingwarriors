@@ -10,17 +10,32 @@ class AssetsManagement {
     private final AssetManager assetManager = new AssetManager();
 
     void loadTextures() {
-        assetManager.load("assets/conveyorbelts/conveyorBelt_east.png", Texture.class);
-        assetManager.load("assets/conveyorbelts/conveyorBelt_west.png", Texture.class);
-        assetManager.load("assets/conveyorbelts/conveyorBelt_north.png", Texture.class);
-        assetManager.load("assets/conveyorbelts/conveyorBelt_south.png", Texture.class);
+        //ConveyorBelts
+        assetManager.load("assets/conveyorbelts/conveyorBelt_east1.png", Texture.class);
+        assetManager.load("assets/conveyorbelts/conveyorBelt_west1.png", Texture.class);
+        assetManager.load("assets/conveyorbelts/conveyorBelt_north1.png", Texture.class);
+        assetManager.load("assets/conveyorbelts/conveyorBelt_south1.png", Texture.class);
+        //TODO Remove commenting out when the assets are added
+        /*
+        assetManager.load("assets/conveyorbelts/conveyorBelt_east2.png", Texture.class);
+        assetManager.load("assets/conveyorbelts/conveyorBelt_west2.png", Texture.class);
+        assetManager.load("assets/conveyorbelts/conveyorBelt_north2.png", Texture.class);
+        assetManager.load("assets/conveyorbelts/conveyorBelt_south2.png", Texture.class);
+         */
+        
+        //Wrenches, floor, pit and player
         assetManager.load("assets/crossedWrench.png", Texture.class);
+        assetManager.load("assets/singleWrench.png", Texture.class);
         assetManager.load("assets/floor_metal.jpg", Texture.class);
+        assetManager.load("assets/pit.png", Texture.class);
         assetManager.load("assets/player_one.png", Texture.class);
         assetManager.load("assets/player_color.png", Texture.class);
+    
+        //RotationCogs
         assetManager.load("assets/rotationCog_right.png", Texture.class);
         assetManager.load("assets/rotationCog_left.png", Texture.class);
-        assetManager.load("assets/singleWrench.png", Texture.class);
+    
+        //Flags
         assetManager.load("assets/flags/flag1.png", Texture.class);
         assetManager.load("assets/flags/flag2.png", Texture.class);
         assetManager.load("assets/flags/flag3.png", Texture.class);
@@ -31,9 +46,12 @@ class AssetsManagement {
         assetManager.load("assets/flags/flag8.png", Texture.class);
         assetManager.load("assets/flags/flag9.png", Texture.class);
         assetManager.load("assets/flags/flag.png", Texture.class);
-        assetManager.load("assets/pit.png", Texture.class);
+        
+        //Lasers
         assetManager.load("assets/laserHorizontal.png", Texture.class);
         assetManager.load("assets/laserVertical.png", Texture.class);
+        
+        //Walls
         assetManager.load("assets/walls/wall_North.png", Texture.class);
         assetManager.load("assets/walls/wall_South.png", Texture.class);
         assetManager.load("assets/walls/wall_East.png", Texture.class);

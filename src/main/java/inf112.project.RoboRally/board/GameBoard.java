@@ -1,6 +1,5 @@
 package inf112.project.RoboRally.board;
 
-import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.objects.*;
 import inf112.project.RoboRally.objects.IObjects;
 import inf112.project.RoboRally.objects.Flag;
@@ -80,6 +79,14 @@ public class GameBoard {
                 return new ConveyorBelt(1,GridDirection.SOUTH, Rotation.NONE);
             case 'l':
                 return new ConveyorBelt(1,GridDirection.WEST, Rotation.NONE);
+            case 'R':
+                return new ConveyorBelt(2, GridDirection.EAST, Rotation.NONE);
+            case 'U':
+                return new ConveyorBelt(2, GridDirection.NORTH, Rotation.NONE);
+            case 'D':
+                return new ConveyorBelt(2, GridDirection.SOUTH, Rotation.NONE);
+            case 'L':
+                return new ConveyorBelt(2, GridDirection.WEST, Rotation.NONE);
             case 'f':
                 return new Flag();
             case '.':
@@ -95,9 +102,9 @@ public class GameBoard {
             case 'W':
                 return new CrossedWrench();
             case '|':
-                return new Laser(GridDirection.NORTH,1);
+                //return new LaserTower();
             case '-':
-                return new Laser(GridDirection.EAST,1);
+                //return new Laser(GridDirection.EAST,1, this);
             default:
                 return new Floor();
         }

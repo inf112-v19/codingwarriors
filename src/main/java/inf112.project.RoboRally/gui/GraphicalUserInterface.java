@@ -71,8 +71,6 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void createNewGame() {
         game = new Game();
-        game.initializeGame();
-        game.dealOutProgramCards();
         game.setGameStatus(GameStatus.SELECT_CARDS);
         xPositionDrawer = new int[game.getPlayers().size()];
         yPositionDrawer = new int[game.getPlayers().size()];

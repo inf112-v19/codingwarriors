@@ -39,7 +39,7 @@ public class Player implements IPlayer {
         this.register = new ProgramRegister();
         this.flagsVisited = 0;
         this.wasDestroyedThisTurn = false;
-        this.laser = new Laser(playerDirection, 1);
+        this.laser = new Laser(playerDirection, 1, this);
     }
 
     @Override
@@ -104,6 +104,9 @@ public class Player implements IPlayer {
             case BACKWARDS: moveInDirection(opposite(), 1);
             break;
         }
+        laser.setX(x);
+        laser.setY(y);
+        laser.setDirection(playerDirection);
     }
 
     @Override
@@ -117,6 +120,14 @@ public class Player implements IPlayer {
         } else if (direction == GridDirection.EAST) {
             x++;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Player player = (Player) obj;
+        if (x == player.getX() && y == player.getY())
+            return true;
+        return false;
     }
 
     @Override
