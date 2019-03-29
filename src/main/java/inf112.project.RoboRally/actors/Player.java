@@ -107,6 +107,7 @@ public class Player implements IPlayer {
         laser.setX(x);
         laser.setY(y);
         laser.setDirection(playerDirection);
+        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -120,6 +121,11 @@ public class Player implements IPlayer {
         } else if (direction == GridDirection.EAST) {
             x++;
         }
+
+        laser.setX(x);
+        laser.setY(y);
+        laser.setDirection(playerDirection);
+        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -302,6 +308,10 @@ public class Player implements IPlayer {
         this.numberOfDamageTokensRecieved = 0; // Reset damage
         takeOneDamage(); // Take two damage
         takeOneDamage();
+        laser.setX(x);
+        laser.setY(y);
+        laser.setDirection(playerDirection);
+        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -353,14 +363,10 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void rotateLeft() {
-        this.playerDirection = playerDirection.rotateLeft();
-    }
+    public void rotateLeft() { this.playerDirection = playerDirection.rotateLeft(); }
 
     @Override
-    public void rotateRight() {
-        this.playerDirection = playerDirection.rotateRight();
-    }
+    public void rotateRight() { this.playerDirection = playerDirection.rotateRight(); }
 
     @Override
     public String getName() {
