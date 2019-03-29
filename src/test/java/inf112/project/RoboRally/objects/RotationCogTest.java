@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.objects;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class RotationCogTest {
 	
 	@Test
 	public void noRotationShouldRetainPlayerDirection() {
-		Player player = new Player("foo",0,0);
+		Player player = new Player("foo",0,0, Color.RED);
 		IObjects tile = gameboard.getObject(player.getX(), player.getY());
 		tile.doAction(player);
 		assertEquals(player.getPlayerDirection(), GridDirection.NORTH);
@@ -29,7 +30,7 @@ public class RotationCogTest {
 	
 	@Test
 	public void cogRotatingLeftShouldRotateThePlayerToTheLeft() {
-		Player player = new Player("foo",1,0);
+		Player player = new Player("foo",1,0, Color.RED);
 		GridDirection playerDirection = player.getPlayerDirection();
 		IObjects tile = gameboard.getObject(player.getX(), player.getY());
 		tile.doAction(player);
@@ -38,7 +39,7 @@ public class RotationCogTest {
 
 	@Test
 	public void cogRotatingRightShouldRotateThePlayerToTheRight() {
-		Player player = new Player("foo",0,1);
+		Player player = new Player("foo",0,1, Color.RED);
 		GridDirection playerDirection = player.getPlayerDirection();
 		IObjects tile = gameboard.getObject(player.getX(), player.getY());
 		tile.doAction(player);

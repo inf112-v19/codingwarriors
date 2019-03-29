@@ -3,6 +3,7 @@ package inf112.project.RoboRally.objects;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
+import inf112.project.RoboRally.board.GameBoard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,12 @@ public class Laser implements IObjects {
     private Rotation rotation;
     private int x,y;
     private ArrayList<GridDirection> walls;
+    ArrayList<Coordinates> visitedPositionsByLaser;
     private Player player;
     private LaserTower tower;
 
     public Laser(GridDirection direction, int damage, Player player) {
+        this.visitedPositionsByLaser = new ArrayList<>();
         this.speed=0;
         this.direction=direction;
         this.damage=damage;
@@ -27,6 +30,7 @@ public class Laser implements IObjects {
     }
 
     public Laser(GridDirection direction, int damage, LaserTower tower) {
+        this.visitedPositionsByLaser = new ArrayList<>();
         this.speed=0;
         this.direction=direction;
         this.damage=damage;
@@ -113,7 +117,7 @@ public class Laser implements IObjects {
     }
 
     public List<Coordinates> doAction(int boardRows, int boardColumns) {
-        ArrayList<Coordinates> visitedPositionsByLaser = new ArrayList<>();
+        visitedPositionsByLaser = new ArrayList<>();
 
         while (insideBoard(getX(), getY(), boardRows, boardColumns)) {
             moveLaser();
@@ -129,8 +133,7 @@ public class Laser implements IObjects {
     public void resetLaserPosition(Coordinates coordinates, GridDirection direction) {
         setX(coordinates.getX());
         setY(coordinates.getY());
-        if (direction != null)
-            setDirection(direction);
+        setDirection(direction);
     }
 
     public void moveLaser() {
@@ -183,5 +186,9 @@ public class Laser implements IObjects {
 
     public boolean hasPlayer() {
         return player != null;
+    }
+
+    public List<Coordinates> getCoordinates() {
+        return visitedPositionsByLaser;
     }
 }

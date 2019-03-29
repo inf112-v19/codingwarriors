@@ -15,13 +15,10 @@ class AssetsManagement {
         assetManager.load("assets/conveyorbelts/conveyorBelt_west1.png", Texture.class);
         assetManager.load("assets/conveyorbelts/conveyorBelt_north1.png", Texture.class);
         assetManager.load("assets/conveyorbelts/conveyorBelt_south1.png", Texture.class);
-        //TODO Remove commenting out when the assets are added
-        /*
         assetManager.load("assets/conveyorbelts/conveyorBelt_east2.png", Texture.class);
         assetManager.load("assets/conveyorbelts/conveyorBelt_west2.png", Texture.class);
         assetManager.load("assets/conveyorbelts/conveyorBelt_north2.png", Texture.class);
         assetManager.load("assets/conveyorbelts/conveyorBelt_south2.png", Texture.class);
-         */
         
         //Wrenches, floor, pit and player
         assetManager.load("assets/crossedWrench.png", Texture.class);
@@ -29,6 +26,7 @@ class AssetsManagement {
         assetManager.load("assets/floor_metal.jpg", Texture.class);
         assetManager.load("assets/pit.png", Texture.class);
         assetManager.load("assets/player_one.png", Texture.class);
+        assetManager.load("assets/player_color.png", Texture.class);
     
         //RotationCogs
         assetManager.load("assets/rotationCog_right.png", Texture.class);
@@ -66,6 +64,9 @@ class AssetsManagement {
         assetManager.load("assets/walls/wall_NorthEastWest.png", Texture.class);
         assetManager.load("assets/walls/wall_SouthEastWest.png", Texture.class);
         assetManager.load("assets/walls/wall_NorthSouthEastWest.png", Texture.class);
+
+        //GameOver
+        assetManager.load("assets/GameOver.png", Texture.class);
     }
 
     void finishLoading() {

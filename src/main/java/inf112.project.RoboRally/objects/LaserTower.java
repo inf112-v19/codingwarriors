@@ -42,7 +42,7 @@ public class LaserTower implements IObjects {
 
     @Override
     public GridDirection getDirection() {
-        return null;
+        return direction;
     }
 
     @Override
