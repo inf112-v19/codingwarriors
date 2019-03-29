@@ -48,11 +48,11 @@ public class Game implements IGame {
     public Game() {
         String defaultLayout = "16C12R" +
                 "f....r.rrr...f.." +
-                "............uu.." +
-                ".r.........c...." +
-                ".r...f....|....." +
-                ".r......ll....p.." +
-                "rr......f......." +
+                ".R..RRRRRRRRDu.." +
+                ".U.........cD..." +
+                ".U...f....|.D..." +
+                ".U......ll..D.p." +
+                "rU..LLLLfLLLD..." +
                 "ll.....w....C..." +
                 ".r..p....lll...." +
                 ".r.....w........" +
@@ -250,17 +250,19 @@ public class Game implements IGame {
     public void doTurn() {
         switch (this.currentGameStatus) {
             case EXECUTING_INSTRUCTIONS:
+                System.out.println("EXECUTING_INSTRUCTIONS");
                 executingInstructions();
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
-                executingGameBoardObjects();
                 System.out.println("exe game obj");
+                executingGameBoardObjects();
                 return;
             case FIRING_LASERS:
                 System.out.println("firing lasers");
                 this.fireLasers();
                 return;
             case FINISHING_UP_THE_TURN:
+                System.out.println("FINISHING_UP_THE_TURN");
                 this.cleanUpTurn();
                 return;
             case THE_END:
@@ -269,6 +271,13 @@ public class Game implements IGame {
         }
 
     }
+
+    @Override
+    public List<Laser> getLasers() {
+        return lasers;
+    }
+
+
 
     /**
      * Clean up the game before the next round.<br>
@@ -320,7 +329,7 @@ public class Game implements IGame {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
-                    //   this.firePlayersLaser(player); // to be moved
+                    // this.firePlayersLaser(player); // to be moved
                 } else {
                     this.destroyPlayer(player);
                     if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
@@ -359,12 +368,30 @@ public class Game implements IGame {
      * Fire the laser of every active player.
      */
     private void fireLasers() {
+        int counter = 0;
         for (Laser laser : lasers) {
+            counter++;
+            String name = laser.hasPlayer() ? laser.getPlayer().getName() : "Tower";
+            System.out.println(counter + " " + name);
             fireLaser(laser);
-            if (laser.hasPlayer()) // checks if its a laser fired from a player or a tower
+            if (laser.hasPlayer() && !laser.getPlayer().wasDestroyedThisTurn()) // checks if its a laser fired from a player or a tower
                 laser.resetLaserPosition(laser.getPlayer().getCoordinates(), laser.getPlayer().getPlayerDirection());
-            else {
-                laser.resetLaserPosition(laser.getTower().getCoordinates(), null);
+            else if (!laser.hasPlayer()) {
+                laser.resetLaserPosition(laser.getTower().getCoordinates(), laser.getTower().getDirection());
+            }
+        }
+
+        for (int i = 0; i < players.size(); i++) {
+            if (!players.get(i).hasLifeLeft()) {
+                for (int j = 0; j < lasers.size(); j++) {
+                    if (lasers.get(j).equals(players.get(i))) {
+                        lasers.remove(j);
+                    }
+                }
+                players.remove(i);
+                i++;
+            } else if (players.get(i).getPlayerDamage() > 9) {
+                destroyPlayer(players.get(i));
             }
         }
 
@@ -395,6 +422,8 @@ public class Game implements IGame {
                 System.out.print(otherPlayer.getName() + " was hit by a laser from ");
                 if (laser.hasPlayer()) System.out.println(laser.getPlayer().getName());
                 else System.out.println("a tower");
+                System.out.print(" and has now " + otherPlayer.getPlayerDamage() + " damage tokens and "
+                        + otherPlayer.getNumberOfLivesRemaining() + " lives");
             }
         }
     }
@@ -459,6 +488,36 @@ public class Game implements IGame {
             player.movePlayer(card);
         }
     }
+
+
+    @Override
+    public List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction) {
+        List<Coordinates> path = new ArrayList<>();
+        for (Coordinates coordinate : coordinates) {
+            // looking for players
+            for (IPlayer player :activePlayers) {
+                if (player.getX() == coordinate.getX() && player.getY() == coordinate.getY()) {
+                    path.add(coordinate);
+                    return path;
+                }
+            }
+            // looking for walls
+            if (!board.moveValid(coordinate.getX(), coordinate.getY())) {
+                return path;
+            }
+            IObjects current = board.getObject(coordinate.getX(), coordinate.getY());
+            if (current.isWall(direction.invert()) && !coordinate.equals(coordinates.get(0))) {
+                return path;
+            } else if(current.isWall(direction)) {
+                path.add(coordinate);
+                return path;
+            }
+            path.add(coordinate);
+        }
+        return path;
+    }
+
+
 
     /**
      * Reveal each players program card for this register slot,
@@ -631,6 +690,10 @@ public class Game implements IGame {
         for (int i = 0; i < numberOfPlayersLeftInTheGame; i++) {
             this.selectedCards[i] = new Deck();
         }
+    }
+
+    public boolean gameOver() {
+        return numberOfPlayersLeftInTheGame==0;
     }
 
 }
