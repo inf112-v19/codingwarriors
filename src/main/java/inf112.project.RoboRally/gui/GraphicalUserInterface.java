@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.cards.ICard;
@@ -20,6 +21,7 @@ import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class GraphicalUserInterface extends ApplicationAdapter{
@@ -31,8 +33,11 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private static final int CARD_SCREEN_HEIGHT = HEIGHT;
     private OrthographicCamera camera;
     private SpriteBatch batch;
+    private SpriteBatch GameOverBatch;
     private Viewport viewport;
     private AssetsManagement assetsManager = new AssetsManagement();
+    private ShapeRenderer shapeRenderer;
+    BitmapFont font;
 
     private int[] xPositionDrawer;
     private int[] yPositionDrawer;
@@ -46,6 +51,9 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     public void create () {
         createNewGame();
         setupScreens();
+        font = new BitmapFont();;
+        shapeRenderer = new ShapeRenderer();
+        GameOverBatch = new SpriteBatch();
         cardGui = new CardGui(game,CARD_SCREEN_WIDTH,CARD_SCREEN_HEIGHT);
         camera = new OrthographicCamera(WIDTH, HEIGHT);
         viewport = new FillViewport(WIDTH, HEIGHT, camera);
@@ -78,28 +86,48 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     @Override
     public void render () {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        userInputs();
-        drawBoard();
-        drawPlayers();
-        batch.end();
+        if (game.gameOver()) {
+            GameOverBatch.begin();
+            drawGameOverScreen();
+            GameOverBatch.end();
+            if (Gdx.input.justTouched()) {
+                create();
+            }
+        } else {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            camera.update();
+            batch.begin();
+            batch.setProjectionMatrix(camera.combined);
+            userInputs();
+            drawBoard();
+            drawLasers();
+            drawPlayers();
+            batch.end();
 
-        cardGui.draw();
+            cardGui.draw();
+        }
+
+    }
+
+    private void drawGameOverScreen() {
+        GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameOver.png"),
+                WIDTH/3, HEIGHT/2,
+                WIDTH/2, HEIGHT/4);
+
 
     }
 
 
     private void userInputs() {
-        if (Gdx.input.justTouched() && game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-            int x = Gdx.input.getX();
-            int y = HEIGHT-Gdx.input.getY();
-            cardGui.userInputs(x,y);
-        } else if (Gdx.input.justTouched()) {
-            game.doTurn();
+        if (Gdx.input.justTouched()) {
+            if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
+                int x = Gdx.input.getX();
+                int y = HEIGHT - Gdx.input.getY();
+                cardGui.userInputs(x, y);
+            } else {
+                game.doTurn();
+            }
         }
     }
 
@@ -166,6 +194,19 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                 }
             }
         }
+    }
+
+    public void drawLasers() {
+       if (game.getTheCurrentGameStatus().equals(GameStatus.EXECUTING_INSTRUCTIONS)) {
+            for (Laser laser : game.getLasers()) {
+                for (Coordinates coordinate : game.getPath(laser.getCoordinates(), laser.getDirection())) {
+                    batch.draw(assetsManager.getAssetFileName(laser.getTexture()),
+                            boardScreen.getStartX(coordinate.getX()), boardScreen.getStartY(coordinate.getY()),
+                            boardScreen.getTileWidth(), boardScreen.getTileHeight());
+                }
+
+            }
+       }
     }
 
     @Override
