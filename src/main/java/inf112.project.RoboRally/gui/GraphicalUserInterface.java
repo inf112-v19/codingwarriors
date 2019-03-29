@@ -37,12 +37,12 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private Viewport viewport;
     private AssetsManagement assetsManager = new AssetsManagement();
     private ShapeRenderer shapeRenderer;
-    BitmapFont font;
+    private BitmapFont font;
 
     private int[] xPositionDrawer;
     private int[] yPositionDrawer;
 
-    CardGui cardGui;
+    private CardGui cardGui;
 
     // to be moved
     //private IDeck[] selectedCards;
@@ -51,7 +51,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     public void create () {
         createNewGame();
         setupScreens();
-        font = new BitmapFont();;
+        font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
         GameOverBatch = new SpriteBatch();
         cardGui = new CardGui(game,CARD_SCREEN_WIDTH,CARD_SCREEN_HEIGHT);
@@ -162,7 +162,8 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                 }
             }
             batch.setColor(player.getColor());
-            batch.draw(assetsManager.getAssetFileName("assets/player_color.png")
+            String direction = player.getPlayerDirection().toString().toLowerCase();
+            batch.draw(assetsManager.getAssetFileName("assets/player_color_" + direction + ".png")
                     ,xPositionDrawer[i],yPositionDrawer[i],
                     boardScreen.getTileWidth(), boardScreen.getTileHeight());
             batch.setColor(Color.WHITE);
@@ -196,7 +197,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         }
     }
 
-    public void drawLasers() {
+    private void drawLasers() {
        if (game.getTheCurrentGameStatus().equals(GameStatus.EXECUTING_INSTRUCTIONS)) {
             for (Laser laser : game.getLasers()) {
                 for (Coordinates coordinate : game.getPath(laser.getCoordinates(), laser.getDirection())) {
