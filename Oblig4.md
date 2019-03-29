@@ -11,3 +11,20 @@ Som vi har skrevet i retroperspektiv så har vi fokusert på at oppgavefordeling
 - Vi velger å begynne med å kunne spille en komplett metode. Vi velger dette fordi det er et krav som nesten er fullført, og vi vil gjøre det helt ferdig.
 - Lasere er et krav vi har begynt på, så dette får høy prioritet.
 
+- Møtereferater: 
+#### Rapport 12.03.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Vi ble enige om at de som hadde bidrat mindre til kodebasen skulle få større oppgaver (Eirin: AI og Jakob: Laser). 
+Det var diskusjon rundt mulige løsninger til disse oppgavene. Kim-Erling begynte på vegger. 
+
+#### Rapport 19.03.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Liten diskusjon angående UML diagram. Eirin og Jan-Erik par-programmerte på AI-en. 
+
+#### Rapport 26.03.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Siden vi fikk den nye obligatoriske oppgaven handlet mye av møte om nettopp denne oppgaven. 
+
+#### Rapport 29.03.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Kim-Erling
+Mye debugging. 
