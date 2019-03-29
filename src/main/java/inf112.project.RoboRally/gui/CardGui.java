@@ -135,6 +135,10 @@ public class CardGui {
             currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
             currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
             System.out.println("new index  " + currentPlayerIndex + " active player size " + (game.getActivePlayers().size() - 1));
+            if (currentPlayerIndex == 0) {
+                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+                System.out.println("finished selecting cards");
+            }
             return;
         }
         // Switch selected card between players deck,
