@@ -11,10 +11,15 @@ public interface IGame {
 
     /**
      * Add the participating players,<br>
-     * generate the game board,<br>
+     * generate the game board using the provided board and walls layout,<br>
      * reset the variables and create the deck of program cards.
+     *
+     * @param boardLayout
+     *                  The layout of the game board.
+     * @param wallsLayout
+     *                  The layout of the walls on the board.
      */
-    void initializeGame();
+    void initializeGame(String boardLayout, String wallsLayout);
 
 
     /**
@@ -82,9 +87,23 @@ public interface IGame {
     void dealOutProgramCards();
 
 
+    /**
+     * Get the list of players that are destroyed,
+     * and temporarily removed from the game.
+     *
+     * @return The list of players that are out of
+     *  the game for the remainder of the current round.
+     */
     List<IPlayer> getDestroyedPlayers();
 
+
+    /**
+     * Get the list of players with no more lives left.
+     *
+     * @return The list of players permanently out of the game.
+     */
     List<IPlayer> getPlayersOutOfTheGame();
+
 
     /**
      * Get the games current status,
@@ -101,15 +120,49 @@ public interface IGame {
      */
     GameBoard getBoard();
 
+
+    /**
+     * Get the deck used to hold all the selected cards,
+     * before putting them into the register.
+     *
+     * @return The deck of selected cards.
+     */
     IDeck[] getSelectedCards();
 
+
+    /**
+     * Get the amount of players that has one or more lives left.
+     *
+     * @return The number of players still in the game.
+     */
     int getNumberOfPlayersLeftInTheGame();
 
+
+    /**
+     * Update the current state of the game.
+     *
+     * @param status
+     *              The new game status.
+     */
     void setGameStatus(GameStatus status);
 
+
+    /**
+     * Update the current slot number to
+     *
+     * @param number
+     *              The new slot number.<br>
+     *              Must not be negative or above the NUMBER_OF_REGISTER_SLOTS.
+     * @throws IllegalArgumentException
+     *       if slotNumber is negative (slotNumber < 0),<br>
+     *       slotNumber is too high (slotNumber > NUMBER_OF_REGISTER_SLOTS),<br>
+     *       or slotNumber == null.
+     */
     void setCurrentSlotNumber(Integer number);
 
-    void doTurn();
 
-    void setUpTurn(IDeck[] selectedCards);
+    /**
+     * Perform round actions based on the games current state.
+     */
+    void doTurn();
 }

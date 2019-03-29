@@ -2,6 +2,7 @@ package inf112.project.RoboRally.objects;
 
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
+import inf112.project.RoboRally.actors.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,31 @@ public class Laser implements IObjects {
     private Rotation rotation;
     private int x,y;
     private ArrayList<GridDirection> walls;
+    private Player player;
+    private LaserTower tower;
 
-    public Laser (GridDirection direction, int damage) {
+    public Laser(GridDirection direction, int damage, Player player) {
         this.speed=0;
         this.direction=direction;
         this.damage=damage;
         this.rotation=null;
         this.walls=new ArrayList<>();
+        this.player = player;
+    }
+
+    public Laser(GridDirection direction, int damage, LaserTower tower) {
+        this.speed=0;
+        this.direction=direction;
+        this.damage=damage;
+        this.rotation=null;
+        this.walls=new ArrayList<>();
+        this.tower = tower;
+        this.x = tower.getCoordinates().getX();
+        this.y = tower.getCoordinates().getY();
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public int getX() {
@@ -93,13 +112,11 @@ public class Laser implements IObjects {
 
     }
 
-    public List<Coordinates> doAction(IPlayer player, int boardRows, int boardColumns) {
+    public List<Coordinates> doAction(int boardRows, int boardColumns) {
         ArrayList<Coordinates> visitedPositionsByLaser = new ArrayList<>();
-        setX(player.getX());
-        setY(player.getY());
 
         while (insideBoard(getX(), getY(), boardRows, boardColumns)) {
-            moveLaser(player);
+            moveLaser();
             if (insideBoard(getX(), getY(), boardRows, boardColumns)) {
                 visitedPositionsByLaser.add(new Coordinates(getX(), getY()));
             }
@@ -109,8 +126,15 @@ public class Laser implements IObjects {
     }
 
 
-    public void moveLaser(IPlayer player) {
-        switch (player.getPlayerDirection()) {
+    public void resetLaserPosition(Coordinates coordinates, GridDirection direction) {
+        setX(coordinates.getX());
+        setY(coordinates.getY());
+        if (direction != null)
+            setDirection(direction);
+    }
+
+    public void moveLaser() {
+        switch (direction) {
             case NORTH:
                 y = y + 1;
                 break;
@@ -127,7 +151,7 @@ public class Laser implements IObjects {
     }
 
     public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
-        return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
+        return (x <= boardColumns && x >= 0 && y <= boardRows && y >= 0);
     }
 
 
@@ -148,5 +172,16 @@ public class Laser implements IObjects {
     public boolean hasWalls() {
         return !walls.isEmpty();
     }
-    
+
+    public void setDirection(GridDirection direction) {
+        this.direction = direction;
+    }
+
+    public LaserTower getTower() {
+        return tower;
+    }
+
+    public boolean hasPlayer() {
+        return player != null;
+    }
 }

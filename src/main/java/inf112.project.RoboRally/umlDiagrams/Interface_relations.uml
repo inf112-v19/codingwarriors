@@ -3,53 +3,63 @@
   <ID>JAVA</ID>
   <OriginalElement>inf112.project.RoboRally.objects.RotationCog</OriginalElement>
   <nodes>
-    <node x="35.75" y="79.0">inf112.project.RoboRally.cards.IDeck</node>
-    <node x="23.797619047619044" y="237.0">inf112.project.RoboRally.game.IGame</node>
-    <node x="36.25" y="0.0">inf112.project.RoboRally.cards.ICard</node>
-    <node x="0.0" y="158.0">inf112.project.RoboRally.actors.IPlayer</node>
-    <node x="0.0" y="311.0">inf112.project.RoboRally.objects.IObjects</node>
-    <node x="132.75" y="79.0">inf112.project.RoboRally.cards.IProgramRegister</node>
+    <node x="341.25" y="145.0">inf112.project.RoboRally.cards.IDeck</node>
+    <node x="256.0" y="1403.0">inf112.project.RoboRally.game.IGame</node>
+    <node x="436.25" y="0.0">inf112.project.RoboRally.cards.ICard</node>
+    <node x="30.25" y="598.0">inf112.project.RoboRally.actors.IPlayer</node>
+    <node x="0.0" y="1480.0">inf112.project.RoboRally.objects.IObjects</node>
+    <node x="553.75" y="840.0">inf112.project.RoboRally.cards.IProgramRegister</node>
   </nodes>
   <notes />
   <edges>
     <edge source="inf112.project.RoboRally.actors.IPlayer" target="inf112.project.RoboRally.cards.ICard">
-      <point x="-20.75" y="-14.5" />
-      <point x="20.75" y="54.0" />
-      <point x="48.91666666666667" y="54.0" />
-      <point x="-25.33333333333333" y="14.5" />
+      <point x="-87.75" y="-377.5" />
+      <point x="118.0" y="120.0" />
+      <point x="471.9166666666667" y="120.0" />
+      <point x="-71.33333333333331" y="47.5" />
     </edge>
     <edge source="inf112.project.RoboRally.cards.IProgramRegister" target="inf112.project.RoboRally.cards.ICard">
-      <point x="0.0" y="-14.5" />
-      <point x="202.25" y="54.0" />
-      <point x="99.58333333333333" y="54.0" />
-      <point x="25.33333333333333" y="14.5" />
+      <point x="114.75" y="-135.5" />
+      <point x="898.0" y="120.0" />
+      <point x="614.5833333333333" y="120.0" />
+      <point x="71.33333333333326" y="47.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.objects.IObjects" target="inf112.project.RoboRally.actors.IPlayer">
+      <point x="0.0" y="-113.5" />
+      <point x="-87.75" y="377.5" />
     </edge>
     <edge source="inf112.project.RoboRally.game.IGame" target="inf112.project.RoboRally.actors.IPlayer">
-      <point x="-20.5" y="-14.5" />
-      <point x="44.297619047619044" y="212.0" />
-      <point x="41.5" y="212.0" />
-      <point x="0.0" y="14.5" />
+      <point x="-95.75" y="-190.5" />
+      <point x="351.75" y="1378.0" />
+      <point x="293.5" y="1378.0" />
+      <point x="87.75" y="377.5" />
     </edge>
     <edge source="inf112.project.RoboRally.actors.IPlayer" target="inf112.project.RoboRally.cards.IDeck">
-      <point x="20.75" y="-14.5" />
-      <point x="62.25" y="133.0" />
-      <point x="55.0" y="133.0" />
-      <point x="-19.25" y="14.5" />
+      <point x="87.75" y="-377.5" />
+      <point x="293.5" y="573.0" />
+      <point x="408.58333333333337" y="573.0" />
+      <point x="-134.66666666666663" y="201.5" />
     </edge>
     <edge source="inf112.project.RoboRally.game.IGame" target="inf112.project.RoboRally.cards.IDeck">
-      <point x="20.5" y="-14.5" />
-      <point x="85.29761904761904" y="212.0" />
-      <point x="93.5" y="212.0" />
-      <point x="19.25" y="14.5" />
+      <point x="95.75" y="-190.5" />
+      <point x="0.0" y="201.5" />
+    </edge>
+    <edge source="inf112.project.RoboRally.cards.IProgramRegister" target="inf112.project.RoboRally.cards.IDeck">
+      <point x="-114.75" y="-135.5" />
+      <point x="668.5" y="573.0" />
+      <point x="677.9166666666666" y="573.0" />
+      <point x="134.66666666666663" y="201.5" />
     </edge>
     <edge source="inf112.project.RoboRally.cards.IDeck" target="inf112.project.RoboRally.cards.ICard">
-      <point x="0.0" y="-14.5" />
-      <point x="0.0" y="14.5" />
+      <point x="0.0" y="-201.5" />
+      <point x="0.0" y="47.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="298.0" y="416.0" />
+  <settings layout="Hierarchic Group" zoom="0.9" x="553.6534569983136" y="348.97470489038784" />
   <SelectedNodes />
-  <Categories />
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
 </Diagram>

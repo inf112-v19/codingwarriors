@@ -3,33 +3,37 @@
   <ID>JAVA</ID>
   <OriginalElement>inf112.project.RoboRally.RoboRallyMain</OriginalElement>
   <nodes>
-    <node x="280.0" y="222.0">inf112.project.RoboRally.game.Game</node>
-    <node x="166.0" y="148.0">inf112.project.RoboRally.objects.ConveyorBelt</node>
-    <node x="0.0" y="0.0">inf112.project.RoboRally.gui.GraphicalUserInterface</node>
-    <node x="357.0" y="74.0">inf112.project.RoboRally.RoboRallyMain</node>
-    <node x="120.0" y="296.0">inf112.project.RoboRally.objects.Floor</node>
-    <node x="155.0" y="222.0">inf112.project.RoboRally.actors.Player</node>
-    <node x="346.0" y="370.0">inf112.project.RoboRally.gui.Tile</node>
-    <node x="240.0" y="296.0">inf112.project.RoboRally.cards.Deck</node>
-    <node x="181.0" y="74.0">inf112.project.RoboRally.objects.CrossedWrench</node>
-    <node x="359.0" y="296.0">inf112.project.RoboRally.cards.Card</node>
-    <node x="0.0" y="222.0">inf112.project.RoboRally.board.GameBoard</node>
-    <node x="330.0" y="148.0">inf112.project.RoboRally.objects.RotationCog</node>
-    <node x="0.0" y="74.0">inf112.project.RoboRally.cards.ProgramRegister</node>
-    <node x="212.0" y="0.0">inf112.project.RoboRally.gui.AssetsManagement</node>
-    <node x="0.0" y="370.0">inf112.project.RoboRally.objects.Wall</node>
-    <node x="404.0" y="222.0">inf112.project.RoboRally.gui.Input</node>
-    <node x="231.0" y="370.0">inf112.project.RoboRally.objects.Flag</node>
-    <node x="0.0" y="296.0">inf112.project.RoboRally.objects.Laser</node>
-    <node x="0.0" y="148.0">inf112.project.RoboRally.objects.SingleWrench</node>
-    <node x="116.0" y="370.0">inf112.project.RoboRally.gui.Grid</node>
-    <node x="0.0" y="444.0">inf112.project.RoboRally.objects.Pit</node>
+    <node x="423.0" y="0.0">inf112.project.RoboRally.game.Game</node>
+    <node x="986.0" y="0.0">inf112.project.RoboRally.gui.GraphicalUserInterface</node>
+    <node x="853.0" y="1802.0">inf112.project.RoboRally.RoboRallyMain</node>
+    <node x="1750.0" y="1286.0">inf112.project.RoboRally.gui.Tile</node>
+    <node x="0.0" y="0.0">inf112.project.RoboRally.actors.Player</node>
+    <node x="0.0" y="1286.0">inf112.project.RoboRally.cards.Deck</node>
+    <node x="304.0" y="1802.0">inf112.project.RoboRally.cards.Card</node>
+    <node x="1272.0" y="1286.0">inf112.project.RoboRally.board.GameBoard</node>
+    <node x="768.0" y="1286.0">inf112.project.RoboRally.cards.ProgramRegister</node>
+    <node x="563.0" y="1802.0">inf112.project.RoboRally.gui.AssetsManagement</node>
+    <node x="0.0" y="1802.0">inf112.project.RoboRally.gui.Input</node>
+    <node x="1447.0" y="277.0">inf112.project.RoboRally.objects.Laser</node>
+    <node x="449.0" y="1286.0">inf112.project.RoboRally.gui.Grid</node>
+    <node x="1447.0" y="0.0">inf112.project.RoboRally.objects.IObjects</node>
   </nodes>
   <notes />
-  <edges />
-  <settings layout="Hierarchic Group" zoom="0.9" x="306.51361295069887" y="195.98601913171456" />
-  <SelectedNodes />
-  <Categories />
+  <edges>
+    <edge source="inf112.project.RoboRally.objects.Laser" target="inf112.project.RoboRally.objects.IObjects">
+      <point x="0.0" y="-246.5" />
+      <point x="0.0" y="113.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8" x="284.30463576158934" y="334.27373068432655" />
+  <SelectedNodes>
+    <node>inf112.project.RoboRally.RoboRallyMain</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+  </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
 </Diagram>
