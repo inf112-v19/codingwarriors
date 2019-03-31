@@ -118,6 +118,21 @@ public interface IGame {
 
 
     /**
+     * Check if the given player is prevented from performing actions.<br>
+     * A player is unable to act if they are destroyed,
+     * are permanently out of the game,
+     * or is powered down (to be implemented).
+     *
+     * @param player
+     *              The player to check for action eligibility.
+     * @return true if the player can perform game actions,
+     *       false otherwise
+     * @throws IllegalArgumentException
+     *      If the given player is null (player == null).
+     */
+    Boolean checkIfThePlayerIsOperational(IPlayer player);
+
+    /**
      * Returns the game board
      * @return Returns the game board
      */
@@ -171,7 +186,9 @@ public interface IGame {
 
     List<Laser> getLasers();
 
-    List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction);
+    List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction, Laser laser);
 
     boolean gameOver();
+
+    int getCurrentSlotNumber();
 }

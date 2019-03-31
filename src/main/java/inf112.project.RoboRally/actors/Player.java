@@ -1,14 +1,10 @@
 package inf112.project.RoboRally.actors;
 
 import com.badlogic.gdx.graphics.Color;
-import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.*;
-import inf112.project.RoboRally.game.Game;
-import inf112.project.RoboRally.objects.Flag;
 import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.Laser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
@@ -39,7 +35,7 @@ public class Player implements IPlayer {
         this.register = new ProgramRegister();
         this.flagsVisited = 0;
         this.wasDestroyedThisTurn = false;
-        this.laser = new Laser(playerDirection, 1, this);
+        this.laser = new Laser(1, this);
     }
 
     @Override
@@ -104,9 +100,6 @@ public class Player implements IPlayer {
             case BACKWARDS: moveInDirection(opposite(), 1);
             break;
         }
-        laser.setX(x);
-        laser.setY(y);
-        laser.setDirection(playerDirection);
         System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
@@ -122,9 +115,6 @@ public class Player implements IPlayer {
             x++;
         }
 
-        laser.setX(x);
-        laser.setY(y);
-        laser.setDirection(playerDirection);
         System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
@@ -155,10 +145,6 @@ public class Player implements IPlayer {
         }
     }
 
-    public int getNumberOfDamageTokensRecieved() {
-        return numberOfDamageTokensRecieved;
-    }
-
     @Override
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
@@ -173,9 +159,9 @@ public class Player implements IPlayer {
                     break;
             case 9: this.lockNRegistersAndUnlockMRegisters(5, 0);
                     break;
-            case 10: this.destroyPlayer();
-                     this.unlockNRegisters(5);
-                     break;
+          //  case 10: this.destroyPlayer();
+          //           this.unlockNRegisters(5);
+          //           break;
             default: this.unlockNRegisters(5); break;
         }
     }
@@ -306,12 +292,11 @@ public class Player implements IPlayer {
         this.x=backupX;
         this.y=backupY;
         this.numberOfDamageTokensRecieved = 0; // Reset damage
+        wasDestroyedThisTurn = false;
         takeOneDamage(); // Take two damage
         takeOneDamage();
-        laser.setX(x);
-        laser.setY(y);
-        laser.setDirection(playerDirection);
-        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
+        System.out.println("New laser location is x:" + laser.getX()
+                + ", y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override

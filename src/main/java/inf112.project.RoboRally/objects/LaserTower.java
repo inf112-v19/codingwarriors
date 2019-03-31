@@ -11,7 +11,7 @@ public class LaserTower implements IObjects {
     public LaserTower(Coordinates coordinates, GridDirection direction) {
         this.coordinates = coordinates;
         this.direction = direction;
-        laser = new Laser(direction, 1, this);
+        laser = new Laser(1, this);
     }
 
 

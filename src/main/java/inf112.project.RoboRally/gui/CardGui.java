@@ -72,7 +72,11 @@ public class CardGui {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(30/255f,30/255f,30/255f,200/255f);
+        shapeRenderer.setColor(
+                currentPlayer.getColor().r/5
+                ,currentPlayer.getColor().g/5
+                ,currentPlayer.getColor().b/5
+                ,200/255f);
         shapeRenderer.rect(0,0,width,height);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -84,7 +88,7 @@ public class CardGui {
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
         for (int i = 0; i < game.getActivePlayers().size(); i++) {
             font.setColor(game.getActivePlayers().get(i).getColor());
-            font.draw(cardBatch,game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(0).toString(),
+            font.draw(cardBatch,game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(game.getCurrentSlotNumber()).toString(),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
             font.setColor(Color.WHITE);
@@ -130,26 +134,6 @@ public class CardGui {
     }
 
 
-    public void AISelectCards() {
-        currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
-        System.out.println("Entering select cards for " + currentPlayer.getName());
-        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
-        int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
-        int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        for (int i = 0; i < numberOfCardsToSelect; i++) {
-            moveSelectedCardToPlayersListOfSelectedCards(i);
-        }
-        //this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
-        if (currentPlayerIndex == indexOfTheLastPlayer) {
-            currentPlayerIndex = 0;
-            game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-            System.out.println("finished selecting cards");
-        } else {
-            System.out.println("updating current player");
-            currentPlayerIndex++;
-        }
-    }
-
     void selectCards(int indexOfSelectedCard) {
         currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
         System.out.println("Entering select cards for " + currentPlayer.getName());
@@ -179,7 +163,6 @@ public class CardGui {
         int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
         int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        System.out.println("last player index: " + indexOfTheLastPlayer);
         if (numberOfSelectedCards >= numberOfCardsToSelect) {
             this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             if (currentPlayerIndex == indexOfTheLastPlayer) {
@@ -213,7 +196,6 @@ public class CardGui {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         ICard selectedCard = playersDeckOfCards.removeCard(index);
         int lastPos = selectedCards[currentPlayerIndex].getSize();
-        System.out.println(lastPos);
         selectedCards[currentPlayerIndex].addCardToDeckAtPosition(lastPos, selectedCard);
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
     }
