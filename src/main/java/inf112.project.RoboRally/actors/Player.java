@@ -306,6 +306,7 @@ public class Player implements IPlayer {
         this.x=backupX;
         this.y=backupY;
         this.numberOfDamageTokensRecieved = 0; // Reset damage
+        wasDestroyedThisTurn = false;
         takeOneDamage(); // Take two damage
         takeOneDamage();
         laser.setX(x);
