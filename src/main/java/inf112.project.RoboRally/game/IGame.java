@@ -174,4 +174,6 @@ public interface IGame {
     List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction);
 
     boolean gameOver();
+
+    int getCurrentSlotNumber();
 }
