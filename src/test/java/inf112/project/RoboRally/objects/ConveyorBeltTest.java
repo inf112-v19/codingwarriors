@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.objects;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Before;
@@ -36,7 +37,7 @@ public class ConveyorBeltTest {
 	public void noMovementShouldRetainPlayerPosition() {
 		x=0;
 		y=0;
-		player = new Player("foo", x, y);
+		player = new Player("foo", x, y, Color.RED);
 		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
 		assertEquals(tile.getSpeed(), 0);
 		tile.doAction(player);
@@ -48,7 +49,7 @@ public class ConveyorBeltTest {
 	public void oneStepNorthShouldMoveThePlayerOneStepNorth() {
 		x=1;
 		y=0;
-		player = new Player("foo", x, y);
+		player = new Player("foo", x, y, Color.RED);
 		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
 		
 		// a small check that may reveal the gameboard to be the reason for failure, not the method
@@ -64,7 +65,7 @@ public class ConveyorBeltTest {
 	public void oneStepSouthShouldMoveThePlayerOneStepSouth() {
 		x=1;
 		y=3;
-		player = new Player("foo", x, y);
+		player = new Player("foo", x, y, Color.RED);
 		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
 		
 		// a small check that may reveal the gameboard to be the reason for failure, not the method
@@ -80,7 +81,7 @@ public class ConveyorBeltTest {
 	public void oneStepEastShouldMoveThePlayerOneStepEast() {
 		x=0;
 		y=1;
-		player = new Player("foo", x, y);
+		player = new Player("foo", x, y, Color.RED);
 		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
 		
 		// a small check that may reveal the gameboard to be the reason for failure, not the method
@@ -96,7 +97,7 @@ public class ConveyorBeltTest {
 	public void oneStepWestShouldMoveThePlayerOneStepWest() {
 		x=3;
 		y=1;
-		player = new Player("foo", x, y);
+		player = new Player("foo", x, y, Color.RED);
 		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
 		
 		// a small check that may reveal the gameboard to be the reason for failure, not the method

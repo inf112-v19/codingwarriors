@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.*;
 import inf112.project.RoboRally.game.Game;
@@ -22,8 +23,10 @@ public class Player implements IPlayer {
     private int flagsVisited;
     private boolean wasDestroyedThisTurn;
     private Laser laser;
+    private Color color;
 
-    public Player(String name, int x, int y) {
+    public Player(String name, int x, int y, Color color) {
+        this.color = color;
         this.x = x;
         this.y = y;
         this.backupX = this.x;
@@ -36,7 +39,7 @@ public class Player implements IPlayer {
         this.register = new ProgramRegister();
         this.flagsVisited = 0;
         this.wasDestroyedThisTurn = false;
-        this.laser = new Laser(playerDirection, 1);
+        this.laser = new Laser(playerDirection, 1, this);
     }
 
     @Override
@@ -101,6 +104,10 @@ public class Player implements IPlayer {
             case BACKWARDS: moveInDirection(opposite(), 1);
             break;
         }
+        laser.setX(x);
+        laser.setY(y);
+        laser.setDirection(playerDirection);
+        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -114,6 +121,19 @@ public class Player implements IPlayer {
         } else if (direction == GridDirection.EAST) {
             x++;
         }
+
+        laser.setX(x);
+        laser.setY(y);
+        laser.setDirection(playerDirection);
+        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Player player = (Player) obj;
+        if (x == player.getX() && y == player.getY())
+            return true;
+        return false;
     }
 
     @Override
@@ -288,6 +308,10 @@ public class Player implements IPlayer {
         this.numberOfDamageTokensRecieved = 0; // Reset damage
         takeOneDamage(); // Take two damage
         takeOneDamage();
+        laser.setX(x);
+        laser.setY(y);
+        laser.setDirection(playerDirection);
+        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -339,14 +363,10 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void rotateLeft() {
-        this.playerDirection = playerDirection.rotateLeft();
-    }
+    public void rotateLeft() { this.playerDirection = playerDirection.rotateLeft(); }
 
     @Override
-    public void rotateRight() {
-        this.playerDirection = playerDirection.rotateRight();
-    }
+    public void rotateRight() { this.playerDirection = playerDirection.rotateRight(); }
 
     @Override
     public String getName() {
@@ -366,6 +386,11 @@ public class Player implements IPlayer {
     @Override
     public Laser getLaser() {
         return laser;
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
     }
 
     public Coordinates getCoordinates() {

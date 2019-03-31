@@ -1,42 +1,43 @@
 package inf112.project.RoboRally.objects;
 
+import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 
-import java.util.ArrayList;
-
-public class Wall implements IObjects {
-    private int speed;
+public class LaserTower implements IObjects {
     private GridDirection direction;
-    private int damage;
-    private Rotation rotation;
-    private ArrayList<GridDirection> walls;
+    private Coordinates coordinates;
+    private Laser laser;
 
-    public Wall () {
-        this.speed=0;
-        this.direction=null;
-        this.damage=0;
-        this.rotation=null;
-        this.walls=new ArrayList<>();
+    public LaserTower(Coordinates coordinates, GridDirection direction) {
+        this.coordinates = coordinates;
+        this.direction = direction;
+        laser = new Laser(direction, 1, this);
     }
-    
+
+
     @Override
     public boolean isWall(GridDirection direction) {
         return false;
     }
-    
+
+    @Override
+    public boolean hasWalls() {
+        return false;
+    }
+
     @Override
     public void buildWall(GridDirection direction) {
-    
+
     }
-    
+
     @Override
     public void removeWall(GridDirection direction) {
-    
+
     }
-    
+
     @Override
     public int getSpeed() {
-        return speed;
+        return 0;
     }
 
     @Override
@@ -46,32 +47,34 @@ public class Wall implements IObjects {
 
     @Override
     public int getDamage() {
-        return damage;
+        return 0;
     }
 
     @Override
     public Rotation getRotation() {
-        return rotation;
+        return null;
     }
-    
+
     @Override
     public void doAction(IPlayer player) {
-        // TODO No action needed here?
+
     }
 
     @Override
     public String getTexture() {
         return null;
     }
-    
+
     @Override
     public String getWallTexture() {
-        return GridDirection.getWallTexture(walls);
+        return null;
     }
-    
-    @Override
-    public boolean hasWalls() {
-        return !walls.isEmpty();
+
+    public Laser getLaser() {
+        return laser;
     }
-    
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
 }
