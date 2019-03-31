@@ -149,7 +149,7 @@ public class Laser implements IObjects {
     }
 
     public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
-        return (x <= boardColumns && x >= 0 && y <= boardRows && y >= 0);
+        return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
     }
 
 
