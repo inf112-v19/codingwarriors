@@ -35,6 +35,7 @@ public class Game implements IGame {
     private boolean everyFlagHasBeenVisited;
     private GameStatus currentGameStatus;
     private IPlayer currentlyActingPlayer; // The player whose cards are to be displayed.
+
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
     private IDeck[] selectedCards;
@@ -89,7 +90,7 @@ public class Game implements IGame {
 
     public void addLaserTowers() {
         // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
-        LaserTower tower = new LaserTower(new Coordinates(4, 12), GridDirection.SOUTH);
+        LaserTower tower = new LaserTower(new Coordinates(4, 11), GridDirection.SOUTH);
         lasers.add(tower.getLaser());
     }
 
@@ -395,21 +396,11 @@ public class Game implements IGame {
     private void fireLasers() {
         int counter = 0;
         for (Laser laser : lasers) {
+            laser.resetLaserPosition();
             counter++;
             String name = laser.hasPlayer() ? laser.getPlayer().getName() : "Tower";
             System.out.println(counter + " " + name);
             fireLaser(laser);
-            if (!laser.hasPlayer()) {
-                laser.resetLaserPosition(laser.getTower().getCoordinates(), laser.getTower().getDirection());
-            } else if (this.checkIfThePlayerIsOperational(laser.getPlayer())) {
-                laser.resetLaserPosition(laser.getPlayer().getCoordinates(), laser.getPlayer().getPlayerDirection());
-            }
-/*
-            if (laser.hasPlayer() && !laser.getPlayer().wasDestroyedThisTurn()) // checks if its a laser fired from a player or a tower
-                laser.resetLaserPosition(laser.getPlayer().getCoordinates(), laser.getPlayer().getPlayerDirection());
-            else if (!laser.hasPlayer()) {
-                laser.resetLaserPosition(laser.getTower().getCoordinates(), laser.getTower().getDirection());
-            }*/
         }
         Laser laserToRemove = null;
         for (IPlayer player : this.getPlayersOutOfTheGame()) {
@@ -420,20 +411,6 @@ public class Game implements IGame {
             }
             lasers.remove(laserToRemove);
         }
-/*
-        for (int i = 0; i < players.size(); i++) {
-            if (!players.get(i).hasLifeLeft()) {
-                for (int j = 0; j < lasers.size(); j++) {
-                    if (lasers.get(j).equals(players.get(i))) {
-                        lasers.remove(j);
-                    }
-                }
-                players.remove(i);
-                i++;
-            }  // else if (players.get(i).getPlayerDamage() > 9) {
-               // destroyPlayer(players.get(i));
-            //}
-        }*/
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
             this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
         } else {
@@ -453,16 +430,12 @@ public class Game implements IGame {
             throw new IllegalArgumentException("Not a valid laser");
         }
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
-        List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser, laser);
+        List shortestPathToPlayer = getPath(coordinatesHitByLaser,laser.getDirection(), laser); //shortestPathToObstacle(coordinatesHitByLaser, laser);
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates()) &&
                     otherPlayer.getLaser() != laser) {
                 otherPlayer.takeOneDamage();
-                if (otherPlayer.getPlayerDamage() > MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED) {
-                    this.destroyPlayer(otherPlayer);
-                }
-
-
+                this.destroyPlayerIfNecessary(otherPlayer);
                 System.out.print(otherPlayer.getName() + " was hit by a laser from ");
                 if (laser.hasPlayer()) System.out.println(laser.getPlayer().getName());
                 else System.out.println("a tower");
@@ -472,33 +445,23 @@ public class Game implements IGame {
         }
     }
 
-
-    // in the case of multiple players being on the same line,
-    // this method checks for the shortest path to a player
-    public List shortestPathToObstacle(List laserCoordinates, Laser laser) {
-        List finalLaserCoordinates = new ArrayList();
-        List comparativeList = new ArrayList();
-        int smallestListSize = laserCoordinates.size();
-
-        for (IPlayer player : players) {
-            if (laser.hasPlayer() && player.getLaser() == laser) // if the laser fired hits the player who
-                continue;                                        // fired it just continue
-            for (int i = 0; i < laserCoordinates.size(); i++) {
-                if (laserCoordinates.get(i).equals(((Player) player).getCoordinates())) {
-                    comparativeList.add(laserCoordinates.get(i));
-                    if (comparativeList.size() < smallestListSize) {
-                        smallestListSize = comparativeList.size();
-                        finalLaserCoordinates = new ArrayList(comparativeList);
-                        comparativeList.clear();
-                    }
-                    break;
-                }
-                comparativeList.add(laserCoordinates.get(i));
-            }
-            comparativeList.clear();
+    /**
+     * Checks if the given player should be destroyed.
+     * If yes, it destroys the player.
+     * If no, the player is left alive.
+     *
+     * @param player
+     *              The player to potentially be destroyed.
+     */
+    private void destroyPlayerIfNecessary(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
         }
-        return finalLaserCoordinates;
+        if (player.getPlayerDamage() > MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED) {
+            this.destroyPlayer(player);
+        }
     }
+
 
     /**
      * Reveals the selected program cards for the current register slot,
@@ -535,16 +498,11 @@ public class Game implements IGame {
 
 
     @Override
-    public List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction) {
+    public List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction, Laser laser) {
         List<Coordinates> path = new ArrayList<>();
         for (Coordinates coordinate : coordinates) {
-            // looking for players
-            for (IPlayer player :activePlayers) {
-                if (player.getX() == coordinate.getX() && player.getY() == coordinate.getY()) {
-                    path.add(coordinate);
-                    return path;
-                }
-            }
+
+
             // looking for walls
             if (!board.moveValid(coordinate.getX(), coordinate.getY())) {
                 return path;
@@ -556,6 +514,15 @@ public class Game implements IGame {
                 path.add(coordinate);
                 return path;
             }
+
+            // looking for players
+            for (IPlayer player :activePlayers) {
+                if (player.getX() == coordinate.getX() && player.getY() == coordinate.getY() && player.getLaser() != laser) {
+                    path.add(coordinate);
+                    return path;
+                }
+            }
+
             path.add(coordinate);
         }
         return path;
@@ -677,11 +644,11 @@ public class Game implements IGame {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
         }
-        System.out.println("player " + player.getName() + " was destroyed at");
-        System.out.println("x: " + player.getX());
-        System.out.println("y: " + player.getY());
-        player.destroyPlayer();
-        this.activePlayers.remove(player);
+            System.out.println("player " + player.getName() + " was destroyed at");
+            System.out.println("x: " + player.getX());
+            System.out.println("y: " + player.getY());
+            player.destroyPlayer();
+            this.activePlayers.remove(player);
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
@@ -738,6 +705,10 @@ public class Game implements IGame {
 
     public boolean gameOver() {
         return numberOfPlayersLeftInTheGame == 0;
+    }
+
+    public int getCurrentSlotNumber() {
+        return currentSlotNumber;
     }
 
 }

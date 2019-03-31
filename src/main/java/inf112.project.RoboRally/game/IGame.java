@@ -186,7 +186,9 @@ public interface IGame {
 
     List<Laser> getLasers();
 
-    List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction);
+    List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction, Laser laser);
 
     boolean gameOver();
+
+    int getCurrentSlotNumber();
 }

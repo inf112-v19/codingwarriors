@@ -199,12 +199,13 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private void drawLasers() {
        if (game.getTheCurrentGameStatus().equals(GameStatus.EXECUTING_INSTRUCTIONS)) {
             for (Laser laser : game.getLasers()) {
-                for (Coordinates coordinate : game.getPath(laser.getCoordinates(), laser.getDirection())) {
+                List<Coordinates> coordinates = game.getPath(laser.getCoordinates(), laser.getDirection(), laser);
+                for (int i = 0; i < coordinates.size(); i++) {
+                    if (laser.hasPlayer() && i == 0) continue;
                     batch.draw(assetsManager.getAssetFileName(laser.getTexture()),
-                            boardScreen.getStartX(coordinate.getX()), boardScreen.getStartY(coordinate.getY()),
+                            boardScreen.getStartX(coordinates.get(i).getX()), boardScreen.getStartY(coordinates.get(i).getY()),
                             boardScreen.getTileWidth(), boardScreen.getTileHeight());
                 }
-
             }
        }
     }
