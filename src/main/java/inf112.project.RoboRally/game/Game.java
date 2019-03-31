@@ -254,11 +254,11 @@ public class Game implements IGame {
                 executingInstructions();
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
-                System.out.println("exe game obj");
+                System.out.println("EXECUTING_GAME_OBJECTS");
                 executingGameBoardObjects();
                 return;
             case FIRING_LASERS:
-                System.out.println("firing lasers");
+                System.out.println("FIRING_LASERS");
                 this.fireLasers();
                 return;
             case FINISHING_UP_THE_TURN:
@@ -285,7 +285,6 @@ public class Game implements IGame {
      * and all destroyed players are brought back into the game.
      */
     private void cleanUpTurn() {
-        System.out.println("cleaning");
         for (IPlayer player : players) {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 IObjects playerIsStandingOn = this.getBoard().getObject(player.getX(), player.getY());
@@ -333,14 +332,21 @@ public class Game implements IGame {
                 } else {
                     this.destroyPlayer(player);
                     if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
-                        this.setCurrentSlotNumber(0);
-                        this.setGameStatus(FINISHING_UP_THE_TURN);
+                        this.finishEarly();
                         return;
                     }
                 }
             }
         }
         setGameStatus(FIRING_LASERS);
+    }
+
+    /**
+     * Prepares for the current turn to end early.
+     */
+    private void finishEarly() {
+        this.setCurrentSlotNumber(0);
+        this.setGameStatus(FINISHING_UP_THE_TURN);
     }
 
     /**
