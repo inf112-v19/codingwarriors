@@ -155,10 +155,6 @@ public class Player implements IPlayer {
         }
     }
 
-    public int getNumberOfDamageTokensRecieved() {
-        return numberOfDamageTokensRecieved;
-    }
-
     @Override
     public void assessCurrentDamage() {
         int currentDamageTaken = this.numberOfDamageTokensRecieved;
@@ -173,9 +169,9 @@ public class Player implements IPlayer {
                     break;
             case 9: this.lockNRegistersAndUnlockMRegisters(5, 0);
                     break;
-            case 10: this.destroyPlayer();
-                     this.unlockNRegisters(5);
-                     break;
+          //  case 10: this.destroyPlayer();
+          //           this.unlockNRegisters(5);
+          //           break;
             default: this.unlockNRegisters(5); break;
         }
     }
@@ -311,7 +307,8 @@ public class Player implements IPlayer {
         laser.setX(x);
         laser.setY(y);
         laser.setDirection(playerDirection);
-        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
+        System.out.println("New laser location is x:" + laser.getX()
+                + ", y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
