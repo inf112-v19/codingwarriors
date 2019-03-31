@@ -88,7 +88,7 @@ public class Game implements IGame {
 
     public void addLaserTowers() {
         // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
-        LaserTower tower = new LaserTower(new Coordinates(4, 12), GridDirection.SOUTH);
+        LaserTower tower = new LaserTower(new Coordinates(4, 11), GridDirection.SOUTH);
         lasers.add(tower.getLaser());
     }
 
@@ -371,15 +371,11 @@ public class Game implements IGame {
     private void fireLasers() {
         int counter = 0;
         for (Laser laser : lasers) {
+            laser.resetLaserPosition();
             counter++;
             String name = laser.hasPlayer() ? laser.getPlayer().getName() : "Tower";
             System.out.println(counter + " " + name);
             fireLaser(laser);
-            if (laser.hasPlayer() && !laser.getPlayer().wasDestroyedThisTurn()) // checks if its a laser fired from a player or a tower
-                laser.resetLaserPosition(laser.getPlayer().getCoordinates(), laser.getPlayer().getPlayerDirection());
-            else if (!laser.hasPlayer()) {
-                laser.resetLaserPosition(laser.getTower().getCoordinates(), laser.getTower().getDirection());
-            }
         }
         removeDestroyedPlayersFromActivePlayers();
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
@@ -409,7 +405,7 @@ public class Game implements IGame {
             throw new IllegalArgumentException("Not a valid laser");
         }
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
-        List shortestPathToPlayer = shortestPathToObstacle(coordinatesHitByLaser, laser);
+        List shortestPathToPlayer = getPath(coordinatesHitByLaser,laser.getDirection(), laser); //shortestPathToObstacle(coordinatesHitByLaser, laser);
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates()) &&
                     otherPlayer.getLaser() != laser) {
@@ -422,34 +418,7 @@ public class Game implements IGame {
             }
         }
     }
-
-
-    // in the case of multiple players being on the same line this method checks for the shortest path to a player
-    public List shortestPathToObstacle(List laserCoordinates, Laser laser) {
-        List finalLaserCoordinates = new ArrayList();
-        List comparativeList = new ArrayList();
-        int smallestListSize = laserCoordinates.size();
-
-        for (IPlayer player : activePlayers) {
-            if (laser.hasPlayer() && player.getLaser() == laser) // if the laser fired hits the player who fired it just continue
-                continue;
-            for (int i = 0; i < laserCoordinates.size(); i++) {
-                if (laserCoordinates.get(i).equals(((Player) player).getCoordinates())) {
-                    comparativeList.add(laserCoordinates.get(i));
-                    if (comparativeList.size() < smallestListSize) {
-                        smallestListSize = comparativeList.size();
-                        finalLaserCoordinates = new ArrayList(comparativeList);
-                        comparativeList.clear();
-                    }
-                    break;
-                }
-                comparativeList.add(laserCoordinates.get(i));
-            }
-            comparativeList.clear();
-        }
-        return finalLaserCoordinates;
-    }
-
+    
     /**
      * Reveals the selected program cards for the current register slot,
      * sorts them by priority before executing the commands in order,
@@ -486,16 +455,11 @@ public class Game implements IGame {
 
 
     @Override
-    public List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction) {
+    public List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction, Laser laser) {
         List<Coordinates> path = new ArrayList<>();
         for (Coordinates coordinate : coordinates) {
-            // looking for players
-            for (IPlayer player :activePlayers) {
-                if (player.getX() == coordinate.getX() && player.getY() == coordinate.getY()) {
-                    path.add(coordinate);
-                    return path;
-                }
-            }
+
+
             // looking for walls
             if (!board.moveValid(coordinate.getX(), coordinate.getY())) {
                 return path;
@@ -507,6 +471,15 @@ public class Game implements IGame {
                 path.add(coordinate);
                 return path;
             }
+
+            // looking for players
+            for (IPlayer player :activePlayers) {
+                if (player.getX() == coordinate.getX() && player.getY() == coordinate.getY() && player.getLaser() != laser) {
+                    path.add(coordinate);
+                    return path;
+                }
+            }
+
             path.add(coordinate);
         }
         return path;
