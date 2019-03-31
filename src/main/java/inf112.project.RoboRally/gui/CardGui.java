@@ -68,7 +68,11 @@ public class CardGui {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(30/255f,30/255f,30/255f,200/255f);
+        shapeRenderer.setColor(
+                currentPlayer.getColor().r/5
+                ,currentPlayer.getColor().g/5
+                ,currentPlayer.getColor().b/5
+                ,200/255f);
         shapeRenderer.rect(0,0,width,height);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -80,7 +84,7 @@ public class CardGui {
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
         for (int i = 0; i < game.getActivePlayers().size(); i++) {
             font.setColor(game.getActivePlayers().get(i).getColor());
-            font.draw(cardBatch,game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(0).toString(),
+            font.draw(cardBatch,game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(game.getCurrentSlotNumber()).toString(),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
             font.setColor(Color.WHITE);
