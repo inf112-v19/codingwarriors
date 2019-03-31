@@ -357,7 +357,22 @@ public class Game implements IGame {
                 }
             }
         }
+        prepareLasersForFiring();
         setGameStatus(FIRING_LASERS);
+    }
+
+    /**
+     * Resets the lasers positions and test fires,
+     * so that the GUI can draw the laser beams correctly.
+     */
+    private void prepareLasersForFiring() {
+        for (Laser laser : lasers) {
+            if (!laser.hasPlayer() || (laser.hasPlayer()
+                    && this.checkIfThePlayerIsOperational(laser.getPlayer()))) {
+                laser.resetLaserPosition();
+                laser.doAction(board.getRows(), board.getColumns());
+            }
+        }
     }
 
     /**
@@ -390,18 +405,32 @@ public class Game implements IGame {
     }
 
     /**
-     * Fire the laser of every active player,
+     * Fire the laser of every active player and tower,
      * and removes lasers from players that are out of the game.
      */
     private void fireLasers() {
-        int counter = 0;
+        int counter = 1;
         for (Laser laser : lasers) {
-            laser.resetLaserPosition();
-            counter++;
-            String name = laser.hasPlayer() ? laser.getPlayer().getName() : "Tower";
-            System.out.println(counter + " " + name);
-            fireLaser(laser);
+            if (!laser.hasPlayer() || (laser.hasPlayer()
+                    && this.checkIfThePlayerIsOperational(laser.getPlayer()))) {
+                String name = laser.hasPlayer() ? laser.getPlayer().getName() : "Tower";
+                System.out.println(counter + " " + name);
+                fireLaser(laser);
+                counter++;
+            }
         }
+        removeLasersBelongingToDeadPlayers();
+        if (this.currentSlotNumber == 0) { // Gone through all the register slots,
+            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+        } else {
+            this.setGameStatus(EXECUTING_INSTRUCTIONS);
+        }
+    }
+
+    /**
+     * Remove lasers belonging to players that are no longer in the game.
+     */
+    private void removeLasersBelongingToDeadPlayers() {
         Laser laserToRemove = null;
         for (IPlayer player : this.getPlayersOutOfTheGame()) {
             for (Laser laser : lasers) {
@@ -410,11 +439,6 @@ public class Game implements IGame {
                 }
             }
             lasers.remove(laserToRemove);
-        }
-        if (this.currentSlotNumber == 0) { // Gone through all the register slots,
-            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
-        } else {
-            this.setGameStatus(EXECUTING_INSTRUCTIONS);
         }
     }
 
@@ -429,16 +453,19 @@ public class Game implements IGame {
         if (laser == null) {
             throw new IllegalArgumentException("Not a valid laser");
         }
+        laser.resetLaserPosition();
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
-        List shortestPathToPlayer = getPath(coordinatesHitByLaser,laser.getDirection(), laser); //shortestPathToObstacle(coordinatesHitByLaser, laser);
+        List shortestPathToPlayer = getPath(coordinatesHitByLaser, laser.getDirection(),
+                laser); //shortestPathToObstacle(coordinatesHitByLaser, laser);
         for (IPlayer otherPlayer : players) { // poor optimization
-            if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates()) &&
-                    otherPlayer.getLaser() != laser) {
-                otherPlayer.takeOneDamage();
-                this.destroyPlayerIfNecessary(otherPlayer);
+            if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())
+                    && otherPlayer.getLaser() != laser
+                    && this.checkIfThePlayerIsInTheGame(otherPlayer)) {
                 System.out.print(otherPlayer.getName() + " was hit by a laser from ");
                 if (laser.hasPlayer()) System.out.println(laser.getPlayer().getName());
                 else System.out.println("a tower");
+                otherPlayer.takeOneDamage();
+                this.destroyPlayerIfNecessary(otherPlayer);
                 System.out.println(" and now has " + otherPlayer.getPlayerDamage() + " damage tokens and "
                         + otherPlayer.getNumberOfLivesRemaining() + " lives remaining");
             }
@@ -516,10 +543,13 @@ public class Game implements IGame {
             }
 
             // looking for players
-            for (IPlayer player :activePlayers) {
-                if (player.getX() == coordinate.getX() && player.getY() == coordinate.getY() && player.getLaser() != laser) {
-                    path.add(coordinate);
-                    return path;
+            for (IPlayer player : players) {
+                if (this.checkIfThePlayerIsInTheGame(player)) { // only look for players that can be hit
+                    if (player.getX() == coordinate.getX() && player.getY() == coordinate.getY()
+                            && player.getLaser() != laser) {
+                        path.add(coordinate);
+                        return path;
+                    }
                 }
             }
 
