@@ -27,6 +27,10 @@ class AssetsManagement {
         assetManager.load("assets/pit.png", Texture.class);
         assetManager.load("assets/player_one.png", Texture.class);
         assetManager.load("assets/player_color.png", Texture.class);
+        assetManager.load("assets/player_color_north.png", Texture.class);
+        assetManager.load("assets/player_color_south.png", Texture.class);
+        assetManager.load("assets/player_color_east.png", Texture.class);
+        assetManager.load("assets/player_color_west.png", Texture.class);
     
         //RotationCogs
         assetManager.load("assets/rotationCog_right.png", Texture.class);
