@@ -162,8 +162,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                 }
             }
             batch.setColor(player.getColor());
-            String direction = player.getPlayerDirection().toString().toLowerCase();
-            batch.draw(assetsManager.getAssetFileName("assets/player_color_" + direction + ".png")
+            batch.draw(assetsManager.getAssetFileName("assets/player_color_" + player.getPlayerDirection().toString().toLowerCase() + ".png")
                     ,xPositionDrawer[i],yPositionDrawer[i],
                     boardScreen.getTileWidth(), boardScreen.getTileHeight());
             batch.setColor(Color.WHITE);
