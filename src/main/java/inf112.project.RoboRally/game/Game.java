@@ -174,9 +174,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
         // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
-        IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
-        IPlayer player3 = new Player("G-bot", 2, 5, Color.LIME);
+        IPlayer player1 = new AI("Buzz", 2, 10, Color.RED);
+        IPlayer player2 = new AI("Emma", 5, 10, Color.CYAN);
+        IPlayer player3 = new AI("G-bot", 2, 5, Color.LIME);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);

@@ -25,7 +25,7 @@ import inf112.project.RoboRally.objects.*;
 import java.util.HashMap;
 import java.util.List;
 
-public class GraphicalUserInterface extends ApplicationAdapter{
+public class GraphicalUserInterface extends ApplicationAdapter {
     private IGame game;
     private Grid boardScreen;
     private static final int WIDTH = 1200;
@@ -49,13 +49,14 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     //private IDeck[] selectedCards;
 
     @Override
-    public void create () {
+    public void create() {
         createNewGame();
         setupScreens();
-        font = new BitmapFont();;
+        font = new BitmapFont();
+        ;
         shapeRenderer = new ShapeRenderer();
         GameOverBatch = new SpriteBatch();
-        cardGui = new CardGui(game,CARD_SCREEN_WIDTH,CARD_SCREEN_HEIGHT);
+        cardGui = new CardGui(game, CARD_SCREEN_WIDTH, CARD_SCREEN_HEIGHT);
         camera = new OrthographicCamera(WIDTH, HEIGHT);
         viewport = new FillViewport(WIDTH, HEIGHT, camera);
         viewport.apply();
@@ -74,8 +75,8 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void setupScreens() {
         boardScreen = new Grid(
-                new Tile(CARD_SCREEN_WIDTH,WIDTH,0,HEIGHT)
-                ,game.getBoard().getColumns(),game.getBoard().getRows());
+                new Tile(CARD_SCREEN_WIDTH, WIDTH, 0, HEIGHT)
+                , game.getBoard().getColumns(), game.getBoard().getRows());
     }
 
     private void createNewGame() {
@@ -86,7 +87,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     }
 
     @Override
-    public void render () {
+    public void render() {
         if (game.gameOver()) {
             GameOverBatch.begin();
             drawGameOverScreen();
@@ -113,8 +114,8 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     private void drawGameOverScreen() {
         GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameOver.png"),
-                WIDTH/3, HEIGHT/2,
-                WIDTH/2, HEIGHT/4);
+                WIDTH / 3, HEIGHT / 2,
+                WIDTH / 2, HEIGHT / 4);
 
 
     }
@@ -137,22 +138,6 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
     }
 
-    private void AISelectCards() {
-        int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
-        int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        for (int i = 0; i < numberOfCardsToSelect; i++) {
-            moveSelectedCardToPlayersListOfSelectedCards(i);
-        }
-        addTheSelectedCardsToTheCurrentPlayersProgramRegister();
-        if (currentPlayerIndex == indexOfTheLastPlayer) {
-            currentPlayerIndex = 0;
-            game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-            System.out.println("finished selecting cards");
-        } else {
-            System.out.println("updating current player");
-            currentPlayerIndex++;
-        }
-
 
         for (int i = 0; i < 5; i++) {
             selectedCards[currentPlayerIndex].addCardToDeckAtPosition(0,currentPlayer.getCardsInHand().removeCard(i));
@@ -169,9 +154,13 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     private void userInputs() {
         if (Gdx.input.justTouched()) {
             if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-                int x = Gdx.input.getX();
-                int y = HEIGHT - Gdx.input.getY();
-                cardGui.userInputs(x, y);
+                if (cardGui.getCurrentPlayer() instanceof AI) {
+                    cardGui.selectCards(0);
+                } else {
+                    int x = Gdx.input.getX();
+                    int y = HEIGHT - Gdx.input.getY();
+                    cardGui.userInputs(x, y);
+                }
             } else {
                 game.doTurn();
             }
@@ -179,38 +168,37 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     }
 
 
-
     private void drawPlayers() {
         List<IPlayer> players = game.getPlayers();
         int animationSpeed = 9;
         for (int i = 0; i < players.size(); i++) {
             IPlayer player = players.get(i);
-            if (!game.getBoard().moveValid(player.getX(),player.getY())) {
+            if (!game.getBoard().moveValid(player.getX(), player.getY())) {
                 continue;
             }
             int xPosPlayer = boardScreen.getStartX(player.getX());
             if (xPositionDrawer[i] != xPosPlayer) {
                 if (xPositionDrawer[i] < xPosPlayer) {
-                    xPositionDrawer[i] = xPositionDrawer[i]+animationSpeed > xPosPlayer ?
-                            xPosPlayer : xPositionDrawer[i]+animationSpeed;
+                    xPositionDrawer[i] = xPositionDrawer[i] + animationSpeed > xPosPlayer ?
+                            xPosPlayer : xPositionDrawer[i] + animationSpeed;
                 } else {
-                    xPositionDrawer[i] = xPositionDrawer[i]-animationSpeed < xPosPlayer ?
-                            xPosPlayer : xPositionDrawer[i]-animationSpeed;
+                    xPositionDrawer[i] = xPositionDrawer[i] - animationSpeed < xPosPlayer ?
+                            xPosPlayer : xPositionDrawer[i] - animationSpeed;
                 }
             }
             int yPosPlayer = boardScreen.getStartY(player.getY());
             if (yPositionDrawer[i] != yPosPlayer) {
                 if (yPositionDrawer[i] < yPosPlayer) {
-                    yPositionDrawer[i] = yPositionDrawer[i]+animationSpeed > yPosPlayer ?
-                            yPosPlayer : yPositionDrawer[i]+animationSpeed;
+                    yPositionDrawer[i] = yPositionDrawer[i] + animationSpeed > yPosPlayer ?
+                            yPosPlayer : yPositionDrawer[i] + animationSpeed;
                 } else {
-                    yPositionDrawer[i] = yPositionDrawer[i]-animationSpeed < yPosPlayer ?
-                            yPosPlayer : yPositionDrawer[i]-animationSpeed;
+                    yPositionDrawer[i] = yPositionDrawer[i] - animationSpeed < yPosPlayer ?
+                            yPosPlayer : yPositionDrawer[i] - animationSpeed;
                 }
             }
             batch.setColor(player.getColor());
             batch.draw(assetsManager.getAssetFileName("assets/player_color.png")
-                    ,xPositionDrawer[i],yPositionDrawer[i],
+                    , xPositionDrawer[i], yPositionDrawer[i],
                     boardScreen.getTileWidth(), boardScreen.getTileHeight());
             batch.setColor(Color.WHITE);
             batch.draw(assetsManager.getAssetFileName(player.getTexture()),
@@ -224,11 +212,11 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         int offset = 1;
         for (int j = 0; j < boardScreen.getHeight(); j++) {
             for (int i = 0; i < boardScreen.getWidth(); i++) {
-                IObjects object = game.getBoard().getObject(i,j);
+                IObjects object = game.getBoard().getObject(i, j);
                 String texture = object.getTexture();
                 batch.draw(assetsManager.getAssetFileName("assets/floor_metal.jpg"),
-                        boardScreen.getStartX(i)+offset, boardScreen.getStartY(j)+offset,
-                        boardScreen.getTileWidth()-offset*2, boardScreen.getTileHeight()-offset*2);
+                        boardScreen.getStartX(i) + offset, boardScreen.getStartY(j) + offset,
+                        boardScreen.getTileWidth() - offset * 2, boardScreen.getTileHeight() - offset * 2);
                 if (texture != null) {
                     batch.draw(assetsManager.getAssetFileName(object.getTexture()),
                             boardScreen.getStartX(i) + offset, boardScreen.getStartY(j) + offset,
@@ -244,7 +232,7 @@ public class GraphicalUserInterface extends ApplicationAdapter{
     }
 
     public void drawLasers() {
-       if (game.getTheCurrentGameStatus().equals(GameStatus.EXECUTING_INSTRUCTIONS)) {
+        if (game.getTheCurrentGameStatus().equals(GameStatus.EXECUTING_INSTRUCTIONS)) {
             for (Laser laser : game.getLasers()) {
                 for (Coordinates coordinate : game.getPath(laser.getCoordinates(), laser.getDirection())) {
                     batch.draw(assetsManager.getAssetFileName(laser.getTexture()),
@@ -253,11 +241,11 @@ public class GraphicalUserInterface extends ApplicationAdapter{
                 }
 
             }
-       }
+        }
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         batch.dispose();
         assetsManager.dispose();
     }

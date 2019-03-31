@@ -35,6 +35,10 @@ public class CardGui {
         setUpScreen();
     }
 
+    public IPlayer getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     private void setUpTextures() {
         cardBatch = new SpriteBatch();
         font = new BitmapFont();
@@ -126,13 +130,16 @@ public class CardGui {
     }
 
 
-    private void AISelectCards() {
+    public void AISelectCards() {
+        currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+        System.out.println("Entering select cards for " + currentPlayer.getName());
+        IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
         for (int i = 0; i < numberOfCardsToSelect; i++) {
             moveSelectedCardToPlayersListOfSelectedCards(i);
         }
-        addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+        //this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
         if (currentPlayerIndex == indexOfTheLastPlayer) {
             currentPlayerIndex = 0;
             game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
