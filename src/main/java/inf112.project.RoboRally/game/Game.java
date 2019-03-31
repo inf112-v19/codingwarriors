@@ -63,7 +63,7 @@ public class Game implements IGame {
                 "fnnnnnnnnnnnnnng" +
                 "................" +
                 "................" +
-                "................" +
+                ".nnnn..........." +
                 "......Mexico...." +
                 "................" +
                 "................" +
@@ -87,7 +87,7 @@ public class Game implements IGame {
 
     public void addLaserTowers() {
         // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
-        LaserTower tower = new LaserTower(new Coordinates(2, 12), GridDirection.SOUTH);
+        LaserTower tower = new LaserTower(new Coordinates(4, 12), GridDirection.SOUTH);
         lasers.add(tower.getLaser());
     }
 
