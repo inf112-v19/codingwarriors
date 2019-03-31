@@ -158,7 +158,6 @@ public class CardGui {
         int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
         int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        System.out.println("last player index: " + indexOfTheLastPlayer);
         if (numberOfSelectedCards >= numberOfCardsToSelect) {
             this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             if (currentPlayerIndex == indexOfTheLastPlayer) {
@@ -192,7 +191,6 @@ public class CardGui {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         ICard selectedCard = playersDeckOfCards.removeCard(index);
         int lastPos = selectedCards[currentPlayerIndex].getSize();
-        System.out.println(lastPos);
         selectedCards[currentPlayerIndex].addCardToDeckAtPosition(lastPos, selectedCard);
         System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
     }

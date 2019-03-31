@@ -39,7 +39,9 @@ public class Game implements IGame {
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
     private IDeck[] selectedCards;
-    private List<Laser> lasers = new ArrayList<>();
+    private List<Laser> lasers; // The list of lasers in the game.
+    private final int MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED = 9; // The number of damage tokens a player
+    // can receive before being destroyed. (NumberOfTokens >= 10) == destroy(player);
 
 
     /**
@@ -109,7 +111,7 @@ public class Game implements IGame {
         } else {
             drawnCards = this.programCards.handOutNCards(numberOfCardsToDraw);
         }
-        System.out.println("dealt cards to player: " + player.getName());
+        System.out.println("Dealt cards to player: " + player.getName());
         player.addCardsToPlayersHand(drawnCards);
     }
 
@@ -132,6 +134,7 @@ public class Game implements IGame {
             int numberOfCardsPlayerCanDraw =
                     calculateTheNumberOfCardsThePlayerCanDraw(player);
             player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
+            System.out.println("Dealt cards to " + player.getName());
         }
     }
 
@@ -154,7 +157,8 @@ public class Game implements IGame {
     public void initializeGame(String gameBoardLayout, String gameBoardWalls) {
         //TODO: Make initializeGame take a gameboard as parameter,
         // which can be chosen at the start menu?
-        addPlayers();
+        this.lasers = new ArrayList<>();
+        this.addPlayers();
         this.board = new GameBoard(gameBoardLayout, gameBoardWalls);
         this.programCards = new Deck();
         this.discardedProgramCards = new Deck();
@@ -164,7 +168,8 @@ public class Game implements IGame {
         this.currentSlotNumber = 0;
         this.destroyedPlayers = new ArrayList<>();
         this.playersOutOfTheGame = new ArrayList<>();
-        addLaserTowers();
+
+        this.addLaserTowers();
 
         this.updateDeckOfSelectedCards();
         this.dealOutProgramCards();
@@ -213,6 +218,19 @@ public class Game implements IGame {
         return this.currentGameStatus;
     }
 
+    @Override
+    public Boolean checkIfThePlayerIsOperational(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
+        boolean playerIsOperational = true;
+        if (!this.checkIfThePlayerIsInTheGame(player)) {
+            playerIsOperational = false;
+        }
+        //TODO: check if player is powered down
+        return playerIsOperational;
+    }
+
     public GameBoard getBoard() {
         return board;
     }
@@ -255,11 +273,11 @@ public class Game implements IGame {
                 executingInstructions();
                 return;
             case EXECUTING_GAME_BOARD_OBJECTS:
-                System.out.println("exe game obj");
+                System.out.println("EXECUTING_GAME_OBJECTS");
                 executingGameBoardObjects();
                 return;
             case FIRING_LASERS:
-                System.out.println("firing lasers");
+                System.out.println("FIRING_LASERS");
                 this.fireLasers();
                 return;
             case FINISHING_UP_THE_TURN:
@@ -286,7 +304,6 @@ public class Game implements IGame {
      * and all destroyed players are brought back into the game.
      */
     private void cleanUpTurn() {
-        System.out.println("cleaning");
         for (IPlayer player : players) {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 IObjects playerIsStandingOn = this.getBoard().getObject(player.getX(), player.getY());
@@ -326,22 +343,29 @@ public class Game implements IGame {
      * they are destroyed.
      */
     private void executingGameBoardObjects() {
-        for (int i = activePlayers.size()-1; i>=0; i--) {
-            IPlayer player = activePlayers.get(i);
-            if (board.moveValid(player.getX(), player.getY())) {
-                board.getObject(player.getX(), player.getY()).doAction(player);
-                // this.firePlayersLaser(player); // to be moved
-            } else {
-                player.destroyPlayer();
-                System.out.println(player.getName() + " was destroyed");
-                if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
-                    this.setCurrentSlotNumber(0);
-                    this.setGameStatus(FINISHING_UP_THE_TURN);
-                    return;
+        for (IPlayer player : players) {
+            if (this.checkIfThePlayerIsInTheGame(player)) {
+                if (board.moveValid(player.getX(), player.getY())) {
+                    board.getObject(player.getX(), player.getY()).doAction(player);
+                    // this.firePlayersLaser(player); // to be moved
+                } else {
+                    this.destroyPlayer(player);
+                    if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
+                        this.finishEarly();
+                        return;
+                    }
                 }
             }
         }
         setGameStatus(FIRING_LASERS);
+    }
+
+    /**
+     * Prepares for the current turn to end early.
+     */
+    private void finishEarly() {
+        this.setCurrentSlotNumber(0);
+        this.setGameStatus(FINISHING_UP_THE_TURN);
     }
 
     /**
@@ -366,7 +390,8 @@ public class Game implements IGame {
     }
 
     /**
-     * Fire the laser of every active player.
+     * Fire the laser of every active player,
+     * and removes lasers from players that are out of the game.
      */
     private void fireLasers() {
         int counter = 0;
@@ -377,19 +402,19 @@ public class Game implements IGame {
             System.out.println(counter + " " + name);
             fireLaser(laser);
         }
-        removeDestroyedPlayersFromActivePlayers();
+        Laser laserToRemove = null;
+        for (IPlayer player : this.getPlayersOutOfTheGame()) {
+            for (Laser laser : lasers) {
+                if (laser.hasPlayer() && laser.getPlayer().equals(player)) {
+                    laserToRemove = laser; // Assumes only one laser per player.
+                }
+            }
+            lasers.remove(laserToRemove);
+        }
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
             this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
         } else {
             this.setGameStatus(EXECUTING_INSTRUCTIONS);
-        }
-    }
-
-    private void removeDestroyedPlayersFromActivePlayers() {
-        for (int i = activePlayers.size()-1; i >= 0; i--) {
-            if (activePlayers.get(i).wasDestroyedThisTurn()) {
-                this.destroyPlayer(activePlayers.get(i));
-            }
         }
     }
 
@@ -410,15 +435,34 @@ public class Game implements IGame {
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates()) &&
                     otherPlayer.getLaser() != laser) {
                 otherPlayer.takeOneDamage();
+                this.destroyPlayerIfNecessary(otherPlayer);
                 System.out.print(otherPlayer.getName() + " was hit by a laser from ");
                 if (laser.hasPlayer()) System.out.println(laser.getPlayer().getName());
                 else System.out.println("a tower");
-                System.out.print(" and has now " + otherPlayer.getPlayerDamage() + " damage tokens and "
-                        + otherPlayer.getNumberOfLivesRemaining() + " lives");
+                System.out.println(" and now has " + otherPlayer.getPlayerDamage() + " damage tokens and "
+                        + otherPlayer.getNumberOfLivesRemaining() + " lives remaining");
             }
         }
     }
-    
+
+    /**
+     * Checks if the given player should be destroyed.
+     * If yes, it destroys the player.
+     * If no, the player is left alive.
+     *
+     * @param player
+     *              The player to potentially be destroyed.
+     */
+    private void destroyPlayerIfNecessary(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
+        if (player.getPlayerDamage() > MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED) {
+            this.destroyPlayer(player);
+        }
+    }
+
+
     /**
      * Reveals the selected program cards for the current register slot,
      * sorts them by priority before executing the commands in order,
@@ -428,7 +472,6 @@ public class Game implements IGame {
      * execute instructions in a TODO: finish this
      */
     private void executingInstructions() {
-        System.out.println("exe instr");
         IDeck cardsForThisRegisterSlot = new Deck();
         ArrayList<IPlayer> listOfPlayers = new ArrayList<>(); // For keeping track of players and their cards.
         this.revealEachPlayersProgramCardForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
@@ -601,14 +644,13 @@ public class Game implements IGame {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
         }
-        if (player.wasDestroyedThisTurn()) {
             System.out.println("player " + player.getName() + " was destroyed at");
             System.out.println("x: " + player.getX());
             System.out.println("y: " + player.getY());
-            // player.destroyPlayer();
+            player.destroyPlayer();
             this.activePlayers.remove(player);
-        }
         if (!player.hasLifeLeft()) {
+            System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
             this.numberOfPlayersLeftInTheGame--;
             this.emptyThePlayersRegister(player);
@@ -617,7 +659,6 @@ public class Game implements IGame {
                 this.setGameStatus(THE_END);
                 this.doTurn();
             }
-            System.out.println("player " + player.getName() + " is permanently out of the game");
         } else {
             this.destroyedPlayers.add(player);
         }
