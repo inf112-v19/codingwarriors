@@ -159,9 +159,9 @@ public class Player implements IPlayer {
                     break;
             case 9: this.lockNRegistersAndUnlockMRegisters(5, 0);
                     break;
-          //  case 10: this.destroyPlayer();
+            case 10: this.destroyPlayer();
           //           this.unlockNRegisters(5);
-          //           break;
+                     break;
             default: this.unlockNRegisters(5); break;
         }
     }
@@ -214,6 +214,7 @@ public class Player implements IPlayer {
     @Override
     public void destroyPlayer() {
         this.lives -= 1;
+        respawnAtLastArchiveMarker();
         this.wasDestroyedThisTurn = true;
     }
 

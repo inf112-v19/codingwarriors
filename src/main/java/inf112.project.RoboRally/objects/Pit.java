@@ -70,7 +70,7 @@ public class Pit implements IObjects {
     
     @Override
     public void doAction(IPlayer player) {
-        player.respawnAtLastArchiveMarker();
+        player.destroyPlayer();
     }
 
     @Override
