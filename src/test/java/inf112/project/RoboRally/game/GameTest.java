@@ -65,7 +65,7 @@ public class GameTest {
     @Test
     public void aPlayerThatHasTakenTenDamageDrawsCorrectAmountOfCards() {
         IPlayer hasTakenTenDamage = new Player("TenDamage", 0,0, Color.RED);
-        int correctAmountOfCards = 0;
+        int correctAmountOfCards = 7; //The player gets destroyed and recieves 2 damagetokens, should therefore get 7 cards
         for (int i = 0; i < 10; i++) {
             hasTakenTenDamage.takeOneDamage();
         }
