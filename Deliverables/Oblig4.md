@@ -1,5 +1,5 @@
 # Deloppgave 1
-- Testrolle: Jakob
+- Testrolle: Jakob, 
 Kode som avhenger mye av Game-klassen vil bli testet manuelt (f.eks laser), mens kode som er mer uavhengig blir testet vha. automatiske tester (f.eks player). Til nå har vi laget mange automatiske tester så teamet har tenkt til å i større grad ta i bruk manuelle tester, noe som ble gjort mot slutten av denne innlevering. Dette var gjort ved å bare spille spillet. I tilfellet for laser testet vi blant annet ved å:
   * Flytte spiller ut av brettet og se at spiller først kommer tilbake etter et runden er over.
   * Skyte på spiller å se at laser-strålen slutter på spiller. 
@@ -19,7 +19,9 @@ Vi har fått til kravene vi har satt oss, men enkelte deler av koden kunne hatt 
 - Vi velger å begynne med å kunne spille en komplett runde. Vi velger dette fordi det er et krav som nesten er fullført, og vi vil gjøre det helt ferdig.
 - Lasere er et krav vi har begynt på, så dette får høy prioritet.
 
-# Oppgave 4
+# Oppgave 3
+- For å kjøre alle tester gå til test mappen og høyre-klikk på mappen som inneholder alle klassene og "Run Tests in ...". Manuelle tester er markert over under deloppgave 1 (testrolle). 
+
 Spillinstruksjon:
 Dersom man vil spille med en AI, må man legge inn en AI spiller ved å bytte "new Player" til "new AI" i "addPlayers"-metoden i "Game"-klassen. Når AI'en velger kort må man trykke antall ganger den skal velge kort et tilfeldig sted på skjermen.
 
