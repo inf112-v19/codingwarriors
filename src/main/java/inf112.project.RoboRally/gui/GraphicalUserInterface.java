@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import inf112.project.RoboRally.actors.AI;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
@@ -24,7 +25,7 @@ import inf112.project.RoboRally.objects.*;
 import java.util.HashMap;
 import java.util.List;
 
-public class GraphicalUserInterface extends ApplicationAdapter{
+public class GraphicalUserInterface extends ApplicationAdapter {
     private IGame game;
     private Grid boardScreen;
     private static final int WIDTH = 1200;
@@ -117,14 +118,33 @@ public class GraphicalUserInterface extends ApplicationAdapter{
 
 
     }
-
+/*
+    private void userInputs() {
+        if (Gdx.input.justTouched()) {
+            if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
+                if (cardGui.getCurrentPlayer() instanceof AI) {
+                    cardGui.selectCards(0);
+                } else {
+                    int x = Gdx.input.getX();
+                    int y = HEIGHT - Gdx.input.getY();
+                    cardGui.userInputs(x, y);
+                }
+            } else {
+                game.doTurn();
+            }
+        }
+        */
 
     private void userInputs() {
         if (Gdx.input.justTouched()) {
             if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-                int x = Gdx.input.getX();
-                int y = HEIGHT - Gdx.input.getY();
-                cardGui.userInputs(x, y);
+                if (cardGui.getCurrentPlayer() instanceof AI) {
+                    cardGui.selectCards(0);
+                } else {
+                    int x = Gdx.input.getX();
+                    int y = HEIGHT - Gdx.input.getY();
+                    cardGui.userInputs(x, y);
+                }
             } else {
                 game.doTurn();
             }

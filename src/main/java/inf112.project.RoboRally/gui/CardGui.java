@@ -35,6 +35,10 @@ public class CardGui {
         setUpScreen();
     }
 
+    public IPlayer getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     private void setUpTextures() {
         cardBatch = new SpriteBatch();
         font = new BitmapFont();
@@ -128,6 +132,7 @@ public class CardGui {
 
         }
     }
+
 
     void selectCards(int indexOfSelectedCard) {
         currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
