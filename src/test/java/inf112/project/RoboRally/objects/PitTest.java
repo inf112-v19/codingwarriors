@@ -28,4 +28,13 @@ public class PitTest {
         assertEquals(0, player.getX());
     }
 
+    @Test
+    public void playerTakesTwoDamageWhenFallingInPit() {
+        Player player = new Player("foo", 0,0, Color.RED);
+        player.movePlayer(GridDirection.EAST);
+        IObjects tile = gameboard.getObject(player.getX(), player.getY());
+        tile.doAction(player);
+        assertEquals(2, player.getPlayerDamage());
+    }
+
 }

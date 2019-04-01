@@ -65,4 +65,19 @@ public class WrenchTest {
     }
 
 
+    @Test
+    public void wrenchCauseNoDamageAndSpeed() {
+        Player player = new Player("foo", 0,0, Color.RED);
+        player.movePlayer(GridDirection.NORTH);
+        IObjects tile = gameboard.getObject(player.getX(), player.getY());
+        assertEquals(0, tile.getDamage());
+        assertEquals(0, tile.getSpeed());
+        player.movePlayer(GridDirection.EAST);
+        player.movePlayer(GridDirection.SOUTH);
+        tile = gameboard.getObject(player.getX(), player.getY());
+        assertEquals(0, tile.getDamage());
+        assertEquals(0, tile.getSpeed());
+    }
+
+
 }
