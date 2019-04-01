@@ -1,8 +1,8 @@
 # Deloppgave 1
 - Testrolle: Jakob
 Kode som avhenger mye av Game-klassen vil bli testet manuelt (f.eks laser), mens kode som er mer uavhengig blir testet vha. automatiske tester (f.eks player). Til nå har vi laget mange automatiske tester så teamet har tenkt til å i større grad ta i bruk manuelle tester, noe som ble gjort mot slutten av denne innlevering. Dette var gjort ved å bare spille spillet. I tilfellet for laser testet vi blant annet ved å:
-* Skyte på spiller å se at laser-strålen slutter på spiller. 
-* Skyte på spiller å se at en spiller i skuddlinjen bak en vegg eller en annen spiller ikke blir truffet av laseren. 
+  * Skyte på spiller å se at laser-strålen slutter på spiller. 
+  * Skyte på spiller å se at en spiller i skuddlinjen bak en vegg eller en annen spiller ikke blir truffet av laseren. 
 - Vi har valgt å innføre codereviews. 
 Vi har testet parprogrammering. Parprogrammering førte til kunnskapsoverføring fra den som har mest kjennskap til kodebasen til den som har minst. Det fungerte godt, fordi flere får innsikt til forskjellige deler av spillet og man kan dele den kunnskapen man har opparbeidet seg.
 Som vi har skrevet i retroperspektiv så har vi fokusert på at oppgavefordeling, der noen av teammedlemmene som ikke har skrevet så mye kode til nå, har tatt på seg større kodeoppgaver.
