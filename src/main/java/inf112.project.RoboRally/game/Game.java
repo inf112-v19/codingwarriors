@@ -372,6 +372,12 @@ public class Game implements IGame {
                 } else {
                     this.destroyPlayer(player);
                 }
+                // If the player is moved off the board by a game object,
+                // the position will no longer be valid.
+                if (this.checkIfThePlayerIsInTheGame(player)
+                        && !board.moveValid(player.getX(), player.getY())) {
+                    this.destroyPlayer(player);
+                }
             }
         }
         prepareLasersForFiring();
@@ -427,20 +433,6 @@ public class Game implements IGame {
      */
     private void fireLasers() {
         int counter = 1;
-        System.out.println("destroyd");
-        for (IPlayer player : destroyedPlayers) {
-            System.out.println(player.getName());
-        }
-        System.out.println("dead");
-        for (IPlayer player : playersOutOfTheGame) {
-            System.out.println(player.getName());
-        }
-        System.out.println("ingame");
-        for (IPlayer player : activePlayers) {
-            System.out.println(player.getName());
-        }
-        System.out.println();
-
         for (Laser laser : lasers) {
             if (!laser.hasPlayer() || (laser.hasPlayer()
                     && this.checkIfThePlayerIsOperational(laser.getPlayer()))) {
@@ -469,7 +461,6 @@ public class Game implements IGame {
                     laserToRemove = laser; // Assumes only one laser per player.
                 }
             }
-            System.out.println("laser to remove: " + laserToRemove);
             lasers.remove(laserToRemove);
         }
     }
@@ -496,10 +487,6 @@ public class Game implements IGame {
                 System.out.print(otherPlayer.getName() + " was hit by a laser from ");
                 if (laser.hasPlayer()) System.out.println(laser.getPlayer().getName());
                 else System.out.println("a tower");
-                otherPlayer.takeOneDamage();
-                otherPlayer.takeOneDamage();
-                otherPlayer.takeOneDamage();
-                otherPlayer.takeOneDamage();
                 otherPlayer.takeOneDamage();
                 this.destroyPlayerIfNecessary(otherPlayer);
                 System.out.println(" and now has " + otherPlayer.getPlayerDamage() + " damage tokens and "
