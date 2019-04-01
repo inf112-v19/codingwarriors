@@ -93,27 +93,6 @@ public class Game implements IGame {
         // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
         LaserTower tower = new LaserTower(new Coordinates(4, 11), GridDirection.SOUTH);
         lasers.add(tower.getLaser());
-
-        LaserTower tower1 = new LaserTower(new Coordinates(5, 11), GridDirection.SOUTH);
-        lasers.add(tower1.getLaser());
-
-        LaserTower tower2 = new LaserTower(new Coordinates(6, 11), GridDirection.SOUTH);
-        lasers.add(tower2.getLaser());
-
-        LaserTower tower3 = new LaserTower(new Coordinates(7, 11), GridDirection.SOUTH);
-        lasers.add(tower3.getLaser());
-
-        LaserTower tower4 = new LaserTower(new Coordinates(8, 11), GridDirection.SOUTH);
-        lasers.add(tower4.getLaser());
-
-        LaserTower tower5 = new LaserTower(new Coordinates(9, 11), GridDirection.SOUTH);
-        lasers.add(tower5.getLaser());
-
-        LaserTower tower6 = new LaserTower(new Coordinates(3, 11), GridDirection.SOUTH);
-        lasers.add(tower6.getLaser());
-
-        LaserTower tower7 = new LaserTower(new Coordinates(2, 11), GridDirection.SOUTH);
-        lasers.add(tower7.getLaser());
     }
 
     @Override
