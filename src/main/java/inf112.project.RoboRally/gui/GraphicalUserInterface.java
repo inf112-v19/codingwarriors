@@ -217,7 +217,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     }
 
     private void drawLasers() {
-       if (game.getTheCurrentGameStatus().equals(GameStatus.EXECUTING_INSTRUCTIONS)) {
+       if (game.getTheCurrentGameStatus().equals(GameStatus.FIRING_LASERS)) {
             for (Laser laser : game.getLasers()) {
                 List<Coordinates> coordinates = game.getPath(laser.getCoordinates(), laser.getDirection(), laser);
                 for (int i = 0; i < coordinates.size(); i++) {

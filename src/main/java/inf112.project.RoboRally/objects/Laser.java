@@ -112,9 +112,6 @@ public class Laser implements IObjects {
         while (insideBoard(getX(), getY(), boardRows, boardColumns)) {
             visitedPositionsByLaser.add(new Coordinates(getX(), getY()));
             moveLaser();
-            if (insideBoard(getX(), getY(), boardRows, boardColumns)) {
-                visitedPositionsByLaser.add(new Coordinates(getX(), getY()));
-            }
         }
 
         return visitedPositionsByLaser;
