@@ -9,9 +9,9 @@ import static org.junit.Assert.*;
 
 public class WrenchTest {
     private String level = "3C3R" +
-            ".w." +
+            ".W." +
             "w.w" +
-            ".w.";
+            ".W.";
     private String walls = "" +
             "..." +
             "..." +
@@ -27,6 +27,9 @@ public class WrenchTest {
         assertEquals(0, player.getPlayerDamage());
         assertEquals(1, player.getBackupY());
         assertEquals(0, player.getBackupX());
+        player.movePlayer(GridDirection.SOUTH);
+        player.movePlayer(GridDirection.EAST);
+        assertEquals(0, player.getPlayerDamage());
     }
 
     @Test
@@ -38,6 +41,11 @@ public class WrenchTest {
         IObjects tile = gameboard.getObject(player.getX(), player.getY());
         tile.doAction(player);
         assertEquals(1, player.getPlayerDamage());
+        player.movePlayer(GridDirection.SOUTH);
+        player.movePlayer(GridDirection.EAST);
+        IObjects tile2 = gameboard.getObject(player.getX(), player.getY());
+        tile2.doAction(player);
+        assertEquals(0, player.getPlayerDamage());
     }
 
     @Test
@@ -48,6 +56,28 @@ public class WrenchTest {
         tile.doAction(player);
         assertEquals(1, player.getBackupY());
         assertEquals(0, player.getBackupX());
+        player.movePlayer(GridDirection.SOUTH);
+        player.movePlayer(GridDirection.EAST);
+        IObjects tile2 = gameboard.getObject(player.getX(), player.getY());
+        tile2.doAction(player);
+        assertEquals(0, player.getBackupY());
+        assertEquals(1, player.getBackupX());
     }
+
+
+    @Test
+    public void wrenchCauseNoDamageAndSpeed() {
+        Player player = new Player("foo", 0,0, Color.RED);
+        player.movePlayer(GridDirection.NORTH);
+        IObjects tile = gameboard.getObject(player.getX(), player.getY());
+        assertEquals(0, tile.getDamage());
+        assertEquals(0, tile.getSpeed());
+        player.movePlayer(GridDirection.EAST);
+        player.movePlayer(GridDirection.SOUTH);
+        tile = gameboard.getObject(player.getX(), player.getY());
+        assertEquals(0, tile.getDamage());
+        assertEquals(0, tile.getSpeed());
+    }
+
 
 }

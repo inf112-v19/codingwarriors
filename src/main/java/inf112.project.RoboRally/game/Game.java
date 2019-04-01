@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.game;
 
+import inf112.project.RoboRally.actors.AI;
 import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
