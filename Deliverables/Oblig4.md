@@ -4,13 +4,16 @@ Kode som avhenger mye av Game-klassen vil bli testet manuelt (f.eks laser), mens
   * Skyte på spiller å se at laser-strålen slutter på spiller. 
   * Skyte på spiller å se at en spiller i skuddlinjen bak en vegg eller en annen spiller ikke blir truffet av laseren. 
 - Vi har valgt å fortsette med code-reviews og vi har i tillegg prøvd litt mer parprogrammering. Disse førte til kunnskapsoverføring fra den som har mest kjennskap til kodebasen til den som har minst. Det fungerte godt, fordi flere får innsikt til forskjellige deler av spillet og man kan dele den kunnskapen man har opparbeidet seg. Som prosjektmetodikk fungerer en blanding av Scrum og XP bra for oss. Vi fortsetter med sprinter og å bruke prosjekttavlen. 
-Som vi har skrevet i retroperspektiv så har vi fokusert på at oppgavefordeling, der noen av teammedlemmene som ikke har skrevet så mye kode til nå, har tatt på seg større kodeoppgaver.
+Som vi har skrevet i sist retroperspektiv så har vi fokusert på at oppgavefordeling, der noen av teammedlemmene som ikke har skrevet så mye kode til nå, har tatt på seg større kodeoppgaver.
 - Vi er fremdeles fornøyd med gruppedynamikken, det har ikke skjedd noen endringer i forhold til dette siden sist. Vi tror ikke den nye testrollen kommer til å endre mye i gruppedynamikken. 
 - Kommunikasjonen fungerer fremdeles bra. Vi fortsetter å bruke Slack utenom gruppemøtene. 
+- Retrospektiv: 
+Vi har fått til kravene vi har satt oss, men vi frykter at koden ikke er så polert som den burde ha vært. Dette kunne vært unngått vha. av mer grundige tester og større fokus på refaktorering. 
 - Kunnskapsoverføring: Den personen som har minst erfaring med kodebase skal kode, mens de som har mer erfaring deler av denne.
 - Forbedringspunkter: 
    - Mer utfyllende manuelle tester
-   - 
+   - Mer fokus på refaktorering
+   - Minimer dependencies i koden
 
 # Deloppgave 2
 - Vi velger å begynne med å kunne spille en komplett runde. Vi velger dette fordi det er et krav som nesten er fullført, og vi vil gjøre det helt ferdig.
@@ -41,6 +44,8 @@ Spillerene velger så kort på nytt
 UML-diagram finnes vedlagt i UML-Diagrams mappen i prosjektet. Noen av diagrammene må man klikke "show dependencies" på for å vise avhengigheter.
 
 Prosjektet importeres som Maven prosjekt, man trenger ikke et working directory
+
+Det er lasertårn på posisjon (4, 11) som skyter laser (dette er ikke en feil). 
 
 - Møtereferater: 
 #### Rapport 12.03.19
