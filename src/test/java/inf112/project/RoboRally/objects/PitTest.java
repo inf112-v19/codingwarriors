@@ -37,4 +37,14 @@ public class PitTest {
         assertEquals(2, player.getPlayerDamage());
     }
 
+    @Test
+    public void playerLosesOneLifeWhenFallingInPit() {
+        Player player = new Player("foo", 0, 0, Color.RED);
+        player.movePlayer(GridDirection.EAST);
+        IObjects tile = gameboard.getObject(player.getX(), player.getY());
+        tile.doAction(player);
+        System.out.println(player.getX());
+        System.out.println(player.getY());
+        assertEquals(2, player.getNumberOfLivesRemaining());
+    }
 }
