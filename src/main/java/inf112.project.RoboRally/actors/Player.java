@@ -134,6 +134,8 @@ public class Player implements IPlayer {
     @Override
     public void takeOneDamage() {
         this.numberOfDamageTokensRecieved += 1;
+        System.out.println(this.name + " has " + numberOfDamageTokensRecieved
+        + " damage tokens, and has " + lives + " lives remaining.");
         this.assessCurrentDamage();
     }
 
@@ -159,9 +161,6 @@ public class Player implements IPlayer {
                     break;
             case 9: this.lockNRegistersAndUnlockMRegisters(5, 0);
                     break;
-          //  case 10: this.destroyPlayer();
-          //           this.unlockNRegisters(5);
-          //           break;
             default: this.unlockNRegisters(5); break;
         }
     }

@@ -92,6 +92,27 @@ public class Game implements IGame {
         // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
         LaserTower tower = new LaserTower(new Coordinates(4, 11), GridDirection.SOUTH);
         lasers.add(tower.getLaser());
+
+        LaserTower tower1 = new LaserTower(new Coordinates(5, 11), GridDirection.SOUTH);
+        lasers.add(tower1.getLaser());
+
+        LaserTower tower2 = new LaserTower(new Coordinates(6, 11), GridDirection.SOUTH);
+        lasers.add(tower2.getLaser());
+
+        LaserTower tower3 = new LaserTower(new Coordinates(7, 11), GridDirection.SOUTH);
+        lasers.add(tower3.getLaser());
+
+        LaserTower tower4 = new LaserTower(new Coordinates(8, 11), GridDirection.SOUTH);
+        lasers.add(tower4.getLaser());
+
+        LaserTower tower5 = new LaserTower(new Coordinates(9, 11), GridDirection.SOUTH);
+        lasers.add(tower5.getLaser());
+
+        LaserTower tower6 = new LaserTower(new Coordinates(3, 11), GridDirection.SOUTH);
+        lasers.add(tower6.getLaser());
+
+        LaserTower tower7 = new LaserTower(new Coordinates(2, 11), GridDirection.SOUTH);
+        lasers.add(tower7.getLaser());
     }
 
     @Override
@@ -347,13 +368,8 @@ public class Game implements IGame {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
-                    // this.firePlayersLaser(player); // to be moved
                 } else {
                     this.destroyPlayer(player);
-                    if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
-                        this.finishEarly();
-                        return;
-                    }
                 }
             }
         }
@@ -410,6 +426,20 @@ public class Game implements IGame {
      */
     private void fireLasers() {
         int counter = 1;
+        System.out.println("destroyd");
+        for (IPlayer player : destroyedPlayers) {
+            System.out.println(player.getName());
+        }
+        System.out.println("dead");
+        for (IPlayer player : playersOutOfTheGame) {
+            System.out.println(player.getName());
+        }
+        System.out.println("ingame");
+        for (IPlayer player : activePlayers) {
+            System.out.println(player.getName());
+        }
+        System.out.println();
+
         for (Laser laser : lasers) {
             if (!laser.hasPlayer() || (laser.hasPlayer()
                     && this.checkIfThePlayerIsOperational(laser.getPlayer()))) {
@@ -438,6 +468,7 @@ public class Game implements IGame {
                     laserToRemove = laser; // Assumes only one laser per player.
                 }
             }
+            System.out.println("laser to remove: " + laserToRemove);
             lasers.remove(laserToRemove);
         }
     }
@@ -464,6 +495,10 @@ public class Game implements IGame {
                 System.out.print(otherPlayer.getName() + " was hit by a laser from ");
                 if (laser.hasPlayer()) System.out.println(laser.getPlayer().getName());
                 else System.out.println("a tower");
+                otherPlayer.takeOneDamage();
+                otherPlayer.takeOneDamage();
+                otherPlayer.takeOneDamage();
+                otherPlayer.takeOneDamage();
                 otherPlayer.takeOneDamage();
                 this.destroyPlayerIfNecessary(otherPlayer);
                 System.out.println(" and now has " + otherPlayer.getPlayerDamage() + " damage tokens and "
@@ -691,6 +726,9 @@ public class Game implements IGame {
             }
         } else {
             this.destroyedPlayers.add(player);
+        }
+        if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
+            this.finishEarly();
         }
     }
 

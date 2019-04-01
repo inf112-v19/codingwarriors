@@ -148,6 +148,8 @@ public class CardGui {
         // Switch selected card between players deck,
         // and the players list of selected cards.
         if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
+            System.out.println("deck index: " + indexOfSelectedCard);
+            System.out.println("deck size: " + playersDeckOfCards.getSize());
             moveSelectedCardBackToPlayersDeck(indexOfSelectedCard);
             return; // Not finished selecting cards yet.
         } else {
