@@ -93,6 +93,27 @@ public class Game implements IGame {
         // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
         LaserTower tower = new LaserTower(new Coordinates(4, 11), GridDirection.SOUTH);
         lasers.add(tower.getLaser());
+
+        LaserTower tower1 = new LaserTower(new Coordinates(5, 11), GridDirection.SOUTH);
+        lasers.add(tower1.getLaser());
+
+        LaserTower tower2 = new LaserTower(new Coordinates(6, 11), GridDirection.SOUTH);
+        lasers.add(tower2.getLaser());
+
+        LaserTower tower3 = new LaserTower(new Coordinates(7, 11), GridDirection.SOUTH);
+        lasers.add(tower3.getLaser());
+
+        LaserTower tower4 = new LaserTower(new Coordinates(8, 11), GridDirection.SOUTH);
+        lasers.add(tower4.getLaser());
+
+        LaserTower tower5 = new LaserTower(new Coordinates(9, 11), GridDirection.SOUTH);
+        lasers.add(tower5.getLaser());
+
+        LaserTower tower6 = new LaserTower(new Coordinates(3, 11), GridDirection.SOUTH);
+        lasers.add(tower6.getLaser());
+
+        LaserTower tower7 = new LaserTower(new Coordinates(2, 11), GridDirection.SOUTH);
+        lasers.add(tower7.getLaser());
     }
 
     @Override
@@ -322,6 +343,9 @@ public class Game implements IGame {
         this.emptyEachPlayersRegister();
         this.setupCardSelectionForNewRound();
         this.setGameStatus(SELECT_CARDS);
+        System.out.println();
+        System.out.println("New turn");
+        System.out.println();
     }
 
     /**
@@ -348,13 +372,14 @@ public class Game implements IGame {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
-                    // this.firePlayersLaser(player); // to be moved
                 } else {
                     this.destroyPlayer(player);
-                    if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
-                        this.finishEarly();
-                        return;
-                    }
+                }
+                // If the player is moved off the board by a game object,
+                // the position will no longer be valid.
+                if (this.checkIfThePlayerIsInTheGame(player)
+                        && !board.moveValid(player.getX(), player.getY())) {
+                    this.destroyPlayer(player);
                 }
             }
         }
@@ -683,7 +708,7 @@ public class Game implements IGame {
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
-            this.numberOfPlayersLeftInTheGame--;
+            this.numberOfPlayersLeftInTheGame--; // TODO: make a method to calculate this number on demand.
             this.emptyThePlayersRegister(player);
             if (this.numberOfPlayersLeftInTheGame <= 0) {
                 //game over
@@ -692,6 +717,9 @@ public class Game implements IGame {
             }
         } else {
             this.destroyedPlayers.add(player);
+        }
+        if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
+            this.finishEarly();
         }
     }
 

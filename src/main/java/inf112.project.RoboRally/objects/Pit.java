@@ -71,6 +71,7 @@ public class Pit implements IObjects {
     @Override
     public void doAction(IPlayer player) {
         player.destroyPlayer();
+        player.respawnAtLastArchiveMarker(); // Temporary behaviour. Should be changed later
     }
 
     @Override
