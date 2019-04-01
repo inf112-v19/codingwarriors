@@ -144,6 +144,7 @@ public class Player implements IPlayer {
     public void removeOneDamage() {
         if (this.numberOfDamageTokensRecieved > 0) {
             this.numberOfDamageTokensRecieved -= 1;
+            this.assessCurrentDamage();
         }
     }
 

@@ -62,47 +62,4 @@ public class GameTest {
         assertEquals(correctAmountOfCards, numberOfCardsDrawn);
     }
 
-    @Test
-    public void aPlayerThatHasTakenTenDamageDrawsCorrectAmountOfCards() {
-        IPlayer hasTakenTenDamage = new Player("TenDamage", 0,0, Color.RED);
-        int correctAmountOfCards = 0;
-        for (int i = 0; i < 10; i++) {
-            hasTakenTenDamage.takeOneDamage();
-        }
-        int numberOfCardsDrawn = game.calculateTheNumberOfCardsThePlayerCanDraw(hasTakenTenDamage);
-        assertEquals(correctAmountOfCards, numberOfCardsDrawn);
-    }
-
-/*
-    @Test
-    public void randTest() {
-        game.initializeGame();
-        IPlayer player = game.getPlayers().get(1);
-        ICard card = new Card(200, Action.ROTATE_LEFT);
-        System.out.println(player.getPlayerDirection());
-        System.out.println(player.getX());
-        System.out.println(player.getY());
-
-        player.movePlayer(card);
-        System.out.println();
-
-        System.out.println(player.getPlayerDirection());
-        System.out.println(player.getX());
-        System.out.println(player.getY());
-    }
-*/
-
-
-
-/*
-    @Test
-    public void checkIfEveryPlayerWasDealtCards() {
-        game.startGame();
-        int properStartHandSize = 9;
-        System.out.println("ran");
-        for (IPlayer player: players) {
-            System.out.println("player hand = " + player.getCardsInHand().getSize());
-            assertEquals(properStartHandSize, player.getCardsInHand().getSize());
-        }
-    }*/
 }

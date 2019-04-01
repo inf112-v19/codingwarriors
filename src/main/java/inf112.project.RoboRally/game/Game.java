@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.game;
 
+import inf112.project.RoboRally.actors.AI;
 import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
@@ -717,7 +718,7 @@ public class Game implements IGame {
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
-            this.numberOfPlayersLeftInTheGame--;
+            this.numberOfPlayersLeftInTheGame--; // TODO: make a method to calculate this number on demand.
             this.emptyThePlayersRegister(player);
             if (this.numberOfPlayersLeftInTheGame <= 0) {
                 //game over

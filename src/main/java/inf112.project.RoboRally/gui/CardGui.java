@@ -35,6 +35,10 @@ public class CardGui {
         setUpScreen();
     }
 
+    public IPlayer getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     private void setUpTextures() {
         cardBatch = new SpriteBatch();
         font = new BitmapFont();
@@ -129,9 +133,9 @@ public class CardGui {
         }
     }
 
+
     void selectCards(int indexOfSelectedCard) {
         currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
-        System.out.println("Entering select cards for " + currentPlayer.getName());
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         if (playersDeckOfCards.isEmpty()) {
             System.out.println("No more cards left for  " + currentPlayer.getName());
@@ -194,7 +198,7 @@ public class CardGui {
         ICard selectedCard = playersDeckOfCards.removeCard(index);
         int lastPos = selectedCards[currentPlayerIndex].getSize();
         selectedCards[currentPlayerIndex].addCardToDeckAtPosition(lastPos, selectedCard);
-        System.out.println("Player " + currentPlayer.getName() + " selected the card \n" + selectedCard);
+        System.out.println("Player " + currentPlayer.getName() + " selected the card:" + selectedCard.getCardCommand());
     }
 
     /**
@@ -208,7 +212,7 @@ public class CardGui {
 
         ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(positionOfCardToRemove);
         playersDeckOfCards.addCardToDeck(deSelectedCard);
-        System.out.println("Player " + currentPlayer.getName() + " removed the card \n" + deSelectedCard);
+        System.out.println("Player " + currentPlayer.getName() + " removed the card" + deSelectedCard.getCardCommand());
     }
 
     public void userInputs(int x, int y) {
