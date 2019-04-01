@@ -100,7 +100,6 @@ public class Player implements IPlayer {
             case BACKWARDS: moveInDirection(opposite(), 1);
             break;
         }
-        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -114,8 +113,6 @@ public class Player implements IPlayer {
         } else if (direction == GridDirection.EAST) {
             x++;
         }
-
-        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override

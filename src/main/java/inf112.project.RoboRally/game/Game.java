@@ -343,6 +343,9 @@ public class Game implements IGame {
         this.emptyEachPlayersRegister();
         this.setupCardSelectionForNewRound();
         this.setGameStatus(SELECT_CARDS);
+        System.out.println();
+        System.out.println("New turn");
+        System.out.println();
     }
 
     /**
