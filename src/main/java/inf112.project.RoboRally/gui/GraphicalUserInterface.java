@@ -138,6 +138,9 @@ public class GraphicalUserInterface extends ApplicationAdapter{
         int animationSpeed = 9;
         for (int i = 0; i < players.size(); i++) {
             IPlayer player = players.get(i);
+            if (!game.getActivePlayers().contains(player)) {
+                continue;
+            }
             if (!game.getBoard().moveValid(player.getX(),player.getY())) {
                 continue;
             }
