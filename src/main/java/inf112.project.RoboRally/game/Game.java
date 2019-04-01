@@ -182,7 +182,7 @@ public class Game implements IGame {
         // Hardcoded players for demonstration.
         IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
         IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
-        IPlayer player3 = new Player("G-bot", 2, 5, Color.LIME);
+        IPlayer player3 = new AI("G-bot", 2, 5, Color.LIME);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);
@@ -322,6 +322,9 @@ public class Game implements IGame {
         this.emptyEachPlayersRegister();
         this.setupCardSelectionForNewRound();
         this.setGameStatus(SELECT_CARDS);
+        System.out.println();
+        System.out.println("New turn");
+        System.out.println();
     }
 
     /**
@@ -348,13 +351,14 @@ public class Game implements IGame {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
-                    // this.firePlayersLaser(player); // to be moved
                 } else {
                     this.destroyPlayer(player);
-                    if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
-                        this.finishEarly();
-                        return;
-                    }
+                }
+                // If the player is moved off the board by a game object,
+                // the position will no longer be valid.
+                if (this.checkIfThePlayerIsInTheGame(player)
+                        && !board.moveValid(player.getX(), player.getY())) {
+                    this.destroyPlayer(player);
                 }
             }
         }
@@ -683,7 +687,7 @@ public class Game implements IGame {
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
-            this.numberOfPlayersLeftInTheGame--;
+            this.numberOfPlayersLeftInTheGame--; // TODO: make a method to calculate this number on demand.
             this.emptyThePlayersRegister(player);
             if (this.numberOfPlayersLeftInTheGame <= 0) {
                 //game over
@@ -692,6 +696,9 @@ public class Game implements IGame {
             }
         } else {
             this.destroyedPlayers.add(player);
+        }
+        if (this.activePlayers.size() <= 0) { // Cut the round short if all players are incapacitated.
+            this.finishEarly();
         }
     }
 
