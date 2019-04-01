@@ -118,22 +118,6 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
 
     }
-/*
-    private void userInputs() {
-        if (Gdx.input.justTouched()) {
-            if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-                if (cardGui.getCurrentPlayer() instanceof AI) {
-                    cardGui.selectCards(0);
-                } else {
-                    int x = Gdx.input.getX();
-                    int y = HEIGHT - Gdx.input.getY();
-                    cardGui.userInputs(x, y);
-                }
-            } else {
-                game.doTurn();
-            }
-        }
-        */
 
     private void userInputs() {
         if (Gdx.input.justTouched()) {
@@ -243,5 +227,4 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     public void resize(int width, int height) {
         // viewport.update(width, height, true);
     }
-
 }
