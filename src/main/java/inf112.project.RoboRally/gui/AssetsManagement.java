@@ -49,8 +49,12 @@ class AssetsManagement {
         assetManager.load("assets/flags/flag.png", Texture.class);
         
         //Lasers
-        assetManager.load("assets/laserHorizontal.png", Texture.class);
-        assetManager.load("assets/laserVertical.png", Texture.class);
+        assetManager.load("assets/lasertowers/laserHorizontal.png", Texture.class);
+        assetManager.load("assets/lasertowers/laserVertical.png", Texture.class);
+        assetManager.load("assets/lasertowers/laserTower_northwards.png", Texture.class);
+        assetManager.load("assets/lasertowers/laserTower_southwards.png", Texture.class);
+        assetManager.load("assets/lasertowers/laserTower_eastwards.png", Texture.class);
+        assetManager.load("assets/lasertowers/laserTower_westwards.png", Texture.class);
         
         //Walls
         assetManager.load("assets/walls/wall_North.png", Texture.class);
