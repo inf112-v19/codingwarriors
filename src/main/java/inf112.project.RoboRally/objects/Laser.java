@@ -14,7 +14,7 @@ public class Laser implements IObjects {
     private Rotation rotation;
     private int x,y;
     private ArrayList<GridDirection> walls;
-    ArrayList<Coordinates> visitedPositionsByLaser;
+    private ArrayList<Coordinates> visitedPositionsByLaser;
     private Player player;
     private LaserTower tower;
 
@@ -86,8 +86,7 @@ public class Laser implements IObjects {
 
     @Override
     public GridDirection getDirection() {
-        GridDirection direction = hasPlayer() ? player.getPlayerDirection() : tower.getDirection();
-        return direction;
+        return hasPlayer() ? player.getPlayerDirection() : tower.getDirection();
     }
 
     @Override
@@ -128,7 +127,7 @@ public class Laser implements IObjects {
         }
     }
 
-    public void moveLaser() {
+    private void moveLaser() {
         switch (getDirection()) {
             case NORTH:
                 y = y + 1;
@@ -145,7 +144,7 @@ public class Laser implements IObjects {
         }
     }
 
-    public boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
+    private boolean insideBoard(int x, int y, int boardRows, int boardColumns) {
         return (x < boardColumns && x >= 0 && y < boardRows && y >= 0);
     }
 
@@ -153,9 +152,9 @@ public class Laser implements IObjects {
     @Override
     public String getTexture() {
         if (getDirection() == GridDirection.SOUTH || getDirection() == GridDirection.NORTH) {
-            return "assets/laserVertical.png";
+            return "assets/lasertowers/laserVertical.png";
         }
-        return "assets/laserHorizontal.png";
+        return "assets/lasertowers/laserHorizontal.png";
     }
     
     @Override

@@ -51,7 +51,7 @@ public class Game implements IGame {
      */
     public Game() {
         String defaultLayout = "16C12R" +
-                "f....r.rrr...f.." +
+                "f.|||r.rrr...f.." +
                 ".R..RRRRRRRRDu.." +
                 ".U.........cD..." +
                 ".U...f....|.D..." +
@@ -89,7 +89,7 @@ public class Game implements IGame {
         this.initializeGame(boardLayout, boardWallLayout);
     }
 
-    public void addLaserTowers() {
+    private void addLaserTowers() {
         // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
         LaserTower tower = new LaserTower(new Coordinates(4, 11), GridDirection.SOUTH);
         lasers.add(tower.getLaser());
@@ -287,7 +287,6 @@ public class Game implements IGame {
                 return;
             case THE_END:
                 System.out.println("All players are out, the game ends in a draw...");
-                return;
         }
 
     }
