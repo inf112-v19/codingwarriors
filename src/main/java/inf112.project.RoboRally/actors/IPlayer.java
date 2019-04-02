@@ -26,6 +26,16 @@ public interface IPlayer {
 
 
     /**
+     * Get the players priority.<br>
+     * The ID for when the player was added into the game,
+     * and how the players determine positions when reentering the game.
+     *
+     * @return The players priority in the game.
+     */
+    int getPriority();
+
+
+    /**
      * @return The direction the player currently faces.
      */
     GridDirection getPlayerDirection();

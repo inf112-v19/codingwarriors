@@ -356,9 +356,41 @@ public class Game implements IGame {
             System.out.println("respawning player: " + player.getName());
             System.out.println("x: " + player.getX());
             System.out.println("y: " + player.getY());
-            activePlayers.add(player);
+            this.restorePlayerBasedOnPriority(player);
             player.respawnAtLastArchiveMarker();
             //TODO: Ask player for which direction they would like to face.
+        }
+    }
+
+    /**
+     * Determine the position the destroyed player should be inserted into,
+     * in the list of activePlayers, based on start order.<br>
+     *
+     * @param player
+     *              The player to be restored.
+     * @throws IllegalArgumentException
+     *       If the player is null (player == null).
+     */
+    private void restorePlayerBasedOnPriority(IPlayer player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Not a valid player");
+        }
+        if (activePlayers.isEmpty()) {
+            activePlayers.add(player);
+        } else {
+            for (int pos = 0; pos < activePlayers.size(); pos++) {
+                IPlayer otherPlayer = activePlayers.get(pos);
+                if (player.getPriority() < otherPlayer.getPriority()) {
+                    System.out.println("Added to pos: " + pos);
+                    activePlayers.add(pos, player);
+                    break;
+                }
+                if (pos == (activePlayers.size() - 1)) {
+                    System.out.println("Added at the end");
+                    activePlayers.add(player);
+                    break;
+                }
+            }
         }
     }
 
@@ -525,6 +557,8 @@ public class Game implements IGame {
      * execute instructions in a TODO: finish this
      */
     private void executingInstructions() {
+        System.out.println();
+        System.out.println("Register phase " + (currentSlotNumber + 1));
         IDeck cardsForThisRegisterSlot = new Deck();
         ArrayList<IPlayer> listOfPlayers = new ArrayList<>(); // For keeping track of players and their cards.
         this.revealEachPlayersProgramCardForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
