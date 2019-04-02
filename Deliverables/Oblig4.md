@@ -1,15 +1,15 @@
 # Deloppgave 1
-- Testrolle: Jakob
+- Testrolle: Jakob, 
 Kode som avhenger mye av Game-klassen vil bli testet manuelt (f.eks laser), mens kode som er mer uavhengig blir testet vha. automatiske tester (f.eks player). Til nå har vi laget mange automatiske tester så teamet har tenkt til å i større grad ta i bruk manuelle tester, noe som ble gjort mot slutten av denne innlevering. Dette var gjort ved å bare spille spillet. I tilfellet for laser testet vi blant annet ved å:
+  * Flytte spiller ut av brettet og se at spiller først kommer tilbake etter et runden er over.
   * Skyte på spiller å se at laser-strålen slutter på spiller. 
   * Skyte på spiller å se at en spiller i skuddlinjen bak en vegg eller en annen spiller ikke blir truffet av laseren. 
 - Vi har valgt å fortsette med code-reviews og vi har i tillegg prøvd litt mer parprogrammering. Disse førte til kunnskapsoverføring fra den som har mest kjennskap til kodebasen til den som har minst. Det fungerte godt, fordi flere får innsikt til forskjellige deler av spillet og man kan dele den kunnskapen man har opparbeidet seg. Som prosjektmetodikk fungerer en blanding av Scrum og XP bra for oss. Vi fortsetter med sprinter og å bruke prosjekttavlen. 
-Som vi har skrevet i sist retroperspektiv så har vi fokusert på at oppgavefordeling, der noen av teammedlemmene som ikke har skrevet så mye kode til nå, har tatt på seg større kodeoppgaver.
+Som vi har skrevet i sist retroperspektiv så har vi fokusert på at oppgavefordeling, der noen av teammedlemmene som ikke har skrevet så mye kode til nå, har tatt på seg større kodeoppgaver. Det er også mye kunnskapsoverføring på gruppemøtene, der man diskuterer problemer og hjelper hverandre. Vi har også fokusert mer på at alle skal bidra og større oppgaver har nå blitt gitt til personer som har bidratt mindre til kodebasen.
 - Vi er fremdeles fornøyd med gruppedynamikken, det har ikke skjedd noen endringer i forhold til dette siden sist. Vi tror ikke den nye testrollen kommer til å endre mye i gruppedynamikken. 
-- Kommunikasjonen fungerer fremdeles bra. Vi fortsetter å bruke Slack utenom gruppemøtene. 
+- Kommunikasjonen fungerer fremdeles bra. Vi fortsetter å bruke Slack utenom gruppemøtene og vi merker at Skack blir brukt mye mer nå en i starten av prosjeket. 
 - Retrospektiv: 
-Vi har fått til kravene vi har satt oss, men vi frykter at koden ikke er så polert som den burde ha vært. Dette kunne vært unngått vha. av mer grundige tester og større fokus på refaktorering. 
-- Kunnskapsoverføring: Den personen som har minst erfaring med kodebase skal kode, mens de som har mer erfaring deler av denne.
+Vi har fått til kravene vi har satt oss, men enkelte deler av koden kunne hatt godt av å refaktoreres og ønsker å ha større fokus på refaktorering fremover. Vi har støtt på noen feil som ikke ble oppdaget av våres automatiske tester og har begynt å planlegge flere manuelle tester for å lettere kunne plukke opp disse feilene i fremtiden. 
 - Forbedringspunkter: 
    - Mer utfyllende manuelle tester
    - Mer fokus på refaktorering
@@ -19,7 +19,9 @@ Vi har fått til kravene vi har satt oss, men vi frykter at koden ikke er så po
 - Vi velger å begynne med å kunne spille en komplett runde. Vi velger dette fordi det er et krav som nesten er fullført, og vi vil gjøre det helt ferdig.
 - Lasere er et krav vi har begynt på, så dette får høy prioritet.
 
-# Oppgave 4
+# Oppgave 3
+- For å kjøre alle tester gå til test mappen og høyre-klikk på mappen som inneholder alle klassene og "Run Tests in ...". Manuelle tester er markert over under deloppgave 1 (testrolle). 
+
 Spillinstruksjon:
 Dersom man vil spille med en AI, må man legge inn en AI spiller ved å bytte "new Player" til "new AI" i "addPlayers"-metoden i "Game"-klassen. Når AI'en velger kort må man trykke antall ganger den skal velge kort et tilfeldig sted på skjermen.
 

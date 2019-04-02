@@ -100,7 +100,6 @@ public class Player implements IPlayer {
             case BACKWARDS: moveInDirection(opposite(), 1);
             break;
         }
-        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -114,8 +113,6 @@ public class Player implements IPlayer {
         } else if (direction == GridDirection.EAST) {
             x++;
         }
-
-        System.out.println("New laser location is " + laser.getX() + " y:" + laser.getY() + " dir: " + laser.getDirection());
     }
 
     @Override
@@ -134,6 +131,8 @@ public class Player implements IPlayer {
     @Override
     public void takeOneDamage() {
         this.numberOfDamageTokensRecieved += 1;
+        System.out.println(this.name + " has " + numberOfDamageTokensRecieved
+        + " damage tokens, and has " + lives + " lives remaining.");
         this.assessCurrentDamage();
     }
 
@@ -142,6 +141,7 @@ public class Player implements IPlayer {
     public void removeOneDamage() {
         if (this.numberOfDamageTokensRecieved > 0) {
             this.numberOfDamageTokensRecieved -= 1;
+            this.assessCurrentDamage();
         }
     }
 
@@ -159,9 +159,6 @@ public class Player implements IPlayer {
                     break;
             case 9: this.lockNRegistersAndUnlockMRegisters(5, 0);
                     break;
-            case 10: this.destroyPlayer();
-          //           this.unlockNRegisters(5);
-                     break;
             default: this.unlockNRegisters(5); break;
         }
     }
@@ -214,7 +211,7 @@ public class Player implements IPlayer {
     @Override
     public void destroyPlayer() {
         this.lives -= 1;
-        respawnAtLastArchiveMarker();
+        this.numberOfDamageTokensRecieved = 0; // Reset damage
         this.wasDestroyedThisTurn = true;
     }
 
@@ -292,7 +289,6 @@ public class Player implements IPlayer {
     public void respawnAtLastArchiveMarker() {
         this.x=backupX;
         this.y=backupY;
-        this.numberOfDamageTokensRecieved = 0; // Reset damage
         wasDestroyedThisTurn = false;
         takeOneDamage(); // Take two damage
         takeOneDamage();
