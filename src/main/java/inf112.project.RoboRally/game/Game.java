@@ -50,17 +50,17 @@ public class Game implements IGame {
      */
     public Game() {
         String defaultLayout = "16C12R" +
-                "f....r.rrr...f.." +
+                "f...kr.rrr...f.." +
                 ".R..RRRRRRRRDu.." +
                 ".U.........cD..." +
-                ".U...f....|.D..." +
+                ".U...f....i.D..." +
                 ".U......ll..D.p." +
                 "rU..LLLLfLLLD..." +
                 "ll.....w....C..." +
                 ".r..p....lll...." +
-                ".r.....w........" +
-                ".r.....w.....p.." +
-                ".r...f....-....." +
+                ".rm....w.....i.." +
+                ".r.m...w.....p.." +
+                ".r...f....n....." +
                 ".r....WW....dd..";
         String defaultWalls = "" +
                 "fnnnnnnnnnnnnnng" +
@@ -88,31 +88,15 @@ public class Game implements IGame {
         this.initializeGame(boardLayout, boardWallLayout);
     }
 
-    public void addLaserTowers() {
-        // currently have to hardcode each tower cause there isn't really a communication between walls and lasertowers
-        LaserTower tower = new LaserTower(new Coordinates(4, 11), GridDirection.SOUTH);
-        lasers.add(tower.getLaser());
-
-        LaserTower tower1 = new LaserTower(new Coordinates(5, 11), GridDirection.SOUTH);
-        lasers.add(tower1.getLaser());
-
-        LaserTower tower2 = new LaserTower(new Coordinates(6, 11), GridDirection.SOUTH);
-        lasers.add(tower2.getLaser());
-
-        LaserTower tower3 = new LaserTower(new Coordinates(7, 11), GridDirection.SOUTH);
-        lasers.add(tower3.getLaser());
-
-        LaserTower tower4 = new LaserTower(new Coordinates(8, 11), GridDirection.SOUTH);
-        lasers.add(tower4.getLaser());
-
-        LaserTower tower5 = new LaserTower(new Coordinates(9, 11), GridDirection.SOUTH);
-        lasers.add(tower5.getLaser());
-
-        LaserTower tower6 = new LaserTower(new Coordinates(3, 11), GridDirection.SOUTH);
-        lasers.add(tower6.getLaser());
-
-        LaserTower tower7 = new LaserTower(new Coordinates(2, 11), GridDirection.SOUTH);
-        lasers.add(tower7.getLaser());
+    private void addLaserTowers() {
+        for (int x=0; x<board.getRows(); x++) {
+            for (int y=0; y<board.getColumns(); y++) {
+                IObjects gameObject = board.getObject(y,x);
+                if (gameObject instanceof LaserTower) {
+                    lasers.add(((LaserTower) gameObject).getLaser());
+                }
+            }
+        }
     }
 
     @Override
@@ -188,8 +172,8 @@ public class Game implements IGame {
         this.currentSlotNumber = 0;
         this.destroyedPlayers = new ArrayList<>();
         this.playersOutOfTheGame = new ArrayList<>();
-
-        this.addLaserTowers();
+    
+        addLaserTowers();
 
         this.updateDeckOfSelectedCards();
         this.dealOutProgramCards();
@@ -308,7 +292,6 @@ public class Game implements IGame {
                 return;
             case THE_END:
                 System.out.println("All players are out, the game ends in a draw...");
-                return;
         }
 
     }

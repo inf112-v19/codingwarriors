@@ -3,41 +3,60 @@ package inf112.project.RoboRally.objects;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 
+import java.util.ArrayList;
+
 public class LaserTower implements IObjects {
     private GridDirection direction;
     private Coordinates coordinates;
     private Laser laser;
-
+    private int speed;
+    private ArrayList<GridDirection> walls;
+    private int damage;
+    private Rotation rotation;
+    
     public LaserTower(Coordinates coordinates, GridDirection direction) {
         this.coordinates = coordinates;
         this.direction = direction;
-        laser = new Laser(1, this);
+        this.damage = 1;
+        laser = new Laser(damage, this);
+        this.speed = 0;
+        this.walls = new ArrayList<>();
+        this.rotation = Rotation.NONE;
     }
 
 
     @Override
     public boolean isWall(GridDirection direction) {
-        return false;
+        return walls.contains(direction);
     }
 
     @Override
     public boolean hasWalls() {
-        return false;
+        return !walls.isEmpty();
     }
 
     @Override
     public void buildWall(GridDirection direction) {
-
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                return;
+            }
+        }
+        walls.add(direction);
     }
 
     @Override
     public void removeWall(GridDirection direction) {
-
+        for (GridDirection dir: walls) {
+            if (dir == direction) {
+                walls.remove(direction);
+            }
+        }
     }
 
     @Override
     public int getSpeed() {
-        return 0;
+        return speed;
     }
 
     @Override
@@ -47,12 +66,12 @@ public class LaserTower implements IObjects {
 
     @Override
     public int getDamage() {
-        return 0;
+        return damage;
     }
 
     @Override
     public Rotation getRotation() {
-        return null;
+        return rotation;
     }
 
     @Override
@@ -62,19 +81,23 @@ public class LaserTower implements IObjects {
 
     @Override
     public String getTexture() {
-        return null;
+        return "assets/lasertowers/laserTower_" + direction.toString().toLowerCase() + "wards.png";
     }
 
     @Override
     public String getWallTexture() {
-        return null;
+        return GridDirection.getWallTexture(walls);
     }
 
     public Laser getLaser() {
         return laser;
     }
 
-    public Coordinates getCoordinates() {
+    Coordinates getCoordinates() {
         return coordinates;
+    }
+    
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }
