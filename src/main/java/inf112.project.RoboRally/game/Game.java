@@ -291,6 +291,8 @@ public class Game implements IGame {
     public void doTurn() {
         switch (this.currentGameStatus) {
             case EXECUTING_INSTRUCTIONS:
+                System.out.println();
+                System.out.println("Register phase " + (currentSlotNumber + 1));
                 System.out.println("EXECUTING_INSTRUCTIONS");
                 executingInstructions();
                 return;
@@ -363,8 +365,8 @@ public class Game implements IGame {
     }
 
     /**
-     * Determine the position the destroyed player should be inserted into,
-     * in the list of activePlayers, based on start order.<br>
+     * Determine the position the destroyed player should have
+     * in the list of activePlayers, based on start order.
      *
      * @param player
      *              The player to be restored.
@@ -557,8 +559,6 @@ public class Game implements IGame {
      * execute instructions in a TODO: finish this
      */
     private void executingInstructions() {
-        System.out.println();
-        System.out.println("Register phase " + (currentSlotNumber + 1));
         IDeck cardsForThisRegisterSlot = new Deck();
         ArrayList<IPlayer> listOfPlayers = new ArrayList<>(); // For keeping track of players and their cards.
         this.revealEachPlayersProgramCardForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);

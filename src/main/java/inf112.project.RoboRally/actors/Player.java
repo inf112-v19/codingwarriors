@@ -221,6 +221,7 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         this.numberOfDamageTokensRecieved = 0; // Reset damage
+        this.assessCurrentDamage(); // unlock registers
         this.wasDestroyedThisTurn = true;
     }
 
