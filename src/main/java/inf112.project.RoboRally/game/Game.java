@@ -32,7 +32,6 @@ public class Game implements IGame {
     // For example: When somebody is removed from the game,
     // they are inserted into position 0 in this list.
     private GameBoard board;
-    private int numberOfPlayersLeftInTheGame;
     private boolean everyFlagHasBeenVisited;
     private GameStatus currentGameStatus;
     private IPlayer currentlyActingPlayer; // The player whose cards are to be displayed.
@@ -186,7 +185,6 @@ public class Game implements IGame {
         this.discardedProgramCards = new Deck();
         this.programCards.createProgramCardsDeck();
         this.everyFlagHasBeenVisited = false;
-        this.numberOfPlayersLeftInTheGame = players.size();
         this.currentSlotNumber = 0;
         this.destroyedPlayers = new ArrayList<>();
         this.playersOutOfTheGame = new ArrayList<>();
@@ -264,7 +262,7 @@ public class Game implements IGame {
 
     @Override
     public int getNumberOfPlayersLeftInTheGame() {
-        return this.numberOfPlayersLeftInTheGame;
+        return (players.size() - playersOutOfTheGame.size());
     }
 
     @Override
@@ -742,9 +740,8 @@ public class Game implements IGame {
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
-            this.numberOfPlayersLeftInTheGame--; // TODO: make a method to calculate this number on demand.
             this.emptyThePlayersRegister(player);
-            if (this.numberOfPlayersLeftInTheGame <= 0) {
+            if (this.getNumberOfPlayersLeftInTheGame() <= 0) {
                 //game over
                 this.setGameStatus(THE_END);
                 this.doTurn();
@@ -790,14 +787,14 @@ public class Game implements IGame {
      * Ensures that the decks are only made for players that needs it.
      */
     private void updateDeckOfSelectedCards() {
-        this.selectedCards = new IDeck[numberOfPlayersLeftInTheGame];
-        for (int i = 0; i < numberOfPlayersLeftInTheGame; i++) {
+        this.selectedCards = new IDeck[this.getNumberOfPlayersLeftInTheGame()];
+        for (int i = 0; i < this.getNumberOfPlayersLeftInTheGame(); i++) {
             this.selectedCards[i] = new Deck();
         }
     }
 
     public boolean gameOver() {
-        return numberOfPlayersLeftInTheGame == 0;
+        return this.getNumberOfPlayersLeftInTheGame() == 0;
     }
 
     public int getCurrentSlotNumber() {
