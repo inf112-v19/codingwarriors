@@ -71,7 +71,7 @@ public class GameBoard {
     }
 
     private IObjects factory(char c, int x, int y) {
-        Coordinates coordinate = new Coordinates(x,y);
+        Coordinates coordinate = new Coordinates(y,x);
         switch (c) {
             case 'r':
                 return new ConveyorBelt(1,GridDirection.EAST, Rotation.NONE);
@@ -103,10 +103,14 @@ public class GameBoard {
                 return new Pit();
             case 'W':
                 return new CrossedWrench();
-            case '|':
+            case 'i':
+                return new LaserTower(coordinate, GridDirection.NORTH);
+            case 'k':
                 return new LaserTower(coordinate, GridDirection.SOUTH);
-            case '-':
-                //return new Laser(GridDirection.EAST,1, this);
+            case 'm':
+                return new LaserTower(coordinate, GridDirection.EAST);
+            case 'n':
+                return new LaserTower(coordinate, GridDirection.WEST);
             default:
                 return new Floor();
         }
