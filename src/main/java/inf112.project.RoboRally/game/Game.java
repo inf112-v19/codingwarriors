@@ -9,8 +9,10 @@ import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.Deck;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.gui.Grid;
 import inf112.project.RoboRally.objects.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class Game implements IGame {
     public Game() {
         String defaultLayout = "16C12R" +
                 "f....r.rrr...f.." +
-                ".R..RRRRRRRRDu.." +
+                ".R......RRRRDu.." +
                 ".U.........cD..." +
                 ".U...f....|.D..." +
                 ".U......ll..D.p." +
@@ -182,7 +184,7 @@ public class Game implements IGame {
         // Hardcoded players for demonstration.
         IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
         IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
-        IPlayer player3 = new AI("G-bot", 2, 5, Color.LIME);
+        IPlayer player3 = new Player("G-bot", 3, 10, Color.LIME);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);
@@ -296,7 +298,6 @@ public class Game implements IGame {
     public List<Laser> getLasers() {
         return lasers;
     }
-
 
 
     /**
@@ -482,8 +483,7 @@ public class Game implements IGame {
      * If yes, it destroys the player.
      * If no, the player is left alive.
      *
-     * @param player
-     *              The player to potentially be destroyed.
+     * @param player The player to potentially be destroyed.
      */
     private void destroyPlayerIfNecessary(IPlayer player) {
         if (player == null) {
@@ -524,16 +524,60 @@ public class Game implements IGame {
         for (int i = 0; i < listOfPlayers.size(); i++) {
             ICard card = cardsForThisRegisterSlot.getCardAtPosition(i);
             IPlayer player = listOfPlayers.get(i);
-            player.movePlayer(card);
+            Coordinates validPositionForPlayer = moveToValidCoordinates(player.movePlayer(card), player);
+            player.setCoordinates(validPositionForPlayer);
         }
     }
 
+    private Coordinates moveToValidCoordinates(List<Coordinates> coordinates, IPlayer player) {
+        Coordinates currentPlayerCoordinates = new Coordinates(player.getX(), player.getY());
+        if (board.getObject(currentPlayerCoordinates).isWall(player.getPlayerDirection()))
+            return currentPlayerCoordinates;
+        if (pathHasWall(coordinates, player.getPlayerDirection())) {
+            Coordinates previousCoordinates = currentPlayerCoordinates;
+            for (Coordinates playerCoordinates : coordinates) {
+                IObjects mightBeWall = board.getObject(playerCoordinates);
+                if (mightBeWall.isWall(player.getPlayerDirection().invert()))
+                    return previousCoordinates;
+                else if (mightBeWall.isWall(player.getPlayerDirection()))
+                    return playerCoordinates;
+
+                previousCoordinates = playerCoordinates;
+            }
+        }
+
+        for (Coordinates playerCoordinates : coordinates) {
+            for (IPlayer player1 : players) {
+                if (playerCoordinates.equals(player1.getCoordinates()))
+                    player1.movePlayer(player.getPlayerDirection()); // should maybe use recursion?
+            }
+        }
+
+        if (coordinates.size() == 0) return currentPlayerCoordinates;
+
+        return coordinates.get(coordinates.size() - 1);
+    }
+
+    public boolean pathHasWall(List<Coordinates> coordinates, GridDirection direction) {
+        List<Coordinates> coordinatesInsideMap = new ArrayList<>();
+
+        for (Coordinates pathCoordinates : coordinates) {
+            if (board.moveValid(pathCoordinates.getX(), pathCoordinates.getY()))
+                coordinatesInsideMap.add(pathCoordinates);
+        }
+
+        for (Coordinates coordinates1 : coordinatesInsideMap) {
+            IObjects object = board.getObject(coordinates1.getX(), coordinates1.getY());
+            if (object.isWall(direction) || object.isWall(direction.invert()))
+                return true;
+        }
+        return false;
+    }
 
     @Override
     public List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction, Laser laser) {
         List<Coordinates> path = new ArrayList<>();
         for (Coordinates coordinate : coordinates) {
-
 
             // looking for walls
             if (!board.moveValid(coordinate.getX(), coordinate.getY())) {
@@ -542,7 +586,7 @@ public class Game implements IGame {
             IObjects current = board.getObject(coordinate.getX(), coordinate.getY());
             if (current.isWall(direction.invert()) && !coordinate.equals(coordinates.get(0))) {
                 return path;
-            } else if(current.isWall(direction)) {
+            } else if (current.isWall(direction)) {
                 path.add(coordinate);
                 return path;
             }
@@ -562,7 +606,6 @@ public class Game implements IGame {
         }
         return path;
     }
-
 
 
     /**
@@ -679,11 +722,11 @@ public class Game implements IGame {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
         }
-            System.out.println("player " + player.getName() + " was destroyed at");
-            System.out.println("x: " + player.getX());
-            System.out.println("y: " + player.getY());
-            player.destroyPlayer();
-            this.activePlayers.remove(player);
+        System.out.println("player " + player.getName() + " was destroyed at");
+        System.out.println("x: " + player.getX());
+        System.out.println("y: " + player.getY());
+        player.destroyPlayer();
+        this.activePlayers.remove(player);
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);

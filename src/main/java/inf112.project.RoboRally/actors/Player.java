@@ -5,6 +5,7 @@ import inf112.project.RoboRally.cards.*;
 import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.Laser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
@@ -28,7 +29,7 @@ public class Player implements IPlayer {
         this.backupX = this.x;
         this.backupY = this.y;
         this.name = name;
-        this.playerDirection = GridDirection.NORTH;
+        this.playerDirection = GridDirection.EAST;
         this.cardsInHand = new Deck();
         this.numberOfDamageTokensRecieved = 0;
         this.lives = 3;
@@ -78,28 +79,22 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void movePlayer(ICard card) {
+    public List<Coordinates> movePlayer(ICard card) {
         if (card == null) {
             throw new IllegalArgumentException("Not a valid card");
         }
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
-            case ROTATE_RIGHT: rotateRight();
-            break;
-            case ROTATE_LEFT: rotateLeft();
-            break;
-            case U_TURN: uTurn();
-            break;
-            case FORWARD_1: moveInDirection(playersCurrentDirection, 1);
-            break;
-            case FORWARD_2: moveInDirection(playersCurrentDirection, 2);
-            break;
-            case FORWARD_3: moveInDirection(playersCurrentDirection, 3);
-            break;
-            case BACKWARDS: moveInDirection(opposite(), 1);
-            break;
+            case ROTATE_RIGHT: rotateRight(); break;
+            case ROTATE_LEFT: rotateLeft(); break;
+            case U_TURN: uTurn(); break;
+            case FORWARD_1: return moveInDirection(playersCurrentDirection, 1);
+            case FORWARD_2: return moveInDirection(playersCurrentDirection, 2);
+            case FORWARD_3: return moveInDirection(playersCurrentDirection, 3);
+            case BACKWARDS: return moveInDirection(opposite(), 1);
         }
+       return new ArrayList<>();
     }
 
     @Override
@@ -305,33 +300,38 @@ public class Player implements IPlayer {
         return playerDirection.invert();
     }
 
-    private void moveInDirection(GridDirection direction, int steps) {
+    private List<Coordinates> moveInDirection(GridDirection direction, int steps) {
+        List<Coordinates> coordinates = new ArrayList<>();
+        Coordinates startPos = new Coordinates(x, y);
         switch (direction) {
             case NORTH:
                 for (int i = 0; i < steps; i++) {
                     y = y + 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
             case WEST:
                 for (int i = 0; i < steps; i++) {
                     x = x - 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
             case EAST:
                 for (int i = 0; i < steps; i++) {
                     x = x + 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
             case SOUTH:
                 for (int i = 0; i < steps; i++) {
                     y = y - 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
         }
+        this.x = startPos.getX();
+        this.y = startPos.getY();
+        return coordinates;
     }
 
     @Override
@@ -373,6 +373,12 @@ public class Player implements IPlayer {
     @Override
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public void setCoordinates(Coordinates validPositionForPlayer) {
+        this.x = validPositionForPlayer.getX();
+        this.y = validPositionForPlayer.getY();
     }
 
     public Coordinates getCoordinates() {

@@ -40,7 +40,7 @@ public interface IPlayer {
      * @throws IllegalArgumentException
      *      if card == null.
      */
-    void movePlayer(ICard card);
+    List<Coordinates> movePlayer(ICard card);
 
 
     /**
@@ -288,4 +288,8 @@ public interface IPlayer {
     Laser getLaser();
 
     Color getColor();
+
+    void setCoordinates(Coordinates validPositionForPlayer);
+
+    Coordinates getCoordinates();
 }
