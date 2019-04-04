@@ -23,24 +23,50 @@ public interface IGame {
 
 
     /**
-     * Determine the number of cards the player is eligible to receive.
-     *
-     * @param player
-     *              The chosen player.
-     * @return The number of cards this player should be dealt.
-     *
-     * @throws IllegalArgumentException
-     *      if player == null.
+     * Initiate the various game phases, based on the current state of the game.
      */
-    int calculateTheNumberOfCardsThePlayerCanDraw(IPlayer player);
+    void doTurn();
 
 
     /**
-     * Get the list of players that are able to act this round.
+     * Check if the given player is prevented from performing actions.<br>
+     * A player is unable to act if they are destroyed,
+     * are permanently out of the game,
+     * or is powered down (to be implemented).
      *
-     * @return The list of active players.
+     * @param player
+     *              The player to check for action eligibility.
+     * @return true if the player can perform game actions,
+     *       false otherwise
+     * @throws IllegalArgumentException
+     *      If the given player is null (player == null).
      */
-    List<IPlayer> getActivePlayers();
+    Boolean checkIfThePlayerIsOperational(IPlayer player);
+
+
+    /**
+     * Analyze the path/trajectory of the given laser being fired.<br>
+     * If something is hit that prevents the laser from going further,
+     * we stop, and return the coordinates that can be traversed.
+     *
+     * @param coordinates
+     *                  The list of coordinates where the laser potentially travels.
+     * @param direction
+     *                  The facing direction of the object firing the laser.
+     * @param laser
+     *              The laser being fired.
+     * @return A list containing the updated coordinates where the laser travels,
+     *        stopping at players and walls.
+     */
+    List<Coordinates> getLaserPath(List<Coordinates> coordinates, GridDirection direction, Laser laser);
+
+
+    /**
+     * Returns the game board.
+     *
+     * @return Returns the game board.
+     */
+    GameBoard getBoard();
 
 
     /**
@@ -49,6 +75,14 @@ public interface IGame {
      * @return The list of players.
      */
     List<IPlayer> getPlayers();
+
+
+    /**
+     * Get the list of players that are able to act this round.
+     *
+     * @return The list of active players.
+     */
+    List<IPlayer> getActivePlayers();
 
 
     /**
@@ -70,6 +104,36 @@ public interface IGame {
 
 
     /**
+     * Get the list of lasers that are currently capable of firing.
+     *
+     * @return The list of operational lasers.
+     */
+    List<Laser> getLasers();
+
+
+    /**
+     * Get the number for the currently executed register slot.
+     *
+     * @return The current register slot being executed.
+     */
+    int getCurrentSlotNumber();
+
+
+    /**
+     * Update the current slot number.
+     *
+     * @param number
+     *              The new slot number.<br>
+     *              Must not be negative or above the NUMBER_OF_REGISTER_SLOTS.
+     * @throws IllegalArgumentException
+     *       if slotNumber is negative (slotNumber < 0),<br>
+     *       slotNumber is too high (slotNumber > NUMBER_OF_REGISTER_SLOTS),<br>
+     *       or slotNumber == null.
+     */
+    void setCurrentSlotNumber(Integer number);
+
+
+    /**
      * Get the games current status,
      * to determine GUI drawing mode.
      *
@@ -79,25 +143,15 @@ public interface IGame {
 
 
     /**
-     * Check if the given player is prevented from performing actions.<br>
-     * A player is unable to act if they are destroyed,
-     * are permanently out of the game,
-     * or is powered down (to be implemented).
+     * Update the current state of the game.
      *
-     * @param player
-     *              The player to check for action eligibility.
-     * @return true if the player can perform game actions,
-     *       false otherwise
+     * @param status
+     *              The new game status.
      * @throws IllegalArgumentException
-     *      If the given player is null (player == null).
+     *      If the status is null (status == null),<br>
+     *      or not a valid status (!GameStatus.validStatus(status)).
      */
-    Boolean checkIfThePlayerIsOperational(IPlayer player);
-
-    /**
-     * Returns the game board
-     * @return Returns the game board
-     */
-    GameBoard getBoard();
+    void setGameStatus(GameStatus status);
 
 
     /**
@@ -118,38 +172,10 @@ public interface IGame {
 
 
     /**
-     * Update the current state of the game.
+     * Check if all the players are permanently out of the game.
      *
-     * @param status
-     *              The new game status.
+     * @return true if there are no more players left alive,
+     *      false otherwise.
      */
-    void setGameStatus(GameStatus status);
-
-
-    /**
-     * Update the current slot number to
-     *
-     * @param number
-     *              The new slot number.<br>
-     *              Must not be negative or above the NUMBER_OF_REGISTER_SLOTS.
-     * @throws IllegalArgumentException
-     *       if slotNumber is negative (slotNumber < 0),<br>
-     *       slotNumber is too high (slotNumber > NUMBER_OF_REGISTER_SLOTS),<br>
-     *       or slotNumber == null.
-     */
-    void setCurrentSlotNumber(Integer number);
-
-
-    /**
-     * Perform round actions based on the games current state.
-     */
-    void doTurn();
-
-    List<Laser> getLasers();
-
-    List<Coordinates> getPath(List<Coordinates> coordinates, GridDirection direction, Laser laser);
-
     boolean gameOver();
-
-    int getCurrentSlotNumber();
 }
