@@ -88,6 +88,91 @@ public class Game implements IGame {
         this.initializeGame(boardLayout, boardWallLayout);
     }
 
+    /**
+     * Add the participating players,<br>
+     * generate the game board using the provided board and walls layout,<br>
+     * initialize the variables and create the deck of program cards.
+     *
+     * @param gameBoardLayout
+     *                  The layout of the game board.
+     * @param wallsLayout
+     *                  The layout of the walls on the board.
+     */
+    private void initializeGame(String gameBoardLayout, String wallsLayout) {
+        this.board = new GameBoard(gameBoardLayout, wallsLayout);
+        this.players = new ArrayList<>();
+        this.activePlayers = new ArrayList<>();
+        this.destroyedPlayers = new ArrayList<>();
+        this.playersOutOfTheGame = new ArrayList<>();
+        this.programCards = new Deck();
+        this.programCards.createProgramCardsDeck();
+        this.discardedProgramCards = new Deck();
+        this.lasers = new ArrayList<>();
+        this.everyFlagHasBeenVisited = false;
+        this.currentSlotNumber = 0;
+        this.addPlayers();
+        this.addLaserTowers();
+        this.updateDeckOfSelectedCards();
+        this.dealOutProgramCards();
+        this.setGameStatus(SELECT_CARDS);
+    }
+
+    @Override
+    public void addPlayers() {
+        // Hardcoded players for demonstration.
+        IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
+        IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
+        IPlayer player3 = new AI("G-bot", 2, 5, Color.LIME);
+        this.players.add(player1);
+        this.players.add(player2);
+        this.players.add(player3);
+        this.registerPlayerLasers();
+        this.activePlayers.addAll(players);
+    }
+
+    /**
+     * Add each players laser to the games list of operational lasers.
+     */
+    private void registerPlayerLasers() {
+        for (IPlayer player : this.players) {
+            this.lasers.add(player.getLaser());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private void addLaserTowers() {
         for (int x=0; x<board.getRows(); x++) {
             for (int y=0; y<board.getColumns(); y++) {
@@ -99,8 +184,23 @@ public class Game implements IGame {
         }
     }
 
-    @Override
-    public void drawCards(IPlayer player) {
+    /**
+     * The given player draws as many cards as they are allowed
+     * from the program cards deck.<br>
+     * If the deck doesn't have enough cards,
+     * then the player draws the cards that are left in the deck.<br>
+     *
+     * The pile of discarded program cards are
+     * subsequently shuffled back into the main deck,
+     * and the player draws the remaining cards owed.
+     *
+     * @param player
+     *              The player that wants to draw cards.
+     *
+     * @throws IllegalArgumentException
+     *      if player == null.
+     */
+    private void drawCards(IPlayer player) {
         if (player == null) {
             throw new IllegalArgumentException("Not a valid player");
         }
@@ -132,8 +232,12 @@ public class Game implements IGame {
         this.programCards.shuffle();
     }
 
-    @Override
-    public void dealOutProgramCards() {
+    /**
+     * Shuffle the program cards deck.
+     * Each player draw cards,
+     * depending on how many damage tokens they have.
+     */
+    private void dealOutProgramCards() {
         programCards.shuffle();
         for (IPlayer player : activePlayers) {
             int numberOfCardsPlayerCanDraw =
@@ -158,44 +262,8 @@ public class Game implements IGame {
         return (numberOfCards - playerDamage);
     }
 
-    @Override
-    public void initializeGame(String gameBoardLayout, String gameBoardWalls) {
-        //TODO: Make initializeGame take a gameboard as parameter,
-        // which can be chosen at the start menu?
-        this.lasers = new ArrayList<>();
-        this.addPlayers();
-        this.board = new GameBoard(gameBoardLayout, gameBoardWalls);
-        this.programCards = new Deck();
-        this.discardedProgramCards = new Deck();
-        this.programCards.createProgramCardsDeck();
-        this.everyFlagHasBeenVisited = false;
-        this.currentSlotNumber = 0;
-        this.destroyedPlayers = new ArrayList<>();
-        this.playersOutOfTheGame = new ArrayList<>();
-    
-        addLaserTowers();
 
-        this.updateDeckOfSelectedCards();
-        this.dealOutProgramCards();
-        this.setGameStatus(SELECT_CARDS);
-    }
 
-    @Override
-    public void addPlayers() {
-        // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
-        IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
-        IPlayer player3 = new AI("G-bot", 2, 5, Color.LIME);
-        this.players = new ArrayList<>();
-        this.players.add(player1);
-        this.players.add(player2);
-        this.players.add(player3);
-        this.lasers.add(player1.getLaser()); // adds the lasers belonging to the players
-        this.lasers.add(player2.getLaser());
-        this.lasers.add(player3.getLaser());
-        this.activePlayers = new ArrayList<>();
-        this.activePlayers.addAll(players);
-    }
 
     @Override
     public List<IPlayer> getActivePlayers() {
@@ -235,6 +303,7 @@ public class Game implements IGame {
         return playerIsOperational;
     }
 
+    @Override
     public GameBoard getBoard() {
         return board;
     }
@@ -270,6 +339,21 @@ public class Game implements IGame {
     }
 
     @Override
+    public boolean gameOver() {
+        return this.getNumberOfPlayersLeftInTheGame() == 0;
+    }
+
+    @Override
+    public int getCurrentSlotNumber() {
+        return currentSlotNumber;
+    }
+
+    @Override
+    public List<Laser> getLasers() {
+        return lasers;
+    }
+
+    @Override
     public void doTurn() {
         switch (this.currentGameStatus) {
             case EXECUTING_INSTRUCTIONS:
@@ -296,10 +380,7 @@ public class Game implements IGame {
 
     }
 
-    @Override
-    public List<Laser> getLasers() {
-        return lasers;
-    }
+
 
 
 
@@ -469,7 +550,7 @@ public class Game implements IGame {
     }
 
     /**
-     * Remove lasers belonging to players that are no longer in the game.
+     * Remove lasers attached to players that are no longer in the game.
      */
     private void removeLasersBelongingToDeadPlayers() {
         Laser laserToRemove = null;
@@ -774,14 +855,6 @@ public class Game implements IGame {
         for (int i = 0; i < this.getNumberOfPlayersLeftInTheGame(); i++) {
             this.selectedCards[i] = new Deck();
         }
-    }
-
-    public boolean gameOver() {
-        return this.getNumberOfPlayersLeftInTheGame() == 0;
-    }
-
-    public int getCurrentSlotNumber() {
-        return currentSlotNumber;
     }
 
 }

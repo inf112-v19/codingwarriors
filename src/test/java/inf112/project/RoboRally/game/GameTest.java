@@ -28,7 +28,6 @@ public class GameTest {
 
     @Test
     public void checkIfActivePlayersIsEqualToPlayersOnStartingANewGame() {
-        game.addPlayers();
         assertEquals(players, activePlayers);
     }
 
@@ -61,5 +60,6 @@ public class GameTest {
         int numberOfCardsDrawn = game.calculateTheNumberOfCardsThePlayerCanDraw(hasTakenNineDamage);
         assertEquals(correctAmountOfCards, numberOfCardsDrawn);
     }
+
 
 }
