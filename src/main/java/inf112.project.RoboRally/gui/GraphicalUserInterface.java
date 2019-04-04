@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,15 +13,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.project.RoboRally.actors.AI;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
-import inf112.project.RoboRally.actors.Player;
-import inf112.project.RoboRally.cards.ICard;
-import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class GraphicalUserInterface extends ApplicationAdapter {
@@ -209,7 +204,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                 if (!laser.hasPlayer()
                         ||(laser.hasPlayer()
                         && game.checkIfThePlayerIsOperational(laser.getPlayer()))) {
-                    List<Coordinates> coordinates = game.getPath(laser.getCoordinates(), laser.getDirection(), laser);
+                    List<Coordinates> coordinates = game.getLaserPath(laser.getCoordinates(), laser.getDirection(), laser);
                     for (int i = 0; i < coordinates.size(); i++) {
                         if (laser.hasPlayer() && i == 0) continue;
                         batch.draw(assetsManager.getAssetFileName(laser.getTexture()),
