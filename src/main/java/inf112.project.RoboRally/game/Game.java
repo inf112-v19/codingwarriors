@@ -182,9 +182,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
         // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
-        IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
-        IPlayer player3 = new Player("G-bot", 3, 10, Color.LIME);
+        IPlayer player1 = new Player("Buzz", 2, 7, Color.RED);
+        IPlayer player2 = new Player("Emma", 3, 7, Color.CYAN);
+        IPlayer player3 = new Player("G-bot", 4, 7, Color.LIME);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);
@@ -531,32 +531,55 @@ public class Game implements IGame {
 
     private Coordinates moveToValidCoordinates(List<Coordinates> coordinates, IPlayer player) {
         Coordinates currentPlayerCoordinates = new Coordinates(player.getX(), player.getY());
-        if (board.getObject(currentPlayerCoordinates).isWall(player.getPlayerDirection()))
+        if (coordinates.size() == 0)
             return currentPlayerCoordinates;
-        if (pathHasWall(coordinates, player.getPlayerDirection())) {
-            Coordinates previousCoordinates = currentPlayerCoordinates;
+
+        GridDirection directionPlayerWantsToMove = currentPlayerCoordinates.getDirection(coordinates.get(0));
+
+        // Checks the tile the player currently obtains
+        if (board.moveValid(currentPlayerCoordinates.getX(), currentPlayerCoordinates.getY()) &&
+                board.getObject(currentPlayerCoordinates).isWall(directionPlayerWantsToMove)) {
+            return currentPlayerCoordinates;
+        }
+
+        // Checks if any tiles in path contain players
+        Coordinates previousCoordinates = currentPlayerCoordinates;
+        for (Coordinates playerCoordinates : coordinates) {
+            for (IPlayer player1 : players) {
+                Coordinates previousPlayerPosition = player1.getCoordinates();
+                if (playerCoordinates.equals(previousPlayerPosition)) {
+                    // Compares coordinates with other player to get direction of movement
+                    // (needed if a player moves two players on a row)
+                    GridDirection direction = player.getCoordinates().getDirection(player1.getCoordinates());
+                    Coordinates positionOfPushedPlayer = moveToValidCoordinates(player1.movePlayer(direction), player1);
+                    // if the other player wasn't moved - the current player shouldn't move either
+                    if (positionOfPushedPlayer.equals(previousPlayerPosition))
+                        return previousCoordinates;
+                    previousCoordinates = playerCoordinates;
+                    player1.setCoordinates(positionOfPushedPlayer);
+                }
+            }
+        }
+
+        // Checks the path the player wishes to move
+        if (pathHasWall(coordinates, directionPlayerWantsToMove)) {
+            previousCoordinates = currentPlayerCoordinates;
             for (Coordinates playerCoordinates : coordinates) {
                 IObjects mightBeWall = board.getObject(playerCoordinates);
-                if (mightBeWall.isWall(player.getPlayerDirection().invert()))
+                if (mightBeWall.isWall(directionPlayerWantsToMove.invert())) {
                     return previousCoordinates;
-                else if (mightBeWall.isWall(player.getPlayerDirection()))
+                }
+                else if (mightBeWall.isWall(directionPlayerWantsToMove)) {
                     return playerCoordinates;
+                }
 
                 previousCoordinates = playerCoordinates;
             }
         }
 
-        for (Coordinates playerCoordinates : coordinates) {
-            for (IPlayer player1 : players) {
-                if (playerCoordinates.equals(player1.getCoordinates()))
-                    player1.movePlayer(player.getPlayerDirection()); // should maybe use recursion?
-            }
-        }
-
-        if (coordinates.size() == 0) return currentPlayerCoordinates;
-
-        return coordinates.get(coordinates.size() - 1);
+        return (coordinates.get(coordinates.size() - 1));
     }
+
 
     public boolean pathHasWall(List<Coordinates> coordinates, GridDirection direction) {
         List<Coordinates> coordinatesInsideMap = new ArrayList<>();

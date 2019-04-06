@@ -1,10 +1,8 @@
 package inf112.project.RoboRally.actors;
 
 import com.badlogic.gdx.graphics.Color;
-import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
-import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.Laser;
 
@@ -241,7 +239,7 @@ public interface IPlayer {
      * @param direction
      *              The direction to be moved
      */
-    void movePlayer(GridDirection direction);
+    List<Coordinates> movePlayer(GridDirection direction);
 
 
     /**

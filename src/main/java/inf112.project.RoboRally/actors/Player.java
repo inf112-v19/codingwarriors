@@ -29,7 +29,7 @@ public class Player implements IPlayer {
         this.backupX = this.x;
         this.backupY = this.y;
         this.name = name;
-        this.playerDirection = GridDirection.EAST;
+        this.playerDirection = GridDirection.NORTH;
         this.cardsInHand = new Deck();
         this.numberOfDamageTokensRecieved = 0;
         this.lives = 3;
@@ -98,15 +98,19 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void movePlayer(GridDirection direction) {
+    public List<Coordinates> movePlayer(GridDirection direction) {
         if (direction == GridDirection.NORTH) {
-            y++;
+            return moveInDirection(direction, 1);
+            //y++;
         } else if (direction == GridDirection.WEST) {
-            x--;
+            return moveInDirection(direction, 1);
+            //x--;
         } else if (direction == GridDirection.SOUTH) {
-            y--;
-        } else if (direction == GridDirection.EAST) {
-            x++;
+            return moveInDirection(direction, 1);
+            //y--;
+        } else {
+            return moveInDirection(direction, 1);
+            //x++;
         }
     }
 
