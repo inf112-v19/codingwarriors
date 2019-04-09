@@ -345,6 +345,10 @@ public class DeckTest {
         deck.showCard(null);
     }
 
+    /**
+     * Might sometimes fail if the shuffling is a bit off.
+     * Run the test again a few times to be sure that it is broken.
+     */
     @Test
     public void shufflingTheDeckShouldLeaveItShuffled() {
         deck.createProgramCardsDeck();

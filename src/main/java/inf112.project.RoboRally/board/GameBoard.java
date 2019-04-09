@@ -1,5 +1,6 @@
 package inf112.project.RoboRally.board;
 
+import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.objects.*;
 import inf112.project.RoboRally.objects.IObjects;
 import inf112.project.RoboRally.objects.Flag;
@@ -21,7 +22,7 @@ public class GameBoard {
         ArrayList<Integer> yCoordinates = new ArrayList<>();
         for (int x = rows -1; x >= 0; x--) {
             for (int y = 0; y < columns; y++) {
-                board[x][y] = factory(level.charAt(counter));
+                board[x][y] = factory(level.charAt(counter),x,y);
                 counter++;
                 if (board[x][y] instanceof  Flag) {
                     xCoordinates.add(x);
@@ -69,7 +70,8 @@ public class GameBoard {
         return level.indexOf("R")+1; // returns an integer containing the index of the start of board
     }
 
-    private IObjects factory(char c) {
+    private IObjects factory(char c, int x, int y) {
+        Coordinates coordinate = new Coordinates(y,x);
         switch (c) {
             case 'r':
                 return new ConveyorBelt(1,GridDirection.EAST, Rotation.NONE);
@@ -101,10 +103,14 @@ public class GameBoard {
                 return new Pit();
             case 'W':
                 return new CrossedWrench();
-            case '|':
-                //return new LaserTower();
-            case '-':
-                //return new Laser(GridDirection.EAST,1, this);
+            case 'i':
+                return new LaserTower(coordinate, GridDirection.NORTH);
+            case 'k':
+                return new LaserTower(coordinate, GridDirection.SOUTH);
+            case 'm':
+                return new LaserTower(coordinate, GridDirection.EAST);
+            case 'n':
+                return new LaserTower(coordinate, GridDirection.WEST);
             default:
                 return new Floor();
         }
