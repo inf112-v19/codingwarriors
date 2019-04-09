@@ -19,6 +19,7 @@ import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.*;
 
 import java.util.List;
+import java.util.Random;
 
 public class GraphicalUserInterface extends ApplicationAdapter {
     private IGame game;
@@ -115,15 +116,14 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     }
 
     private void userInputs() {
-        if (Gdx.input.justTouched()) {
+        if ((game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) && (cardGui.getCurrentPlayer() instanceof AI)) {
+            cardGui.selectCards(0);
+            }
+        else if (Gdx.input.justTouched()) {
             if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-                if (cardGui.getCurrentPlayer() instanceof AI) {
-                    cardGui.selectCards(0);
-                } else {
                     int x = Gdx.input.getX();
                     int y = HEIGHT - Gdx.input.getY();
                     cardGui.userInputs(x, y);
-                }
             } else {
                 game.doTurn();
             }
