@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.objects;
 
 import com.badlogic.gdx.graphics.Color;
+import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Test;
@@ -21,7 +22,8 @@ public class PitTest {
     @Test
     public void playerRespawnOnLastArchiveMarkerWhenFallingInPit() {
         Player player = new Player("foo", 0,0, Color.RED);
-        player.movePlayer(GridDirection.EAST);
+        Coordinates playerCoordinates = player.movePlayer(GridDirection.EAST).get(0);
+        player.setCoordinates(playerCoordinates);
         IObjects tile = gameboard.getObject(player.getX(), player.getY());
         tile.doAction(player);
         assertEquals(0, player.getY());
@@ -31,7 +33,8 @@ public class PitTest {
     @Test
     public void playerTakesTwoDamageWhenFallingInPit() {
         Player player = new Player("foo", 0,0, Color.RED);
-        player.movePlayer(GridDirection.EAST);
+        Coordinates playerCoordinates = player.movePlayer(GridDirection.EAST).get(0);
+        player.setCoordinates(playerCoordinates);
         IObjects tile = gameboard.getObject(player.getX(), player.getY());
         tile.doAction(player);
         assertEquals(2, player.getPlayerDamage());
@@ -40,7 +43,8 @@ public class PitTest {
     @Test
     public void playerLosesOneLifeWhenFallingInPit() {
         Player player = new Player("foo", 0, 0, Color.RED);
-        player.movePlayer(GridDirection.EAST);
+        Coordinates playerCoordinates = player.movePlayer(GridDirection.EAST).get(0);
+        player.setCoordinates(playerCoordinates);
         IObjects tile = gameboard.getObject(player.getX(), player.getY());
         tile.doAction(player);
         System.out.println(player.getX());

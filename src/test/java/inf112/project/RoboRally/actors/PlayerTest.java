@@ -50,9 +50,9 @@ public class PlayerTest {
     @Test
     public void testMovePlayerForward_1ByCard() {
         this.card = new Card(100, FORWARD_1);
-        player.movePlayer(this.card);
-        assertEquals(1, this.player.getX());
-        assertEquals(2, this.player.getY());
+        List<Coordinates> playerCoordinates = player.movePlayer(this.card);
+        assertEquals(1, playerCoordinates.get(playerCoordinates.size()-1).getX());
+        assertEquals(2, playerCoordinates.get(playerCoordinates.size()-1).getY());
     }
 
     @Test
@@ -84,30 +84,30 @@ public class PlayerTest {
 
     @Test
     public void testMovePlayerDirectionNorth() {
-        this.player.movePlayer(GridDirection.NORTH);
-        assertEquals(1, this.player.getX());
-        assertEquals(2, this.player.getY());
+        List<Coordinates> playerCoordinates = this.player.movePlayer(GridDirection.NORTH);
+        assertEquals(1, playerCoordinates.get(playerCoordinates.size()-1).getX());
+        assertEquals(2, playerCoordinates.get(playerCoordinates.size()-1).getY());
     }
 
     @Test
     public void testMovePlayerDirectionWest() {
-        this.player.movePlayer(GridDirection.WEST);
-        assertEquals(0, this.player.getX());
-        assertEquals(1, this.player.getY());
+        List<Coordinates> playerCoordinates = this.player.movePlayer(GridDirection.WEST);
+        assertEquals(0, playerCoordinates.get(playerCoordinates.size()-1).getX());
+        assertEquals(1, playerCoordinates.get(playerCoordinates.size()-1).getY());
     }
 
     @Test
     public void testMovePlayerDirectionSouth() {
-        this.player.movePlayer(GridDirection.SOUTH);
-        assertEquals(1, this.player.getX());
-        assertEquals(0, this.player.getY());
+        List<Coordinates> playerCoordinates = this.player.movePlayer(GridDirection.SOUTH);
+        assertEquals(1, playerCoordinates.get(playerCoordinates.size()-1).getX());
+        assertEquals(0, playerCoordinates.get(playerCoordinates.size()-1).getY());
     }
 
     @Test
     public void testMovePlayerDirectionEast() {
-        this.player.movePlayer(GridDirection.EAST);
-        assertEquals(2, this.player.getX());
-        assertEquals(1, this.player.getY());
+        List<Coordinates> playerCoordinates = this.player.movePlayer(GridDirection.EAST);
+        assertEquals(2, playerCoordinates.get(playerCoordinates.size()-1).getX());
+        assertEquals(1, playerCoordinates.get(playerCoordinates.size()-1).getY());
     }
 
     @Test
