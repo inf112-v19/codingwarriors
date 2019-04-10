@@ -4,11 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.*;
 import inf112.project.RoboRally.game.Game;
-import inf112.project.RoboRally.objects.GridDirection;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
@@ -16,17 +14,18 @@ import static junit.framework.TestCase.assertEquals;
 public class CollisionTest {
     private Player player;
     private GameBoard gameBoard;
-    private ICard card;
     private Game game;
+    private ICard forward1 = new Card(100,Action.FORWARD_1);
+    private ICard rotateRight = new Card(120,Action.ROTATE_RIGHT);
     private ArrayList<IPlayer> players = new ArrayList<>();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         String boardSetup = "4C4R" +
-                ".uu." +
-                "r..l" +
-                "...l" +
-                "..d.";
+                "...." +
+                "...." +
+                "...." +
+                "....";
         String walls = "" +
                 "...." +
                 ".n.." +
@@ -34,18 +33,31 @@ public class CollisionTest {
                 "....";
         this.gameBoard = new GameBoard(boardSetup, walls);
         this.game = new Game(boardSetup, walls);
-        this.player = new Player("a",1, 3, Color.RED);
-        players.add(player);
-        //this.card = new Card(100, FORWARD_1);
     }
 
     @Test
     public void playerCollidesWithWallTest() {
-        ICard card = new Card(100,Action.FORWARD_1);
         IDeck deck = new Deck();
-        deck.addCardToDeck(card);
+        deck.addCardToDeck(rotateRight);
+        deck.addCardToDeck(rotateRight);
+        deck.addCardToDeck(forward1);
+        this.player = new Player("a",1, 3, Color.RED);
+        players.add(player);
         game.executeProgramCardsForTheCurrentRegister(deck,players);
+
         assertEquals(1, player.getX());
         assertEquals(3, player.getY());
+    }
+
+    @Test
+    public void playerCanWalkToTileWithWallInOppositeDirectionTest() {
+        IDeck deck = new Deck();
+        this.player = new Player("a", 1,1,Color.RED);
+        players.add(player);
+        deck.addCardToDeck(forward1);
+        game.executeProgramCardsForTheCurrentRegister(deck,players);
+
+        assertEquals(1, player.getX());
+        assertEquals(2, player.getY());
     }
 }
