@@ -21,6 +21,7 @@ public class Player implements IPlayer {
     private boolean wasDestroyedThisTurn;
     private Laser laser;
     private Color color;
+    private List<Coordinates> pathOfPlayer;
 
     public Player(String name, int x, int y, Color color) {
         this.color = color;
@@ -79,38 +80,38 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public List<Coordinates> movePlayer(ICard card) {
+    public List<Coordinates> getPathOfPlayer() {
+        return pathOfPlayer;
+    }
+
+    @Override
+    public void movePlayer(ICard card) {
         if (card == null) {
             throw new IllegalArgumentException("Not a valid card");
         }
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
-            case ROTATE_RIGHT: rotateRight(); break;
-            case ROTATE_LEFT: rotateLeft(); break;
-            case U_TURN: uTurn(); break;
-            case FORWARD_1: return moveInDirection(playersCurrentDirection, 1);
-            case FORWARD_2: return moveInDirection(playersCurrentDirection, 2);
-            case FORWARD_3: return moveInDirection(playersCurrentDirection, 3);
-            case BACKWARDS: return moveInDirection(opposite(), 1);
+            case ROTATE_RIGHT: rotateRight(); pathOfPlayer = new ArrayList<>(); break;
+            case ROTATE_LEFT: rotateLeft(); pathOfPlayer = new ArrayList<>(); break;
+            case U_TURN: uTurn(); pathOfPlayer = new ArrayList<>(); break;
+            case FORWARD_1: pathOfPlayer =  moveInDirection(playersCurrentDirection, 1); break;
+            case FORWARD_2: pathOfPlayer = moveInDirection(playersCurrentDirection, 2); break;
+            case FORWARD_3: pathOfPlayer =  moveInDirection(playersCurrentDirection, 3); break;
+            case BACKWARDS: pathOfPlayer =  moveInDirection(opposite(), 1); break;
         }
-       return new ArrayList<>();
     }
 
     @Override
-    public List<Coordinates> movePlayer(GridDirection direction) {
+    public void movePlayer(GridDirection direction) {
         if (direction == GridDirection.NORTH) {
-            return moveInDirection(direction, 1);
-            //y++;
+            pathOfPlayer = moveInDirection(direction, 1);
         } else if (direction == GridDirection.WEST) {
-            return moveInDirection(direction, 1);
-            //x--;
+            pathOfPlayer = moveInDirection(direction, 1);
         } else if (direction == GridDirection.SOUTH) {
-            return moveInDirection(direction, 1);
-            //y--;
+            pathOfPlayer = moveInDirection(direction, 1);
         } else {
-            return moveInDirection(direction, 1);
-            //x++;
+            pathOfPlayer = moveInDirection(direction, 1);
         }
     }
 
@@ -135,6 +136,10 @@ public class Player implements IPlayer {
         this.assessCurrentDamage();
     }
 
+    @Override
+    public void setPathOfPlayer(List<Coordinates> pathOfPlayer) {
+        this.pathOfPlayer = pathOfPlayer;
+    }
 
     @Override
     public void removeOneDamage() {
@@ -304,7 +309,8 @@ public class Player implements IPlayer {
         return playerDirection.invert();
     }
 
-    private List<Coordinates> moveInDirection(GridDirection direction, int steps) {
+    @Override
+    public List<Coordinates> moveInDirection(GridDirection direction, int steps) {
         List<Coordinates> coordinates = new ArrayList<>();
         Coordinates startPos = new Coordinates(x, y);
         switch (direction) {

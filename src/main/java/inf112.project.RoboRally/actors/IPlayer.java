@@ -29,6 +29,8 @@ public interface IPlayer {
     GridDirection getPlayerDirection();
 
 
+    List<Coordinates> getPathOfPlayer();
+
     /**
      * Move the player as instructed on the given program card.
      *
@@ -38,8 +40,7 @@ public interface IPlayer {
      * @throws IllegalArgumentException
      *      if card == null.
      */
-    List<Coordinates> movePlayer(ICard card);
-
+    void movePlayer(ICard card);
 
     /**
      * Get the amount of damage the player has taken.
@@ -55,6 +56,8 @@ public interface IPlayer {
      */
     void takeOneDamage();
 
+
+    void setPathOfPlayer(List<Coordinates> pathOfPlayer);
 
     /**
      * This player repairs one point of damage.<br>
@@ -239,7 +242,7 @@ public interface IPlayer {
      * @param direction
      *              The direction to be moved
      */
-    List<Coordinates> movePlayer(GridDirection direction);
+    void movePlayer(GridDirection direction);
 
 
     /**
@@ -253,6 +256,8 @@ public interface IPlayer {
      */
     void rotateRight();
 
+
+    List<Coordinates> moveInDirection(GridDirection direction, int steps);
 
     /**
      * A method for rotating the player to the opposite direction
