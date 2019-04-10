@@ -182,9 +182,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
         // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 7, Color.RED);
-        IPlayer player2 = new Player("Emma", 3, 7, Color.CYAN);
-        IPlayer player3 = new Player("G-bot", 4, 7, Color.LIME);
+        IPlayer player1 = new Player("Buzz", 3, 7, Color.RED);
+        IPlayer player2 = new Player("Emma", 5, 7, Color.CYAN);
+        IPlayer player3 = new Player("G-bot", 7, 7, Color.LIME);
         this.players = new ArrayList<>();
         this.players.add(player1);
         this.players.add(player2);
@@ -352,6 +352,9 @@ public class Game implements IGame {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
+                    int sizeOfMovement = player.getPathOfPlayer().size();
+                    if (sizeOfMovement != 0)
+                        player.setCoordinates(moveToValidCoordinates(player.getPathOfPlayer(), player));
                 } else {
                     this.destroyPlayer(player);
                 }
@@ -519,12 +522,13 @@ public class Game implements IGame {
      * @param cardsForThisRegisterSlot The deck of revealed Program cards.
      * @param listOfPlayers            The list of players connected with the revealed program cards.
      */
-    private void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
+    public void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
                                                           ArrayList<IPlayer> listOfPlayers) {
         for (int i = 0; i < listOfPlayers.size(); i++) {
             ICard card = cardsForThisRegisterSlot.getCardAtPosition(i);
             IPlayer player = listOfPlayers.get(i);
-            Coordinates validPositionForPlayer = moveToValidCoordinates(player.movePlayer(card), player);
+            player.movePlayer(card);
+            Coordinates validPositionForPlayer = moveToValidCoordinates(player.getPathOfPlayer(), player);
             player.setCoordinates(validPositionForPlayer);
         }
     }
@@ -551,7 +555,8 @@ public class Game implements IGame {
                     // Compares coordinates with other player to get direction of movement
                     // (needed if a player moves two players on a row)
                     GridDirection direction = player.getCoordinates().getDirection(player1.getCoordinates());
-                    Coordinates positionOfPushedPlayer = moveToValidCoordinates(player1.movePlayer(direction), player1);
+                    player1.movePlayer(direction);
+                    Coordinates positionOfPushedPlayer = moveToValidCoordinates(player1.getPathOfPlayer(), player1);
                     // if the other player wasn't moved - the current player shouldn't move either
                     if (positionOfPushedPlayer.equals(previousPlayerPosition))
                         return previousCoordinates;
