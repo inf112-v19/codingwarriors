@@ -22,8 +22,8 @@ public class PitTest {
     @Test
     public void playerRespawnOnLastArchiveMarkerWhenFallingInPit() {
         Player player = new Player("foo", 0,0, Color.RED);
-        Coordinates playerCoordinates = player.movePlayer(GridDirection.EAST).get(0);
-        player.setCoordinates(playerCoordinates);
+        player.movePlayer(GridDirection.EAST);
+        player.setCoordinates(player.getPathOfPlayer().get(0));
         IObjects tile = gameboard.getObject(player.getX(), player.getY());
         tile.doAction(player);
         assertEquals(0, player.getY());
@@ -33,8 +33,8 @@ public class PitTest {
     @Test
     public void playerTakesTwoDamageWhenFallingInPit() {
         Player player = new Player("foo", 0,0, Color.RED);
-        Coordinates playerCoordinates = player.movePlayer(GridDirection.EAST).get(0);
-        player.setCoordinates(playerCoordinates);
+        player.movePlayer(GridDirection.EAST);
+        player.setCoordinates(player.getPathOfPlayer().get(0));
         IObjects tile = gameboard.getObject(player.getX(), player.getY());
         tile.doAction(player);
         assertEquals(2, player.getPlayerDamage());
@@ -43,8 +43,8 @@ public class PitTest {
     @Test
     public void playerLosesOneLifeWhenFallingInPit() {
         Player player = new Player("foo", 0, 0, Color.RED);
-        Coordinates playerCoordinates = player.movePlayer(GridDirection.EAST).get(0);
-        player.setCoordinates(playerCoordinates);
+        player.movePlayer(GridDirection.EAST);
+        player.setCoordinates(player.getPathOfPlayer().get(0));
         IObjects tile = gameboard.getObject(player.getX(), player.getY());
         tile.doAction(player);
         System.out.println(player.getX());

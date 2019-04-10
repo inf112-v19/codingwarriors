@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.objects;
 
 import com.badlogic.gdx.graphics.Color;
+import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.Player;
 import inf112.project.RoboRally.board.GameBoard;
 import org.junit.Test;
@@ -22,7 +23,9 @@ public class FlagTest {
 	public void flagShouldUpdateBackupPoint() {
 		int oldBackupX=player.getBackupX(), oldBackupY=player.getBackupY();
 		player.movePlayer(GridDirection.NORTH);
+		player.setCoordinates(player.getPathOfPlayer().get(0));
 		player.movePlayer(GridDirection.EAST);
+		player.setCoordinates(player.getPathOfPlayer().get(0));
 		IObjects tile = gameBoard.getObject(player.getX(), player.getY());
 		gameBoard.getObject(player.getX(), player.getY());
 		
