@@ -5,6 +5,7 @@ import inf112.project.RoboRally.cards.*;
 import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.Laser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
@@ -20,6 +21,7 @@ public class Player implements IPlayer {
     private boolean wasDestroyedThisTurn;
     private Laser laser;
     private Color color;
+    private List<Coordinates> pathOfPlayer;
 
     private static int counter = 0;
     private int priority;
@@ -87,6 +89,11 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public List<Coordinates> getPathOfPlayer() {
+        return pathOfPlayer;
+    }
+
+    @Override
     public void movePlayer(ICard card) {
         if (card == null) {
             throw new IllegalArgumentException("Not a valid card");
@@ -94,33 +101,26 @@ public class Player implements IPlayer {
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
-            case ROTATE_RIGHT: rotateRight();
-            break;
-            case ROTATE_LEFT: rotateLeft();
-            break;
-            case U_TURN: uTurn();
-            break;
-            case FORWARD_1: moveInDirection(playersCurrentDirection, 1);
-            break;
-            case FORWARD_2: moveInDirection(playersCurrentDirection, 2);
-            break;
-            case FORWARD_3: moveInDirection(playersCurrentDirection, 3);
-            break;
-            case BACKWARDS: moveInDirection(opposite(), 1);
-            break;
+            case ROTATE_RIGHT: rotateRight(); pathOfPlayer = new ArrayList<>(); break;
+            case ROTATE_LEFT: rotateLeft(); pathOfPlayer = new ArrayList<>(); break;
+            case U_TURN: uTurn(); pathOfPlayer = new ArrayList<>(); break;
+            case FORWARD_1: pathOfPlayer =  moveInDirection(playersCurrentDirection, 1); break;
+            case FORWARD_2: pathOfPlayer = moveInDirection(playersCurrentDirection, 2); break;
+            case FORWARD_3: pathOfPlayer =  moveInDirection(playersCurrentDirection, 3); break;
+            case BACKWARDS: pathOfPlayer =  moveInDirection(opposite(), 1); break;
         }
     }
 
     @Override
     public void movePlayer(GridDirection direction) {
         if (direction == GridDirection.NORTH) {
-            y++;
+            pathOfPlayer = moveInDirection(direction, 1);
         } else if (direction == GridDirection.WEST) {
-            x--;
+            pathOfPlayer = moveInDirection(direction, 1);
         } else if (direction == GridDirection.SOUTH) {
-            y--;
-        } else if (direction == GridDirection.EAST) {
-            x++;
+            pathOfPlayer = moveInDirection(direction, 1);
+        } else {
+            pathOfPlayer = moveInDirection(direction, 1);
         }
     }
 
@@ -145,6 +145,10 @@ public class Player implements IPlayer {
         this.assessCurrentDamage();
     }
 
+    @Override
+    public void setPathOfPlayer(List<Coordinates> pathOfPlayer) {
+        this.pathOfPlayer = pathOfPlayer;
+    }
 
     @Override
     public void removeOneDamage() {
@@ -315,33 +319,39 @@ public class Player implements IPlayer {
         return playerDirection.invert();
     }
 
-    private void moveInDirection(GridDirection direction, int steps) {
+    @Override
+    public List<Coordinates> moveInDirection(GridDirection direction, int steps) {
+        List<Coordinates> coordinates = new ArrayList<>();
+        Coordinates startPos = new Coordinates(x, y);
         switch (direction) {
             case NORTH:
                 for (int i = 0; i < steps; i++) {
                     y = y + 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
             case WEST:
                 for (int i = 0; i < steps; i++) {
                     x = x - 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
             case EAST:
                 for (int i = 0; i < steps; i++) {
                     x = x + 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
             case SOUTH:
                 for (int i = 0; i < steps; i++) {
                     y = y - 1;
-                    // should check validity of position
+                    coordinates.add(new Coordinates(x,y));
                 }
                 break;
         }
+        this.x = startPos.getX();
+        this.y = startPos.getY();
+        return coordinates;
     }
 
     @Override
@@ -383,6 +393,12 @@ public class Player implements IPlayer {
     @Override
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public void setCoordinates(Coordinates validPositionForPlayer) {
+        this.x = validPositionForPlayer.getX();
+        this.y = validPositionForPlayer.getY();
     }
 
     public Coordinates getCoordinates() {
