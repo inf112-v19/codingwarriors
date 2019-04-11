@@ -23,6 +23,9 @@ public class Player implements IPlayer {
     private Color color;
     private List<Coordinates> pathOfPlayer;
 
+    private static int counter = 0;
+    private int priority;
+
     public Player(String name, int x, int y, Color color) {
         this.color = color;
         this.x = x;
@@ -38,6 +41,7 @@ public class Player implements IPlayer {
         this.flagsVisited = 0;
         this.wasDestroyedThisTurn = false;
         this.laser = new Laser(1, this);
+        this.priority = counter++;
     }
 
     @Override
@@ -72,6 +76,11 @@ public class Player implements IPlayer {
     @Override
     public void addNewFlagVisited() {
         flagsVisited++;
+    }
+
+    @Override
+    public int getPriority() {
+        return  this.priority;
     }
 
     @Override
@@ -216,6 +225,7 @@ public class Player implements IPlayer {
     public void destroyPlayer() {
         this.lives -= 1;
         this.numberOfDamageTokensRecieved = 0; // Reset damage
+        this.assessCurrentDamage(); // unlock registers
         this.wasDestroyedThisTurn = true;
     }
 
