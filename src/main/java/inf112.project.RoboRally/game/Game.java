@@ -327,8 +327,8 @@ public class Game implements IGame {
      * @param cardsForThisRegisterSlot The deck of revealed Program cards.
      * @param listOfPlayers            The list of players connected with the revealed program cards.
      */
-    private void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
-                                                          ArrayList<IPlayer> listOfPlayers) {
+    public void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
+                                                         ArrayList<IPlayer> listOfPlayers) {
         for (int i = 0; i < listOfPlayers.size(); i++) {
             ICard card = cardsForThisRegisterSlot.getCardAtPosition(i);
             IPlayer player = listOfPlayers.get(i);
