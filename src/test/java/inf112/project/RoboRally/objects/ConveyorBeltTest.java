@@ -57,6 +57,7 @@ public class ConveyorBeltTest {
 		assertEquals(tile.getDirection(), GridDirection.NORTH);
 		
 		tile.doAction(player);
+		player.setCoordinates(player.getPathOfPlayer().get(0));
 		assertEquals(player.getX(), x);
 		assertEquals(player.getY(), y+1);
 	}
@@ -73,6 +74,7 @@ public class ConveyorBeltTest {
 		assertEquals(tile.getDirection(), GridDirection.SOUTH);
 		
 		tile.doAction(player);
+		player.setCoordinates(player.getPathOfPlayer().get(0));
 		assertEquals(player.getX(), x);
 		assertEquals(player.getY(), y-1);
 	}
@@ -89,6 +91,7 @@ public class ConveyorBeltTest {
 		assertEquals(tile.getDirection(), GridDirection.EAST);
 		
 		tile.doAction(player);
+		player.setCoordinates(player.getPathOfPlayer().get(0));
 		assertEquals(player.getX(), x+1);
 		assertEquals(player.getY(), y);
 	}
@@ -105,6 +108,7 @@ public class ConveyorBeltTest {
 		assertEquals(tile.getDirection(), GridDirection.WEST);
 		
 		tile.doAction(player);
+		player.setCoordinates(player.getPathOfPlayer().get(0));
 		assertEquals(player.getX(), x-1);
 		assertEquals(player.getY(), y);
 	}

@@ -221,4 +221,7 @@ public class GameBoard {
         System.out.println(object.getClass());
     }
 
+    public IObjects getObject(Coordinates currentPlayerCoordinates) {
+        return getObject(currentPlayerCoordinates.getX(), currentPlayerCoordinates.getY());
+    }
 }

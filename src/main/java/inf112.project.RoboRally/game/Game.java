@@ -327,12 +327,14 @@ public class Game implements IGame {
      * @param cardsForThisRegisterSlot The deck of revealed Program cards.
      * @param listOfPlayers            The list of players connected with the revealed program cards.
      */
-    private void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
-                                                          ArrayList<IPlayer> listOfPlayers) {
+    public void executeProgramCardsForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
+                                                         ArrayList<IPlayer> listOfPlayers) {
         for (int i = 0; i < listOfPlayers.size(); i++) {
             ICard card = cardsForThisRegisterSlot.getCardAtPosition(i);
             IPlayer player = listOfPlayers.get(i);
             player.movePlayer(card);
+            Coordinates validPositionForPlayer = moveToValidCoordinates(player.getPathOfPlayer(), player);
+            player.setCoordinates(validPositionForPlayer);
         }
     }
 
@@ -358,6 +360,9 @@ public class Game implements IGame {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
+                    int sizeOfMovement = player.getPathOfPlayer().size();
+                    if (sizeOfMovement != 0)
+                        player.setCoordinates(moveToValidCoordinates(player.getPathOfPlayer(), player));
                 } else {
                     this.destroyPlayer(player);
                 }
@@ -531,11 +536,79 @@ public class Game implements IGame {
         }
     }
 
+    private Coordinates moveToValidCoordinates(List<Coordinates> coordinates, IPlayer player) {
+        Coordinates currentPlayerCoordinates = new Coordinates(player.getX(), player.getY());
+        if (coordinates.size() == 0)
+            return currentPlayerCoordinates;
+
+        GridDirection directionPlayerWantsToMove = currentPlayerCoordinates.getDirection(coordinates.get(0));
+
+        // Checks the tile the player currently obtains
+        if (board.moveValid(currentPlayerCoordinates.getX(), currentPlayerCoordinates.getY()) &&
+                board.getObject(currentPlayerCoordinates).isWall(directionPlayerWantsToMove)) {
+            return currentPlayerCoordinates;
+        }
+
+        // Checks if any tiles in path contain players
+        Coordinates previousCoordinates = currentPlayerCoordinates;
+        for (Coordinates playerCoordinates : coordinates) {
+            for (IPlayer player1 : players) {
+                Coordinates previousPlayerPosition = player1.getCoordinates();
+                if (playerCoordinates.equals(previousPlayerPosition)) {
+                    // Compares coordinates with other player to get direction of movement
+                    // (needed if a player moves two players on a row)
+                    GridDirection direction = player.getCoordinates().getDirection(player1.getCoordinates());
+                    player1.movePlayer(direction);
+                    Coordinates positionOfPushedPlayer = moveToValidCoordinates(player1.getPathOfPlayer(), player1);
+                    // if the other player wasn't moved - the current player shouldn't move either
+                    if (positionOfPushedPlayer.equals(previousPlayerPosition))
+                        return previousCoordinates;
+                    previousCoordinates = playerCoordinates;
+                    player1.setCoordinates(positionOfPushedPlayer);
+                }
+            }
+        }
+
+        // Checks the path the player wishes to move
+        if (pathHasWall(coordinates, directionPlayerWantsToMove)) {
+            previousCoordinates = currentPlayerCoordinates;
+            for (Coordinates playerCoordinates : coordinates) {
+                IObjects mightBeWall = board.getObject(playerCoordinates);
+                if (mightBeWall.isWall(directionPlayerWantsToMove.invert())) {
+                    return previousCoordinates;
+                }
+                else if (mightBeWall.isWall(directionPlayerWantsToMove)) {
+                    return playerCoordinates;
+                }
+
+                previousCoordinates = playerCoordinates;
+            }
+        }
+
+        return (coordinates.get(coordinates.size() - 1));
+    }
+
+
+    public boolean pathHasWall(List<Coordinates> coordinates, GridDirection direction) {
+        List<Coordinates> coordinatesInsideMap = new ArrayList<>();
+
+        for (Coordinates pathCoordinates : coordinates) {
+            if (board.moveValid(pathCoordinates.getX(), pathCoordinates.getY()))
+                coordinatesInsideMap.add(pathCoordinates);
+        }
+
+        for (Coordinates coordinates1 : coordinatesInsideMap) {
+            IObjects object = board.getObject(coordinates1.getX(), coordinates1.getY());
+            if (object.isWall(direction) || object.isWall(direction.invert()))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public List<Coordinates> getLaserPath(List<Coordinates> coordinates, GridDirection direction, Laser laser) {
         List<Coordinates> path = new ArrayList<>();
         for (Coordinates coordinate : coordinates) {
-
 
             // looking for walls
             if (!board.moveValid(coordinate.getX(), coordinate.getY())) {
@@ -544,7 +617,7 @@ public class Game implements IGame {
             IObjects current = board.getObject(coordinate.getX(), coordinate.getY());
             if (current.isWall(direction.invert()) && !coordinate.equals(coordinates.get(0))) {
                 return path;
-            } else if(current.isWall(direction)) {
+            } else if (current.isWall(direction)) {
                 path.add(coordinate);
                 return path;
             }
