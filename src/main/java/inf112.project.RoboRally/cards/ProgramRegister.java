@@ -33,11 +33,13 @@ public class ProgramRegister implements IProgramRegister{
     private IDeck register;
     private List<Boolean> isLocked;
     private final int NUMBER_OF_SLOTS = 5;
+    private int currentRegisterSlot;
 
 
     public ProgramRegister() {
         this.register = new Deck();
         this.isLocked = new ArrayList<>();
+        this.currentRegisterSlot = 0;
         for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
             this.isLocked.add(false);
         }
@@ -46,6 +48,11 @@ public class ProgramRegister implements IProgramRegister{
     @Override
     public int getSize() {
         return this.register.getSize();
+    }
+
+    @Override
+    public int getNumberOfRegisterSlots() {
+        return this.NUMBER_OF_SLOTS;
     }
 
     @Override
@@ -105,7 +112,6 @@ public class ProgramRegister implements IProgramRegister{
         this.addCollectionOfCardsToRegister(listOfCards);
     }
 
-
     @Override
     public boolean checkIsTheRegisterSlotNumberNLocked(Integer slotNumber) {
         if (slotNumber == null
@@ -127,11 +133,6 @@ public class ProgramRegister implements IProgramRegister{
     }
 
     @Override
-    public int getNumberOfRegisterSlots() {
-        return this.NUMBER_OF_SLOTS;
-    }
-
-    @Override
     public void unlockRegisterSlotNumberN(Integer slotNumber) {
         if (slotNumber == null
                 || slotNumber < 0
@@ -144,6 +145,13 @@ public class ProgramRegister implements IProgramRegister{
     @Override
     public IDeck removeAllUnlockedCardsFromTheRegister() {
         IDeck removedCards = new Deck();
+        for (int slotNumber = 0; slotNumber < this.currentRegisterSlot;) {
+            ICard removedCard = this.register.removeCard(slotNumber);
+            removedCards.addCardToDeck(removedCard);
+            this.currentRegisterSlot--;
+        }
+
+/*
         ICard placeHolder = new Card(-1, Action.IF_YOU_SEE_THIS_SOMETHING_WENT_WRONG);
         for (int slotNumber = 0; slotNumber < register.getSize(); slotNumber++) {
             if (!checkIsTheRegisterSlotNumberNLocked(slotNumber)) {
@@ -151,7 +159,7 @@ public class ProgramRegister implements IProgramRegister{
                                                                         placeHolder);
                 removedCards.addCardToDeck(removedCard);
             }
-        }
+        }*/
         return removedCards;
     }
 
@@ -164,5 +172,31 @@ public class ProgramRegister implements IProgramRegister{
             }
         }
         return numberOfUnlockedSlots;
+    }
+
+
+
+
+    @Override
+    public void addCardToCurrentRegisterSlot(ICard card) {
+        if (card == null) {
+            throw new IllegalArgumentException("Not a valid card");
+        }
+        if (this.currentRegisterSlot >= this.NUMBER_OF_SLOTS
+                || this.currentRegisterSlot < 0) {
+            throw new IllegalArgumentException("Not a valid register slot");
+        }
+        this.register.addCardToDeckAtPosition(this.currentRegisterSlot++, card);
+    }
+
+    @Override
+    public ICard removeCardFromRegisterSlot(Integer slotNumber) {
+        if (slotNumber == null
+                || slotNumber < 0
+                || slotNumber >= this.currentRegisterSlot) {
+            throw new IllegalArgumentException("Not a valid slot number");
+        }
+        this.currentRegisterSlot--;
+        return this.register.removeCard(slotNumber);
     }
 }

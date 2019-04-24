@@ -597,6 +597,24 @@ public class Game implements IGame {
         }
     }
 
+
+
+    //TODO: Add register fla phase!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Clean up the game before the next round.<br>
      * Players standing on wrench tiles removes one damage,
@@ -605,7 +623,7 @@ public class Game implements IGame {
     private void cleanUpTurn() {
         for (IPlayer player : players) {
             if (this.checkIfThePlayerIsInTheGame(player)) {
-                IObjects playerIsStandingOn = this.getBoard().getObject(player.getX(), player.getY());
+                IObjects playerIsStandingOn = this.board.getObject(player.getX(), player.getY());
                 if (playerIsStandingOn.equals(CrossedWrench.class)) {
                     player.removeOneDamage();
                     // TODO: this.drawOneOptionCard(player);
