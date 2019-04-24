@@ -394,8 +394,8 @@ public class ProgramRegisterTest {
         listOfCards.add(card5);
         register.addCollectionOfCardsToRegister(listOfCards);
 
-        register.lockRegisterSlotNumber(3);
         register.lockRegisterSlotNumber(4);
+        register.lockRegisterSlotNumber(3);
 
         IDeck removedCards = register.removeAllUnlockedCardsFromTheRegister();
         int numberOfCardsRemoved = 3;
@@ -403,8 +403,8 @@ public class ProgramRegisterTest {
         assertEquals(card1, removedCards.getCardAtPosition(0));
         assertEquals(card2, removedCards.getCardAtPosition(1));
         assertEquals(card3, removedCards.getCardAtPosition(2));
-        assertEquals(card4, register.getCardInSlotNumber(3));
-        assertEquals(card5, register.getCardInSlotNumber(4));
+        assertEquals(card4, register.getCardInSlotNumber(0));
+        assertEquals(card5, register.getCardInSlotNumber(1));
     }
 
     @Test
@@ -652,11 +652,9 @@ public class ProgramRegisterTest {
         register.lockRegisterSlotNumber(3);
         register.lockRegisterSlotNumber(2);
         register.removeAllUnlockedCardsFromTheRegister();
-        assertEquals(2, register.getSize());
-        assertEquals(card4, register.getCardInSlotNumber(0));
-        assertEquals(card5, register.getCardInSlotNumber(1));
-
-
-
+        assertEquals(3, register.getSize());
+        assertEquals(card3, register.getCardInSlotNumber(0));
+        assertEquals(card4, register.getCardInSlotNumber(1));
+        assertEquals(card5, register.getCardInSlotNumber(2));
     }
 }
