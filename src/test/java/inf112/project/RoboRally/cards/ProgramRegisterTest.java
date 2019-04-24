@@ -306,39 +306,6 @@ public class ProgramRegisterTest {
 
 
     @Test
-    public void removingAllUnlockedCardsFromTheRegisterShouldReplaceAllCardsInSlotsThatAreNotLocked() {
-        List<ICard> listOfCards = new ArrayList<>();
-        ICard card1 = new Card(100, Action.ROTATE_LEFT);
-        ICard card2 = new Card(200, Action.ROTATE_RIGHT);
-        ICard card3 = new Card(300, Action.FORWARD_1);
-        ICard card4 = new Card(400, Action.FORWARD_2);
-        ICard card5 = new Card(500, Action.FORWARD_3);
-        listOfCards.add(card1);
-        listOfCards.add(card2);
-        listOfCards.add(card3);
-        listOfCards.add(card4);
-        listOfCards.add(card5);
-        register.addCollectionOfCardsToRegister(listOfCards);
-
-        assertEquals(5, register.getSize());
-        assertEquals(card1, register.getCardInSlotNumber(0));
-        assertEquals(card2, register.getCardInSlotNumber(1));
-        assertEquals(card3, register.getCardInSlotNumber(2));
-        assertEquals(card4, register.getCardInSlotNumber(3));
-        assertEquals(card5, register.getCardInSlotNumber(4));
-
-        register.removeAllUnlockedCardsFromTheRegister();
-        assertEquals(5, register.getSize());
-
-        ICard placeHolderCard = register.getCardInSlotNumber(0);
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(0));
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(1));
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(2));
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(3));
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(4));
-    }
-
-    @Test
     public void removingAllUnlockedCardsFromTheRegisterShouldNotReplaceCardsInLockedSlots() {
         List<ICard> listOfCards = new ArrayList<>();
         ICard card1 = new Card(100, Action.ROTATE_LEFT);
@@ -352,31 +319,26 @@ public class ProgramRegisterTest {
         listOfCards.add(card4);
         listOfCards.add(card5);
         register.addCollectionOfCardsToRegister(listOfCards);
+        assertEquals(5, register.getSize());
+        assertEquals(card1, register.getCardInSlotNumber(0));
+        assertEquals(card2, register.getCardInSlotNumber(1));
+        assertEquals(card3, register.getCardInSlotNumber(2));
+        assertEquals(card4, register.getCardInSlotNumber(3));
+        assertEquals(card5, register.getCardInSlotNumber(4));
 
         register.lockRegisterSlotNumber(4);
-        register.lockRegisterSlotNumber(1);
+        register.lockRegisterSlotNumber(3);
 
         register.removeAllUnlockedCardsFromTheRegister();
-        assertEquals(5, register.getSize());
-        ICard placeHolderCard = register.getCardInSlotNumber(0);
-
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(0));
-        assertEquals(card2, register.getCardInSlotNumber(1));
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(2));
-        assertEquals(placeHolderCard, register.getCardInSlotNumber(3));
-        assertEquals(card5, register.getCardInSlotNumber(4));
+        assertEquals(2, register.getSize());
+        assertEquals(card4, register.getCardInSlotNumber(0));
+        assertEquals(card5, register.getCardInSlotNumber(1));
 
         // Second pass after a slot is unlocked
-        register.unlockRegisterSlotNumberN(1);
+        register.unlockRegisterSlotNumberN(3);
         register.removeAllUnlockedCardsFromTheRegister();
-        assertEquals(5, register.getSize());
-        ICard placeHolderCardSecondPass = register.getCardInSlotNumber(0);
-
-        assertEquals(placeHolderCardSecondPass, register.getCardInSlotNumber(0));
-        assertEquals(placeHolderCardSecondPass, register.getCardInSlotNumber(1));
-        assertEquals(placeHolderCardSecondPass, register.getCardInSlotNumber(2));
-        assertEquals(placeHolderCardSecondPass, register.getCardInSlotNumber(3));
-        assertEquals(card5, register.getCardInSlotNumber(4));
+        assertEquals(1, register.getSize());
+        assertEquals(card5, register.getCardInSlotNumber(0));
     }
 
     @Test
