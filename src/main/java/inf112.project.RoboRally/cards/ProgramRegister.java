@@ -126,11 +126,13 @@ public class ProgramRegister implements IProgramRegister{
                 || slotNumber >= NUMBER_OF_SLOTS) {
             throw new IllegalArgumentException("Not a valid slot number");
         }
-        this.isLocked.set(slotNumber, true);
-        if (slotNumber < this.register.getSize()) {
-            this.currentRegisterSlot--;
-            // The current register slot should
-            // now point to the last unlocked register slot.
+        if (!this.checkIsTheRegisterSlotNumberNLocked(slotNumber)) {
+            this.isLocked.set(slotNumber, true);
+            if (slotNumber < this.register.getSize()) {
+                this.currentRegisterSlot--;
+                // The current register slot should
+                // now point to the last unlocked register slot.
+            }
         }
     }
 
