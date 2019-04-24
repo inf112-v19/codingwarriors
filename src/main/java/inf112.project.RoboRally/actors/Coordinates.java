@@ -1,5 +1,7 @@
 package inf112.project.RoboRally.actors;
 
+import inf112.project.RoboRally.objects.GridDirection;
+
 public class Coordinates {
     private int x, y;
 
@@ -22,6 +24,16 @@ public class Coordinates {
         if (otherCord.x == x && otherCord.y == y)
             return true;
         return false;
+    }
+
+    public GridDirection getDirection(Coordinates otherCoordinates) {
+        int x = this.x - otherCoordinates.getX();
+        int y = this.y - otherCoordinates.getY();
+
+        if (x > 0) return GridDirection.WEST;
+        else if (x < 0) return GridDirection.EAST;
+        else if (y > 0) return GridDirection.SOUTH;
+        else return GridDirection.NORTH;
     }
 }
 

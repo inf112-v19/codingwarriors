@@ -72,12 +72,10 @@ public class ConveyorBelt implements IObjects {
     public Rotation getRotation() {
         return rotation;
     }
-    
+
     @Override
     public void doAction(IPlayer player) {
-        for (int i=0; i<speed; i++) {
-            player.movePlayer(direction);
-        }
+        player.setPathOfPlayer(player.moveInDirection(direction, speed));
     }
 
     @Override

@@ -1,10 +1,8 @@
 package inf112.project.RoboRally.actors;
 
 import com.badlogic.gdx.graphics.Color;
-import inf112.project.RoboRally.board.GameBoard;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
-import inf112.project.RoboRally.game.Game;
 import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.Laser;
 
@@ -41,6 +39,8 @@ public interface IPlayer {
     GridDirection getPlayerDirection();
 
 
+    List<Coordinates> getPathOfPlayer();
+
     /**
      * Move the player as instructed on the given program card.
      *
@@ -51,7 +51,6 @@ public interface IPlayer {
      *      if card == null.
      */
     void movePlayer(ICard card);
-
 
     /**
      * Get the amount of damage the player has taken.
@@ -67,6 +66,8 @@ public interface IPlayer {
      */
     void takeOneDamage();
 
+
+    void setPathOfPlayer(List<Coordinates> pathOfPlayer);
 
     /**
      * This player repairs one point of damage.<br>
@@ -266,6 +267,8 @@ public interface IPlayer {
     void rotateRight();
 
 
+    List<Coordinates> moveInDirection(GridDirection direction, int steps);
+
     /**
      * A method for rotating the player to the opposite direction
      */
@@ -298,4 +301,8 @@ public interface IPlayer {
     Laser getLaser();
 
     Color getColor();
+
+    void setCoordinates(Coordinates validPositionForPlayer);
+
+    Coordinates getCoordinates();
 }
