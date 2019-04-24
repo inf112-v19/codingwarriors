@@ -142,4 +142,8 @@ public interface IProgramRegister {
      * @return The number of unlocked slots.
      */
     int numberOfUnlockedRegisterSlots();
+
+    void addCardToCurrentRegisterSlot(ICard card);
+
+    ICard removeCardFromRegisterSlot(Integer slotNumber);
 }

@@ -141,12 +141,9 @@ public class PlayerTest {
         player.clearRegister();
 
         //Assert cards are correct after clear.
-        ICard placeholderCard = player.revealProgramCardForRegisterNumber(0);
-        assertEquals(placeholderCard, player.revealProgramCardForRegisterNumber(0));
-        assertEquals(placeholderCard, player.revealProgramCardForRegisterNumber(1));
-        assertEquals(card3, player.revealProgramCardForRegisterNumber(2));
-        assertEquals(card4, player.revealProgramCardForRegisterNumber(3));
-        assertEquals(card5, player.revealProgramCardForRegisterNumber(4));
+        assertEquals(card3, player.revealProgramCardForRegisterNumber(0));
+        assertEquals(card4, player.revealProgramCardForRegisterNumber(1));
+        assertEquals(card5, player.revealProgramCardForRegisterNumber(2));
     }
 
     @Test
@@ -162,8 +159,6 @@ public class PlayerTest {
         cardList.add(card3);
         cardList.add(card4);
         cardList.add(card5);
-        player.addListOfCardsToProgramRegister(cardList);
-
         player.addListOfCardsToProgramRegister(cardList);
 
         assertEquals(card1, player.revealProgramCardForRegisterNumber(0));
@@ -233,13 +228,7 @@ public class PlayerTest {
         final int FOUR_DAMAGE = 4;
         for (int i = 0; i < FOUR_DAMAGE; i++) {
             player.takeOneDamage();
-            player.clearRegister();
-            ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
-            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
-            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(1));
-            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(2));
-            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(3));
-            assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(4));
+            assertEquals(5, player.getNumberOfUnlockedRegisterSlots());
         }
     }
 
@@ -270,13 +259,8 @@ public class PlayerTest {
             player.takeOneDamage();
         }
         player.clearRegister();
-
-        ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(1));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(2));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(3));
-        assertEquals(card5, player.revealProgramCardForRegisterNumber(4));
+        assertEquals(card5, player.revealProgramCardForRegisterNumber(0));
+        assertEquals(4, player.getNumberOfUnlockedRegisterSlots());
     }
 
     @Test
@@ -306,13 +290,9 @@ public class PlayerTest {
             player.takeOneDamage();
         }
         player.clearRegister();
-
-        ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(1));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(2));
-        assertEquals(card4, player.revealProgramCardForRegisterNumber(3));
-        assertEquals(card5, player.revealProgramCardForRegisterNumber(4));
+        assertEquals(card4, player.revealProgramCardForRegisterNumber(0));
+        assertEquals(card5, player.revealProgramCardForRegisterNumber(1));
+        assertEquals(3, player.getNumberOfUnlockedRegisterSlots());
     }
 
     @Test
@@ -342,13 +322,10 @@ public class PlayerTest {
             player.takeOneDamage();
         }
         player.clearRegister();
-
-        ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(1));
-        assertEquals(card3, player.revealProgramCardForRegisterNumber(2));
-        assertEquals(card4, player.revealProgramCardForRegisterNumber(3));
-        assertEquals(card5, player.revealProgramCardForRegisterNumber(4));
+        assertEquals(card3, player.revealProgramCardForRegisterNumber(0));
+        assertEquals(card4, player.revealProgramCardForRegisterNumber(1));
+        assertEquals(card5, player.revealProgramCardForRegisterNumber(2));
+        assertEquals(2, player.getNumberOfUnlockedRegisterSlots());
     }
 
     @Test
@@ -378,17 +355,15 @@ public class PlayerTest {
             player.takeOneDamage();
         }
         player.clearRegister();
-
-        ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
-        assertEquals(card2, player.revealProgramCardForRegisterNumber(1));
-        assertEquals(card3, player.revealProgramCardForRegisterNumber(2));
-        assertEquals(card4, player.revealProgramCardForRegisterNumber(3));
-        assertEquals(card5, player.revealProgramCardForRegisterNumber(4));
+        assertEquals(card2, player.revealProgramCardForRegisterNumber(0));
+        assertEquals(card3, player.revealProgramCardForRegisterNumber(1));
+        assertEquals(card4, player.revealProgramCardForRegisterNumber(2));
+        assertEquals(card5, player.revealProgramCardForRegisterNumber(3));
+        assertEquals(1, player.getNumberOfUnlockedRegisterSlots());
     }
 
     @Test
-    public void takingNineDamageShouldLeaveAllRegisterSlotslocked() {
+    public void takingNineDamageShouldLeaveAllRegisterSlotsLocked() {
         ICard card1 = new Card(100, ROTATE_LEFT);
         ICard card2 = new Card(200, ROTATE_RIGHT);
         ICard card3 = new Card(300, FORWARD_2);
@@ -414,12 +389,12 @@ public class PlayerTest {
             player.takeOneDamage();
         }
         player.clearRegister();
-
         assertEquals(card1, player.revealProgramCardForRegisterNumber(0));
         assertEquals(card2, player.revealProgramCardForRegisterNumber(1));
         assertEquals(card3, player.revealProgramCardForRegisterNumber(2));
         assertEquals(card4, player.revealProgramCardForRegisterNumber(3));
         assertEquals(card5, player.revealProgramCardForRegisterNumber(4));
+        assertEquals(0, player.getNumberOfUnlockedRegisterSlots());
     }
 
     @Test
@@ -449,13 +424,7 @@ public class PlayerTest {
             player.takeOneDamage();
         }
         player.clearRegister();
-
-        ICard placeHolder = player.revealProgramCardForRegisterNumber(0);
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(0));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(1));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(2));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(3));
-        assertEquals(placeHolder, player.revealProgramCardForRegisterNumber(4));
+        assertEquals(5, player.getNumberOfUnlockedRegisterSlots());
     }
 
 }

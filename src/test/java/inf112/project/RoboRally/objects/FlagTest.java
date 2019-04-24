@@ -15,7 +15,6 @@ public class FlagTest {
 	private String walls = "" +
 			"..." +
 			"...";
-	
 	private GameBoard gameBoard = new GameBoard(level, walls);
 	private Player player = new Player("foo", 0,0, Color.RED);
 
