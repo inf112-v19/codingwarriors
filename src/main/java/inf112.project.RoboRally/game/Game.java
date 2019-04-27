@@ -117,9 +117,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
         // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
-        IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
-        IPlayer player3 = new AI("G-bot", 2, 5, Color.LIME);
+        IPlayer player1 = new Player("Buzz", 2, 11, Color.RED);
+        IPlayer player2 = new Player("Emma", 2, 9, Color.CYAN);
+        IPlayer player3 = new Player("G-bot", 2, 10, Color.LIME);
         this.players.add(player1);
         this.players.add(player2);
         this.players.add(player3);
@@ -334,6 +334,7 @@ public class Game implements IGame {
             IPlayer player = listOfPlayers.get(i);
             player.movePlayer(card);
             Coordinates validPositionForPlayer = moveToValidCoordinates(player.getPathOfPlayer(), player);
+            player.resetPathOfPlayer();
             player.setCoordinates(validPositionForPlayer);
         }
     }
@@ -360,6 +361,7 @@ public class Game implements IGame {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
                     board.getObject(player.getX(), player.getY()).doAction(player);
+                    // sketchy
                     int sizeOfMovement = player.getPathOfPlayer().size();
                     if (sizeOfMovement != 0)
                         player.setCoordinates(moveToValidCoordinates(player.getPathOfPlayer(), player));
@@ -536,6 +538,7 @@ public class Game implements IGame {
         }
     }
 
+    // This would be better if the coordinates list was appended by the current player coordinates
     private Coordinates moveToValidCoordinates(List<Coordinates> coordinates, IPlayer player) {
         Coordinates currentPlayerCoordinates = new Coordinates(player.getX(), player.getY());
         if (coordinates.size() == 0)
@@ -549,9 +552,19 @@ public class Game implements IGame {
             return currentPlayerCoordinates;
         }
 
+        // Ugly repetition, but it works...
+        if (board.moveValid(currentPlayerCoordinates.getX(), currentPlayerCoordinates.getY()) &&
+                board.getObject(currentPlayerCoordinates) instanceof Pit) {
+            return currentPlayerCoordinates;
+        }
+
         // Checks if any tiles in path contain players
         Coordinates previousCoordinates = currentPlayerCoordinates;
         for (Coordinates playerCoordinates : coordinates) {
+            if (board.moveValid(playerCoordinates.getX(), playerCoordinates.getY()) &&
+                    board.getObject(playerCoordinates) instanceof Pit)
+                return playerCoordinates;
+
             for (IPlayer player1 : players) {
                 Coordinates previousPlayerPosition = player1.getCoordinates();
                 if (playerCoordinates.equals(previousPlayerPosition)) {
@@ -567,6 +580,7 @@ public class Game implements IGame {
                     player1.setCoordinates(positionOfPushedPlayer);
                 }
             }
+
         }
 
         // Checks the path the player wishes to move
