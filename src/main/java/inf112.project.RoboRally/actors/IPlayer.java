@@ -305,4 +305,6 @@ public interface IPlayer {
     void setCoordinates(Coordinates validPositionForPlayer);
 
     Coordinates getCoordinates();
+
+    void resetPathOfPlayer();
 }

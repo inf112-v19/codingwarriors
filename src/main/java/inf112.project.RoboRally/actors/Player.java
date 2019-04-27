@@ -44,6 +44,10 @@ public class Player implements IPlayer {
         this.priority = counter++;
     }
 
+    public void resetPathOfPlayer() {
+        pathOfPlayer = new ArrayList<>();
+    }
+
     @Override
     public int getX() {
         return x;
