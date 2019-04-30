@@ -117,8 +117,8 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
         // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 11, Color.RED);
-        IPlayer player2 = new Player("Emma", 2, 9, Color.CYAN);
+        IPlayer player1 = new Player("Buzz", 2, 3, Color.RED);
+        IPlayer player2 = new Player("Emma", 3, 4, Color.CYAN);
         IPlayer player3 = new Player("G-bot", 2, 10, Color.LIME);
         this.players.add(player1);
         this.players.add(player2);
@@ -522,7 +522,7 @@ public class Game implements IGame {
         laser.resetLaserPosition();
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
         List shortestPathToPlayer = getLaserPath(coordinatesHitByLaser, laser.getDirection(),
-                laser); //shortestPathToObstacle(coordinatesHitByLaser, laser);
+                laser); 
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())
                     && otherPlayer.getLaser() != laser
@@ -555,6 +555,7 @@ public class Game implements IGame {
         // Ugly repetition, but it works...
         if (board.moveValid(currentPlayerCoordinates.getX(), currentPlayerCoordinates.getY()) &&
                 board.getObject(currentPlayerCoordinates) instanceof Pit) {
+            destroyPlayer(player);
             return currentPlayerCoordinates;
         }
 
@@ -562,8 +563,10 @@ public class Game implements IGame {
         Coordinates previousCoordinates = currentPlayerCoordinates;
         for (Coordinates playerCoordinates : coordinates) {
             if (board.moveValid(playerCoordinates.getX(), playerCoordinates.getY()) &&
-                    board.getObject(playerCoordinates) instanceof Pit)
+                    board.getObject(playerCoordinates) instanceof Pit) {
+                destroyPlayer(player);
                 return playerCoordinates;
+            }
 
             for (IPlayer player1 : players) {
                 Coordinates previousPlayerPosition = player1.getCoordinates();
