@@ -4,14 +4,14 @@
   <OriginalElement>inf112.project.RoboRally.RoboRallyMain</OriginalElement>
   <nodes>
     <node x="0.0" y="0.0">inf112.project.RoboRally.game.Game</node>
-    <node x="1285.0" y="0.0">inf112.project.RoboRally.gui.GraphicalUserInterface</node>
-    <node x="1175.0" y="1460.0">inf112.project.RoboRally.RoboRallyMain</node>
-    <node x="541.0" y="0.0">inf112.project.RoboRally.actors.Player</node>
-    <node x="942.0" y="319.0">inf112.project.RoboRally.objects.Laser</node>
-    <node x="1562.0" y="0.0">inf112.project.RoboRally.cards.Deck</node>
-    <node x="938.0" y="1460.0">inf112.project.RoboRally.cards.Card</node>
-    <node x="984.0" y="0.0">inf112.project.RoboRally.objects.IObjects</node>
-    <node x="482.0" y="1460.0">inf112.project.RoboRally.board.GameBoard</node>
+    <node x="1267.0" y="0.0">inf112.project.RoboRally.gui.GraphicalUserInterface</node>
+    <node x="1160.0" y="1460.0">inf112.project.RoboRally.RoboRallyMain</node>
+    <node x="930.0" y="319.0">inf112.project.RoboRally.objects.Laser</node>
+    <node x="535.0" y="0.0">inf112.project.RoboRally.actors.Player</node>
+    <node x="1538.0" y="0.0">inf112.project.RoboRally.cards.Deck</node>
+    <node x="929.0" y="1460.0">inf112.project.RoboRally.cards.Card</node>
+    <node x="972.0" y="0.0">inf112.project.RoboRally.objects.IObjects</node>
+    <node x="476.0" y="1460.0">inf112.project.RoboRally.board.GameBoard</node>
     <node x="0.0" y="1460.0">inf112.project.RoboRally.cards.ProgramRegister</node>
   </nodes>
   <notes />
@@ -21,12 +21,12 @@
       <point x="0.0" y="134.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="483.0" y="284.0" />
+  <settings layout="Hierarchic Group" zoom="0.8" x="483.0" y="351.875" />
   <SelectedNodes />
   <Categories>
+    <Category>Methods</Category>
     <Category>Fields</Category>
     <Category>Constructors</Category>
-    <Category>Methods</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
