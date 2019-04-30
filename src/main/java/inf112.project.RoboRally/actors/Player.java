@@ -273,6 +273,29 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public boolean addACardToProgramRegister(ICard card) {
+        if (card == null) {
+            throw new IllegalArgumentException("Invalid card");
+        }
+        return this.register.addCardToCurrentRegisterSlot(card);
+    }
+
+    @Override
+    public void removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber) {
+        if (slotNumber == null
+                || slotNumber < 0
+                || slotNumber >= this.getCurrentRegisterSlotNumber()) {
+            throw new IllegalArgumentException("Not a valid slotNumber");
+        }
+        this.register.removeCardFromRegisterSlot(slotNumber);
+    }
+
+    @Override
+    public int getCurrentRegisterSlotNumber() {
+        return this.register.getCurrentRegisterSlot();
+    }
+
+    @Override
     public void removeRemainingCardsInHand() {
         this.cardsInHand.removeAllCardsFromDeck();
     }

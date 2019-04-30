@@ -390,13 +390,14 @@ public class ProgramRegisterTest {
         assertEquals(5, register.getSize());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void tryingToAddTooManyCardsToTheRegisterShouldFail() {
+    @Test
+    public void tryingToAddTooManyCardsToTheRegisterShouldReturnFalse() {
         assertEquals(0, register.getSize());
         ICard card = new Card(200, Action.FORWARD_2);
-        for (int i = 0; i <= register.getNumberOfRegisterSlots(); i++) {
-            register.addCardToCurrentRegisterSlot(card);
+        for (int i = 0; i < register.getNumberOfRegisterSlots(); i++) {
+            assertEquals( true, register.addCardToCurrentRegisterSlot(card));
         }
+        assertEquals(false, register.addCardToCurrentRegisterSlot(card));
     }
 
     @Test(expected = IllegalArgumentException.class)
