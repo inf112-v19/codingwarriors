@@ -20,27 +20,6 @@ public class PitTest {
     private GameBoard gameboard = new GameBoard(level, walls);
 
     @Test
-    public void playerRespawnOnLastArchiveMarkerWhenFallingInPit() {
-        Player player = new Player("foo", 0,0, Color.RED);
-        player.movePlayer(GridDirection.EAST);
-        player.setCoordinates(player.getPathOfPlayer().get(0));
-        IObjects tile = gameboard.getObject(player.getX(), player.getY());
-        tile.doAction(player);
-        assertEquals(0, player.getY());
-        assertEquals(0, player.getX());
-    }
-
-    @Test
-    public void playerTakesTwoDamageWhenFallingInPit() {
-        Player player = new Player("foo", 0,0, Color.RED);
-        player.movePlayer(GridDirection.EAST);
-        player.setCoordinates(player.getPathOfPlayer().get(0));
-        IObjects tile = gameboard.getObject(player.getX(), player.getY());
-        tile.doAction(player);
-        assertEquals(2, player.getPlayerDamage());
-    }
-
-    @Test
     public void playerLosesOneLifeWhenFallingInPit() {
         Player player = new Player("foo", 0, 0, Color.RED);
         player.movePlayer(GridDirection.EAST);

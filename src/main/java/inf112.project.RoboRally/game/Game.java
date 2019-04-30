@@ -522,7 +522,7 @@ public class Game implements IGame {
         laser.resetLaserPosition();
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
         List shortestPathToPlayer = getLaserPath(coordinatesHitByLaser, laser.getDirection(),
-                laser); 
+                laser);
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())
                     && otherPlayer.getLaser() != laser
