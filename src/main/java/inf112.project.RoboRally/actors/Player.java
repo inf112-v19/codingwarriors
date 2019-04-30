@@ -277,7 +277,7 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void removeACardFromProgramReigsterAtSlotNumber(Integer slotNumber) {
+    public void removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber) {
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= this.getCurrentRegisterSlotNumber()) {
