@@ -171,8 +171,9 @@ public interface IPlayer {
      *
      * @param slotNumber
      *                      The index of the card to remove.
+     * @return The removed card.
      */
-    void removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber);
+    ICard removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber);
 
 
     /**
