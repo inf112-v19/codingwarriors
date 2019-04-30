@@ -156,6 +156,34 @@ public interface IPlayer {
 
 
     /**
+     * Add a card to the players register.
+     *
+     * @param card
+     *             The card to be added.
+     * @return true if the card was added,
+     *         false otherwise.
+     */
+    boolean addACardToProgramRegister(ICard card);
+
+
+    /**
+     * Remove a card from the players register.
+     *
+     * @param slotNumber
+     *                      The index of the card to remove.
+     */
+    void removeACardFromProgramReigsterAtSlotNumber(Integer slotNumber);
+
+
+    /**
+     * Get the number of slots in the players register.
+     *
+     * @return The number of register slots.
+     */
+    int getCurrentRegisterSlotNumber();
+
+
+    /**
      * Player discards their hand.
      */
     void removeRemainingCardsInHand();
