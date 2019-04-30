@@ -316,6 +316,10 @@ public class Player implements IPlayer {
         return this.register.numberOfUnlockedRegisterSlots();
     }
 
+    @Override
+    public int getNumberOFUnlockedCardsInTheProgramRegister() {
+        return this.register.getCurrentRegisterSlot();
+    }
 
     @Override
     public boolean wasDestroyedThisTurn() {

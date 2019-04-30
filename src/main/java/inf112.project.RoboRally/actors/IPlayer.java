@@ -223,6 +223,14 @@ public interface IPlayer {
 
 
     /**
+     * Get the number of cards in unlocked slots in the register.
+     *
+     * @return The number of unlocked cards in the register.
+     */
+    int getNumberOFUnlockedCardsInTheProgramRegister();
+
+
+    /**
      * Check if the player was destroyed during the current turn.
      *
      * @return true if the player was destroyed<br>
