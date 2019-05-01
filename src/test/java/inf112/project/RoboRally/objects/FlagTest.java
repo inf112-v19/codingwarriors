@@ -12,14 +12,20 @@ public class FlagTest {
 	private String level = "3C2R" +
 			"cfr" +
 			".f.";
+	private String otherLevel = "3C2R" +
+			".f." +
+			"...";
 	private String walls = "" +
 			"..." +
 			"...";
-	private GameBoard gameBoard = new GameBoard(level, walls);
-	private Player player = new Player("foo", 0,0, Color.RED);
+
+
 
 	@Test
 	public void flagShouldUpdateBackupPoint() {
+		GameBoard gameBoard = new GameBoard(otherLevel, walls);
+		Player player = new Player("foo", 0,0, Color.RED);
+
 		int oldBackupX=player.getBackupX(), oldBackupY=player.getBackupY();
 		player.movePlayer(GridDirection.NORTH);
 		player.setCoordinates(player.getPathOfPlayer().get(0));
@@ -40,6 +46,9 @@ public class FlagTest {
 	
 	@Test
 	public void playerCanOnlyPickUpCorrectFlag() {
+		GameBoard gameBoard = new GameBoard(level, walls);
+		Player player = new Player("foo", 0,0, Color.RED);
+		
 		Flag aFlag = (Flag) gameBoard.getObject(1,0);
 		Flag otherFlag = (Flag) gameBoard.getObject(1,1);
 
