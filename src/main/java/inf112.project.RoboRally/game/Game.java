@@ -13,6 +13,7 @@ import inf112.project.RoboRally.objects.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static inf112.project.RoboRally.game.GameStatus.*;
 
@@ -32,14 +33,14 @@ public class Game implements IGame {
     private List<Laser> lasers; // The list of lasers in the game.
     private IDeck programCards;
     private IDeck discardedProgramCards;
-    private IDeck[] selectedCards;
+    // private IDeck[] selectedCards;
     private GameStatus currentGameStatus;
     private boolean everyFlagHasBeenVisited;
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
     private final int MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED = 9; // The number of damage tokens a player
     // can receive before being destroyed. (NumberOfTokens >= 10) == destroy(player);
-
+    private IPlayer winner;
 
     /**
      * Default constructor for making a new game with default settings.<br>
@@ -47,17 +48,17 @@ public class Game implements IGame {
      */
     public Game() {
         String defaultLayout = "16C12R" +
-                "f...kr.rrr...f.." +
+                "....kr.rrr......" +
                 ".R..RRRRRRRRDu.." +
                 ".U.........cD..." +
-                ".U...f....i.D..." +
+                ".U........i.D..." +
                 ".U......ll..D.p." +
-                "rU..LLLLfLLLD..." +
+                "rU..LLLL.LLLD..." +
                 "ll.....w....C..." +
                 ".r..p....lll...." +
-                ".rm....w.....i.." +
-                ".r.m...w.....p.." +
-                ".r...f....n....." +
+                ".r.....w.....i.." +
+                "...ff..w.....p.." +
+                "..........n....." +
                 ".r....WW....dd..";
         String defaultWalls = "" +
                 "fnnnnnnnnnnnnnng" +
@@ -109,7 +110,7 @@ public class Game implements IGame {
         this.currentSlotNumber = 0;
         this.addPlayers();
         this.registerLasers();
-        this.updateDeckOfSelectedCards();
+        // this.updateDeckOfSelectedCards();
         this.dealOutProgramCards();
         this.setGameStatus(SELECT_CARDS);
     }
@@ -117,9 +118,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
         // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 10, Color.RED);
-        IPlayer player2 = new Player("Emma", 5, 10, Color.CYAN);
-        IPlayer player3 = new AI("G-bot", 2, 5, Color.LIME);
+        IPlayer player1 = new Player("Buzz", 5, 4, Color.RED);
+        IPlayer player2 = new Player("Emma", 6, 4, Color.CYAN);
+        IPlayer player3 = new Player("G-bot", 7, 4, Color.LIME);
         this.players.add(player1);
         this.players.add(player2);
         this.players.add(player3);
@@ -148,17 +149,6 @@ public class Game implements IGame {
                     lasers.add(((LaserTower) gameObject).getLaser());
                 }
             }
-        }
-    }
-
-    /**
-     * Remakes the decks that hold the cards during the card selection process.<br>
-     * Ensures that the temporary decks are only made for players that needs it.
-     */
-    private void updateDeckOfSelectedCards() {
-        this.selectedCards = new IDeck[this.getNumberOfPlayersLeftInTheGame()];
-        for (int i = 0; i < this.getNumberOfPlayersLeftInTheGame(); i++) {
-            this.selectedCards[i] = new Deck();
         }
     }
 
@@ -230,6 +220,13 @@ public class Game implements IGame {
                 System.out.println("FIRING_LASERS");
                 this.fireLasers();
                 return;
+            case TOUCH_FLAGS_AND_REPAIR_SITES:
+                System.out.println("TOUCH_FLAGS_AND_REPAIR_SITES");
+                this.flagsAndRepairs();
+                return;
+            case SOMEONE_HAS_WON:
+                System.out.println(winner.getName() + " has won the game!");
+                break;
             case FINISHING_UP_THE_TURN:
                 System.out.println("FINISHING_UP_THE_TURN");
                 this.cleanUpTurn();
@@ -237,6 +234,32 @@ public class Game implements IGame {
             case THE_END:
                 System.out.println("All players are out, the game ends in a draw...");
         }
+    }
+
+    private void flagsAndRepairs() {
+        for (IPlayer player : activePlayers) {
+            IObjects object = board.getObject(player.getCoordinates());
+            if (object instanceof Flag || object instanceof SingleWrench || object instanceof CrossedWrench) {
+                object.doAction(player);
+            }
+            if (player.getFlagsVisited() == numberOfFlags()) {
+                setGameStatus(SOMEONE_HAS_WON);
+                winner = player;
+                return;
+            }
+        }
+        setGameStatus(FINISHING_UP_THE_TURN);
+    }
+
+    private int numberOfFlags() {
+        int nrOfFlags = 0;
+        for (int x = 0; x < board.getRows(); x++) {
+            for (int y = 0; y < board.getColumns(); y++) {
+                if (board.getObject(y,x) instanceof Flag)
+                    nrOfFlags++;
+            }
+        }
+        return nrOfFlags;
     }
 
     /**
@@ -254,7 +277,8 @@ public class Game implements IGame {
         this.sortCardsAfterPriority(cardsForThisRegisterSlot, listOfPlayers);
         this.executeProgramCardsForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
         updateCurrentRegisterSlot();
-        setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+        if (activePlayers.size() != 0)
+            setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
     }
 
     /**
@@ -334,6 +358,7 @@ public class Game implements IGame {
             IPlayer player = listOfPlayers.get(i);
             player.movePlayer(card);
             Coordinates validPositionForPlayer = moveToValidCoordinates(player.getPathOfPlayer(), player);
+            player.resetPathOfPlayer();
             player.setCoordinates(validPositionForPlayer);
         }
     }
@@ -359,7 +384,10 @@ public class Game implements IGame {
         for (IPlayer player : players) {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
-                    board.getObject(player.getX(), player.getY()).doAction(player);
+                    IObjects object = board.getObject(player.getCoordinates());
+                    if (object instanceof ConveyorBelt || object instanceof  RotationCog)
+                        object.doAction(player);
+                    //board.getObject(player.getX(), player.getY()).doAction(player);
                     int sizeOfMovement = player.getPathOfPlayer().size();
                     if (sizeOfMovement != 0)
                         player.setCoordinates(moveToValidCoordinates(player.getPathOfPlayer(), player));
@@ -500,7 +528,8 @@ public class Game implements IGame {
         }
         removeLasersBelongingToDeadPlayers();
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
-            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+           // this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+            this.setGameStatus(TOUCH_FLAGS_AND_REPAIR_SITES);
         } else {
             this.setGameStatus(EXECUTING_INSTRUCTIONS);
         }
@@ -520,7 +549,7 @@ public class Game implements IGame {
         laser.resetLaserPosition();
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
         List shortestPathToPlayer = getLaserPath(coordinatesHitByLaser, laser.getDirection(),
-                laser); //shortestPathToObstacle(coordinatesHitByLaser, laser);
+                laser);
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())
                     && otherPlayer.getLaser() != laser
@@ -536,6 +565,7 @@ public class Game implements IGame {
         }
     }
 
+    // This would be better if the coordinates list was appended by the current player coordinates
     private Coordinates moveToValidCoordinates(List<Coordinates> coordinates, IPlayer player) {
         Coordinates currentPlayerCoordinates = new Coordinates(player.getX(), player.getY());
         if (coordinates.size() == 0)
@@ -549,9 +579,24 @@ public class Game implements IGame {
             return currentPlayerCoordinates;
         }
 
+        // Ugly repetition, but it works...
+        if (board.moveValid(currentPlayerCoordinates.getX(), currentPlayerCoordinates.getY()) &&
+                board.getObject(currentPlayerCoordinates) instanceof Pit) {
+            if (!destroyedPlayers.contains(player))
+                destroyPlayer(player);
+            return currentPlayerCoordinates;
+        }
+
         // Checks if any tiles in path contain players
         Coordinates previousCoordinates = currentPlayerCoordinates;
         for (Coordinates playerCoordinates : coordinates) {
+            if (board.moveValid(playerCoordinates.getX(), playerCoordinates.getY()) &&
+                    board.getObject(playerCoordinates) instanceof Pit) {
+                if (!destroyedPlayers.contains(player))
+                    destroyPlayer(player);
+                return playerCoordinates;
+            }
+
             for (IPlayer player1 : players) {
                 Coordinates previousPlayerPosition = player1.getCoordinates();
                 if (playerCoordinates.equals(previousPlayerPosition)) {
@@ -567,6 +612,7 @@ public class Game implements IGame {
                     player1.setCoordinates(positionOfPushedPlayer);
                 }
             }
+
         }
 
         // Checks the path the player wishes to move
@@ -670,24 +716,6 @@ public class Game implements IGame {
         }
     }
 
-
-
-    //TODO: Add register fla phase!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Clean up the game before the next round.<br>
      * Players standing on wrench tiles removes one damage,
@@ -725,9 +753,31 @@ public class Game implements IGame {
             System.out.println("x: " + player.getX());
             System.out.println("y: " + player.getY());
             this.restorePlayerBasedOnPriority(player);
-            player.respawnAtLastArchiveMarker();
+            Coordinates positionPlayerWishesToRespawn = player.respawnAtLastArchiveMarker();
+            Random random = new Random();
+            for (IPlayer player1 : activePlayers) {
+                if (player1.getCoordinates().equals(positionPlayerWishesToRespawn)) {
+                    List<Coordinates> validCoordinates = validCoordinatesForRespawn(positionPlayerWishesToRespawn);
+                    positionPlayerWishesToRespawn = validCoordinates.get(random.nextInt(validCoordinates.size()));
+                }
+            }
+            player.setCoordinates(positionPlayerWishesToRespawn);
             //TODO: Ask player for which direction they would like to face.
         }
+    }
+
+    private List<Coordinates> validCoordinatesForRespawn(Coordinates coordinates) {
+        List<Coordinates> validCoordinates = new ArrayList<>();
+        for (int x = coordinates.getX()-1; x < coordinates.getX() + 2; x++) {
+            for (int y = coordinates.getY()-1; y < coordinates.getY() + 2; y++) {
+                if (!board.moveValid(x,y) || board.getObject(x,y) instanceof Pit
+                        || (x == coordinates.getX() && y == coordinates.getY())) {
+                    continue;
+                }
+                validCoordinates.add(new Coordinates(x,y));
+            }
+        }
+        return validCoordinates;
     }
 
     /**
@@ -784,7 +834,7 @@ public class Game implements IGame {
             this.drawCards(player);
         }
 
-        this.updateDeckOfSelectedCards();
+        // this.updateDeckOfSelectedCards();
     }
 
     /**
@@ -893,11 +943,6 @@ public class Game implements IGame {
             throw new IllegalArgumentException("Not a valid status");
         }
         this.currentGameStatus = status;
-    }
-
-    @Override
-    public IDeck[] getSelectedCards() {
-        return this.selectedCards;
     }
 
     @Override

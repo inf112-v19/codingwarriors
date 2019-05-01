@@ -181,4 +181,18 @@ public interface IProgramRegister {
      *          (slotNumber >= currentRegisterSlot).
      */
     ICard removeCardFromRegisterSlot(Integer slotNumber);
+
+    /**
+     * Returns true if the register has no available place for new cards
+     *
+     * @return A boolean stating if the register is full
+     */
+    boolean registerIsFull();
+
+    /**
+     * Returns the number of unlocked cards currently in the register
+     *
+     * @return The number of unlocked cards currently in the register
+     */
+    int numberOfCardsInUnlockedRegister();
 }

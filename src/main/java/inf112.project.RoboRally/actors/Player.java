@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
+    private boolean powerDown;
     private int lives;
     private GridDirection playerDirection;
     private int x,y;
@@ -25,6 +26,7 @@ public class Player implements IPlayer {
 
     private static int counter = 0;
     private int priority;
+    private boolean cardSelectionConfirmed;
 
     public Player(String name, int x, int y, Color color) {
         this.color = color;
@@ -42,6 +44,12 @@ public class Player implements IPlayer {
         this.wasDestroyedThisTurn = false;
         this.laser = new Laser(1, this);
         this.priority = counter++;
+        this.powerDown = false;
+        this.cardSelectionConfirmed = false;
+    }
+
+    public void resetPathOfPlayer() {
+        pathOfPlayer = new ArrayList<>();
     }
 
     @Override
@@ -327,14 +335,15 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void respawnAtLastArchiveMarker() {
-        this.x=backupX;
-        this.y=backupY;
+    public Coordinates respawnAtLastArchiveMarker() {
+        //this.x=backupX;
+        //this.y=backupY;
         wasDestroyedThisTurn = false;
         takeOneDamage(); // Take two damage
         takeOneDamage();
         System.out.println("New laser location is x:" + laser.getX()
                 + ", y:" + laser.getY() + " dir: " + laser.getDirection());
+        return new Coordinates(backupX, backupY);
     }
 
     @Override
@@ -430,6 +439,33 @@ public class Player implements IPlayer {
 
     public Coordinates getCoordinates() {
         return new Coordinates(getX(), getY());
+    }
+
+    public int numberOfCardsInUnlockedRegister() {
+        return register.numberOfCardsInUnlockedRegister();
+    }
+
+    public boolean registerIsFull() {
+        return register.registerIsFull();
+    }
+
+    @Override
+    public boolean isPoweredDown() {
+        return powerDown;
+    }
+
+    @Override
+    public void reversePowerDownStatus() {
+        this.powerDown = !this.powerDown;
+    }
+
+    @Override
+    public boolean cardSelectionConfirmed() {
+        return cardSelectionConfirmed;
+    }
+
+    public void setCardSelectionConfirmedStatus(boolean status) {
+        cardSelectionConfirmed = status;
     }
 }
 

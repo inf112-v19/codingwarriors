@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
@@ -23,6 +28,10 @@ public class CardGui {
     private BitmapFont font; // move to AssetsManagement
     private BitmapFont fontGreen; // move to AssetsManagement
     private ShapeRenderer shapeRenderer;
+    private Stage stage;
+    private Skin skin;
+    TextButton powerDown;
+    TextButton confirmSelection;
 
     CardGui(IGame game, int width, int height) {
         this.game = game;
@@ -31,8 +40,11 @@ public class CardGui {
         currentPlayer = game.getActivePlayers().get(0);
         currentPlayerIndex = 0;
         shapeRenderer = new ShapeRenderer();
+        stage = new Stage();
+        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         setUpTextures();
         setUpScreen();
+        loadButtons();
     }
 
     public IPlayer getCurrentPlayer() {
@@ -96,19 +108,15 @@ public class CardGui {
     }
 
     private void drawSelectCards() {
-        IDeck[] selectedCards = game.getSelectedCards();
         if (game.getNumberOfPlayersLeftInTheGame() <= 0) {
             System.out.println("No players left");
             return;
         }
 
-        //   System.out.println("current player: " + currentPlayerIndex);
-        //   System.out.println("players hand size: " + currentPlayer.getCardsInHand().getSize());
-        //   System.out.println("selectedCards.size: " + selectedCards[currentPlayerIndex].getSize());
         int fontSize = 30;
-        int playerCards = currentPlayer.getCardsInHand().getSize();
-        int amountOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
-        int totalCards = playerCards + amountOfSelectedCards;
+        int playerCardsSize = currentPlayer.getCardsInHand().getSize();
+        int registerCardsSize = currentPlayer.numberOfCardsInUnlockedRegister();
+        int totalCards = playerCardsSize + registerCardsSize;
 
         cardScreen.setNumberOtTiles(1,totalCards);
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
@@ -116,7 +124,7 @@ public class CardGui {
         int i = 0;
 
         // drawing cards in playerDeck
-        for (; i < playerCards; i++) {
+        for (; i < playerCardsSize; i++) {
             font.draw(cardBatch,currentPlayer.getCardsInHand().showCard(i),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
@@ -125,7 +133,7 @@ public class CardGui {
         // drawing selected cards
         for (; i < totalCards; i++) {
             font.setColor(currentPlayer.getColor());
-            font.draw(cardBatch, selectedCards[currentPlayerIndex].showCard(i-playerCards),
+            font.draw(cardBatch, currentPlayer.revealProgramCardForRegisterNumber(i-playerCardsSize).toString(),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
             font.setColor(Color.WHITE);
@@ -133,39 +141,79 @@ public class CardGui {
         }
     }
 
+    public void loadButtons() {
+
+        powerDown = new TextButton("PowerDown", skin);
+        powerDown.setPosition(300, 50);
+        powerDown.setSize(200, 50);
+
+        powerDown.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
+                    currentPlayer.reversePowerDownStatus();
+                    System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.isPoweredDown());
+                }
+            }
+        });
+
+        confirmSelection = new TextButton("Confirm card selection", skin);
+        confirmSelection.setPosition(600, 50);
+        confirmSelection.setSize(200, 50);
+        confirmSelection.setColor(Color.RED);
+
+        confirmSelection.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.registerIsFull()
+                        || game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.getCardsInHand().isEmpty()) {
+                    currentPlayer.setCardSelectionConfirmedStatus(true);
+                    incrementCurrentPlayer();
+                } else {
+                    System.out.println("Not enough selected cards");
+                }
+            }
+        });
+
+        stage.addActor(powerDown);
+        stage.addActor(confirmSelection);
+
+    }
+
+    public void updateButtons() {
+        if (currentPlayer.isPoweredDown() == true) {
+            powerDown.setColor(Color.GREEN);
+        } else {
+            powerDown.setColor(Color.WHITE);
+        }
+        if (currentPlayer.registerIsFull() || currentPlayer.getCardsInHand().isEmpty()) {
+            confirmSelection.setColor(Color.WHITE);
+        } else {
+            confirmSelection.setColor(Color.RED);
+        }
+    }
+
 
     void selectCards(int indexOfSelectedCard) {
         currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
-        if (playersDeckOfCards.isEmpty()) {
-            System.out.println("No more cards left for  " + currentPlayer.getName());
-            System.out.println("current index  " + currentPlayerIndex + " active player size " + (game.getActivePlayers().size() - 1));
-            currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
-            currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
-            System.out.println("new index  " + currentPlayerIndex + " active player size " + (game.getActivePlayers().size() - 1));
-            if (currentPlayerIndex == 0) {
-                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-                System.out.println("finished selecting cards");
-            }
-            return;
-        }
         // Switch selected card between players deck,
         // and the players list of selected cards.
         if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
             System.out.println("deck index: " + indexOfSelectedCard);
             System.out.println("deck size: " + playersDeckOfCards.getSize());
             moveSelectedCardBackToPlayersDeck(indexOfSelectedCard);
-            return; // Not finished selecting cards yet.
         } else {
             moveSelectedCardToPlayersListOfSelectedCards(indexOfSelectedCard);
         }
+    }
 
-        IDeck[] selectedCards = game.getSelectedCards();
-        int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
-        int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
+    private void incrementCurrentPlayer() {
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        if (numberOfSelectedCards >= numberOfCardsToSelect) {
-            this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+        if (currentPlayer.registerIsFull() && currentPlayer.cardSelectionConfirmed()
+                || currentPlayer.getCardsInHand().isEmpty() && currentPlayer.cardSelectionConfirmed()) {
+
+            currentPlayer.setCardSelectionConfirmedStatus(false);
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
                 game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
@@ -179,25 +227,16 @@ public class CardGui {
     }
 
     /**
-     * Add this players chosen cards to this players register.
-     */
-    private void addTheSelectedCardsToTheCurrentPlayersProgramRegister() {
-        IDeck[] selectedCards = game.getSelectedCards();
-        IDeck chosenCards = selectedCards[currentPlayerIndex];
-        currentPlayer.addADeckOfCardsToTheProgramRegister(chosenCards);
-        selectedCards[currentPlayerIndex].removeAllCardsFromDeck();
-    }
-
-    /**
      * Remove the selected card from the players hand,
      * and add it to the players deck of selected cards.
      */
     private void moveSelectedCardToPlayersListOfSelectedCards(int index) {
-        IDeck[] selectedCards = game.getSelectedCards();
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         ICard selectedCard = playersDeckOfCards.removeCard(index);
-        int lastPos = selectedCards[currentPlayerIndex].getSize();
-        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(lastPos, selectedCard);
+        if (!currentPlayer.addACardToProgramRegister(selectedCard)) {
+            System.out.println("No more room in register");
+            playersDeckOfCards.addCardToDeck(selectedCard);
+        }
         System.out.println("Player " + currentPlayer.getName() + " selected the card:" + selectedCard.getCardCommand());
     }
 
@@ -206,11 +245,9 @@ public class CardGui {
      * and add it to the players hand.
      */
     private void moveSelectedCardBackToPlayersDeck(int index) {
-        IDeck[] selectedCards = game.getSelectedCards();
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         int positionOfCardToRemove = index - playersDeckOfCards.getSize();
-
-        ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(positionOfCardToRemove);
+        ICard deSelectedCard = currentPlayer.removeACardFromProgramRegisterAtSlotNumber((positionOfCardToRemove));
         playersDeckOfCards.addCardToDeck(deSelectedCard);
         System.out.println("Player " + currentPlayer.getName() + " removed the card" + deSelectedCard.getCardCommand());
     }
@@ -220,6 +257,17 @@ public class CardGui {
             int index = cardScreen.getTileIndex(y);
             selectCards(index);
         }
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void dispose() {
+        stage.clear();
+        stage.dispose();
+        font.dispose();
+        skin.dispose();
     }
 }
 

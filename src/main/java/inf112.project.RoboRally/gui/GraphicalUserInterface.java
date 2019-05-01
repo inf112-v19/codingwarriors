@@ -2,6 +2,7 @@ package inf112.project.RoboRally.gui;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,7 +20,6 @@ import inf112.project.RoboRally.game.IGame;
 import inf112.project.RoboRally.objects.*;
 
 import java.util.List;
-import java.util.Random;
 
 public class GraphicalUserInterface extends ApplicationAdapter {
     private IGame game;
@@ -56,8 +56,10 @@ public class GraphicalUserInterface extends ApplicationAdapter {
         viewport = new FillViewport(WIDTH, HEIGHT, camera);
         viewport.apply();
         viewport.update(WIDTH, HEIGHT, true);
-        Input input = new Input(camera);
-        Gdx.input.setInputProcessor(input);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(new Input(camera));
+        inputMultiplexer.addProcessor(cardGui.getStage());
+        Gdx.input.setInputProcessor(inputMultiplexer);
         loadTextures();
 
     }
@@ -103,6 +105,11 @@ public class GraphicalUserInterface extends ApplicationAdapter {
             batch.end();
 
             cardGui.draw();
+            if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
+                cardGui.updateButtons();
+                cardGui.getStage().act();
+                cardGui.getStage().draw();
+            }
         }
 
     }
@@ -220,6 +227,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     public void dispose () {
         batch.dispose();
         assetsManager.dispose();
+        cardGui.dispose();
     }
 
     @Override

@@ -246,7 +246,7 @@ public interface IPlayer {
      *
      *
      */
-    void respawnAtLastArchiveMarker();
+    Coordinates respawnAtLastArchiveMarker();
 
 
     /**
@@ -342,4 +342,18 @@ public interface IPlayer {
     void setCoordinates(Coordinates validPositionForPlayer);
 
     Coordinates getCoordinates();
+
+    void resetPathOfPlayer();
+
+    int numberOfCardsInUnlockedRegister();
+
+    boolean registerIsFull();
+
+    boolean isPoweredDown();
+
+    void reversePowerDownStatus();
+
+    boolean cardSelectionConfirmed();
+
+    void setCardSelectionConfirmedStatus(boolean b);
 }
