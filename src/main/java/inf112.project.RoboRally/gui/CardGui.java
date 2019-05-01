@@ -30,6 +30,8 @@ public class CardGui {
     private ShapeRenderer shapeRenderer;
     private Stage stage;
     private Skin skin;
+    TextButton powerDown;
+    TextButton confirmSelection;
 
     CardGui(IGame game, int width, int height) {
         this.game = game;
@@ -42,6 +44,7 @@ public class CardGui {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         setUpTextures();
         setUpScreen();
+        loadButtons();
     }
 
     public IPlayer getCurrentPlayer() {
@@ -110,11 +113,6 @@ public class CardGui {
             return;
         }
 
-
-
-        //   System.out.println("current player: " + currentPlayerIndex);
-        //   System.out.println("players hand size: " + currentPlayer.getCardsInHand().getSize());
-        //   System.out.println("selectedCards.size: " + selectedCards[currentPlayerIndex].getSize());
         int fontSize = 30;
         int playerCardsSize = currentPlayer.getCardsInHand().getSize();
         int registerCardsSize = currentPlayer.numberOfCardsInUnlockedRegister();
@@ -144,52 +142,55 @@ public class CardGui {
     }
 
     public void loadButtons() {
-        TextButton powerDown = new TextButton("PowerDown", skin);
+
+        powerDown = new TextButton("PowerDown", skin);
         powerDown.setPosition(300, 50);
         powerDown.setSize(200, 50);
-        if (currentPlayer.isPoweredDown() == true) {
-            powerDown.setColor(Color.GREEN);
-        } else {
-            powerDown.setColor(Color.WHITE);
-        }
 
         powerDown.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-                    System.out.println("Clicked power down Button");
                     currentPlayer.reversePowerDownStatus();
+                    System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.isPoweredDown());
                 }
             }
         });
 
-        TextButton confirmSelection = new TextButton("Confirm card selection", skin);
+        confirmSelection = new TextButton("Confirm card selection", skin);
         confirmSelection.setPosition(600, 50);
         confirmSelection.setSize(200, 50);
-
-        if (currentPlayer.registerIsFull() || currentPlayer.getCardsInHand().isEmpty()) {
-            confirmSelection.setColor(Color.WHITE);
-        } else {
-            confirmSelection.setColor(Color.RED);
-        }
+        confirmSelection.setColor(Color.RED);
 
         confirmSelection.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("current player deck size:" + currentPlayer.getCardsInHand().getSize()
-                + " current player deck is empty " + currentPlayer.getCardsInHand().isEmpty());
                 if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.registerIsFull()
                         || game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.getCardsInHand().isEmpty()) {
-                    System.out.println("Clicked confirm selection Button");
                     currentPlayer.setCardSelectionConfirmedStatus(true);
                     incrementCurrentPlayer();
+                } else {
+                    System.out.println("Not enough selected cards");
                 }
             }
         });
 
         stage.addActor(powerDown);
         stage.addActor(confirmSelection);
-        stage.draw();
+
+    }
+
+    public void updateButtons() {
+        if (currentPlayer.isPoweredDown() == true) {
+            powerDown.setColor(Color.GREEN);
+        } else {
+            powerDown.setColor(Color.WHITE);
+        }
+        if (currentPlayer.registerIsFull() || currentPlayer.getCardsInHand().isEmpty()) {
+            confirmSelection.setColor(Color.WHITE);
+        } else {
+            confirmSelection.setColor(Color.RED);
+        }
     }
 
 
@@ -202,7 +203,6 @@ public class CardGui {
             System.out.println("deck index: " + indexOfSelectedCard);
             System.out.println("deck size: " + playersDeckOfCards.getSize());
             moveSelectedCardBackToPlayersDeck(indexOfSelectedCard);
-            return; // Not finished selecting cards yet.
         } else {
             moveSelectedCardToPlayersListOfSelectedCards(indexOfSelectedCard);
         }
@@ -261,6 +261,13 @@ public class CardGui {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public void dispose() {
+        stage.clear();
+        stage.dispose();
+        font.dispose();
+        skin.dispose();
     }
 }
 

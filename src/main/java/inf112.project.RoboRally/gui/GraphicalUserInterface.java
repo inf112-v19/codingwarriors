@@ -106,7 +106,9 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
             cardGui.draw();
             if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
-                cardGui.loadButtons();
+                cardGui.updateButtons();
+                cardGui.getStage().act();
+                cardGui.getStage().draw();
             }
         }
 
@@ -225,6 +227,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     public void dispose () {
         batch.dispose();
         assetsManager.dispose();
+        cardGui.dispose();
     }
 
     @Override
