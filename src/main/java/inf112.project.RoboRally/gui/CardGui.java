@@ -69,6 +69,7 @@ public class CardGui {
         switch (game.getTheCurrentGameStatus()) {
             case SELECT_CARDS:
                 cardBatch.begin();
+                currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
                 displayPlayerData(height-70, currentPlayer);
                 drawSelectCards();
                 cardBatch.end();
@@ -101,10 +102,11 @@ public class CardGui {
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
         for (int i = 0; i < game.getActivePlayers().size(); i++) {
             font.setColor(game.getActivePlayers().get(i).getColor());
-            font.draw(cardBatch,game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(game.getCurrentSlotNumber()).toString(),
-                    cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
-                    1, true);
+            //font.draw(cardBatch, game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(game.getCurrentSlotNumber()).toString(),
+            //        cardScreen.getStartX(0), cardScreen.getEndY(i) - offset, cardScreen.getTileWidth(),
+            //        1, true);
             font.setColor(Color.WHITE);
+
         }
     }
 
