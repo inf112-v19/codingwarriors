@@ -220,10 +220,10 @@ public class Game implements IGame {
                 System.out.println("FIRING_LASERS");
                 this.fireLasers();
                 return;
-            /*case TOUCH_FLAGS_AND_REPAIR_SITES:
+            case TOUCH_FLAGS_AND_REPAIR_SITES:
                 System.out.println("TOUCH_FLAGS_AND_REPAIR_SITES");
                 this.flagsAndRepairs();
-                return;*/
+                return;
             case FINISHING_UP_THE_TURN:
                 System.out.println("FINISHING_UP_THE_TURN");
                 this.cleanUpTurn();
@@ -251,8 +251,12 @@ public class Game implements IGame {
         this.sortCardsAfterPriority(cardsForThisRegisterSlot, listOfPlayers);
         this.executeProgramCardsForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
         updateCurrentRegisterSlot();
-        if (activePlayers.size() != 0)
-            setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+        if (this.activePlayers.size() <= 0) {
+            this.finishEarly();
+        }
+        this.setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+//        if (activePlayers.size() != 0)
+  //          setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
     }
 
     /**
@@ -501,7 +505,7 @@ public class Game implements IGame {
             }
         }
         this.removeLasersBelongingToDeadPlayers();
-        this.flagsAndRepairs();
+        this.setGameStatus(TOUCH_FLAGS_AND_REPAIR_SITES);
     }
 
     /**
