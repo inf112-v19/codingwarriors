@@ -167,7 +167,7 @@ public class CardGui {
         confirmSelection.setPosition(600, 50);
         confirmSelection.setSize(200, 50);
 
-        if (currentPlayer.registerIsFull()) {
+        if (currentPlayer.registerIsFull() || currentPlayer.getCardsInHand().isEmpty()) {
             confirmSelection.setColor(Color.WHITE);
         } else {
             confirmSelection.setColor(Color.RED);
@@ -176,7 +176,10 @@ public class CardGui {
         confirmSelection.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.registerIsFull()) {
+                System.out.println("current player deck size:" + currentPlayer.getCardsInHand().getSize()
+                + " current player deck is empty " + currentPlayer.getCardsInHand().isEmpty());
+                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.registerIsFull()
+                        || game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.getCardsInHand().isEmpty()) {
                     System.out.println("Clicked confirm selection Button");
                     currentPlayer.setCardSelectionConfirmedStatus(true);
                     incrementCurrentPlayer();
@@ -193,18 +196,6 @@ public class CardGui {
     void selectCards(int indexOfSelectedCard) {
         currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
-        if (playersDeckOfCards.isEmpty()) {
-            System.out.println("No more cards left for  " + currentPlayer.getName());
-            System.out.println("current index  " + currentPlayerIndex + " active player size " + (game.getActivePlayers().size() - 1));
-            currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
-            currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
-            System.out.println("new index  " + currentPlayerIndex + " active player size " + (game.getActivePlayers().size() - 1));
-            if (currentPlayerIndex == 0) {
-                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
-                System.out.println("finished selecting cards");
-            }
-            return;
-        }
         // Switch selected card between players deck,
         // and the players list of selected cards.
         if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
@@ -219,8 +210,9 @@ public class CardGui {
 
     private void incrementCurrentPlayer() {
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        if (currentPlayer.registerIsFull() && currentPlayer.cardSelectionConfirmed()) {
-            // this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+        if (currentPlayer.registerIsFull() && currentPlayer.cardSelectionConfirmed()
+                || currentPlayer.getCardsInHand().isEmpty() && currentPlayer.cardSelectionConfirmed()) {
+
             currentPlayer.setCardSelectionConfirmedStatus(false);
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
