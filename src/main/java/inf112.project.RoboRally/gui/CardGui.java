@@ -60,7 +60,7 @@ public class CardGui {
 
     private void setUpScreen() {
         cardScreen = new Grid(
-                new Tile(0,width,0,height)
+                new Tile(0,width,0,height-100)
                 ,1,currentPlayer.getCardsInHand().getSize());
     }
 
@@ -144,8 +144,8 @@ public class CardGui {
     public void loadButtons() {
 
         powerDown = new TextButton("PowerDown", skin);
-        powerDown.setPosition(300, 50);
-        powerDown.setSize(200, 50);
+        powerDown.setPosition(5, height-50);
+        powerDown.setSize(190, 45);
 
         powerDown.addListener(new ClickListener(){
             @Override
@@ -158,8 +158,8 @@ public class CardGui {
         });
 
         confirmSelection = new TextButton("Confirm card selection", skin);
-        confirmSelection.setPosition(600, 50);
-        confirmSelection.setSize(200, 50);
+        confirmSelection.setPosition(5, height-100);
+        confirmSelection.setSize(190, 45);
         confirmSelection.setColor(Color.RED);
 
         confirmSelection.addListener(new ClickListener(){
