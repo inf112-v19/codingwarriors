@@ -14,6 +14,15 @@ public interface IProgramRegister {
 
 
     /**
+     * Get the currently selected register slot.
+     *
+     * @return The index of the register where the
+     *         next card will be inserted into.
+     */
+    int getCurrentRegisterSlot();
+
+
+    /**
      * Add a card to the register in the specified slot.
      *
      * @param slotNumber
@@ -143,7 +152,46 @@ public interface IProgramRegister {
      */
     int numberOfUnlockedRegisterSlots();
 
-    void addCardToCurrentRegisterSlot(ICard card);
 
+    /**
+     * Add a single card to the program register,
+     * at the current register slot.
+     *
+     * @param card
+     *              The card to be added to the register.
+     * @return false if the card could not be added to the current register slot,
+     *          true if it was added.
+     * @throws IllegalArgumentException
+     *          If the card is null (card == null)<br>
+     */
+    boolean addCardToCurrentRegisterSlot(ICard card);
+
+
+    /**
+     * Remove a card from the program register at the given index.
+     *
+     * @param slotNumber
+     *                  The index of the card to remove.
+     * @return The removed card.
+     * @throws IllegalArgumentException
+     *          If the slot number is null (slotNumber == null),<br>
+     *          or slotNumber is negative (slotNumber < 0),<br>
+     *          or slotNumber is greater than the current register slot
+     *          (slotNumber >= currentRegisterSlot).
+     */
     ICard removeCardFromRegisterSlot(Integer slotNumber);
+
+    /**
+     * Returns true if the register has no available place for new cards
+     *
+     * @return A boolean stating if the register is full
+     */
+    boolean registerIsFull();
+
+    /**
+     * Returns the number of unlocked cards currently in the register
+     *
+     * @return The number of unlocked cards currently in the register
+     */
+    int numberOfCardsInUnlockedRegister();
 }

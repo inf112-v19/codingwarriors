@@ -59,6 +59,11 @@ public class ProgramRegister implements IProgramRegister{
     }
 
     @Override
+    public int getCurrentRegisterSlot() {
+        return this.currentRegisterSlot;
+    }
+
+    @Override
     public ICard replaceTheCardInRegisterSlotNumberNWithThisCard(Integer slotNumber, ICard card) {
         if (slotNumber == null
                 || slotNumber < 0
@@ -174,15 +179,23 @@ public class ProgramRegister implements IProgramRegister{
     }
 
     @Override
-    public void addCardToCurrentRegisterSlot(ICard card) {
+    public boolean addCardToCurrentRegisterSlot(ICard card) {
         if (card == null) {
             throw new IllegalArgumentException("Not a valid card");
         }
-        if (this.currentRegisterSlot >= this.NUMBER_OF_SLOTS
-                || this.currentRegisterSlot < 0) {
-            throw new IllegalArgumentException("Not a valid register slot");
+        if (registerIsFull()) {
+            return false;
         }
         this.register.addCardToDeckAtPosition(this.currentRegisterSlot++, card);
+        return true;
+    }
+
+    public boolean registerIsFull() {
+        return this.currentRegisterSlot >= this.NUMBER_OF_SLOTS || this.currentRegisterSlot < 0;
+    }
+
+    public int numberOfCardsInUnlockedRegister() {
+        return currentRegisterSlot;
     }
 
     @Override
