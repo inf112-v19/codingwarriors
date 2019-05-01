@@ -178,7 +178,7 @@ public class CardGui {
                         || game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.getCardsInHand().isEmpty()) {
                     currentPlayer.setCardSelectionConfirmedStatus(true);
                     incrementCurrentPlayer();
-                } else {
+                } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS){
                     System.out.println("Not enough selected cards");
                 }
             }
@@ -208,7 +208,9 @@ public class CardGui {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         // Switch selected card between players deck,
         // and the players list of selected cards.
-        if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
+        if (playersDeckOfCards.isEmpty()) {
+            incrementCurrentPlayer();
+        } else if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
             System.out.println("deck index: " + indexOfSelectedCard);
             System.out.println("deck size: " + playersDeckOfCards.getSize());
             moveSelectedCardBackToPlayersDeck(indexOfSelectedCard);
@@ -264,7 +266,6 @@ public class CardGui {
     public void userInputs(int x, int y) {
         if (cardScreen.PositionIsInsideScreen(x,y)) {
             int index = cardScreen.getTileIndex(y);
-            System.out.println(index);
             selectCards(index);
         }
     }
