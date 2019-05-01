@@ -60,7 +60,7 @@ public class Grid {
     }
 
     public int getTileIndex(int y) {
-        return y/tileSizeY;
+        return (y-screen.getStartY())/(tileSizeY);
     }
 
     public Tile getScreen() {

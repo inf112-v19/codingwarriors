@@ -60,7 +60,7 @@ public class CardGui {
 
     private void setUpScreen() {
         cardScreen = new Grid(
-                new Tile(0,width,0,height-100)
+                new Tile(0,width,50,height-200)
                 ,1,currentPlayer.getCardsInHand().getSize());
     }
 
@@ -69,6 +69,7 @@ public class CardGui {
         switch (game.getTheCurrentGameStatus()) {
             case SELECT_CARDS:
                 cardBatch.begin();
+                displayPlayerData(height-70, currentPlayer);
                 drawSelectCards();
                 cardBatch.end();
                 break;
@@ -95,7 +96,7 @@ public class CardGui {
     }
 
     private void drawExecutingCards() {
-        cardScreen.setNumberOtTiles(1,game.getActivePlayers().size());
+        // cardScreen.setNumberOtTiles(1,game.getActivePlayers().size());
         int fontSize = 30;
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
         for (int i = 0; i < game.getActivePlayers().size(); i++) {
@@ -105,6 +106,14 @@ public class CardGui {
                     1, true);
             font.setColor(Color.WHITE);
         }
+    }
+
+    public void displayPlayerData(int StartingPositionYAxis, IPlayer player) {
+        font.setColor(player.getColor());
+        font.draw(cardBatch,player.toString(),
+                5,StartingPositionYAxis, cardScreen.getTileWidth(),
+                -1, true);
+        font.setColor(Color.WHITE);
     }
 
     private void drawSelectCards() {
@@ -158,7 +167,7 @@ public class CardGui {
         });
 
         confirmSelection = new TextButton("Confirm card selection", skin);
-        confirmSelection.setPosition(5, height-100);
+        confirmSelection.setPosition(5, 5);
         confirmSelection.setSize(190, 45);
         confirmSelection.setColor(Color.RED);
 
@@ -255,6 +264,7 @@ public class CardGui {
     public void userInputs(int x, int y) {
         if (cardScreen.PositionIsInsideScreen(x,y)) {
             int index = cardScreen.getTileIndex(y);
+            System.out.println(index);
             selectCards(index);
         }
     }

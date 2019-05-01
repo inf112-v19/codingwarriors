@@ -463,5 +463,16 @@ public class Player implements IPlayer {
     public void setCardSelectionConfirmedStatus(boolean status) {
         cardSelectionConfirmed = status;
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + "\n"
+                + "Lives: " + lives + "\n"
+                + "Damage received: " + numberOfDamageTokensRecieved + "\n"
+                + "Health remaining: " + (9-numberOfDamageTokensRecieved) + "\n"
+                + "Direction: " + playerDirection + "\n"
+                + "Flags found: " + flagsVisited + "\n"
+                + "Powered down: " + powerDown;
+    }
 }
 
