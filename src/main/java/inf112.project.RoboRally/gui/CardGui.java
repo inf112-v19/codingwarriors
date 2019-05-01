@@ -219,7 +219,7 @@ public class CardGui {
         }
     }
 
-    private void incrementCurrentPlayer() {
+    public void incrementCurrentPlayer() {
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
         if (currentPlayer.registerIsFull() && currentPlayer.cardSelectionConfirmed()
                 || currentPlayer.getCardsInHand().isEmpty() && currentPlayer.cardSelectionConfirmed()) {

@@ -125,8 +125,11 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     private void userInputs() {
         if ((game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) && (cardGui.getCurrentPlayer() instanceof AI)) {
             cardGui.selectCards(0);
+            if (cardGui.getCurrentPlayer().registerIsFull() || cardGui.getCurrentPlayer().getCardsInHand().isEmpty()) {
+                cardGui.getCurrentPlayer().setCardSelectionConfirmedStatus(true);
+                cardGui.incrementCurrentPlayer();
             }
-        else if (Gdx.input.justTouched()) {
+        } else if (Gdx.input.justTouched()) {
             if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
                     int x = Gdx.input.getX();
                     int y = HEIGHT - Gdx.input.getY();
