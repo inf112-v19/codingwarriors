@@ -339,4 +339,12 @@ public interface IPlayer {
     int numberOfCardsInUnlockedRegister();
 
     boolean registerIsFull();
+
+    boolean isPoweredDown();
+
+    void reversePowerDownStatus();
+
+    boolean cardSelectionConfirmed();
+
+    void setCardSelectionConfirmedStatus(boolean b);
 }

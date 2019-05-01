@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
+    private boolean powerDown;
     private int lives;
     private GridDirection playerDirection;
     private int x,y;
@@ -25,6 +26,7 @@ public class Player implements IPlayer {
 
     private static int counter = 0;
     private int priority;
+    private boolean cardSelectionConfirmed;
 
     public Player(String name, int x, int y, Color color) {
         this.color = color;
@@ -42,6 +44,8 @@ public class Player implements IPlayer {
         this.wasDestroyedThisTurn = false;
         this.laser = new Laser(1, this);
         this.priority = counter++;
+        this.powerDown = false;
+        this.cardSelectionConfirmed = false;
     }
 
     public void resetPathOfPlayer() {
@@ -439,6 +443,25 @@ public class Player implements IPlayer {
 
     public boolean registerIsFull() {
         return register.registerIsFull();
+    }
+
+    @Override
+    public boolean isPoweredDown() {
+        return powerDown;
+    }
+
+    @Override
+    public void reversePowerDownStatus() {
+        this.powerDown = !this.powerDown;
+    }
+
+    @Override
+    public boolean cardSelectionConfirmed() {
+        return cardSelectionConfirmed;
+    }
+
+    public void setCardSelectionConfirmedStatus(boolean status) {
+        cardSelectionConfirmed = status;
     }
 }
 

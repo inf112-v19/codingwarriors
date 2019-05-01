@@ -6,10 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
-import inf112.project.RoboRally.cards.IProgramRegister;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 
@@ -24,6 +28,8 @@ public class CardGui {
     private BitmapFont font; // move to AssetsManagement
     private BitmapFont fontGreen; // move to AssetsManagement
     private ShapeRenderer shapeRenderer;
+    private Stage stage;
+    private Skin skin;
 
     CardGui(IGame game, int width, int height) {
         this.game = game;
@@ -32,6 +38,8 @@ public class CardGui {
         currentPlayer = game.getActivePlayers().get(0);
         currentPlayerIndex = 0;
         shapeRenderer = new ShapeRenderer();
+        stage = new Stage();
+        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         setUpTextures();
         setUpScreen();
     }
@@ -102,6 +110,8 @@ public class CardGui {
             return;
         }
 
+
+
         //   System.out.println("current player: " + currentPlayerIndex);
         //   System.out.println("players hand size: " + currentPlayer.getCardsInHand().getSize());
         //   System.out.println("selectedCards.size: " + selectedCards[currentPlayerIndex].getSize());
@@ -133,7 +143,51 @@ public class CardGui {
         }
     }
 
+    public void loadButtons() {
+        TextButton powerDown = new TextButton("PowerDown", skin);
+        powerDown.setPosition(300, 50);
+        powerDown.setSize(200, 50);
+        if (currentPlayer.isPoweredDown() == true) {
+            powerDown.setColor(Color.GREEN);
+        } else {
+            powerDown.setColor(Color.WHITE);
+        }
 
+        powerDown.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
+                    System.out.println("Clicked power down Button");
+                    currentPlayer.reversePowerDownStatus();
+                }
+            }
+        });
+
+        TextButton confirmSelection = new TextButton("Confirm card selection", skin);
+        confirmSelection.setPosition(600, 50);
+        confirmSelection.setSize(200, 50);
+
+        if (currentPlayer.registerIsFull()) {
+            confirmSelection.setColor(Color.WHITE);
+        } else {
+            confirmSelection.setColor(Color.RED);
+        }
+
+        confirmSelection.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.registerIsFull()) {
+                    System.out.println("Clicked confirm selection Button");
+                    currentPlayer.setCardSelectionConfirmedStatus(true);
+                    incrementCurrentPlayer();
+                }
+            }
+        });
+
+        stage.addActor(powerDown);
+        stage.addActor(confirmSelection);
+        stage.draw();
+    }
 
 
     void selectCards(int indexOfSelectedCard) {
@@ -161,10 +215,13 @@ public class CardGui {
         } else {
             moveSelectedCardToPlayersListOfSelectedCards(indexOfSelectedCard);
         }
+    }
 
+    private void incrementCurrentPlayer() {
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        if (currentPlayer.registerIsFull()) {
+        if (currentPlayer.registerIsFull() && currentPlayer.cardSelectionConfirmed()) {
             // this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+            currentPlayer.setCardSelectionConfirmedStatus(false);
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
                 game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
@@ -208,6 +265,10 @@ public class CardGui {
             int index = cardScreen.getTileIndex(y);
             selectCards(index);
         }
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }
 
