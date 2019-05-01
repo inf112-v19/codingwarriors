@@ -75,6 +75,7 @@ public class Flag implements IObjects {
         if (player.getFlagsVisited() == this.flagNumber) {
             player.addNewFlagVisited();
             player.setThisPointAsNewBackup();
+            System.out.println(player.getName() + " picked up flag number " + player.getFlagsVisited());
         }
     }
 
