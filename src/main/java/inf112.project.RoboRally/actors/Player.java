@@ -317,7 +317,7 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public int getNumberOFUnlockedCardsInTheProgramRegister() {
+    public int getNumberOfUnlockedCardsInTheProgramRegister() {
         return this.register.getCurrentRegisterSlot();
     }
 

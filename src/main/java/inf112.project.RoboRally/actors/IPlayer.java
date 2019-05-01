@@ -228,7 +228,7 @@ public interface IPlayer {
      *
      * @return The number of unlocked cards in the register.
      */
-    int getNumberOFUnlockedCardsInTheProgramRegister();
+    int getNumberOfUnlockedCardsInTheProgramRegister();
 
 
     /**
