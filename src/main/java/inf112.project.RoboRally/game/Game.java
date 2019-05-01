@@ -13,6 +13,7 @@ import inf112.project.RoboRally.objects.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static inf112.project.RoboRally.game.GameStatus.*;
 
@@ -117,9 +118,9 @@ public class Game implements IGame {
     @Override
     public void addPlayers() {
         // Hardcoded players for demonstration.
-        IPlayer player1 = new Player("Buzz", 2, 11, Color.RED);
-        IPlayer player2 = new Player("Emma", 2, 9, Color.CYAN);
-        IPlayer player3 = new Player("G-bot", 2, 10, Color.LIME);
+        IPlayer player1 = new Player("Buzz", 5, 4, Color.RED);
+        IPlayer player2 = new Player("Emma", 6, 4, Color.CYAN);
+        IPlayer player3 = new Player("G-bot", 7, 4, Color.LIME);
         this.players.add(player1);
         this.players.add(player2);
         this.players.add(player3);
@@ -243,7 +244,8 @@ public class Game implements IGame {
         this.sortCardsAfterPriority(cardsForThisRegisterSlot, listOfPlayers);
         this.executeProgramCardsForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
         updateCurrentRegisterSlot();
-        setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+        if (activePlayers.size() != 0)
+            setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
     }
 
     /**
@@ -511,7 +513,7 @@ public class Game implements IGame {
         laser.resetLaserPosition();
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
         List shortestPathToPlayer = getLaserPath(coordinatesHitByLaser, laser.getDirection(),
-                laser); //shortestPathToObstacle(coordinatesHitByLaser, laser);
+                laser);
         for (IPlayer otherPlayer : players) { // poor optimization
             if (shortestPathToPlayer.contains(((Player) otherPlayer).getCoordinates())
                     && otherPlayer.getLaser() != laser
@@ -544,6 +546,8 @@ public class Game implements IGame {
         // Ugly repetition, but it works...
         if (board.moveValid(currentPlayerCoordinates.getX(), currentPlayerCoordinates.getY()) &&
                 board.getObject(currentPlayerCoordinates) instanceof Pit) {
+            if (!destroyedPlayers.contains(player))
+                destroyPlayer(player);
             return currentPlayerCoordinates;
         }
 
@@ -551,8 +555,11 @@ public class Game implements IGame {
         Coordinates previousCoordinates = currentPlayerCoordinates;
         for (Coordinates playerCoordinates : coordinates) {
             if (board.moveValid(playerCoordinates.getX(), playerCoordinates.getY()) &&
-                    board.getObject(playerCoordinates) instanceof Pit)
+                    board.getObject(playerCoordinates) instanceof Pit) {
+                if (!destroyedPlayers.contains(player))
+                    destroyPlayer(player);
                 return playerCoordinates;
+            }
 
             for (IPlayer player1 : players) {
                 Coordinates previousPlayerPosition = player1.getCoordinates();
@@ -728,9 +735,31 @@ public class Game implements IGame {
             System.out.println("x: " + player.getX());
             System.out.println("y: " + player.getY());
             this.restorePlayerBasedOnPriority(player);
-            player.respawnAtLastArchiveMarker();
+            Coordinates positionPlayerWishesToRespawn = player.respawnAtLastArchiveMarker();
+            Random random = new Random();
+            for (IPlayer player1 : activePlayers) {
+                if (player1.getCoordinates().equals(positionPlayerWishesToRespawn)) {
+                    List<Coordinates> validCoordinates = validCoordinatesForRespawn(positionPlayerWishesToRespawn);
+                    positionPlayerWishesToRespawn = validCoordinates.get(random.nextInt(validCoordinates.size()));
+                }
+            }
+            player.setCoordinates(positionPlayerWishesToRespawn);
             //TODO: Ask player for which direction they would like to face.
         }
+    }
+
+    private List<Coordinates> validCoordinatesForRespawn(Coordinates coordinates) {
+        List<Coordinates> validCoordinates = new ArrayList<>();
+        for (int x = coordinates.getX()-1; x < coordinates.getX() + 2; x++) {
+            for (int y = coordinates.getY()-1; y < coordinates.getY() + 2; y++) {
+                if (!board.moveValid(x,y) || board.getObject(x,y) instanceof Pit
+                        || (x == coordinates.getX() && y == coordinates.getY())) {
+                    continue;
+                }
+                validCoordinates.add(new Coordinates(x,y));
+            }
+        }
+        return validCoordinates;
     }
 
     /**

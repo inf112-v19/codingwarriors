@@ -327,12 +327,15 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void respawnAtLastArchiveMarker() {
-        this.x=backupX;
-        this.y=backupY;
+    public Coordinates respawnAtLastArchiveMarker() {
+        //this.x=backupX;
+        //this.y=backupY;
         wasDestroyedThisTurn = false;
         takeOneDamage(); // Take two damage
         takeOneDamage();
+        System.out.println("New laser location is x:" + laser.getX()
+                + ", y:" + laser.getY() + " dir: " + laser.getDirection());
+        return new Coordinates(backupX, backupY);
     }
 
     @Override
