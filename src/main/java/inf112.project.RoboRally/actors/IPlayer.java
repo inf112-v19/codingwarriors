@@ -209,7 +209,7 @@ public interface IPlayer {
      *
      *
      */
-    void respawnAtLastArchiveMarker();
+    Coordinates respawnAtLastArchiveMarker();
 
 
     /**
