@@ -220,46 +220,20 @@ public class Game implements IGame {
                 System.out.println("FIRING_LASERS");
                 this.fireLasers();
                 return;
-            case TOUCH_FLAGS_AND_REPAIR_SITES:
+            /*case TOUCH_FLAGS_AND_REPAIR_SITES:
                 System.out.println("TOUCH_FLAGS_AND_REPAIR_SITES");
                 this.flagsAndRepairs();
-                return;
-            case SOMEONE_HAS_WON:
-                System.out.println(winner.getName() + " has won the game!");
-                break;
+                return;*/
             case FINISHING_UP_THE_TURN:
                 System.out.println("FINISHING_UP_THE_TURN");
                 this.cleanUpTurn();
                 return;
+            case SOMEONE_HAS_WON:
+                System.out.println(winner.getName() + " has won the game!");
+                break;
             case THE_END:
                 System.out.println("All players are out, the game ends in a draw...");
         }
-    }
-
-    private void flagsAndRepairs() {
-        for (IPlayer player : activePlayers) {
-            IObjects object = board.getObject(player.getCoordinates());
-            if (object instanceof Flag || object instanceof SingleWrench || object instanceof CrossedWrench) {
-                object.doAction(player);
-            }
-            if (player.getFlagsVisited() == numberOfFlags()) {
-                setGameStatus(SOMEONE_HAS_WON);
-                winner = player;
-                return;
-            }
-        }
-        setGameStatus(FINISHING_UP_THE_TURN);
-    }
-
-    private int numberOfFlags() {
-        int nrOfFlags = 0;
-        for (int x = 0; x < board.getRows(); x++) {
-            for (int y = 0; y < board.getColumns(); y++) {
-                if (board.getObject(y,x) instanceof Flag)
-                    nrOfFlags++;
-            }
-        }
-        return nrOfFlags;
     }
 
     /**
@@ -526,13 +500,8 @@ public class Game implements IGame {
                 counter++;
             }
         }
-        removeLasersBelongingToDeadPlayers();
-        if (this.currentSlotNumber == 0) { // Gone through all the register slots,
-           // this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
-            this.setGameStatus(TOUCH_FLAGS_AND_REPAIR_SITES);
-        } else {
-            this.setGameStatus(EXECUTING_INSTRUCTIONS);
-        }
+        this.removeLasersBelongingToDeadPlayers();
+        this.flagsAndRepairs();
     }
 
     /**
@@ -714,6 +683,36 @@ public class Game implements IGame {
             }
             lasers.remove(laserToRemove);
         }
+    }
+
+    private void flagsAndRepairs() {
+        for (IPlayer player : activePlayers) {
+            IObjects object = board.getObject(player.getCoordinates());
+            if (object instanceof Flag || object instanceof SingleWrench || object instanceof CrossedWrench) {
+                object.doAction(player);
+            }
+            if (player.getFlagsVisited() == numberOfFlags()) {
+                setGameStatus(SOMEONE_HAS_WON);
+                winner = player;
+                return;
+            }
+        }
+        if (this.currentSlotNumber == 0) { // Gone through all the register slots,
+            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+        } else {
+            this.setGameStatus(EXECUTING_INSTRUCTIONS);
+        }
+    }
+
+    private int numberOfFlags() {
+        int nrOfFlags = 0;
+        for (int x = 0; x < board.getRows(); x++) {
+            for (int y = 0; y < board.getColumns(); y++) {
+                if (board.getObject(y,x) instanceof Flag)
+                    nrOfFlags++;
+            }
+        }
+        return nrOfFlags;
     }
 
     /**
