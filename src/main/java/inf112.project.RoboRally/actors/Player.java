@@ -281,13 +281,13 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber) {
+    public ICard removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber) {
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= this.getCurrentRegisterSlotNumber()) {
             throw new IllegalArgumentException("Not a valid slotNumber");
         }
-        this.register.removeCardFromRegisterSlot(slotNumber);
+        return this.register.removeCardFromRegisterSlot(slotNumber);
     }
 
     @Override
@@ -428,6 +428,14 @@ public class Player implements IPlayer {
 
     public Coordinates getCoordinates() {
         return new Coordinates(getX(), getY());
+    }
+
+    public int numberOfCardsInUnlockedRegister() {
+        return register.numberOfCardsInUnlockedRegister();
+    }
+
+    public boolean registerIsFull() {
+        return register.registerIsFull();
     }
 }
 

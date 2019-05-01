@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.cards.ICard;
 import inf112.project.RoboRally.cards.IDeck;
+import inf112.project.RoboRally.cards.IProgramRegister;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 
@@ -96,7 +97,6 @@ public class CardGui {
     }
 
     private void drawSelectCards() {
-        IDeck[] selectedCards = game.getSelectedCards();
         if (game.getNumberOfPlayersLeftInTheGame() <= 0) {
             System.out.println("No players left");
             return;
@@ -106,9 +106,9 @@ public class CardGui {
         //   System.out.println("players hand size: " + currentPlayer.getCardsInHand().getSize());
         //   System.out.println("selectedCards.size: " + selectedCards[currentPlayerIndex].getSize());
         int fontSize = 30;
-        int playerCards = currentPlayer.getCardsInHand().getSize();
-        int amountOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
-        int totalCards = playerCards + amountOfSelectedCards;
+        int playerCardsSize = currentPlayer.getCardsInHand().getSize();
+        int registerCardsSize = currentPlayer.numberOfCardsInUnlockedRegister();
+        int totalCards = playerCardsSize + registerCardsSize;
 
         cardScreen.setNumberOtTiles(1,totalCards);
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
@@ -116,7 +116,7 @@ public class CardGui {
         int i = 0;
 
         // drawing cards in playerDeck
-        for (; i < playerCards; i++) {
+        for (; i < playerCardsSize; i++) {
             font.draw(cardBatch,currentPlayer.getCardsInHand().showCard(i),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
@@ -125,13 +125,15 @@ public class CardGui {
         // drawing selected cards
         for (; i < totalCards; i++) {
             font.setColor(currentPlayer.getColor());
-            font.draw(cardBatch, selectedCards[currentPlayerIndex].showCard(i-playerCards),
+            font.draw(cardBatch, currentPlayer.revealProgramCardForRegisterNumber(i-playerCardsSize).toString(),
                     cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
                     1, true);
             font.setColor(Color.WHITE);
 
         }
     }
+
+
 
 
     void selectCards(int indexOfSelectedCard) {
@@ -160,12 +162,9 @@ public class CardGui {
             moveSelectedCardToPlayersListOfSelectedCards(indexOfSelectedCard);
         }
 
-        IDeck[] selectedCards = game.getSelectedCards();
-        int numberOfCardsToSelect = currentPlayer.getNumberOfUnlockedRegisterSlots();
-        int numberOfSelectedCards = selectedCards[currentPlayerIndex].getSize();
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
-        if (numberOfSelectedCards >= numberOfCardsToSelect) {
-            this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
+        if (currentPlayer.registerIsFull()) {
+            // this.addTheSelectedCardsToTheCurrentPlayersProgramRegister();
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
                 game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
@@ -179,25 +178,16 @@ public class CardGui {
     }
 
     /**
-     * Add this players chosen cards to this players register.
-     */
-    private void addTheSelectedCardsToTheCurrentPlayersProgramRegister() {
-        IDeck[] selectedCards = game.getSelectedCards();
-        IDeck chosenCards = selectedCards[currentPlayerIndex];
-        currentPlayer.addADeckOfCardsToTheProgramRegister(chosenCards);
-        selectedCards[currentPlayerIndex].removeAllCardsFromDeck();
-    }
-
-    /**
      * Remove the selected card from the players hand,
      * and add it to the players deck of selected cards.
      */
     private void moveSelectedCardToPlayersListOfSelectedCards(int index) {
-        IDeck[] selectedCards = game.getSelectedCards();
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         ICard selectedCard = playersDeckOfCards.removeCard(index);
-        int lastPos = selectedCards[currentPlayerIndex].getSize();
-        selectedCards[currentPlayerIndex].addCardToDeckAtPosition(lastPos, selectedCard);
+        if (!currentPlayer.addACardToProgramRegister(selectedCard)) {
+            System.out.println("No more room in register");
+            playersDeckOfCards.addCardToDeck(selectedCard);
+        }
         System.out.println("Player " + currentPlayer.getName() + " selected the card:" + selectedCard.getCardCommand());
     }
 
@@ -206,11 +196,9 @@ public class CardGui {
      * and add it to the players hand.
      */
     private void moveSelectedCardBackToPlayersDeck(int index) {
-        IDeck[] selectedCards = game.getSelectedCards();
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         int positionOfCardToRemove = index - playersDeckOfCards.getSize();
-
-        ICard deSelectedCard = selectedCards[currentPlayerIndex].removeCard(positionOfCardToRemove);
+        ICard deSelectedCard = currentPlayer.removeACardFromProgramRegisterAtSlotNumber((positionOfCardToRemove));
         playersDeckOfCards.addCardToDeck(deSelectedCard);
         System.out.println("Player " + currentPlayer.getName() + " removed the card" + deSelectedCard.getCardCommand());
     }

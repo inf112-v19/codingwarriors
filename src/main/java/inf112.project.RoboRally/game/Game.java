@@ -32,7 +32,7 @@ public class Game implements IGame {
     private List<Laser> lasers; // The list of lasers in the game.
     private IDeck programCards;
     private IDeck discardedProgramCards;
-    private IDeck[] selectedCards;
+    // private IDeck[] selectedCards;
     private GameStatus currentGameStatus;
     private boolean everyFlagHasBeenVisited;
     private int currentSlotNumber;
@@ -109,7 +109,7 @@ public class Game implements IGame {
         this.currentSlotNumber = 0;
         this.addPlayers();
         this.registerLasers();
-        this.updateDeckOfSelectedCards();
+        // this.updateDeckOfSelectedCards();
         this.dealOutProgramCards();
         this.setGameStatus(SELECT_CARDS);
     }
@@ -148,17 +148,6 @@ public class Game implements IGame {
                     lasers.add(((LaserTower) gameObject).getLaser());
                 }
             }
-        }
-    }
-
-    /**
-     * Remakes the decks that hold the cards during the card selection process.<br>
-     * Ensures that the temporary decks are only made for players that needs it.
-     */
-    private void updateDeckOfSelectedCards() {
-        this.selectedCards = new IDeck[this.getNumberOfPlayersLeftInTheGame()];
-        for (int i = 0; i < this.getNumberOfPlayersLeftInTheGame(); i++) {
-            this.selectedCards[i] = new Deck();
         }
     }
 
@@ -798,7 +787,7 @@ public class Game implements IGame {
             this.drawCards(player);
         }
 
-        this.updateDeckOfSelectedCards();
+        // this.updateDeckOfSelectedCards();
     }
 
     /**
@@ -907,11 +896,6 @@ public class Game implements IGame {
             throw new IllegalArgumentException("Not a valid status");
         }
         this.currentGameStatus = status;
-    }
-
-    @Override
-    public IDeck[] getSelectedCards() {
-        return this.selectedCards;
     }
 
     @Override

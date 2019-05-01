@@ -183,12 +183,19 @@ public class ProgramRegister implements IProgramRegister{
         if (card == null) {
             throw new IllegalArgumentException("Not a valid card");
         }
-        if (this.currentRegisterSlot >= this.NUMBER_OF_SLOTS
-                || this.currentRegisterSlot < 0) {
+        if (registerIsFull()) {
             return false;
         }
         this.register.addCardToDeckAtPosition(this.currentRegisterSlot++, card);
         return true;
+    }
+
+    public boolean registerIsFull() {
+        return this.currentRegisterSlot >= this.NUMBER_OF_SLOTS || this.currentRegisterSlot < 0;
+    }
+
+    public int numberOfCardsInUnlockedRegister() {
+        return currentRegisterSlot;
     }
 
     @Override

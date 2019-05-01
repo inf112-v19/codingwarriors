@@ -172,7 +172,7 @@ public interface IPlayer {
      * @param slotNumber
      *                      The index of the card to remove.
      */
-    void removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber);
+    ICard removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber);
 
 
     /**
@@ -335,4 +335,8 @@ public interface IPlayer {
     Coordinates getCoordinates();
 
     void resetPathOfPlayer();
+
+    int numberOfCardsInUnlockedRegister();
+
+    boolean registerIsFull();
 }

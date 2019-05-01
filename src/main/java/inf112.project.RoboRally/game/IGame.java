@@ -155,15 +155,6 @@ public interface IGame {
 
 
     /**
-     * Get the deck used to hold all the selected cards,
-     * before putting them into the register.
-     *
-     * @return The deck of selected cards.
-     */
-    IDeck[] getSelectedCards();
-
-
-    /**
      * Get the amount of players that has one or more lives left.
      *
      * @return The number of players still in the game.
