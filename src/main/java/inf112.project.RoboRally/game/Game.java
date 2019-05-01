@@ -40,7 +40,7 @@ public class Game implements IGame {
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
     private final int MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED = 9; // The number of damage tokens a player
     // can receive before being destroyed. (NumberOfTokens >= 10) == destroy(player);
-
+    private IPlayer winner;
 
     /**
      * Default constructor for making a new game with default settings.<br>
@@ -48,17 +48,17 @@ public class Game implements IGame {
      */
     public Game() {
         String defaultLayout = "16C12R" +
-                "f...kr.rrr...f.." +
+                "....kr.rrr......" +
                 ".R..RRRRRRRRDu.." +
                 ".U.........cD..." +
-                ".U...f....i.D..." +
+                ".U........i.D..." +
                 ".U......ll..D.p." +
-                "rU..LLLLfLLLD..." +
+                "rU..LLLL.LLLD..." +
                 "ll.....w....C..." +
                 ".r..p....lll...." +
-                ".rm....w.....i.." +
-                ".r.m...w.....p.." +
-                ".r...f....n....." +
+                ".r.....w.....i.." +
+                "...ff..w.....p.." +
+                "..........n....." +
                 ".r....WW....dd..";
         String defaultWalls = "" +
                 "fnnnnnnnnnnnnnng" +
@@ -231,6 +231,13 @@ public class Game implements IGame {
                 System.out.println("FIRING_LASERS");
                 this.fireLasers();
                 return;
+            case TOUCH_FLAGS_AND_REPAIR_SITES:
+                System.out.println("TOUCH_FLAGS_AND_REPAIR_SITES");
+                this.flagsAndRepairs();
+                return;
+            case SOMEONE_HAS_WON:
+                System.out.println(winner.getName() + " has won the game!");
+                break;
             case FINISHING_UP_THE_TURN:
                 System.out.println("FINISHING_UP_THE_TURN");
                 this.cleanUpTurn();
@@ -238,6 +245,32 @@ public class Game implements IGame {
             case THE_END:
                 System.out.println("All players are out, the game ends in a draw...");
         }
+    }
+
+    private void flagsAndRepairs() {
+        for (IPlayer player : activePlayers) {
+            IObjects object = board.getObject(player.getCoordinates());
+            if (object instanceof Flag || object instanceof SingleWrench || object instanceof CrossedWrench) {
+                object.doAction(player);
+            }
+            if (player.getFlagsVisited() == numberOfFlags()) {
+                setGameStatus(SOMEONE_HAS_WON);
+                winner = player;
+                return;
+            }
+        }
+        setGameStatus(FINISHING_UP_THE_TURN);
+    }
+
+    private int numberOfFlags() {
+        int nrOfFlags = 0;
+        for (int x = 0; x < board.getRows(); x++) {
+            for (int y = 0; y < board.getColumns(); y++) {
+                if (board.getObject(y,x) instanceof Flag)
+                    nrOfFlags++;
+            }
+        }
+        return nrOfFlags;
     }
 
     /**
@@ -362,8 +395,10 @@ public class Game implements IGame {
         for (IPlayer player : players) {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 if (board.moveValid(player.getX(), player.getY())) {
-                    board.getObject(player.getX(), player.getY()).doAction(player);
-                    // sketchy
+                    IObjects object = board.getObject(player.getCoordinates());
+                    if (object instanceof ConveyorBelt || object instanceof  RotationCog)
+                        object.doAction(player);
+                    //board.getObject(player.getX(), player.getY()).doAction(player);
                     int sizeOfMovement = player.getPathOfPlayer().size();
                     if (sizeOfMovement != 0)
                         player.setCoordinates(moveToValidCoordinates(player.getPathOfPlayer(), player));
@@ -504,7 +539,8 @@ public class Game implements IGame {
         }
         removeLasersBelongingToDeadPlayers();
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
-            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+           // this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+            this.setGameStatus(TOUCH_FLAGS_AND_REPAIR_SITES);
         } else {
             this.setGameStatus(EXECUTING_INSTRUCTIONS);
         }
@@ -690,24 +726,6 @@ public class Game implements IGame {
             lasers.remove(laserToRemove);
         }
     }
-
-
-
-    //TODO: Add register fla phase!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Clean up the game before the next round.<br>
