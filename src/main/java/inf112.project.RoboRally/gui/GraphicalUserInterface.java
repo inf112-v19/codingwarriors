@@ -41,8 +41,6 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     private CardGui cardGui;
 
-    // to be moved
-    //private IDeck[] selectedCards;
 
     @Override
     public void create () {
