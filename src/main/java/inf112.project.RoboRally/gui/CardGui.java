@@ -269,7 +269,7 @@ public class CardGui {
             currentPlayer.setCardSelectionConfirmedStatus(false);
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
-                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+                game.setGameStatus(GameStatus.POWER_DOWN);
                 System.out.println("finished selecting cards");
             } else {
                 System.out.println("updating current player");

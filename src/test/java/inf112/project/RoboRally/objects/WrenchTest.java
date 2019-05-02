@@ -37,6 +37,7 @@ public class WrenchTest {
         player.setCoordinates(player.getPathOfPlayer().get(0));
         assertEquals(0, player.getPlayerDamage());
     }
+/* Players only loose damage tokens on wrench spaces during the cleanUp phase!!
 
     @Test
     public void playerLosesOneDamageTokenOnWrench() {
@@ -65,7 +66,7 @@ public class WrenchTest {
         tile2.doAction(player);
         assertEquals(0, player.getPlayerDamage());
     }
-
+*/
     @Test
     public void playerBackupUpdatesOnWrench() {
         Player player = new Player("foo", 0,0, Color.RED);

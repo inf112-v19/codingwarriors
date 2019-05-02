@@ -22,7 +22,7 @@ public class Deck implements IDeck{
         if (numberOfCards == null
                 || numberOfCards < 0
                 || numberOfCards > this.getSize()) {
-            throw new IllegalArgumentException("numberOfCards is not a valid amount of cards");
+            throw new IllegalArgumentException();
         }
 
         List<ICard> selectedCards = new ArrayList<>();
@@ -37,10 +37,10 @@ public class Deck implements IDeck{
         if (index == null
                 || index > this.getSize()
                 || index < 0) {
-            throw new IllegalArgumentException("Position is not valid.");
+            throw new IllegalArgumentException();
         }
         if (card == null) {
-            throw new IllegalArgumentException("Card is null");
+            throw new IllegalArgumentException();
         }
         this.cardDeck.add(index, card);
     }
@@ -58,7 +58,7 @@ public class Deck implements IDeck{
         if (position == null
                 || position >= this.getSize()
                 || position < 0) {
-            throw new IllegalArgumentException("Position is not valid.");
+            throw new IllegalArgumentException();
         }
         return this.cardDeck.remove((int) position);
     }
@@ -79,8 +79,7 @@ public class Deck implements IDeck{
                 || numberOfCardsToTransfer < 0
                 || numberOfCardsToTransfer > this.getSize()
                 || targetDeck == null) {
-            throw new IllegalArgumentException("Number of cards is invalid," +
-                    " or the target deck does not exist");
+            throw new IllegalArgumentException();
         }
         List<ICard> selectedCards = this.handOutNCards(numberOfCardsToTransfer);
         targetDeck.addCollectionOfCardsToDeck(selectedCards);
@@ -91,10 +90,10 @@ public class Deck implements IDeck{
         if (position == null
                 || position < 0
                 || position >= this.getSize()) {
-            throw new IllegalArgumentException("Not a valid position");
+            throw new IllegalArgumentException();
         }
         if (card == null) {
-            throw new IllegalArgumentException("null is not a valid card");
+            throw new IllegalArgumentException();
         }
         ICard removedCard = this.removeCard(position);
         this.addCardToDeckAtPosition(position, card);
@@ -141,10 +140,10 @@ public class Deck implements IDeck{
     @Override
     public void swapCardsInPosition(Integer posA, Integer posB) {
         if (posA == null || posA >= cardDeck.size() || posA < 0 ) {
-            throw new IllegalArgumentException("posA is not a valid position");
+            throw new IllegalArgumentException();
         }
         if (posB == null || posB >= cardDeck.size() || posB < 0) {
-            throw new IllegalArgumentException("posB is not a valid position");
+            throw new IllegalArgumentException();
         }
 
         ICard cardA = cardDeck.get(posA);
@@ -183,7 +182,7 @@ public class Deck implements IDeck{
         if (position == null
                 || position >= this.cardDeck.size()
                 || position < 0) {
-            throw new IllegalArgumentException("Position is out of bounds");
+            throw new IllegalArgumentException();
         }
         return this.cardDeck.get(position);
     }
