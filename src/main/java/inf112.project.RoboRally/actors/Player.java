@@ -74,6 +74,8 @@ public class Player implements IPlayer {
     public void setThisPointAsNewBackup() {
         this.backupX=this.x;
         this.backupY=this.y;
+        System.out.println("Player " + this.getName() + " has moved their Archive" +
+                " location to x: " + backupX + "\ny: " + backupY);
     }
 
     @Override
@@ -452,6 +454,11 @@ public class Player implements IPlayer {
     @Override
     public boolean isPoweredDown() {
         return powerDown;
+    }
+
+    @Override
+    public void removeAllDamageTokens() {
+        this.numberOfDamageTokensRecieved = 0;
     }
 
     @Override

@@ -349,7 +349,21 @@ public interface IPlayer {
 
     boolean registerIsFull();
 
+
+    /**
+     * Check if the player wants to power down for their next turn.
+     *
+     * @return true if the player has selected to power down next turn,
+     *          or is already powered down,
+     *          false otherwise.
+     */
     boolean isPoweredDown();
+
+
+    /**
+     * Reset the amount of damage the player has recieved to 0.
+     */
+    void removeAllDamageTokens();
 
     void reversePowerDownStatus();
 

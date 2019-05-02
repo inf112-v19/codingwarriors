@@ -71,10 +71,8 @@ public class SingleWrench implements IObjects {
 
     @Override
     public void doAction(IPlayer player) {
-        player.removeOneDamage();
-
         player.setThisPointAsNewBackup();
-}
+    }
 
     @Override
     public String getTexture() {

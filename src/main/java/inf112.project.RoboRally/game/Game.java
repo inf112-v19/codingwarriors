@@ -27,6 +27,7 @@ public class Game implements IGame {
     private List<IPlayer> activePlayers; // Players that are not incapacitated.
     private List<IPlayer> destroyedPlayers; // Players that are destroyed, but can come back.
     private List<IPlayer> playersOutOfTheGame; // Players with no more lives, and permanently out of the game.
+    private List<IPlayer> poweredDownPlayers; // Players that are "powered down".
     // First to loose is ordered last in the list.
     // For example: When somebody is removed from the game,
     // they are inserted into position 0 in this list.
@@ -102,6 +103,7 @@ public class Game implements IGame {
         this.activePlayers = new ArrayList<>();
         this.destroyedPlayers = new ArrayList<>();
         this.playersOutOfTheGame = new ArrayList<>();
+        this.poweredDownPlayers = new ArrayList<>();
         this.programCards = new Deck();
         this.programCards.createProgramCardsDeck();
         this.discardedProgramCards = new Deck();
@@ -206,6 +208,9 @@ public class Game implements IGame {
     @Override
     public void doTurn() {
         switch (this.currentGameStatus) {
+            case POWER_DOWN:
+                this.askIfDamagedPlayersWantToPowerDown();
+                return;
             case EXECUTING_INSTRUCTIONS:
                 System.out.println();
                 System.out.println("Register phase " + (currentSlotNumber + 1));
@@ -237,12 +242,28 @@ public class Game implements IGame {
     }
 
     /**
+     * Asks all the active players that are damaged,
+     * if they want to power down for the following round.<br>
+     * Players that want to power down are marked as such.
+     */
+    private void askIfDamagedPlayersWantToPowerDown() {
+        for (IPlayer player : this.activePlayers) {
+            if (player.getPlayerDamage() > 0) {
+                // Ask if player wants to power down.
+                // if yes, mark player as powering down.
+                // if no continue.
+            }
+        }
+        this.setGameStatus(EXECUTING_INSTRUCTIONS);
+    }
+
+    /**
      * Reveals the selected program cards for the current register slot,
      * sorts them by priority before executing the commands in order,
      * and then updates the register slot for the next pass.
      * <p>
      * If the current register slot is the last one,
-     * execute instructions in a TODO: finish this
+     * execute instructions and reset the currentRegisterSlot (set it to 0).
      */
     private void executingInstructions() {
         IDeck cardsForThisRegisterSlot = new Deck();
@@ -251,12 +272,12 @@ public class Game implements IGame {
         this.sortCardsAfterPriority(cardsForThisRegisterSlot, listOfPlayers);
         this.executeProgramCardsForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
         updateCurrentRegisterSlot();
-        if (this.activePlayers.size() <= 0) {
+        if (activePlayers.size() != 0) { // Failsafe check in case some players
+            setGameStatus(EXECUTING_GAME_BOARD_OBJECTS); // aren't destroyed properly.
+        } else {
             this.finishEarly();
+            this.setGameStatus(FINISHING_UP_THE_TURN);
         }
-        this.setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
-//        if (activePlayers.size() != 0)
-  //          setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
     }
 
     /**
@@ -424,7 +445,11 @@ public class Game implements IGame {
         System.out.println("x: " + player.getX());
         System.out.println("y: " + player.getY());
         player.destroyPlayer();
-        this.activePlayers.remove(player);
+        if (this.poweredDownPlayers.contains(player)) {
+            this.poweredDownPlayers.remove(player);
+        } else {
+            this.activePlayers.remove(player);
+        }
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
@@ -459,7 +484,6 @@ public class Game implements IGame {
      */
     private void finishEarly() {
         this.setCurrentSlotNumber(0);
-        this.setGameStatus(FINISHING_UP_THE_TURN);
     }
 
     /**
@@ -485,7 +509,9 @@ public class Game implements IGame {
         if (!this.checkIfThePlayerIsInTheGame(player)) {
             playerIsOperational = false;
         }
-        //TODO: check if player is powered down
+        if (this.poweredDownPlayers.contains(player)) {
+            playerIsOperational = false;
+        }
         return playerIsOperational;
     }
 
@@ -689,16 +715,26 @@ public class Game implements IGame {
         }
     }
 
+    /**
+     * Register flags and move the players archive location,
+     * if the player is standing on a flag or a wrench space.<br>
+     * If a player is registering the last flag they need,
+     * they are declared the winner and the game ends.
+     */
     private void flagsAndRepairs() {
-        for (IPlayer player : activePlayers) {
-            IObjects object = board.getObject(player.getCoordinates());
-            if (object instanceof Flag || object instanceof SingleWrench || object instanceof CrossedWrench) {
-                object.doAction(player);
-            }
-            if (player.getFlagsVisited() == numberOfFlags()) {
-                setGameStatus(SOMEONE_HAS_WON);
-                winner = player;
-                return;
+        for (IPlayer player : this.players) {
+            if (this.checkIfThePlayerIsInTheGame(player)) {
+                IObjects playerIsStandingOn = board.getObject(player.getCoordinates());
+                if (playerIsStandingOn instanceof Flag
+                        || playerIsStandingOn instanceof SingleWrench
+                        || playerIsStandingOn instanceof CrossedWrench) {
+                    playerIsStandingOn.doAction(player);
+                }
+                if (player.getFlagsVisited() == numberOfFlags()) {
+                    setGameStatus(SOMEONE_HAS_WON);
+                    winner = player;
+                    return;
+                }
             }
         }
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
@@ -708,6 +744,11 @@ public class Game implements IGame {
         }
     }
 
+    /**
+     * Count the number of flags on the map.
+     *
+     * @return The number of flags on the map.
+     */
     private int numberOfFlags() {
         int nrOfFlags = 0;
         for (int x = 0; x < board.getRows(); x++) {
@@ -725,18 +766,7 @@ public class Game implements IGame {
      * and all destroyed players are brought back into the game.
      */
     private void cleanUpTurn() {
-        for (IPlayer player : players) {
-            if (this.checkIfThePlayerIsInTheGame(player)) {
-                IObjects playerIsStandingOn = this.board.getObject(player.getX(), player.getY());
-                if (playerIsStandingOn.equals(CrossedWrench.class)) {
-                    player.removeOneDamage();
-                    // TODO: this.drawOneOptionCard(player);
-                } else if (playerIsStandingOn.equals(SingleWrench.class)) {
-                    player.removeOneDamage();
-                }
-            }
-        }
-
+        this.repairRobotsStandingOnWrenchSpaces();
         this.restoreDestroyedPlayers();
         this.destroyedPlayers.clear(); // All destroyed players has been restored.
         this.emptyEachPlayersRegister();
@@ -745,6 +775,32 @@ public class Game implements IGame {
         System.out.println();
         System.out.println("New turn");
         System.out.println();
+
+        for (IPlayer player : this.poweredDownPlayers) {
+            // Ask if player wants to remain powered down for the next round.
+            // If yes, continue.
+            // If no, move to activePlayers and set player.powerDown to false;
+        }
+
+        this.powerDownPlayers();
+        this.repairPoweredDownPlayers();
+    }
+
+    /**
+     * All the players currently in the game,
+     * and standing on a single or crossed wrench space,
+     * gets one damage token repaired.
+     */
+    private void repairRobotsStandingOnWrenchSpaces() {
+        for (IPlayer player : players) {
+            if (this.checkIfThePlayerIsInTheGame(player)) {
+                IObjects playerIsStandingOn = this.board.getObject(player.getCoordinates());
+                if (playerIsStandingOn instanceof CrossedWrench
+                        || playerIsStandingOn instanceof SingleWrench) {
+                    player.removeOneDamage();
+                }
+            }
+        }
     }
 
     /**
@@ -766,6 +822,8 @@ public class Game implements IGame {
             }
             player.setCoordinates(positionPlayerWishesToRespawn);
             //TODO: Ask player for which direction they would like to face.
+
+            // TODO: Ask if the player wants to remain powered down or not.
         }
     }
 
@@ -887,6 +945,30 @@ public class Game implements IGame {
         }
         System.out.println("Dealt cards to player: " + player.getName());
         player.addCardsToPlayersHand(drawnCards);
+    }
+
+    /**
+     * Transfer all the active players that wants to power down,
+     * to the list of powered down players.
+     */
+    private void powerDownPlayers() {
+        for (int i = 0; i < this.activePlayers.size(); i++) {
+            IPlayer player = this.activePlayers.get(i);
+            if (player.isPoweredDown()) { // Player has selected to power down for the next round.
+                this.activePlayers.remove(player);
+                this.poweredDownPlayers.add(player);
+                i--;
+            }
+        }
+    }
+
+    /**
+     * Remove all damage tokens from players that are powered down.
+     */
+    private void repairPoweredDownPlayers() {
+        for (IPlayer player : this.poweredDownPlayers) {
+            player.removeAllDamageTokens();
+        }
     }
 
     @Override
