@@ -721,7 +721,7 @@ public class Game implements IGame {
      * Players standing on wrench tiles removes one damage,
      * and all destroyed players are brought back into the game.
      */
-    private void cleanUpTurn() {
+    public void cleanUpTurn() {
         for (IPlayer player : players) {
             if (this.checkIfThePlayerIsInTheGame(player)) {
                 IObjects playerIsStandingOn = this.board.getObject(player.getX(), player.getY());
@@ -738,7 +738,7 @@ public class Game implements IGame {
         this.destroyedPlayers.clear(); // All destroyed players has been restored.
         this.emptyEachPlayersRegister();
         this.setupCardSelectionForNewRound();
-        this.setGameStatus(SELECT_CARDS);
+        this.setGameStatus(SELECT_POWER_STATUS);
         System.out.println();
         System.out.println("New turn");
         System.out.println();

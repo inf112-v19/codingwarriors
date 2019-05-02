@@ -23,6 +23,7 @@ public class Player implements IPlayer {
     private Laser laser;
     private Color color;
     private List<Coordinates> pathOfPlayer;
+    private ICard lastPlayedCard;
 
     private static int counter = 0;
     private int priority;
@@ -106,6 +107,7 @@ public class Player implements IPlayer {
         if (card == null) {
             throw new IllegalArgumentException("Not a valid card");
         }
+        lastPlayedCard = card;
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
@@ -473,6 +475,10 @@ public class Player implements IPlayer {
                 + "Direction: " + playerDirection + "\n"
                 + "Flags found: " + flagsVisited + "\n"
                 + "Powered down: " + powerDown;
+    }
+
+    public ICard getLastPlayedCard() {
+        return lastPlayedCard;
     }
 }
 
