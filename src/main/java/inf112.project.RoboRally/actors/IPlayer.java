@@ -370,4 +370,6 @@ public interface IPlayer {
     boolean cardSelectionConfirmed();
 
     void setCardSelectionConfirmedStatus(boolean b);
+
+    ICard getLastPlayedCard();
 }

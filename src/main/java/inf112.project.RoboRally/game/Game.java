@@ -34,7 +34,6 @@ public class Game implements IGame {
     private List<Laser> lasers; // The list of lasers in the game.
     private IDeck programCards;
     private IDeck discardedProgramCards;
-    // private IDeck[] selectedCards;
     private GameStatus currentGameStatus;
     private boolean everyFlagHasBeenVisited;
     private int currentSlotNumber;
@@ -112,7 +111,6 @@ public class Game implements IGame {
         this.currentSlotNumber = 0;
         this.addPlayers();
         this.registerLasers();
-        // this.updateDeckOfSelectedCards();
         this.dealOutProgramCards();
         this.setGameStatus(SELECT_CARDS);
     }
@@ -386,7 +384,6 @@ public class Game implements IGame {
                     IObjects object = board.getObject(player.getCoordinates());
                     if (object instanceof ConveyorBelt || object instanceof  RotationCog)
                         object.doAction(player);
-                    //board.getObject(player.getX(), player.getY()).doAction(player);
                     int sizeOfMovement = player.getPathOfPlayer().size();
                     if (sizeOfMovement != 0)
                         player.setCoordinates(moveToValidCoordinates(player.getPathOfPlayer(), player));
@@ -890,12 +887,9 @@ public class Game implements IGame {
      */
     private void setupCardSelectionForNewRound() {
         this.removeAllCardsFromEachPlayersHand();
-
         for (IPlayer player : activePlayers) {
             this.drawCards(player);
         }
-
-        // this.updateDeckOfSelectedCards();
     }
 
     /**

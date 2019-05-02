@@ -10,7 +10,8 @@ public enum GameStatus {
     TOUCH_FLAGS_AND_REPAIR_SITES,
     FINISHING_UP_THE_TURN,
     SOMEONE_HAS_WON,
-    THE_END;
+    THE_END,
+    SELECT_POWER_STATUS;
 
     /**
      * Checks if the given game status is valid.

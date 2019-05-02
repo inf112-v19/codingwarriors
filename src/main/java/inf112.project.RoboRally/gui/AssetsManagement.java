@@ -75,6 +75,7 @@ class AssetsManagement {
 
         //GameOver
         assetManager.load("assets/GameOver.png", Texture.class);
+        assetManager.load("assets/GameWon.png", Texture.class);
     }
 
     void finishLoading() {

@@ -23,6 +23,7 @@ public class Player implements IPlayer {
     private Laser laser;
     private Color color;
     private List<Coordinates> pathOfPlayer;
+    private ICard lastPlayedCard;
 
     private static int counter = 0;
     private int priority;
@@ -74,8 +75,10 @@ public class Player implements IPlayer {
     public void setThisPointAsNewBackup() {
         this.backupX=this.x;
         this.backupY=this.y;
-        System.out.println("Player " + this.getName() + " has moved their Archive" +
-                " location to x: " + backupX + "\ny: " + backupY);
+        System.out.println("Player " + this.getName() +
+                " has moved their Archive location to" +
+                "\nx: " + backupX +
+                "\ny: " + backupY);
     }
 
     @Override
@@ -108,6 +111,7 @@ public class Player implements IPlayer {
         if (card == null) {
             throw new IllegalArgumentException("Not a valid card");
         }
+        lastPlayedCard = card;
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
@@ -473,6 +477,21 @@ public class Player implements IPlayer {
 
     public void setCardSelectionConfirmedStatus(boolean status) {
         cardSelectionConfirmed = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + "\n"
+                + "Lives: " + lives + "\n"
+                + "Damage received: " + numberOfDamageTokensRecieved + "\n"
+                + "Health remaining: " + (9-numberOfDamageTokensRecieved) + "\n"
+                + "Direction: " + playerDirection + "\n"
+                + "Flags found: " + flagsVisited + "\n"
+                + "Powered down: " + powerDown;
+    }
+
+    public ICard getLastPlayedCard() {
+        return lastPlayedCard;
     }
 }
 
