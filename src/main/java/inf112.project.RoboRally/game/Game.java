@@ -248,7 +248,7 @@ public class Game implements IGame {
                 return;
             }
         }
-        setGameStatus(FINISHING_UP_THE_TURN);
+        setGameStatus(SELECT_POWER_STATUS);
     }
 
     private int numberOfFlags() {
@@ -738,7 +738,7 @@ public class Game implements IGame {
         this.destroyedPlayers.clear(); // All destroyed players has been restored.
         this.emptyEachPlayersRegister();
         this.setupCardSelectionForNewRound();
-        this.setGameStatus(SELECT_POWER_STATUS);
+        this.setGameStatus(SELECT_CARDS);
         System.out.println();
         System.out.println("New turn");
         System.out.println();

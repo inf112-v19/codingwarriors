@@ -182,7 +182,7 @@ public class CardGui {
                     currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
                     if (currentPlayerIndex == 0) {
                         PowerSelectionDone = true;
-                        game.setGameStatus(GameStatus.SELECT_CARDS);
+                        game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
                     }
                 }
             }
@@ -207,7 +207,7 @@ public class CardGui {
                     currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
                     if (currentPlayerIndex == 0) {
                         PowerSelectionDone = true;
-                        game.setGameStatus(GameStatus.SELECT_CARDS);
+                        game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
                     }
                 }
             }
@@ -329,7 +329,7 @@ public class CardGui {
             currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
             if (currentPlayerIndex == 0) {
                 PowerSelectionDone = true;
-                game.setGameStatus(GameStatus.SELECT_CARDS);
+                game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
                 return;
             }
         }
