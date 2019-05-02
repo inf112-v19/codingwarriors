@@ -117,11 +117,15 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     }
 
     private void drawGameOverScreen() {
-        GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameOver.png"),
-                WIDTH/3, HEIGHT/2,
-                WIDTH/2, HEIGHT/4);
-
-
+        if (game.getTheCurrentGameStatus() == GameStatus.SOMEONE_HAS_WON) {
+            GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameWon.png"),
+                    WIDTH / 3, HEIGHT / 2,
+                    WIDTH / 2, HEIGHT / 4);
+        } else {
+            GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameOver.png"),
+                    WIDTH / 3, HEIGHT / 2,
+                    WIDTH / 2, HEIGHT / 4);
+        }
     }
 
     private void userInputs() {
