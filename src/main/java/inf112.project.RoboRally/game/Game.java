@@ -191,7 +191,7 @@ public class Game implements IGame {
      */
     private int calculateTheNumberOfCardsThePlayerCanDraw(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         int numberOfCards = 9; // The default and maximum number of cards
         // that can be dealt to a player.
@@ -413,7 +413,7 @@ public class Game implements IGame {
      */
     private boolean checkIfThePlayerIsInTheGame(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         boolean playerIsInTheGame = false;
         if (!this.playersOutOfTheGame.contains(player)
@@ -436,7 +436,7 @@ public class Game implements IGame {
      */
     private void destroyPlayer(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         System.out.println("player " + player.getName() + " was destroyed at");
         System.out.println("x: " + player.getX());
@@ -500,7 +500,7 @@ public class Game implements IGame {
     @Override
     public Boolean checkIfThePlayerIsOperational(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         boolean playerIsOperational = true;
         if (!this.checkIfThePlayerIsInTheGame(player)) {
@@ -540,7 +540,7 @@ public class Game implements IGame {
      */
     private void fireLaser(Laser laser) {
         if (laser == null) {
-            throw new IllegalArgumentException("Not a valid laser");
+            throw new IllegalArgumentException();
         }
         laser.resetLaserPosition();
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
@@ -690,7 +690,7 @@ public class Game implements IGame {
      */
     private void destroyPlayerIfNecessary(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         if (player.getPlayerDamage() > MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED) {
             this.destroyPlayer(player);
@@ -849,7 +849,7 @@ public class Game implements IGame {
      */
     private void restorePlayerBasedOnPriority(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         if (activePlayers.isEmpty()) {
             activePlayers.add(player);
@@ -923,7 +923,7 @@ public class Game implements IGame {
      */
     private void drawCards(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         List<ICard> drawnCards;
         int numberOfCardsToDraw = this.calculateTheNumberOfCardsThePlayerCanDraw(player);
@@ -1005,7 +1005,7 @@ public class Game implements IGame {
         if (number == null
                 || number < 0
                 || number > this.NUMBER_OF_REGISTER_SLOTS) {
-            throw new IllegalArgumentException("Not a valid number");
+            throw new IllegalArgumentException();
         }
         this.currentSlotNumber = number;
     }
@@ -1019,7 +1019,7 @@ public class Game implements IGame {
     public void setGameStatus(GameStatus status) {
         if (status == null
                 || !GameStatus.validStatus(status)) {
-            throw new IllegalArgumentException("Not a valid status");
+            throw new IllegalArgumentException();
         }
         this.currentGameStatus = status;
     }
