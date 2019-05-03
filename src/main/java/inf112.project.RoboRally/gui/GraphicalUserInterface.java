@@ -105,7 +105,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
             cardGui.draw();
             if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS
                     || game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS
-                    && cardGui.getCurrentPlayer().isPoweredDown()) {
+                    && cardGui.getCurrentPlayer().poweringDownNextTurn()) {
                 cardGui.updateButtons();
                 cardGui.getStage().act();
                 cardGui.getStage().draw();

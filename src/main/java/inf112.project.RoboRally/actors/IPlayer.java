@@ -357,7 +357,7 @@ public interface IPlayer {
      *          or is already powered down,
      *          false otherwise.
      */
-    boolean isPoweredDown();
+    boolean poweringDownNextTurn();
 
 
     /**
@@ -372,4 +372,10 @@ public interface IPlayer {
     void setCardSelectionConfirmedStatus(boolean b);
 
     ICard getLastPlayedCard();
+
+    void powerDown();
+
+    boolean isPoweredDown();
+
+    void powerUp();
 }

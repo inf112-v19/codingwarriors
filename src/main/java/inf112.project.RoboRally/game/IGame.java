@@ -169,4 +169,6 @@ public interface IGame {
      *      false otherwise.
      */
     boolean gameOver();
+
+    List<IPlayer> getPoweredDownPlayers();
 }

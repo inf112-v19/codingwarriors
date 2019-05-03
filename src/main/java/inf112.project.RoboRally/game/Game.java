@@ -1,6 +1,5 @@
 package inf112.project.RoboRally.game;
 
-import inf112.project.RoboRally.actors.AI;
 import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
@@ -160,10 +159,12 @@ public class Game implements IGame {
     private void dealOutProgramCards() {
         programCards.shuffle();
         for (IPlayer player : activePlayers) {
-            int numberOfCardsPlayerCanDraw =
-                    calculateTheNumberOfCardsThePlayerCanDraw(player);
-            player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
-            System.out.println("Dealt cards to " + player.getName());
+            if (!player.isPoweredDown()) {
+                int numberOfCardsPlayerCanDraw =
+                        calculateTheNumberOfCardsThePlayerCanDraw(player);
+                player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
+                System.out.println("Dealt cards to " + player.getName());
+            }
         }
     }
 
@@ -293,9 +294,11 @@ public class Game implements IGame {
     private void revealEachPlayersProgramCardForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
                                                                    ArrayList<IPlayer> listOfPlayers) {
         for (IPlayer player : this.activePlayers) {
-            ICard programCard = player.revealProgramCardForRegisterNumber(currentSlotNumber);
-            cardsForThisRegisterSlot.addCardToDeck(programCard);
-            listOfPlayers.add(player);
+            if (!player.isPoweredDown()) {
+                ICard programCard = player.revealProgramCardForRegisterNumber(currentSlotNumber);
+                cardsForThisRegisterSlot.addCardToDeck(programCard);
+                listOfPlayers.add(player);
+            }
         }
     }
 
@@ -506,7 +509,7 @@ public class Game implements IGame {
         if (!this.checkIfThePlayerIsInTheGame(player)) {
             playerIsOperational = false;
         }
-        if (this.poweredDownPlayers.contains(player)) {
+        if (player.isPoweredDown()) {
             playerIsOperational = false;
         }
         return playerIsOperational;
@@ -735,7 +738,7 @@ public class Game implements IGame {
             }
         }
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
-            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+            this.setGameStatus(SELECT_POWER_STATUS); // so the round is over.
         } else {
             this.setGameStatus(EXECUTING_INSTRUCTIONS);
         }
@@ -779,8 +782,8 @@ public class Game implements IGame {
             // If no, move to activePlayers and set player.powerDown to false;
         }
 
-        this.powerDownPlayers();
-        this.repairPoweredDownPlayers();
+        this.powerDownPlayersNew();
+        this.repairPoweredDownPlayersNew();
     }
 
     /**
@@ -948,10 +951,21 @@ public class Game implements IGame {
     private void powerDownPlayers() {
         for (int i = 0; i < this.activePlayers.size(); i++) {
             IPlayer player = this.activePlayers.get(i);
-            if (player.isPoweredDown()) { // Player has selected to power down for the next round.
+            if (player.poweringDownNextTurn()) { // Player has selected to power down for the next round.
                 this.activePlayers.remove(player);
                 this.poweredDownPlayers.add(player);
                 i--;
+            }
+        }
+    }
+
+
+    private void powerDownPlayersNew() {
+        for (IPlayer player : activePlayers) {
+            if (player.poweringDownNextTurn()) { // Player has selected to power down for the next round.
+                player.powerDown();
+            } else {
+                player.powerUp();
             }
         }
     }
@@ -962,6 +976,14 @@ public class Game implements IGame {
     private void repairPoweredDownPlayers() {
         for (IPlayer player : this.poweredDownPlayers) {
             player.removeAllDamageTokens();
+        }
+    }
+
+    private void repairPoweredDownPlayersNew() {
+        for (IPlayer player : activePlayers) {
+            if (player.isPoweredDown()) {
+                player.removeAllDamageTokens();
+            }
         }
     }
 
@@ -1032,6 +1054,11 @@ public class Game implements IGame {
     @Override
     public boolean gameOver() {
         return this.getNumberOfPlayersLeftInTheGame() <= 0;
+    }
+
+    @Override
+    public List<IPlayer> getPoweredDownPlayers() {
+        return this.poweredDownPlayers;
     }
 
 }
