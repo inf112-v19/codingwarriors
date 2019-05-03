@@ -105,3 +105,4 @@ UML-diagram finnes vedlagt i UML-Diagrams mappen i prosjektet. Noen av diagramme
 
 Prosjektet importeres som Maven prosjekt, man trenger ikke et working directory
 
+Takk til wuhu, oglsdl og Sindwiller for kunst til spillet!
