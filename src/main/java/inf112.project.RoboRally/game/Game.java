@@ -207,9 +207,6 @@ public class Game implements IGame {
     @Override
     public void doTurn() {
         switch (this.currentGameStatus) {
-            case POWER_DOWN:
-                this.askIfDamagedPlayersWantToPowerDown();
-                return;
             case EXECUTING_INSTRUCTIONS:
                 System.out.println();
                 System.out.println("Register phase " + (currentSlotNumber + 1));
@@ -238,22 +235,6 @@ public class Game implements IGame {
             case THE_END:
                 System.out.println("All players are out, the game ends in a draw...");
         }
-    }
-
-    /**
-     * Asks all the active players that are damaged,
-     * if they want to power down for the following round.<br>
-     * Players that want to power down are marked as such.
-     */
-    private void askIfDamagedPlayersWantToPowerDown() {
-        for (IPlayer player : this.activePlayers) {
-            if (player.getPlayerDamage() > 0) {
-                // Ask if player wants to power down.
-                // if yes, mark player as powering down.
-                // if no continue.
-            }
-        }
-        this.setGameStatus(EXECUTING_INSTRUCTIONS);
     }
 
     /**
@@ -785,8 +766,8 @@ public class Game implements IGame {
             // If no, move to activePlayers and set player.powerDown to false;
         }
 
-        this.powerDownPlayersNew();
-        this.repairPoweredDownPlayersNew();
+        this.powerDownPlayers();
+        this.repairPoweredDownPlayers();
     }
 
     /**
@@ -948,22 +929,9 @@ public class Game implements IGame {
     }
 
     /**
-     * Transfer all the active players that wants to power down,
-     * to the list of powered down players.
+     * Mark all the active players that wants to power down as powered down,
      */
     private void powerDownPlayers() {
-        for (int i = 0; i < this.activePlayers.size(); i++) {
-            IPlayer player = this.activePlayers.get(i);
-            if (player.poweringDownNextTurn()) { // Player has selected to power down for the next round.
-                this.activePlayers.remove(player);
-                this.poweredDownPlayers.add(player);
-                i--;
-            }
-        }
-    }
-
-
-    private void powerDownPlayersNew() {
         for (IPlayer player : activePlayers) {
             if (player.poweringDownNextTurn()) { // Player has selected to power down for the next round.
                 player.powerDown();
@@ -977,12 +945,6 @@ public class Game implements IGame {
      * Remove all damage tokens from players that are powered down.
      */
     private void repairPoweredDownPlayers() {
-        for (IPlayer player : this.poweredDownPlayers) {
-            player.removeAllDamageTokens();
-        }
-    }
-
-    private void repairPoweredDownPlayersNew() {
         for (IPlayer player : activePlayers) {
             if (player.isPoweredDown()) {
                 player.removeAllDamageTokens();
