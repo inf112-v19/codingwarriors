@@ -72,12 +72,16 @@ public class CardGui {
             case SELECT_CARDS:
                 cardBatch.begin();
                 currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
-                displayPlayerData(height-10, currentPlayer);
-                drawSelectCards();
+
+                    displayPlayerData(height - 10, currentPlayer);
+                    drawSelectCards();
+
+                    incrementCurrentPlayer();
+
                 cardBatch.end();
                 break;
             case SELECT_POWER_STATUS:
-                if (currentPlayer.isPoweredDown()) {
+                if (currentPlayer.poweringDownNextTurn()) {
                     cardBatch.begin();
                     displayPlayerData(height-10, currentPlayer);
                     cardBatch.end();
@@ -174,10 +178,10 @@ public class CardGui {
             public void clicked(InputEvent event, float x, float y) {
                 if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.getPlayerDamage() !=0) {
                     currentPlayer.reversePowerDownStatus();
-                    System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.isPoweredDown());
-                } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.isPoweredDown()) {
+                    System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.poweringDownNextTurn());
+                } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.poweringDownNextTurn()) {
                     currentPlayer.reversePowerDownStatus();
-                    System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.isPoweredDown());
+                    System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.poweringDownNextTurn());
                     currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
                     currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
                     if (currentPlayerIndex == 0) {
@@ -202,7 +206,7 @@ public class CardGui {
                     incrementCurrentPlayer();
                 } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS){
                     System.out.println("Not enough selected cards");
-                } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.isPoweredDown()) {
+                } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.poweringDownNextTurn()) {
                     currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
                     currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
                     if (currentPlayerIndex == 0) {
@@ -222,20 +226,20 @@ public class CardGui {
         if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS) {
             powerDown.setText("Press to power up");
             powerDown.setColor(Color.RED);
-        } else if (currentPlayer.isPoweredDown() == true) {
+        } else if (currentPlayer.poweringDownNextTurn() == true) {
             powerDown.setColor(Color.RED);
-            powerDown.setText("Power is down");
+            powerDown.setText("Power up");
         } else if (currentPlayer.getPlayerDamage() == 0) {
             powerDown.setColor(Color.CLEAR);
         } else {
             powerDown.setColor(Color.GREEN);
-            powerDown.setText("Power is on");
+            powerDown.setText("Power down");
         }
         // confirm button
         if (currentPlayer.registerIsFull() || currentPlayer.getCardsInHand().isEmpty()) {
             confirmSelection.setText("Confirm selection");
             confirmSelection.setColor(Color.WHITE);
-        } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.isPoweredDown()) {
+        } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.poweringDownNextTurn()) {
             confirmSelection.setText("Stay powered down");
             confirmSelection.setColor(Color.WHITE);
         } else {
@@ -250,7 +254,7 @@ public class CardGui {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         // Switch selected card between players deck,
         // and the players list of selected cards.
-        if (playersDeckOfCards.isEmpty()) {
+        if (playersDeckOfCards.isEmpty() || currentPlayer.isPoweredDown()) {
             incrementCurrentPlayer();
         } else if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
             System.out.println("deck index: " + indexOfSelectedCard);
@@ -264,12 +268,13 @@ public class CardGui {
     public void incrementCurrentPlayer() {
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
         if (currentPlayer.registerIsFull() && currentPlayer.cardSelectionConfirmed()
-                || currentPlayer.getCardsInHand().isEmpty() && currentPlayer.cardSelectionConfirmed()) {
+                || currentPlayer.getCardsInHand().isEmpty() && currentPlayer.cardSelectionConfirmed()
+                || currentPlayer.isPoweredDown()) {
 
             currentPlayer.setCardSelectionConfirmedStatus(false);
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
-                game.setGameStatus(GameStatus.POWER_DOWN);
+                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
                 System.out.println("finished selecting cards");
             } else {
                 System.out.println("updating current player");
@@ -324,7 +329,12 @@ public class CardGui {
     }
 
     public void selectPowerStatus() {
-        while (!currentPlayer.isPoweredDown()) {
+        if (game.getActivePlayers().size() == 0) {
+            PowerSelectionDone = true;
+            game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
+            return;
+        }
+        while (!currentPlayer.poweringDownNextTurn()) {
             currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
             currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
             if (currentPlayerIndex == 0) {

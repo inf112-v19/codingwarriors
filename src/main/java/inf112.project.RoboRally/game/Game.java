@@ -1,6 +1,5 @@
 package inf112.project.RoboRally.game;
 
-import inf112.project.RoboRally.actors.AI;
 import com.badlogic.gdx.graphics.Color;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
@@ -160,10 +159,12 @@ public class Game implements IGame {
     private void dealOutProgramCards() {
         programCards.shuffle();
         for (IPlayer player : activePlayers) {
-            int numberOfCardsPlayerCanDraw =
-                    calculateTheNumberOfCardsThePlayerCanDraw(player);
-            player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
-            System.out.println("Dealt cards to " + player.getName());
+            if (!player.isPoweredDown()) {
+                int numberOfCardsPlayerCanDraw =
+                        calculateTheNumberOfCardsThePlayerCanDraw(player);
+                player.addCardsToPlayersHand(programCards.handOutNCards(numberOfCardsPlayerCanDraw));
+                System.out.println("Dealt cards to " + player.getName());
+            }
         }
     }
 
@@ -206,9 +207,6 @@ public class Game implements IGame {
     @Override
     public void doTurn() {
         switch (this.currentGameStatus) {
-            case POWER_DOWN:
-                this.askIfDamagedPlayersWantToPowerDown();
-                return;
             case EXECUTING_INSTRUCTIONS:
                 System.out.println();
                 System.out.println("Register phase " + (currentSlotNumber + 1));
@@ -240,22 +238,6 @@ public class Game implements IGame {
     }
 
     /**
-     * Asks all the active players that are damaged,
-     * if they want to power down for the following round.<br>
-     * Players that want to power down are marked as such.
-     */
-    private void askIfDamagedPlayersWantToPowerDown() {
-        for (IPlayer player : this.activePlayers) {
-            if (player.getPlayerDamage() > 0) {
-                // Ask if player wants to power down.
-                // if yes, mark player as powering down.
-                // if no continue.
-            }
-        }
-        this.setGameStatus(EXECUTING_INSTRUCTIONS);
-    }
-
-    /**
      * Reveals the selected program cards for the current register slot,
      * sorts them by priority before executing the commands in order,
      * and then updates the register slot for the next pass.
@@ -274,7 +256,7 @@ public class Game implements IGame {
             setGameStatus(EXECUTING_GAME_BOARD_OBJECTS); // aren't destroyed properly.
         } else {
             this.finishEarly();
-            this.setGameStatus(FINISHING_UP_THE_TURN);
+            this.setGameStatus(SELECT_POWER_STATUS);
         }
     }
 
@@ -293,9 +275,11 @@ public class Game implements IGame {
     private void revealEachPlayersProgramCardForTheCurrentRegister(IDeck cardsForThisRegisterSlot,
                                                                    ArrayList<IPlayer> listOfPlayers) {
         for (IPlayer player : this.activePlayers) {
-            ICard programCard = player.revealProgramCardForRegisterNumber(currentSlotNumber);
-            cardsForThisRegisterSlot.addCardToDeck(programCard);
-            listOfPlayers.add(player);
+            if (!player.isPoweredDown()) {
+                ICard programCard = player.revealProgramCardForRegisterNumber(currentSlotNumber);
+                cardsForThisRegisterSlot.addCardToDeck(programCard);
+                listOfPlayers.add(player);
+            }
         }
     }
 
@@ -506,7 +490,7 @@ public class Game implements IGame {
         if (!this.checkIfThePlayerIsInTheGame(player)) {
             playerIsOperational = false;
         }
-        if (this.poweredDownPlayers.contains(player)) {
+        if (player.isPoweredDown()) {
             playerIsOperational = false;
         }
         return playerIsOperational;
@@ -595,11 +579,14 @@ public class Game implements IGame {
 
             for (IPlayer player1 : players) {
                 Coordinates previousPlayerPosition = player1.getCoordinates();
+                if (player1.equals(player))
+                    continue;
                 if (playerCoordinates.equals(previousPlayerPosition)) {
                     // Compares coordinates with other player to get direction of movement
                     // (needed if a player moves two players on a row)
                     GridDirection direction = player.getCoordinates().getDirection(player1.getCoordinates());
                     player1.movePlayer(direction);
+                    System.out.println(player1.getName() + " was moved by " + player.getName());
                     Coordinates positionOfPushedPlayer = moveToValidCoordinates(player1.getPathOfPlayer(), player1);
                     // if the other player wasn't moved - the current player shouldn't move either
                     if (positionOfPushedPlayer.equals(previousPlayerPosition))
@@ -735,7 +722,7 @@ public class Game implements IGame {
             }
         }
         if (this.currentSlotNumber == 0) { // Gone through all the register slots,
-            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+            this.setGameStatus(SELECT_POWER_STATUS); // so the round is over.
         } else {
             this.setGameStatus(EXECUTING_INSTRUCTIONS);
         }
@@ -942,16 +929,14 @@ public class Game implements IGame {
     }
 
     /**
-     * Transfer all the active players that wants to power down,
-     * to the list of powered down players.
+     * Mark all the active players that wants to power down as powered down,
      */
     private void powerDownPlayers() {
-        for (int i = 0; i < this.activePlayers.size(); i++) {
-            IPlayer player = this.activePlayers.get(i);
-            if (player.isPoweredDown()) { // Player has selected to power down for the next round.
-                this.activePlayers.remove(player);
-                this.poweredDownPlayers.add(player);
-                i--;
+        for (IPlayer player : activePlayers) {
+            if (player.poweringDownNextTurn()) { // Player has selected to power down for the next round.
+                player.powerDown();
+            } else {
+                player.powerUp();
             }
         }
     }
@@ -960,8 +945,10 @@ public class Game implements IGame {
      * Remove all damage tokens from players that are powered down.
      */
     private void repairPoweredDownPlayers() {
-        for (IPlayer player : this.poweredDownPlayers) {
-            player.removeAllDamageTokens();
+        for (IPlayer player : activePlayers) {
+            if (player.isPoweredDown()) {
+                player.removeAllDamageTokens();
+            }
         }
     }
 
@@ -1032,6 +1019,11 @@ public class Game implements IGame {
     @Override
     public boolean gameOver() {
         return this.getNumberOfPlayersLeftInTheGame() <= 0;
+    }
+
+    @Override
+    public List<IPlayer> getPoweredDownPlayers() {
+        return this.poweredDownPlayers;
     }
 
 }

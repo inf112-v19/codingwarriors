@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements IPlayer {
-    private boolean powerDown;
+    private boolean poweringDownNextTurn;
     private int lives;
     private GridDirection playerDirection;
     private int x,y;
@@ -28,6 +28,7 @@ public class Player implements IPlayer {
     private static int counter = 0;
     private int priority;
     private boolean cardSelectionConfirmed;
+    private boolean powerdDown;
 
     public Player(String name, int x, int y, Color color) {
         this.color = color;
@@ -45,7 +46,8 @@ public class Player implements IPlayer {
         this.wasDestroyedThisTurn = false;
         this.laser = new Laser(1, this);
         this.priority = counter++;
-        this.powerDown = false;
+        this.poweringDownNextTurn = false;
+        this.powerdDown = false;
         this.cardSelectionConfirmed = false;
     }
 
@@ -456,9 +458,11 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public boolean isPoweredDown() {
-        return powerDown;
+    public boolean poweringDownNextTurn() {
+        return poweringDownNextTurn;
     }
+
+
 
     @Override
     public void removeAllDamageTokens() {
@@ -467,7 +471,7 @@ public class Player implements IPlayer {
 
     @Override
     public void reversePowerDownStatus() {
-        this.powerDown = !this.powerDown;
+        this.poweringDownNextTurn = !this.poweringDownNextTurn;
     }
 
     @Override
@@ -487,11 +491,29 @@ public class Player implements IPlayer {
                 + "Health remaining: " + (9-numberOfDamageTokensRecieved) + "\n"
                 + "Direction: " + playerDirection + "\n"
                 + "Flags found: " + flagsVisited + "\n"
-                + "Powered down: " + powerDown;
+                + "Powering down next turn: " + poweringDownNextTurn + "\n"
+                + "Powered down: " + powerdDown;
     }
 
     public ICard getLastPlayedCard() {
         return lastPlayedCard;
     }
+
+    @Override
+    public void powerDown() {
+        this.powerdDown = true;
+    }
+
+    @Override
+    public boolean isPoweredDown() {
+        return powerdDown;
+    }
+
+    @Override
+    public void powerUp() {
+        this.powerdDown = false;
+    }
+
+
 }
 
