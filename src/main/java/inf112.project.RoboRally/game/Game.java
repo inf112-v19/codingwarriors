@@ -598,11 +598,14 @@ public class Game implements IGame {
 
             for (IPlayer player1 : players) {
                 Coordinates previousPlayerPosition = player1.getCoordinates();
+                if (player1.equals(player))
+                    continue;
                 if (playerCoordinates.equals(previousPlayerPosition)) {
                     // Compares coordinates with other player to get direction of movement
                     // (needed if a player moves two players on a row)
                     GridDirection direction = player.getCoordinates().getDirection(player1.getCoordinates());
                     player1.movePlayer(direction);
+                    System.out.println(player1.getName() + " was moved by " + player.getName());
                     Coordinates positionOfPushedPlayer = moveToValidCoordinates(player1.getPathOfPlayer(), player1);
                     // if the other player wasn't moved - the current player shouldn't move either
                     if (positionOfPushedPlayer.equals(previousPlayerPosition))
