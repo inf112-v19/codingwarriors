@@ -8,6 +8,29 @@
 
 - Kommunikasjonen foregår direkte via gruppemøter og ellers via slack. Det er mye kunnskapsoverføring på gruppemøtene, der man diskuterer problemer og hjelper hverandre.  
 
+- Møtereferater: 
+#### 02.04.19
+##### Oppmøte: Jakob, Eirin, Tore, Kim-Erling
+Tore hadde vært på kunde-møte og dermed snakket vi om de kravene som kom fra det møtet. 
+
+#### 09.04.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Skaffet et overblikk over hva som manglet fra MVP som skal implementeres til siste innlevering. Etter at oppgaver var fordelt
+gikk resten av møte ut på koding. 
+
+#### 23.04.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Snakket en del om nettverk og hvordan dette skulle implementeres i prosjektet. Det ble ikke noe tilfredstillende svar på dette 
+spørsmålet. 
+
+#### 30.04.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin, Tore, Kim-Erling
+Jan-Erik og Tore par-programmerte på refaktorering av valg av kort. Teamet fikk et lite overblikk over bugs og mangler til siste innlevering. 
+
+#### 03.05.19
+##### Oppmøte: Jakob, Jan-Erik, Eirin
+Fullført power down funksjonalitet. Løst en rar feil i forbindelse med power down og bevegelse av spilleren. 
+
 - Retrospektiv
 Vi har underveis delt opp oppgavene i mindre deler for at alle på gruppen skulle ha omtrent lik arbeidsmengde.
 Hyppigere kommunikasjon på slack underveis i prosjektet gjorde at det ble lettere å kommunisere og dele ut oppgaver.
