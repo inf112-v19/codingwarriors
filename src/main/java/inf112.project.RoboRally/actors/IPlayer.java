@@ -171,6 +171,7 @@ public interface IPlayer {
      *
      * @param slotNumber
      *                      The index of the card to remove.
+     * @return The removed card.
      */
     ICard removeACardFromProgramRegisterAtSlotNumber(Integer slotNumber);
 
@@ -220,6 +221,14 @@ public interface IPlayer {
      * @return The number of unlocked register slots.
      */
     int getNumberOfUnlockedRegisterSlots();
+
+
+    /**
+     * Get the number of cards in unlocked slots in the register.
+     *
+     * @return The number of unlocked cards in the register.
+     */
+    int getNumberOfUnlockedCardsInTheProgramRegister();
 
 
     /**
@@ -340,11 +349,27 @@ public interface IPlayer {
 
     boolean registerIsFull();
 
+
+    /**
+     * Check if the player wants to power down for their next turn.
+     *
+     * @return true if the player has selected to power down next turn,
+     *          or is already powered down,
+     *          false otherwise.
+     */
     boolean isPoweredDown();
+
+
+    /**
+     * Reset the amount of damage the player has recieved to 0.
+     */
+    void removeAllDamageTokens();
 
     void reversePowerDownStatus();
 
     boolean cardSelectionConfirmed();
 
     void setCardSelectionConfirmedStatus(boolean b);
+
+    ICard getLastPlayedCard();
 }

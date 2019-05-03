@@ -14,7 +14,8 @@ public interface IProgramRegister {
 
 
     /**
-     * Get the currently selected register slot.
+     * Get the currently selected register slot.<br>
+     * Telling us how many unlocked cards are currently in the register.
      *
      * @return The index of the register where the
      *         next card will be inserted into.

@@ -32,7 +32,7 @@ public interface IGame {
      * Check if the given player is prevented from performing actions.<br>
      * A player is unable to act if they are destroyed,
      * are permanently out of the game,
-     * or is powered down (to be implemented).
+     * or is powered down.
      *
      * @param player
      *              The player to check for action eligibility.

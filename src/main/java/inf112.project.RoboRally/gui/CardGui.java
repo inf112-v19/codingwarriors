@@ -32,6 +32,7 @@ public class CardGui {
     private Skin skin;
     TextButton powerDown;
     TextButton confirmSelection;
+    boolean PowerSelectionDone;
 
     CardGui(IGame game, int width, int height) {
         this.game = game;
@@ -42,6 +43,7 @@ public class CardGui {
         shapeRenderer = new ShapeRenderer();
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+        PowerSelectionDone = false;
         setUpTextures();
         setUpScreen();
         loadButtons();
@@ -69,11 +71,19 @@ public class CardGui {
         switch (game.getTheCurrentGameStatus()) {
             case SELECT_CARDS:
                 cardBatch.begin();
-                displayPlayerData(height-70, currentPlayer);
+                currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+                displayPlayerData(height-10, currentPlayer);
                 drawSelectCards();
                 cardBatch.end();
                 break;
-            case EXECUTING_INSTRUCTIONS:
+            case SELECT_POWER_STATUS:
+                if (currentPlayer.isPoweredDown()) {
+                    cardBatch.begin();
+                    displayPlayerData(height-10, currentPlayer);
+                    cardBatch.end();
+                }
+                break;
+            default:
                 cardBatch.begin();
                 drawExecutingCards();
                 cardBatch.end();
@@ -100,11 +110,14 @@ public class CardGui {
         int fontSize = 30;
         int offset = (cardScreen.getTileHeight()-fontSize)/2;
         for (int i = 0; i < game.getActivePlayers().size(); i++) {
+            ICard lastPlayedCard = game.getActivePlayers().get(i).getLastPlayedCard();
+            if (lastPlayedCard == null) { continue; }
             font.setColor(game.getActivePlayers().get(i).getColor());
-            font.draw(cardBatch,game.getActivePlayers().get(i).revealProgramCardForRegisterNumber(game.getCurrentSlotNumber()).toString(),
-                    cardScreen.getStartX(0),cardScreen.getEndY(i)-offset, cardScreen.getTileWidth(),
+            font.draw(cardBatch, lastPlayedCard.toString(),
+                    cardScreen.getStartX(0), cardScreen.getEndY(i) - offset, cardScreen.getTileWidth(),
                     1, true);
             font.setColor(Color.WHITE);
+
         }
     }
 
@@ -153,15 +166,24 @@ public class CardGui {
     public void loadButtons() {
 
         powerDown = new TextButton("PowerDown", skin);
-        powerDown.setPosition(5, height-50);
+        powerDown.setPosition(5, height-200);
         powerDown.setSize(190, 45);
 
         powerDown.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
+                if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS && currentPlayer.getPlayerDamage() !=0) {
                     currentPlayer.reversePowerDownStatus();
                     System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.isPoweredDown());
+                } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.isPoweredDown()) {
+                    currentPlayer.reversePowerDownStatus();
+                    System.out.println(currentPlayer.getName() + " power down status is now " + currentPlayer.isPoweredDown());
+                    currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
+                    currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+                    if (currentPlayerIndex == 0) {
+                        PowerSelectionDone = true;
+                        game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
+                    }
                 }
             }
         });
@@ -180,6 +202,13 @@ public class CardGui {
                     incrementCurrentPlayer();
                 } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS){
                     System.out.println("Not enough selected cards");
+                } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.isPoweredDown()) {
+                    currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
+                    currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+                    if (currentPlayerIndex == 0) {
+                        PowerSelectionDone = true;
+                        game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
+                    }
                 }
             }
         });
@@ -190,14 +219,27 @@ public class CardGui {
     }
 
     public void updateButtons() {
-        if (currentPlayer.isPoweredDown() == true) {
-            powerDown.setColor(Color.GREEN);
+        if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS) {
+            powerDown.setText("Press to power up");
+            powerDown.setColor(Color.RED);
+        } else if (currentPlayer.isPoweredDown() == true) {
+            powerDown.setColor(Color.RED);
+            powerDown.setText("Power is down");
+        } else if (currentPlayer.getPlayerDamage() == 0) {
+            powerDown.setColor(Color.CLEAR);
         } else {
-            powerDown.setColor(Color.WHITE);
+            powerDown.setColor(Color.GREEN);
+            powerDown.setText("Power is on");
         }
+        // confirm button
         if (currentPlayer.registerIsFull() || currentPlayer.getCardsInHand().isEmpty()) {
+            confirmSelection.setText("Confirm selection");
+            confirmSelection.setColor(Color.WHITE);
+        } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS && currentPlayer.isPoweredDown()) {
+            confirmSelection.setText("Stay powered down");
             confirmSelection.setColor(Color.WHITE);
         } else {
+            confirmSelection.setText("Select cards");
             confirmSelection.setColor(Color.RED);
         }
     }
@@ -227,7 +269,7 @@ public class CardGui {
             currentPlayer.setCardSelectionConfirmedStatus(false);
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
-                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
+                game.setGameStatus(GameStatus.POWER_DOWN);
                 System.out.println("finished selecting cards");
             } else {
                 System.out.println("updating current player");
@@ -279,6 +321,18 @@ public class CardGui {
         stage.dispose();
         font.dispose();
         skin.dispose();
+    }
+
+    public void selectPowerStatus() {
+        while (!currentPlayer.isPoweredDown()) {
+            currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
+            currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
+            if (currentPlayerIndex == 0) {
+                PowerSelectionDone = true;
+                game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
+                return;
+            }
+        }
     }
 }
 

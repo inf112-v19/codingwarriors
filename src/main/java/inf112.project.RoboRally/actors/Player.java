@@ -23,6 +23,7 @@ public class Player implements IPlayer {
     private Laser laser;
     private Color color;
     private List<Coordinates> pathOfPlayer;
+    private ICard lastPlayedCard;
 
     private static int counter = 0;
     private int priority;
@@ -74,6 +75,10 @@ public class Player implements IPlayer {
     public void setThisPointAsNewBackup() {
         this.backupX=this.x;
         this.backupY=this.y;
+        System.out.println("Player " + this.getName() +
+                " has moved their Archive location to" +
+                "\nx: " + backupX +
+                "\ny: " + backupY);
     }
 
     @Override
@@ -104,8 +109,9 @@ public class Player implements IPlayer {
     @Override
     public void movePlayer(ICard card) {
         if (card == null) {
-            throw new IllegalArgumentException("Not a valid card");
+            throw new IllegalArgumentException();
         }
+        lastPlayedCard = card;
         GridDirection playersCurrentDirection = this.playerDirection;
         Action cardCommand = card.getCardCommand();
         switch (cardCommand) {
@@ -205,12 +211,12 @@ public class Player implements IPlayer {
         if (numberOfRegistersToLock == null
                 || numberOfRegistersToLock < 0
                 || numberOfRegistersToLock > this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Not a valid register to lock");
+            throw new IllegalArgumentException();
         }
         if (numberOfRegistersToUnlock == null
                 || numberOfRegistersToUnlock < 0
                 || numberOfRegistersToUnlock > this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Not a valid register to unlock");
+            throw new IllegalArgumentException();
         }
         this.lockNRegisters(numberOfRegistersToLock);
         this.unlockNRegisters(numberOfRegistersToUnlock);
@@ -222,7 +228,7 @@ public class Player implements IPlayer {
         if (numberOfSlotsToUnlock == null
                 || numberOfSlotsToUnlock < 0
                 || numberOfSlotsToUnlock > this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Not a valid number of slots");
+            throw new IllegalArgumentException();
         }
         for (int slotNumber = 0; slotNumber < numberOfSlotsToUnlock; slotNumber++) {
             this.register.unlockRegisterSlotNumberN(slotNumber);
@@ -242,7 +248,7 @@ public class Player implements IPlayer {
         if (numberOfSlotsToLock == null
                 || numberOfSlotsToLock < 0
                 || numberOfSlotsToLock > this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Not a valid number of slots");
+            throw new IllegalArgumentException();
         }
         int registerSlot = (this.register.getNumberOfRegisterSlots() - 1);
         while (numberOfSlotsToLock > 0) {
@@ -255,7 +261,7 @@ public class Player implements IPlayer {
     @Override
     public void addCardsToPlayersHand(List<ICard> cards) {
         if (cards == null) {
-            throw new IllegalArgumentException("List of cards is invalid");
+            throw new IllegalArgumentException();
         }
         this.cardsInHand.addCollectionOfCardsToDeck(cards);
     }
@@ -263,7 +269,7 @@ public class Player implements IPlayer {
     @Override
     public void addListOfCardsToProgramRegister(List<ICard> cards) {
         if (cards == null || cards.size() > this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Invalid list of cards");
+            throw new IllegalArgumentException();
         }
         this.register.addCollectionOfCardsToRegister(cards);
     }
@@ -271,7 +277,7 @@ public class Player implements IPlayer {
     @Override
     public void addADeckOfCardsToTheProgramRegister(IDeck deck) {
         if (deck == null || deck.getSize() > this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Invalid deck of cards");
+            throw new IllegalArgumentException();
         }
         this.register.addADeckOfCardsToTheRegister(deck);
     }
@@ -279,7 +285,7 @@ public class Player implements IPlayer {
     @Override
     public boolean addACardToProgramRegister(ICard card) {
         if (card == null) {
-            throw new IllegalArgumentException("Invalid card");
+            throw new IllegalArgumentException();
         }
         return this.register.addCardToCurrentRegisterSlot(card);
     }
@@ -289,7 +295,7 @@ public class Player implements IPlayer {
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= this.getCurrentRegisterSlotNumber()) {
-            throw new IllegalArgumentException("Not a valid slotNumber");
+            throw new IllegalArgumentException();
         }
         return this.register.removeCardFromRegisterSlot(slotNumber);
     }
@@ -309,7 +315,7 @@ public class Player implements IPlayer {
         if (registerNumber == null
                 || registerNumber < 0
                 || registerNumber >= this.register.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Invalid register number");
+            throw new IllegalArgumentException();
         }
         return this.register.getCardInSlotNumber(registerNumber);
     }
@@ -324,6 +330,10 @@ public class Player implements IPlayer {
         return this.register.numberOfUnlockedRegisterSlots();
     }
 
+    @Override
+    public int getNumberOfUnlockedCardsInTheProgramRegister() {
+        return this.register.getCurrentRegisterSlot();
+    }
 
     @Override
     public boolean wasDestroyedThisTurn() {
@@ -451,6 +461,11 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public void removeAllDamageTokens() {
+        this.numberOfDamageTokensRecieved = 0;
+    }
+
+    @Override
     public void reversePowerDownStatus() {
         this.powerDown = !this.powerDown;
     }
@@ -473,6 +488,10 @@ public class Player implements IPlayer {
                 + "Direction: " + playerDirection + "\n"
                 + "Flags found: " + flagsVisited + "\n"
                 + "Powered down: " + powerDown;
+    }
+
+    public ICard getLastPlayedCard() {
+        return lastPlayedCard;
     }
 }
 

@@ -41,8 +41,6 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     private CardGui cardGui;
 
-    // to be moved
-    //private IDeck[] selectedCards;
 
     @Override
     public void create () {
@@ -85,13 +83,13 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     @Override
     public void render () {
-        if (game.gameOver()) {
+        if (game.gameOver() || game.getTheCurrentGameStatus() == GameStatus.SOMEONE_HAS_WON) {
             GameOverBatch.begin();
             drawGameOverScreen();
             GameOverBatch.end();
-            if (Gdx.input.justTouched()) {
+             if (Gdx.input.justTouched()) {
                 create();
-            }
+             }
         } else {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -105,7 +103,9 @@ public class GraphicalUserInterface extends ApplicationAdapter {
             batch.end();
 
             cardGui.draw();
-            if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS) {
+            if(game.getTheCurrentGameStatus() == GameStatus.SELECT_CARDS
+                    || game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS
+                    && cardGui.getCurrentPlayer().isPoweredDown()) {
                 cardGui.updateButtons();
                 cardGui.getStage().act();
                 cardGui.getStage().draw();
@@ -115,11 +115,15 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     }
 
     private void drawGameOverScreen() {
-        GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameOver.png"),
-                WIDTH/3, HEIGHT/2,
-                WIDTH/2, HEIGHT/4);
-
-
+        if (game.getTheCurrentGameStatus() == GameStatus.SOMEONE_HAS_WON) {
+            GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameWon.png"),
+                    WIDTH / 3, HEIGHT / 2,
+                    WIDTH / 2, HEIGHT / 4);
+        } else {
+            GameOverBatch.draw(assetsManager.getAssetFileName("assets/GameOver.png"),
+                    WIDTH / 3, HEIGHT / 2,
+                    WIDTH / 2, HEIGHT / 4);
+        }
     }
 
     private void userInputs() {
@@ -134,6 +138,9 @@ public class GraphicalUserInterface extends ApplicationAdapter {
                     int x = Gdx.input.getX();
                     int y = HEIGHT - Gdx.input.getY();
                     cardGui.userInputs(x, y);
+                    cardGui.PowerSelectionDone = false;
+            } else if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS) {
+                cardGui.selectPowerStatus();
             } else {
                 game.doTurn();
             }
@@ -144,7 +151,7 @@ public class GraphicalUserInterface extends ApplicationAdapter {
 
     private void drawPlayers() {
         List<IPlayer> players = game.getPlayers();
-        int animationSpeed = 9;
+        int animationSpeed = 10;
         for (int i = 0; i < players.size(); i++) {
             IPlayer player = players.get(i);
             if (!game.getActivePlayers().contains(player)) {

@@ -68,13 +68,13 @@ public class ProgramRegister implements IProgramRegister{
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= register.getSize()) {
-            throw new IllegalArgumentException("Not a valid number");
+            throw new IllegalArgumentException();
         }
         if (card == null) {
-            throw new IllegalArgumentException("null is not a valid card");
+            throw new IllegalArgumentException();
         }
         if (checkIsTheRegisterSlotNumberNLocked(slotNumber)) {
-            throw new IllegalArgumentException("This register is locked!\nUnable to replace card");
+            throw new IllegalArgumentException();
         }
         ICard removedCard = this.register.replaceCardAtPosition(slotNumber, card);
         return removedCard;
@@ -85,7 +85,7 @@ public class ProgramRegister implements IProgramRegister{
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= this.register.getSize()) {
-            throw new IllegalArgumentException("Not a valid slot number");
+            throw new IllegalArgumentException();
         }
         return this.register.getCardAtPosition(slotNumber);
     }
@@ -93,7 +93,7 @@ public class ProgramRegister implements IProgramRegister{
     @Override
     public void addCollectionOfCardsToRegister(Collection<ICard> listOfCards) {
         if (listOfCards == null || listOfCards.size() > NUMBER_OF_SLOTS) {
-            throw new IllegalArgumentException("Not a valid collection of cards");
+            throw new IllegalArgumentException();
         }
         for (ICard card : listOfCards) {
             if (this.currentRegisterSlot < this.NUMBER_OF_SLOTS) {
@@ -105,7 +105,7 @@ public class ProgramRegister implements IProgramRegister{
     @Override
     public void addADeckOfCardsToTheRegister(IDeck deckOfCards) {
         if (deckOfCards == null || deckOfCards.getSize() > this.getNumberOfRegisterSlots()) {
-            throw new IllegalArgumentException("Not a valid deck of cards");
+            throw new IllegalArgumentException();
         }
         List<ICard> listOfCards = new ArrayList<>();
         for (ICard card : deckOfCards) {
@@ -119,7 +119,7 @@ public class ProgramRegister implements IProgramRegister{
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= NUMBER_OF_SLOTS) {
-            throw new IllegalArgumentException("Not a valid slot number");
+            throw new IllegalArgumentException();
         }
         return this.isLocked.get(slotNumber);
     }
@@ -129,7 +129,7 @@ public class ProgramRegister implements IProgramRegister{
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= NUMBER_OF_SLOTS) {
-            throw new IllegalArgumentException("Not a valid slot number");
+            throw new IllegalArgumentException();
         }
         if (!this.checkIsTheRegisterSlotNumberNLocked(slotNumber)) {
             this.isLocked.set(slotNumber, true);
@@ -146,7 +146,7 @@ public class ProgramRegister implements IProgramRegister{
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber > NUMBER_OF_SLOTS) {
-            throw new IllegalArgumentException("Not a valid slot number");
+            throw new IllegalArgumentException();
         }
         if (this.checkIsTheRegisterSlotNumberNLocked(slotNumber)) {
             this.isLocked.set(slotNumber, false);
@@ -181,7 +181,7 @@ public class ProgramRegister implements IProgramRegister{
     @Override
     public boolean addCardToCurrentRegisterSlot(ICard card) {
         if (card == null) {
-            throw new IllegalArgumentException("Not a valid card");
+            throw new IllegalArgumentException();
         }
         if (registerIsFull()) {
             return false;
@@ -203,7 +203,7 @@ public class ProgramRegister implements IProgramRegister{
         if (slotNumber == null
                 || slotNumber < 0
                 || slotNumber >= this.currentRegisterSlot) {
-            throw new IllegalArgumentException("Not a valid slot number");
+            throw new IllegalArgumentException();
         }
         this.currentRegisterSlot--;
         return this.register.removeCard(slotNumber);

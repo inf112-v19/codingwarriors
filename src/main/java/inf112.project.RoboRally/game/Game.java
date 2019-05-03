@@ -27,13 +27,13 @@ public class Game implements IGame {
     private List<IPlayer> activePlayers; // Players that are not incapacitated.
     private List<IPlayer> destroyedPlayers; // Players that are destroyed, but can come back.
     private List<IPlayer> playersOutOfTheGame; // Players with no more lives, and permanently out of the game.
+    private List<IPlayer> poweredDownPlayers; // Players that are "powered down".
     // First to loose is ordered last in the list.
     // For example: When somebody is removed from the game,
     // they are inserted into position 0 in this list.
     private List<Laser> lasers; // The list of lasers in the game.
     private IDeck programCards;
     private IDeck discardedProgramCards;
-    // private IDeck[] selectedCards;
     private GameStatus currentGameStatus;
     private boolean everyFlagHasBeenVisited;
     private int currentSlotNumber;
@@ -102,6 +102,7 @@ public class Game implements IGame {
         this.activePlayers = new ArrayList<>();
         this.destroyedPlayers = new ArrayList<>();
         this.playersOutOfTheGame = new ArrayList<>();
+        this.poweredDownPlayers = new ArrayList<>();
         this.programCards = new Deck();
         this.programCards.createProgramCardsDeck();
         this.discardedProgramCards = new Deck();
@@ -110,7 +111,6 @@ public class Game implements IGame {
         this.currentSlotNumber = 0;
         this.addPlayers();
         this.registerLasers();
-        // this.updateDeckOfSelectedCards();
         this.dealOutProgramCards();
         this.setGameStatus(SELECT_CARDS);
     }
@@ -191,7 +191,7 @@ public class Game implements IGame {
      */
     private int calculateTheNumberOfCardsThePlayerCanDraw(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         int numberOfCards = 9; // The default and maximum number of cards
         // that can be dealt to a player.
@@ -206,6 +206,9 @@ public class Game implements IGame {
     @Override
     public void doTurn() {
         switch (this.currentGameStatus) {
+            case POWER_DOWN:
+                this.askIfDamagedPlayersWantToPowerDown();
+                return;
             case EXECUTING_INSTRUCTIONS:
                 System.out.println();
                 System.out.println("Register phase " + (currentSlotNumber + 1));
@@ -224,42 +227,32 @@ public class Game implements IGame {
                 System.out.println("TOUCH_FLAGS_AND_REPAIR_SITES");
                 this.flagsAndRepairs();
                 return;
-            case SOMEONE_HAS_WON:
-                System.out.println(winner.getName() + " has won the game!");
-                break;
             case FINISHING_UP_THE_TURN:
                 System.out.println("FINISHING_UP_THE_TURN");
                 this.cleanUpTurn();
                 return;
+            case SOMEONE_HAS_WON:
+                System.out.println(winner.getName() + " has won the game!");
+                break;
             case THE_END:
                 System.out.println("All players are out, the game ends in a draw...");
         }
     }
 
-    private void flagsAndRepairs() {
-        for (IPlayer player : activePlayers) {
-            IObjects object = board.getObject(player.getCoordinates());
-            if (object instanceof Flag || object instanceof SingleWrench || object instanceof CrossedWrench) {
-                object.doAction(player);
-            }
-            if (player.getFlagsVisited() == numberOfFlags()) {
-                setGameStatus(SOMEONE_HAS_WON);
-                winner = player;
-                return;
-            }
-        }
-        setGameStatus(FINISHING_UP_THE_TURN);
-    }
-
-    private int numberOfFlags() {
-        int nrOfFlags = 0;
-        for (int x = 0; x < board.getRows(); x++) {
-            for (int y = 0; y < board.getColumns(); y++) {
-                if (board.getObject(y,x) instanceof Flag)
-                    nrOfFlags++;
+    /**
+     * Asks all the active players that are damaged,
+     * if they want to power down for the following round.<br>
+     * Players that want to power down are marked as such.
+     */
+    private void askIfDamagedPlayersWantToPowerDown() {
+        for (IPlayer player : this.activePlayers) {
+            if (player.getPlayerDamage() > 0) {
+                // Ask if player wants to power down.
+                // if yes, mark player as powering down.
+                // if no continue.
             }
         }
-        return nrOfFlags;
+        this.setGameStatus(EXECUTING_INSTRUCTIONS);
     }
 
     /**
@@ -268,7 +261,7 @@ public class Game implements IGame {
      * and then updates the register slot for the next pass.
      * <p>
      * If the current register slot is the last one,
-     * execute instructions in a TODO: finish this
+     * execute instructions and reset the currentRegisterSlot (set it to 0).
      */
     private void executingInstructions() {
         IDeck cardsForThisRegisterSlot = new Deck();
@@ -277,8 +270,12 @@ public class Game implements IGame {
         this.sortCardsAfterPriority(cardsForThisRegisterSlot, listOfPlayers);
         this.executeProgramCardsForTheCurrentRegister(cardsForThisRegisterSlot, listOfPlayers);
         updateCurrentRegisterSlot();
-        if (activePlayers.size() != 0)
-            setGameStatus(EXECUTING_GAME_BOARD_OBJECTS);
+        if (activePlayers.size() != 0) { // Failsafe check in case some players
+            setGameStatus(EXECUTING_GAME_BOARD_OBJECTS); // aren't destroyed properly.
+        } else {
+            this.finishEarly();
+            this.setGameStatus(FINISHING_UP_THE_TURN);
+        }
     }
 
     /**
@@ -387,7 +384,6 @@ public class Game implements IGame {
                     IObjects object = board.getObject(player.getCoordinates());
                     if (object instanceof ConveyorBelt || object instanceof  RotationCog)
                         object.doAction(player);
-                    //board.getObject(player.getX(), player.getY()).doAction(player);
                     int sizeOfMovement = player.getPathOfPlayer().size();
                     if (sizeOfMovement != 0)
                         player.setCoordinates(moveToValidCoordinates(player.getPathOfPlayer(), player));
@@ -417,7 +413,7 @@ public class Game implements IGame {
      */
     private boolean checkIfThePlayerIsInTheGame(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         boolean playerIsInTheGame = false;
         if (!this.playersOutOfTheGame.contains(player)
@@ -440,13 +436,17 @@ public class Game implements IGame {
      */
     private void destroyPlayer(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         System.out.println("player " + player.getName() + " was destroyed at");
         System.out.println("x: " + player.getX());
         System.out.println("y: " + player.getY());
         player.destroyPlayer();
-        this.activePlayers.remove(player);
+        if (this.poweredDownPlayers.contains(player)) {
+            this.poweredDownPlayers.remove(player);
+        } else {
+            this.activePlayers.remove(player);
+        }
         if (!player.hasLifeLeft()) {
             System.out.println("player " + player.getName() + " is permanently out of the game");
             this.playersOutOfTheGame.add(player);
@@ -481,7 +481,6 @@ public class Game implements IGame {
      */
     private void finishEarly() {
         this.setCurrentSlotNumber(0);
-        this.setGameStatus(FINISHING_UP_THE_TURN);
     }
 
     /**
@@ -501,13 +500,15 @@ public class Game implements IGame {
     @Override
     public Boolean checkIfThePlayerIsOperational(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         boolean playerIsOperational = true;
         if (!this.checkIfThePlayerIsInTheGame(player)) {
             playerIsOperational = false;
         }
-        //TODO: check if player is powered down
+        if (this.poweredDownPlayers.contains(player)) {
+            playerIsOperational = false;
+        }
         return playerIsOperational;
     }
 
@@ -526,13 +527,8 @@ public class Game implements IGame {
                 counter++;
             }
         }
-        removeLasersBelongingToDeadPlayers();
-        if (this.currentSlotNumber == 0) { // Gone through all the register slots,
-           // this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
-            this.setGameStatus(TOUCH_FLAGS_AND_REPAIR_SITES);
-        } else {
-            this.setGameStatus(EXECUTING_INSTRUCTIONS);
-        }
+        this.removeLasersBelongingToDeadPlayers();
+        this.setGameStatus(TOUCH_FLAGS_AND_REPAIR_SITES);
     }
 
     /**
@@ -544,7 +540,7 @@ public class Game implements IGame {
      */
     private void fireLaser(Laser laser) {
         if (laser == null) {
-            throw new IllegalArgumentException("Not a valid laser");
+            throw new IllegalArgumentException();
         }
         laser.resetLaserPosition();
         List coordinatesHitByLaser = laser.doAction(board.getRows(), board.getColumns());
@@ -694,7 +690,7 @@ public class Game implements IGame {
      */
     private void destroyPlayerIfNecessary(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         if (player.getPlayerDamage() > MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED) {
             this.destroyPlayer(player);
@@ -717,23 +713,57 @@ public class Game implements IGame {
     }
 
     /**
+     * Register flags and move the players archive location,
+     * if the player is standing on a flag or a wrench space.<br>
+     * If a player is registering the last flag they need,
+     * they are declared the winner and the game ends.
+     */
+    private void flagsAndRepairs() {
+        for (IPlayer player : this.players) {
+            if (this.checkIfThePlayerIsInTheGame(player)) {
+                IObjects playerIsStandingOn = board.getObject(player.getCoordinates());
+                if (playerIsStandingOn instanceof Flag
+                        || playerIsStandingOn instanceof SingleWrench
+                        || playerIsStandingOn instanceof CrossedWrench) {
+                    playerIsStandingOn.doAction(player);
+                }
+                if (player.getFlagsVisited() == numberOfFlags()) {
+                    setGameStatus(SOMEONE_HAS_WON);
+                    winner = player;
+                    return;
+                }
+            }
+        }
+        if (this.currentSlotNumber == 0) { // Gone through all the register slots,
+            this.setGameStatus(FINISHING_UP_THE_TURN); // so the round is over.
+        } else {
+            this.setGameStatus(EXECUTING_INSTRUCTIONS);
+        }
+    }
+
+    /**
+     * Count the number of flags on the map.
+     *
+     * @return The number of flags on the map.
+     */
+    private int numberOfFlags() {
+        int nrOfFlags = 0;
+        for (int x = 0; x < board.getRows(); x++) {
+            for (int y = 0; y < board.getColumns(); y++) {
+                if (board.getObject(y,x) instanceof Flag)
+                    nrOfFlags++;
+            }
+        }
+        return nrOfFlags;
+    }
+
+    /**
      * Clean up the game before the next round.<br>
      * Players standing on wrench tiles removes one damage,
      * and all destroyed players are brought back into the game.
      */
     private void cleanUpTurn() {
-        for (IPlayer player : players) {
-            if (this.checkIfThePlayerIsInTheGame(player)) {
-                IObjects playerIsStandingOn = this.board.getObject(player.getX(), player.getY());
-                if (playerIsStandingOn.equals(CrossedWrench.class)) {
-                    player.removeOneDamage();
-                    // TODO: this.drawOneOptionCard(player);
-                } else if (playerIsStandingOn.equals(SingleWrench.class)) {
-                    player.removeOneDamage();
-                }
-            }
-        }
-
+        this.repairRobotsStandingOnWrenchSpaces();
         this.restoreDestroyedPlayers();
         this.destroyedPlayers.clear(); // All destroyed players has been restored.
         this.emptyEachPlayersRegister();
@@ -742,6 +772,32 @@ public class Game implements IGame {
         System.out.println();
         System.out.println("New turn");
         System.out.println();
+
+        for (IPlayer player : this.poweredDownPlayers) {
+            // Ask if player wants to remain powered down for the next round.
+            // If yes, continue.
+            // If no, move to activePlayers and set player.powerDown to false;
+        }
+
+        this.powerDownPlayers();
+        this.repairPoweredDownPlayers();
+    }
+
+    /**
+     * All the players currently in the game,
+     * and standing on a single or crossed wrench space,
+     * gets one damage token repaired.
+     */
+    private void repairRobotsStandingOnWrenchSpaces() {
+        for (IPlayer player : players) {
+            if (this.checkIfThePlayerIsInTheGame(player)) {
+                IObjects playerIsStandingOn = this.board.getObject(player.getCoordinates());
+                if (playerIsStandingOn instanceof CrossedWrench
+                        || playerIsStandingOn instanceof SingleWrench) {
+                    player.removeOneDamage();
+                }
+            }
+        }
     }
 
     /**
@@ -763,6 +819,8 @@ public class Game implements IGame {
             }
             player.setCoordinates(positionPlayerWishesToRespawn);
             //TODO: Ask player for which direction they would like to face.
+
+            // TODO: Ask if the player wants to remain powered down or not.
         }
     }
 
@@ -791,7 +849,7 @@ public class Game implements IGame {
      */
     private void restorePlayerBasedOnPriority(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         if (activePlayers.isEmpty()) {
             activePlayers.add(player);
@@ -829,12 +887,9 @@ public class Game implements IGame {
      */
     private void setupCardSelectionForNewRound() {
         this.removeAllCardsFromEachPlayersHand();
-
         for (IPlayer player : activePlayers) {
             this.drawCards(player);
         }
-
-        // this.updateDeckOfSelectedCards();
     }
 
     /**
@@ -868,7 +923,7 @@ public class Game implements IGame {
      */
     private void drawCards(IPlayer player) {
         if (player == null) {
-            throw new IllegalArgumentException("Not a valid player");
+            throw new IllegalArgumentException();
         }
         List<ICard> drawnCards;
         int numberOfCardsToDraw = this.calculateTheNumberOfCardsThePlayerCanDraw(player);
@@ -884,6 +939,30 @@ public class Game implements IGame {
         }
         System.out.println("Dealt cards to player: " + player.getName());
         player.addCardsToPlayersHand(drawnCards);
+    }
+
+    /**
+     * Transfer all the active players that wants to power down,
+     * to the list of powered down players.
+     */
+    private void powerDownPlayers() {
+        for (int i = 0; i < this.activePlayers.size(); i++) {
+            IPlayer player = this.activePlayers.get(i);
+            if (player.isPoweredDown()) { // Player has selected to power down for the next round.
+                this.activePlayers.remove(player);
+                this.poweredDownPlayers.add(player);
+                i--;
+            }
+        }
+    }
+
+    /**
+     * Remove all damage tokens from players that are powered down.
+     */
+    private void repairPoweredDownPlayers() {
+        for (IPlayer player : this.poweredDownPlayers) {
+            player.removeAllDamageTokens();
+        }
     }
 
     @Override
@@ -926,7 +1005,7 @@ public class Game implements IGame {
         if (number == null
                 || number < 0
                 || number > this.NUMBER_OF_REGISTER_SLOTS) {
-            throw new IllegalArgumentException("Not a valid number");
+            throw new IllegalArgumentException();
         }
         this.currentSlotNumber = number;
     }
@@ -940,7 +1019,7 @@ public class Game implements IGame {
     public void setGameStatus(GameStatus status) {
         if (status == null
                 || !GameStatus.validStatus(status)) {
-            throw new IllegalArgumentException("Not a valid status");
+            throw new IllegalArgumentException();
         }
         this.currentGameStatus = status;
     }
