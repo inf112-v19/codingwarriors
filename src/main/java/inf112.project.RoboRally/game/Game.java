@@ -275,7 +275,7 @@ public class Game implements IGame {
             setGameStatus(EXECUTING_GAME_BOARD_OBJECTS); // aren't destroyed properly.
         } else {
             this.finishEarly();
-            this.setGameStatus(FINISHING_UP_THE_TURN);
+            this.setGameStatus(SELECT_POWER_STATUS);
         }
     }
 

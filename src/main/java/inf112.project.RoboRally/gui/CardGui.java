@@ -72,8 +72,12 @@ public class CardGui {
             case SELECT_CARDS:
                 cardBatch.begin();
                 currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
-                displayPlayerData(height-10, currentPlayer);
-                drawSelectCards();
+
+                    displayPlayerData(height - 10, currentPlayer);
+                    drawSelectCards();
+
+                    incrementCurrentPlayer();
+
                 cardBatch.end();
                 break;
             case SELECT_POWER_STATUS:
@@ -250,7 +254,7 @@ public class CardGui {
         IDeck playersDeckOfCards = currentPlayer.getCardsInHand();
         // Switch selected card between players deck,
         // and the players list of selected cards.
-        if (playersDeckOfCards.isEmpty()) {
+        if (playersDeckOfCards.isEmpty() || currentPlayer.isPoweredDown()) {
             incrementCurrentPlayer();
         } else if (indexOfSelectedCard >= playersDeckOfCards.getSize()) {
             System.out.println("deck index: " + indexOfSelectedCard);
@@ -264,12 +268,13 @@ public class CardGui {
     public void incrementCurrentPlayer() {
         int indexOfTheLastPlayer = (game.getActivePlayers().size() - 1);
         if (currentPlayer.registerIsFull() && currentPlayer.cardSelectionConfirmed()
-                || currentPlayer.getCardsInHand().isEmpty() && currentPlayer.cardSelectionConfirmed()) {
+                || currentPlayer.getCardsInHand().isEmpty() && currentPlayer.cardSelectionConfirmed()
+                || currentPlayer.isPoweredDown()) {
 
             currentPlayer.setCardSelectionConfirmedStatus(false);
             if (currentPlayerIndex == indexOfTheLastPlayer) {
                 currentPlayerIndex = 0;
-                game.setGameStatus(GameStatus.POWER_DOWN);
+                game.setGameStatus(GameStatus.EXECUTING_INSTRUCTIONS);
                 System.out.println("finished selecting cards");
             } else {
                 System.out.println("updating current player");
