@@ -228,12 +228,12 @@ public class CardGui {
             powerDown.setColor(Color.RED);
         } else if (currentPlayer.poweringDownNextTurn() == true) {
             powerDown.setColor(Color.RED);
-            powerDown.setText("Power is down");
+            powerDown.setText("Power up");
         } else if (currentPlayer.getPlayerDamage() == 0) {
             powerDown.setColor(Color.CLEAR);
         } else {
             powerDown.setColor(Color.GREEN);
-            powerDown.setText("Power is on");
+            powerDown.setText("Power down");
         }
         // confirm button
         if (currentPlayer.registerIsFull() || currentPlayer.getCardsInHand().isEmpty()) {
