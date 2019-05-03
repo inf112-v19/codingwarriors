@@ -91,7 +91,7 @@ public enum GridDirection {
    * @param directions The directions that are to be sorted
    * @return The sorted list of unique directions
    */
-  public static ArrayList<GridDirection> sortUniqueDirectionsInPrioritizedOrder(ArrayList<GridDirection> directions) {
+  private static ArrayList<GridDirection> sortUniqueDirectionsInPrioritizedOrder(ArrayList<GridDirection> directions) {
     ArrayList<GridDirection> sortedUniqueList = new ArrayList<>();
     ArrayList<GridDirection> allDirections = GridDirection.listOfDirections();
     for (GridDirection directionFromList: listOfDirections()) {
@@ -111,16 +111,16 @@ public enum GridDirection {
    * @return The wall texture reference
    */
   public static String getWallTexture(ArrayList<GridDirection> walls) {
-    String wallTexture="";
+    StringBuilder wallTexture= new StringBuilder();
     ArrayList<GridDirection> sortedDirectionList = GridDirection.sortUniqueDirectionsInPrioritizedOrder(walls);
     if (walls.size() > 0) {
-      wallTexture="assets/walls/wall_";
+      wallTexture = new StringBuilder("assets/walls/wall_");
       for (GridDirection direction: sortedDirectionList) {
-        wallTexture += direction.toString();
+        wallTexture.append(direction.toString());
       }
-      wallTexture += ".png";
+      wallTexture.append(".png");
     }
-    return wallTexture;
+    return wallTexture.toString();
   }
   
   /**

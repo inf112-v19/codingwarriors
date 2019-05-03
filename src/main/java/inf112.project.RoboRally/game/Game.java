@@ -1,6 +1,7 @@
 package inf112.project.RoboRally.game;
 
 import com.badlogic.gdx.graphics.Color;
+import inf112.project.RoboRally.actors.AI;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
@@ -34,7 +35,6 @@ public class Game implements IGame {
     private IDeck programCards;
     private IDeck discardedProgramCards;
     private GameStatus currentGameStatus;
-    private boolean everyFlagHasBeenVisited;
     private int currentSlotNumber;
     private final int NUMBER_OF_REGISTER_SLOTS = 5;
     private final int MAX_DAMAGE_TOKENS_BEFORE_BEING_DESTROYED = 9; // The number of damage tokens a player
@@ -106,7 +106,6 @@ public class Game implements IGame {
         this.programCards.createProgramCardsDeck();
         this.discardedProgramCards = new Deck();
         this.lasers = new ArrayList<>();
-        this.everyFlagHasBeenVisited = false;
         this.currentSlotNumber = 0;
         this.addPlayers();
         this.registerLasers();
@@ -119,7 +118,7 @@ public class Game implements IGame {
         // Hardcoded players for demonstration.
         IPlayer player1 = new Player("Buzz", 5, 4, Color.RED);
         IPlayer player2 = new Player("Emma", 6, 4, Color.CYAN);
-        IPlayer player3 = new Player("G-bot", 7, 4, Color.LIME);
+        IPlayer player3 = new AI("G-bot", 7, 4, Color.LIME);
         this.players.add(player1);
         this.players.add(player2);
         this.players.add(player3);
@@ -618,7 +617,7 @@ public class Game implements IGame {
     }
 
 
-    public boolean pathHasWall(List<Coordinates> coordinates, GridDirection direction) {
+    private boolean pathHasWall(List<Coordinates> coordinates, GridDirection direction) {
         List<Coordinates> coordinatesInsideMap = new ArrayList<>();
 
         for (Coordinates pathCoordinates : coordinates) {
@@ -759,12 +758,6 @@ public class Game implements IGame {
         System.out.println();
         System.out.println("New turn");
         System.out.println();
-
-        for (IPlayer player : this.poweredDownPlayers) {
-            // Ask if player wants to remain powered down for the next round.
-            // If yes, continue.
-            // If no, move to activePlayers and set player.powerDown to false;
-        }
 
         this.powerDownPlayers();
         this.repairPoweredDownPlayers();

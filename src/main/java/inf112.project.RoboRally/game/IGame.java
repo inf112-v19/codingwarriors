@@ -3,7 +3,6 @@ package inf112.project.RoboRally.game;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.board.GameBoard;
-import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.objects.GridDirection;
 import inf112.project.RoboRally.objects.Laser;
 

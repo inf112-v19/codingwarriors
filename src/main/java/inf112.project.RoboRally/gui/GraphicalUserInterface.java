@@ -33,8 +33,6 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     private SpriteBatch GameOverBatch;
     private Viewport viewport;
     private AssetsManagement assetsManager = new AssetsManagement();
-    private ShapeRenderer shapeRenderer;
-    private BitmapFont font;
 
     private int[] xPositionDrawer;
     private int[] yPositionDrawer;
@@ -46,8 +44,6 @@ public class GraphicalUserInterface extends ApplicationAdapter {
     public void create () {
         createNewGame();
         setupScreens();
-        font = new BitmapFont();
-        shapeRenderer = new ShapeRenderer();
         GameOverBatch = new SpriteBatch();
         cardGui = new CardGui(game,CARD_SCREEN_WIDTH,CARD_SCREEN_HEIGHT);
         camera = new OrthographicCamera(WIDTH, HEIGHT);

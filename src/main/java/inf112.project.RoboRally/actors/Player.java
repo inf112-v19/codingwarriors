@@ -143,9 +143,7 @@ public class Player implements IPlayer {
     @Override
     public boolean equals(Object obj) {
         Player player = (Player) obj;
-        if (x == player.getX() && y == player.getY())
-            return true;
-        return false;
+        return (x == player.getX() && y == player.getY());
     }
 
     @Override

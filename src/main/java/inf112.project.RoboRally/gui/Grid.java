@@ -14,7 +14,7 @@ public class Grid {
         calculateTileSize();
     }
 
-    public void calculateTileSize() {
+    private void calculateTileSize() {
         tileSizeX = screen.numberOfPixelsX()/width;
         tileSizeY = screen.numberOfPixelsY()/height;
     }

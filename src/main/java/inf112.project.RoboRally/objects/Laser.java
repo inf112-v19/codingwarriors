@@ -3,7 +3,6 @@ package inf112.project.RoboRally.objects;
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.actors.IPlayer;
 import inf112.project.RoboRally.actors.Player;
-import inf112.project.RoboRally.board.GameBoard;
 
 import java.util.ArrayList;
 import java.util.List;

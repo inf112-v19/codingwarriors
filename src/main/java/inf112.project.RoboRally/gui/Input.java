@@ -5,9 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-public class Input extends ApplicationAdapter implements InputProcessor {
+class Input extends ApplicationAdapter implements InputProcessor {
 
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
 
     public Input(OrthographicCamera camera) {
         this.camera = camera;
