@@ -3,8 +3,6 @@ package inf112.project.RoboRally.gui;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
-import javax.xml.soap.Text;
-
 class AssetsManagement {
 
     private final AssetManager assetManager = new AssetManager();

@@ -21,9 +21,7 @@ public class Coordinates {
     @Override
     public boolean equals(Object obj) {
         Coordinates otherCord = (Coordinates) obj;
-        if (otherCord.x == x && otherCord.y == y)
-            return true;
-        return false;
+        return (otherCord.x == x && otherCord.y == y);
     }
 
     public GridDirection getDirection(Coordinates otherCoordinates) {

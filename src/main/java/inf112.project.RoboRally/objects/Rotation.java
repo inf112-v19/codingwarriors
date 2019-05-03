@@ -7,7 +7,7 @@ public enum Rotation {
     NONE, LEFT, RIGHT, HALFWAY;
     
     
-    public static Rotation[] getAllRotations() {
+    private static Rotation[] getAllRotations() {
         return new Rotation[]{Rotation.NONE, Rotation.LEFT, Rotation.RIGHT, Rotation.HALFWAY};
     }
     

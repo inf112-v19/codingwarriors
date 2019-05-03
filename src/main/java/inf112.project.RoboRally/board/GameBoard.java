@@ -2,8 +2,6 @@ package inf112.project.RoboRally.board;
 
 import inf112.project.RoboRally.actors.Coordinates;
 import inf112.project.RoboRally.objects.*;
-import inf112.project.RoboRally.objects.IObjects;
-import inf112.project.RoboRally.objects.Flag;
 
 import java.util.ArrayList;
 import java.util.List;

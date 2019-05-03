@@ -17,7 +17,7 @@ import inf112.project.RoboRally.cards.IDeck;
 import inf112.project.RoboRally.game.GameStatus;
 import inf112.project.RoboRally.game.IGame;
 
-public class CardGui {
+class CardGui {
     private int width;
     private int height;
     private IGame game;
@@ -25,13 +25,13 @@ public class CardGui {
     private SpriteBatch cardBatch;
     private int currentPlayerIndex;
     private IPlayer currentPlayer;
-    private BitmapFont font; // move to AssetsManagement
-    private BitmapFont fontGreen; // move to AssetsManagement
+    private BitmapFont font;
+    private BitmapFont fontGreen;
     private ShapeRenderer shapeRenderer;
     private Stage stage;
     private Skin skin;
-    TextButton powerDown;
-    TextButton confirmSelection;
+    private TextButton powerDown;
+    private TextButton confirmSelection;
     boolean PowerSelectionDone;
 
     CardGui(IGame game, int width, int height) {
@@ -125,7 +125,7 @@ public class CardGui {
         }
     }
 
-    public void displayPlayerData(int StartingPositionYAxis, IPlayer player) {
+    private void displayPlayerData(int StartingPositionYAxis, IPlayer player) {
         font.setColor(player.getColor());
         font.draw(cardBatch,player.toString(),
                 5,StartingPositionYAxis, cardScreen.getTileWidth(),
@@ -167,7 +167,7 @@ public class CardGui {
         }
     }
 
-    public void loadButtons() {
+    private void loadButtons() {
 
         powerDown = new TextButton("PowerDown", skin);
         powerDown.setPosition(5, height-200);
@@ -226,7 +226,7 @@ public class CardGui {
         if (game.getTheCurrentGameStatus() == GameStatus.SELECT_POWER_STATUS) {
             powerDown.setText("Press to power up");
             powerDown.setColor(Color.RED);
-        } else if (currentPlayer.poweringDownNextTurn() == true) {
+        } else if (currentPlayer.poweringDownNextTurn()) {
             powerDown.setColor(Color.RED);
             powerDown.setText("Power up");
         } else if (currentPlayer.getPlayerDamage() == 0) {
