@@ -329,6 +329,11 @@ public class CardGui {
     }
 
     public void selectPowerStatus() {
+        if (game.getActivePlayers().size() == 0) {
+            PowerSelectionDone = true;
+            game.setGameStatus(GameStatus.FINISHING_UP_THE_TURN);
+            return;
+        }
         while (!currentPlayer.poweringDownNextTurn()) {
             currentPlayerIndex = currentPlayerIndex >= (game.getActivePlayers().size() - 1) ? 0 : ++currentPlayerIndex;
             currentPlayer = game.getActivePlayers().get(currentPlayerIndex);
