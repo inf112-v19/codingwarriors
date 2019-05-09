@@ -46,28 +46,37 @@ public class Game implements IGame {
      * Uses a standard board and walls layout.
      */
     public Game() {
-        String defaultLayout = "16C12R" +
-                "....kr.rrr......" +
-                ".R..RRRRRRRRDu.." +
-                ".U.........cD..." +
-                ".U........i.D..." +
-                ".U......ll..D.p." +
-                "rU..LLLL.LLLD..." +
-                "ll.....w....C..." +
-                ".r..p....lll...." +
-                ".r.....w.....i.." +
-                "...ff..w.....p.." +
-                "..........n....." +
-                ".r....WW....dd..";
+        String defaultLayout = "16C16R" +
+                "f...........k..." +
+                ".prrrrrrrrrrrrp." +
+                ".ucLLLLLLLLLLCd." +
+                ".uD..........Ud." +
+                ".uD........W.Ud." +
+                "muD....f.....Ud." +
+                ".uD..........Ud." +
+                ".uD....w.....Ud." +
+                ".uD..........Udn" +
+                ".uD..........Ud." +
+                ".uD.......w..Ud." +
+                ".uD..........Ud." +
+                ".uDW.........Ud." +
+                ".uCRRRRRRRRRRcd." +
+                ".pllllllllllllp." +
+                "..........i....f";
+                
         String defaultWalls = "" +
-                "fnnnnnnnnnnnnnng" +
+                "......sss......." +
+                "................" +
+                "......nnn......." +
+                "w....e...w.....e" +
+                "w....e...w.....e" +
+                "w....e...w.....e" +
+                "w....e...w.....e" +
+                "......n.n......." +
                 "................" +
                 "................" +
-                ".nnnn..........." +
-                "......Mexico...." +
-                "................" +
-                "................" +
-                "................" +
+                "..........s....." +
+                "......sss......." +
                 "................" +
                 "................" +
                 "................" +
